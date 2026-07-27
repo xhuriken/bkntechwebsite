@@ -67,12 +67,7 @@ export default async function handler(req, res) {
       }
     });
 
-    // 5. Structure Email Content & Reply Mailto Link (Pre-filled)
-    const replySubject = encodeURIComponent(`Re: ${subject}`);
-    const quoteBody = message.split('\n').map(line => `> ${line}`).join('\n');
-    const replyBody = encodeURIComponent(`\n\n\n---\nMessage de ${name} <${email}> :\n${quoteBody}`);
-    const mailtoUrl = `mailto:${email}?subject=${replySubject}&body=${replyBody}`;
-
+    // 5. Structure Email Content
     const mailOptions = {
       from: `"${name}" <${process.env.SMTP_USER || 'contact@bkntech.fr'}>`,
       replyTo: email,
@@ -85,7 +80,7 @@ export default async function handler(req, res) {
             <!-- Brand Accent Line -->
             <div style="height: 4px; background: linear-gradient(90deg, #7c3aed 0%, #3b82f6 100%);"></div>
             
-            <div style="padding: 28px 24px 28px 24px;">
+            <div style="padding: 24px;">
               <!-- Logo / Brand -->
               <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #a78bfa; margin-bottom: 16px;">
                 BKN Tech
@@ -116,19 +111,7 @@ export default async function handler(req, res) {
               </div>
 
               <!-- Message Blockquote -->
-              <div style="font-size: 15px; line-height: 1.6; color: #e4e4e7; border-left: 2px solid #7c3aed; padding-left: 16px; margin: 0 0 24px 0; white-space: pre-wrap; font-style: normal;">${message}</div>
-
-              <!-- Reply Action Button (Outlined/SaaS Style) -->
-              <div style="margin-top: 24px;">
-                <a href="${mailtoUrl}" style="display: inline-block; border: 1px solid rgba(167, 139, 250, 0.4); background-color: rgba(167, 139, 250, 0.05); color: #c084fc; padding: 8px 18px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600;">
-                  Répondre au message &rarr;
-                </a>
-              </div>
-
-              <!-- Footer Watermark inside the card -->
-              <div style="margin-top: 32px; border-top: 1px solid #27272a; padding-top: 16px; font-size: 10px; color: #52525b; text-transform: uppercase; letter-spacing: 0.1em; text-align: center;">
-                BKN Tech Mailer
-              </div>
+              <div style="font-size: 15px; line-height: 1.6; color: #e4e4e7; border-left: 2px solid #7c3aed; padding-left: 16px; margin: 0; white-space: pre-wrap; font-style: normal;">${message}</div>
             </div>
           </div>
         </div>
