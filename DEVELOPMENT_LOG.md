@@ -67,6 +67,8 @@ Création et intégration du formulaire de contact haut de gamme, sécurisé con
 - Retrait immédiat de la valeur par défaut en dur de `SMTP_PASS` dans [api/contact.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/contact.js), rendu obligatoire via variable d'environnement uniquement.
 - Réécriture de l'historique Git via `git filter-branch` pour purger la trace de toutes les versions précédentes de [api/contact.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/contact.js) contenant le mot de passe SMTP en dur, suivie d'un push forcé pour nettoyer le dépôt distant.
 - Ajout d'un middleware d'interception d'API `/api/contact` et d'un chargeur `.env` manuel dans [vite.config.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/vite.config.js) pour émuler localement le fonctionnement des fonctions Serverless de Vercel/Netlify en mode de développement (`npm run dev`).
+- Résolution DNS des serveurs de messagerie (MX) de `bkntech.fr` montrant l'hébergement par OVH (`mx0.mail.ovh.net`).
+- Correction de `SMTP_HOST` de `smtp.bkntech.fr` vers `ssl0.ovh.net` dans [.env](file:///c:/Users/celestin/Desktop/bkntechwebsite/.env), [.env.example](file:///c:/Users/celestin/Desktop/bkntechwebsite/.env.example) et [api/contact.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/contact.js) pour assurer un envoi fonctionnel.
 
 ### Justification Technique
 - **Sécurité & SMTP** : Le mot de passe et les détails de l'email sont conservés exclusivement côté serveur grâce aux variables d'environnement locales (`.env`), évitant toute exposition dans le bundle JS client.
@@ -75,6 +77,8 @@ Création et intégration du formulaire de contact haut de gamme, sécurisé con
 - **Expérience Utilisateur (UX)** : L'utilisation de Framer Motion sur les composants de formulaire et les transitions d'état (Checking -> Sending -> Success/Error) offre une interface dynamique et moderne de haut standing. Les ajustements typographiques et d'alignement (`block` layout sur le textarea) garantissent une uniformité visuelle pixel-perfect. Les animations interactives sur les pins renforcent l'identité dynamique globale. La refonte de l'input en label fixe interne corrige définitivement les problèmes d'espacements asymétriques inhérents aux floating labels classiques et améliore l'accessibilité globale.
 - **Assurance Sécurité (Purge Git)** : La réécriture totale de l'historique de commits Git et le `push --force` étaient cruciaux pour éliminer toute trace historique des identifiants SMTP partagés par l'utilisateur, garantissant qu'aucune version obsolète ne reste accessible dans les commits passés sur GitHub.
 - **Simulateur Dev Local (Middleware)** : En mode de développement classique via `npm run dev`, le serveur d'évaluation de Vite ne sait pas traiter nativement les fonctions backend dans `api/`. En ajoutant un middleware d'interception personnalisé dans Vite qui charge manuellement les identifiants locaux secrets de `.env` (sans aucune dépendance tierce), nous permettons de simuler l'exécution du handler API en local de manière totalement autonome et transparente pour le développeur.
+- **Résolution DNS & Correction Hôte (OVH)** : L'adresse SMTP par défaut `smtp.bkntech.fr` ne répondait pas car le nom de domaine `bkntech.fr` utilise les serveurs de messagerie partagés d'OVH. L'identification de l'enregistrement MX (`mx0.mail.ovh.net`) a permis de reconfigurer l'hôte sur le serveur officiel d'OVH (`ssl0.ovh.net`), résolvant l'erreur d'envoi `ENOTFOUND` et finalisant l'envoi de mail avec succès.
+
 
 
 

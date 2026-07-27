@@ -58,7 +58,7 @@ export default async function handler(req, res) {
     }
 
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.bkntech.fr',
+      host: process.env.SMTP_HOST || 'ssl0.ovh.net',
       port: parseInt(process.env.SMTP_PORT || '465'),
       secure: process.env.SMTP_SECURE !== 'false', // true by default (TLS port 465)
       auth: {
