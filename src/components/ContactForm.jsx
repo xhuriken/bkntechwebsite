@@ -155,48 +155,62 @@ export default function ContactForm() {
               Vous avez un projet de développement web/mobile ou des questions sur notre projet Unity ? N'hésitez pas à nous écrire.
             </p>
 
-            {/* Obfuscated Contact Information */}
-            <div className="flex flex-col gap-6">
-              {/* E-mail */}
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary">
+            {/* Obfuscated Contact Information Pins with Hover Actions */}
+            <div className="flex flex-col gap-3 -mx-3">
+              {/* E-mail Pin */}
+              <motion.a 
+                href={`mailto:${emailText}`}
+                whileHover={{ x: 6 }}
+                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+              >
+                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-black transition-all duration-300">
                   <i className="fa-solid fa-envelope text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[8px] font-display font-black uppercase tracking-widest text-on-surface-variant">E-mail</div>
-                  <a href={`mailto:${emailText}`} className="text-xs font-semibold hover:text-primary transition-colors">
+                  <div className="text-[8px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">E-mail</div>
+                  <span className="text-xs font-semibold text-on-surface group-hover:text-primary transition-colors">
                     {emailText || 'contact [at] bkntech.fr'}
-                  </a>
+                  </span>
                 </div>
-              </div>
+              </motion.a>
 
-              {/* Téléphone */}
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary">
+              {/* Téléphone Pin */}
+              <motion.a 
+                href={`tel:${phoneText.replace(/\s/g, '')}`}
+                whileHover={{ x: 6 }}
+                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+              >
+                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-black transition-all duration-300">
                   <i className="fa-solid fa-phone text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[8px] font-display font-black uppercase tracking-widest text-on-surface-variant">Téléphone</div>
-                  <a href={`tel:${phoneText.replace(/\s/g, '')}`} className="text-xs font-semibold hover:text-primary transition-colors">
+                  <div className="text-[8px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">Téléphone</div>
+                  <span className="text-xs font-semibold text-on-surface group-hover:text-primary transition-colors">
                     {phoneText || '+33 1 00 00 00 00'}
-                  </a>
+                  </span>
                 </div>
-              </div>
+              </motion.a>
 
-              {/* Localisation */}
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary">
+              {/* Localisation Pin */}
+              <motion.a 
+                href="https://maps.google.com/?q=BKN+Tech+47+rue+Vivienne+75002+Paris"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ x: 6 }}
+                className="flex items-start gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+              >
+                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary mt-1 group-hover:scale-110 group-hover:bg-primary group-hover:text-black transition-all duration-300">
                   <i className="fa-solid fa-location-dot text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[8px] font-display font-black uppercase tracking-widest text-on-surface-variant">Adresse</div>
-                  <div className="text-xs font-light text-on-surface-variant leading-relaxed">
+                  <div className="text-[8px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">Adresse</div>
+                  <div className="text-xs font-light text-on-surface-variant leading-relaxed group-hover:text-on-surface transition-colors">
                     Bkn Tech<br />
                     47 rue Vivienne<br />
                     75002 Paris, France
                   </div>
                 </div>
-              </div>
+              </motion.a>
             </div>
           </div>
 

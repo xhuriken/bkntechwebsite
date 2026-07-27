@@ -45,8 +45,8 @@ export default function InputField({
             onBlur={handleBlur}
             rows={rows}
             className={`
-              w-full bg-surface-container-low/45 backdrop-blur-md border rounded-xl px-4 pt-6 pb-2 
-              text-xs text-on-surface font-sans transition-all duration-300 focus:outline-none resize-none
+              block w-full bg-surface-container-low/45 backdrop-blur-md border rounded-xl px-4 pt-6 pb-3 
+              text-sm text-on-surface font-sans transition-all duration-300 focus:outline-none resize-none
               ${error 
                 ? 'border-red-500/40 focus:border-red-500/70 focus:ring-1 focus:ring-red-500/20' 
                 : 'border-white/5 group-hover:border-primary/20 focus:border-primary/50 focus:ring-1 focus:ring-primary/10'
@@ -64,8 +64,8 @@ export default function InputField({
             onFocus={handleFocus}
             onBlur={handleBlur}
             className={`
-              w-full bg-surface-container-low/45 backdrop-blur-md border rounded-xl px-4 pt-6 pb-2 
-              text-xs text-on-surface font-sans transition-all duration-300 focus:outline-none
+              block w-full bg-surface-container-low/45 backdrop-blur-md border rounded-xl px-4 pt-6 pb-3 
+              text-sm text-on-surface font-sans transition-all duration-300 focus:outline-none
               ${error 
                 ? 'border-red-500/40 focus:border-red-500/70 focus:ring-1 focus:ring-red-500/20' 
                 : 'border-white/5 group-hover:border-primary/20 focus:border-primary/50 focus:ring-1 focus:ring-primary/10'
@@ -74,12 +74,12 @@ export default function InputField({
           />
         )}
 
-        {/* Floating Label */}
+        {/* Floating Label (position adjusted to float above the border line) */}
         <motion.label
           htmlFor={name}
           initial={false}
           animate={{
-            y: isFloating ? -8 : 13,
+            y: isFloating ? -24 : 15,
             scale: isFloating ? 0.8 : 1,
             color: error 
               ? '#f87171' 
@@ -88,7 +88,7 @@ export default function InputField({
                 : 'var(--on-surface-variant)'
           }}
           transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1.0] }}
-          className="absolute left-4 top-0 origin-left pointer-events-none font-display font-black text-[9px] uppercase tracking-[0.2em] select-none"
+          className="absolute left-4 top-0 origin-left pointer-events-none font-display font-black text-xs uppercase tracking-[0.2em] select-none"
         >
           {label} {required && <span className="text-primary/70">*</span>}
         </motion.label>
@@ -111,7 +111,7 @@ export default function InputField({
           opacity: error ? 1 : 0,
           height: error ? 'auto' : 0
         }}
-        className="text-[9px] font-display font-black uppercase tracking-wider text-red-400 mt-1.5 px-4 overflow-hidden"
+        className="text-[10px] font-display font-black uppercase tracking-wider text-red-400 mt-1.5 px-4 overflow-hidden"
       >
         {error}
       </motion.div>
