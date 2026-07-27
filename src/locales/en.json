@@ -1,0 +1,23 @@
+{
+  "nav": {
+    "home": "Home",
+    "portfolio": "Portfolio",
+    "game": "Unity Game",
+    "contact": "Contact",
+    "cta": "Start a project"
+  },
+  "hero": {
+    "title_part1": "Shaping the web,",
+    "title_part2": "coding the future.",
+    "description": "BKN Tech is an agency of technological excellence. We design custom websites and mobile applications while editing an innovative multiplayer game under Unity.",
+    "cta_contact": "Contact Us",
+    "cta_game": "Discover the Game"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Custom B2B services."
+  },
+  "footer": {
+    "copyright": "© 2026 BKN Tech. All rights reserved."
+  }
+}

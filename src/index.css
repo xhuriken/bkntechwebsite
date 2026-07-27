@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..800&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #12131b;
+  --color-surface-bright: #383842;
+  --color-surface-dim: #12131b;
+  --color-surface-variant: #33343d;
+  --color-surface-container-lowest: #0d0e16;
+  --color-surface-container-low: #1a1b23;
+  --color-surface-container: #1e1f28;
+  --color-surface-container-high: #292932;
+  --color-surface-container-highest: #33343d;
+
+  --color-primary: #bec2ff;
+  --color-primary-container: #5b63d3;
+  --color-secondary: #4edea3;
+  --color-secondary-container: #00a572;
+  --color-tertiary: #ffb95f;
+  --color-tertiary-container: #9c6200;
+
+  --color-on-surface: #e3e1ed;
+  --color-on-surface-variant: #ababcf;
+  --color-on-primary: #000000;
+
+  --color-outline: #908f9e;
+  --color-outline-variant: #454653;
+
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+:root {
+  /* Tokens bruts pour l'usage direct */
+  --surface: #12131b;
+  --surface-bright: #383842;
+  --surface-dim: #12131b;
+  --surface-variant: #33343d;
+  --surface-container-lowest: #0d0e16;
+  --surface-container-low: #1a1b23;
+  --surface-container: #1e1f28;
+  --surface-container-high: #292932;
+  --surface-container-highest: #33343d;
+  
+  --primary: #bec2ff;
+  --primary-container: #5b63d3;
+  --secondary: #4edea3;
+  --secondary-container: #00a572;
+  --tertiary: #ffb95f;
+  --tertiary-container: #9c6200;
+  
+  --on-surface: #e3e1ed;
+  --on-surface-variant: #ababcf;
+  --on-primary: #000000;
+  
+  --outline: #908f9e;
+  --outline-variant: #454653;
+  
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-instant: 100ms var(--ease-standard);
+  --transition-fast: 150ms var(--ease-standard);
+  --transition-base: 300ms var(--ease-standard);
+}
+
+body {
+  background-color: var(--surface);
+  color: var(--on-surface);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+/* Glassmorphism Panel */
+.glass-panel {
+  background: rgba(12, 13, 18, 0.85);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(190, 194, 255, 0.15);
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
+}
