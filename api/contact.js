@@ -85,14 +85,14 @@ export default async function handler(req, res) {
             <!-- Brand Accent Line -->
             <div style="height: 4px; background: linear-gradient(90deg, #7c3aed 0%, #3b82f6 100%);"></div>
             
-            <div style="padding: 28px 24px 16px 24px;">
+            <div style="padding: 28px 24px 28px 24px;">
               <!-- Logo / Brand -->
               <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #a78bfa; margin-bottom: 16px;">
                 BKN Tech
               </div>
 
               <h2 style="font-size: 18px; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 16px; letter-spacing: -0.02em;">
-                Nouveau message reçu
+                Nouveau message reçu sur bkntech.fr
               </h2>
 
               <!-- Details List -->
@@ -116,14 +116,19 @@ export default async function handler(req, res) {
               </div>
 
               <!-- Message Blockquote -->
-              <div style="font-size: 15px; line-height: 1.6; color: #e4e4e7; border-left: 2px solid #7c3aed; padding-left: 16px; margin: 0; white-space: pre-wrap; font-style: normal;">${message}</div>
-            </div>
-            
-            <!-- Footer (CTA Action instead of plain auto-text) -->
-            <div style="background-color: #0c0d12; padding: 24px 24px; border-top: 1px solid #27272a; text-align: center;">
-              <a href="${mailtoUrl}" style="display: inline-block; background: linear-gradient(90deg, #7c3aed 0%, #4f46e5 100%); color: #ffffff; text-decoration: none; font-size: 11px; font-weight: 800; padding: 12px 28px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.15em; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);">
-                Répondre au message
-              </a>
+              <div style="font-size: 15px; line-height: 1.6; color: #e4e4e7; border-left: 2px solid #7c3aed; padding-left: 16px; margin: 0 0 24px 0; white-space: pre-wrap; font-style: normal;">${message}</div>
+
+              <!-- Reply Action Button (Outlined/SaaS Style) -->
+              <div style="margin-top: 24px;">
+                <a href="${mailtoUrl}" style="display: inline-block; border: 1px solid rgba(167, 139, 250, 0.4); background-color: rgba(167, 139, 250, 0.05); color: #c084fc; padding: 8px 18px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600;">
+                  Répondre au message &rarr;
+                </a>
+              </div>
+
+              <!-- Footer Watermark inside the card -->
+              <div style="margin-top: 32px; border-top: 1px solid #27272a; padding-top: 16px; font-size: 10px; color: #52525b; text-transform: uppercase; letter-spacing: 0.1em; text-align: center;">
+                BKN Tech Mailer
+              </div>
             </div>
           </div>
         </div>
