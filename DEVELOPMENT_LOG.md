@@ -64,12 +64,19 @@ Création et intégration du formulaire de contact haut de gamme, sécurisé con
 - Refonte complète de [InputField.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/InputField.jsx) avec un design compact à étiquette fixe interne. Cela élimine les espaces vides excessifs en bas et le chevauchement avec la ligne de bordure.
 - Modification de la disposition des pins de contact à gauche dans [ContactForm.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ContactForm.jsx) (`items-start`) pour limiter le survol à la largeur du texte réel (évite l'étalement inutile de la boîte).
 - Remplacement du badge de contact générique par une ligne décorative personnalisée en dégradé, et suppression de la boîte de détails légaux secondaires peu esthétiques au profit d'un séparateur minimaliste.
+- Retrait immédiat de la valeur par défaut en dur de `SMTP_PASS` dans [api/contact.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/contact.js), rendu obligatoire via variable d'environnement uniquement.
+- Réécriture de l'historique Git via `git filter-branch` pour purger la trace de toutes les versions précédentes de [api/contact.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/contact.js) contenant le mot de passe SMTP en dur, suivie d'un push forcé pour nettoyer le dépôt distant.
+- Ajout d'un middleware d'interception d'API `/api/contact` et d'un chargeur `.env` manuel dans [vite.config.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/vite.config.js) pour émuler localement le fonctionnement des fonctions Serverless de Vercel/Netlify en mode de développement (`npm run dev`).
 
 ### Justification Technique
 - **Sécurité & SMTP** : Le mot de passe et les détails de l'email sont conservés exclusivement côté serveur grâce aux variables d'environnement locales (`.env`), évitant toute exposition dans le bundle JS client.
 - **Anti-Spam PoW** : Le défi de Proof-of-Work (PoW) local demande au navigateur du visiteur de calculer un nonce cryptographique valide avant d'autoriser l'envoi. Cela empêche les robots spammeurs automatisés d'inonder la boîte de réception sans impacter l'expérience des utilisateurs humains (délai de résolution < 100ms).
 - **Anti-Scraping** : Le fait d'injecter dynamiquement le téléphone et le mail empêche les collecteurs d'emails automatiques de lire ces données dans le code source HTML statique.
 - **Expérience Utilisateur (UX)** : L'utilisation de Framer Motion sur les composants de formulaire et les transitions d'état (Checking -> Sending -> Success/Error) offre une interface dynamique et moderne de haut standing. Les ajustements typographiques et d'alignement (`block` layout sur le textarea) garantissent une uniformité visuelle pixel-perfect. Les animations interactives sur les pins renforcent l'identité dynamique globale. La refonte de l'input en label fixe interne corrige définitivement les problèmes d'espacements asymétriques inhérents aux floating labels classiques et améliore l'accessibilité globale.
+- **Assurance Sécurité (Purge Git)** : La réécriture totale de l'historique de commits Git et le `push --force` étaient cruciaux pour éliminer toute trace historique des identifiants SMTP partagés par l'utilisateur, garantissant qu'aucune version obsolète ne reste accessible dans les commits passés sur GitHub.
+- **Simulateur Dev Local (Middleware)** : En mode de développement classique via `npm run dev`, le serveur d'évaluation de Vite ne sait pas traiter nativement les fonctions backend dans `api/`. En ajoutant un middleware d'interception personnalisé dans Vite qui charge manuellement les identifiants locaux secrets de `.env` (sans aucune dépendance tierce), nous permettons de simuler l'exécution du handler API en local de manière totalement autonome et transparente pour le développeur.
+
+
 
 
 
