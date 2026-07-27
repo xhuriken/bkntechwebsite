@@ -33,8 +33,11 @@ export default defineConfig({
       name: 'api-contact-middleware',
       configureServer(server) {
         server.middlewares.use(async (req, res, next) => {
-          // Intercepter l'appel API du formulaire de contact localement
-          if (req.url === '/api/contact' && req.method === 'POST') {
+          const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+          const pathname = parsedUrl.pathname;
+
+          // 1. Contact Form API Interception
+          if (pathname === '/api/contact' && req.method === 'POST') {
             try {
               let body = '';
               req.on('data', chunk => {
@@ -44,7 +47,7 @@ export default defineConfig({
                 try {
                   const parsedBody = JSON.parse(body);
                   
-                  // Mocker req et res pour le handler Vercel
+                  // Mock req & res for local Vercel handler
                   const mockReq = {
                     method: 'POST',
                     body: parsedBody
@@ -62,11 +65,10 @@ export default defineConfig({
                     }
                   };
 
-                  // Importer dynamiquement le handler d'envoi de mail
                   const { default: handler } = await import('./api/contact.js');
                   await handler(mockReq, mockRes);
                 } catch (err) {
-                  console.error("Erreur d'exécution de l'API locale :", err);
+                  console.error("Erreur d'exécution de l'API locale contact :", err);
                   res.statusCode = 500;
                   res.setHeader('Content-Type', 'application/json');
                   res.end(JSON.stringify({ error: err.message }));
@@ -77,7 +79,69 @@ export default defineConfig({
               res.setHeader('Content-Type', 'application/json');
               res.end(JSON.stringify({ error: err.message }));
             }
-          } else {
+          } 
+          // 2. Portfolio Blog API Interception (GET, POST, DELETE)
+          else if (pathname.startsWith('/api/posts')) {
+            try {
+              let body = '';
+              req.on('data', chunk => {
+                body += chunk;
+              });
+              req.on('end', async () => {
+                try {
+                  const parsedBody = body ? JSON.parse(body) : {};
+                  
+                  // Mock req & res for local Vercel handler
+                  const mockReq = {
+                    method: req.method,
+                    url: req.url,
+                    headers: req.headers,
+                    query: Object.fromEntries(parsedUrl.searchParams),
+                    body: parsedBody
+                  };
+                  
+                  const mockRes = {
+                    status(code) {
+                      res.statusCode = code;
+                      return this;
+                    },
+                    json(data) {
+                      res.setHeader('Content-Type', 'application/json');
+                      res.end(JSON.stringify(data));
+                      return this;
+                    },
+                    setHeader(name, value) {
+                      res.setHeader(name, value);
+                      return this;
+                    },
+                    send(data) {
+                      res.end(data);
+                      return this;
+                    },
+                    end(data) {
+                      res.end(data);
+                      return this;
+                    }
+                  };
+
+                  // Dynamically import posts.js API route handler
+                  const { default: handler } = await import('./api/posts.js');
+                  await handler(mockReq, mockRes);
+                } catch (err) {
+                  console.error("Erreur d'exécution de l'API locale posts :", err);
+                  res.statusCode = 500;
+                  res.setHeader('Content-Type', 'application/json');
+                  res.end(JSON.stringify({ error: err.message }));
+                }
+              });
+            } catch (err) {
+              res.statusCode = 500;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ error: err.message }));
+            }
+          } 
+          // 3. Static files & assets pass-through
+          else {
             next();
           }
         });

@@ -17,6 +17,47 @@
     "title": "Nos Services",
     "subtitle": "Prestations de services B2B sur-mesure."
   },
+  "portfolio": {
+    "title": "Portfolio",
+    "subtitle": "Découvrez nos réalisations et projets d'innovation.",
+    "explore": "Explorer la section",
+    "back": "Retour au portfolio",
+    "no_projects": "Aucun projet trouvé dans cette catégorie.",
+    "categories": {
+      "gaming": "Gaming",
+      "website": "Sites Web",
+      "ai-agent": "Agents IA",
+      "mobile": "Applications Mobiles"
+    },
+    "admin": {
+      "title": "Gestion du Portfolio",
+      "login_title": "Accès Administrateur",
+      "password_placeholder": "Entrez le mot de passe admin",
+      "login_btn": "Se connecter",
+      "logout_btn": "Déconnexion",
+      "create_btn": "Ajouter un projet",
+      "edit_btn": "Modifier",
+      "delete_btn": "Supprimer",
+      "cancel_btn": "Annuler",
+      "save_btn": "Enregistrer le projet",
+      "export_btn": "Télécharger la base JSON",
+      "confirm_delete": "Voulez-vous vraiment supprimer ce projet ?",
+      "success_save": "Projet enregistré avec succès !",
+      "success_delete": "Projet supprimé !",
+      "form": {
+        "category": "Catégorie",
+        "media_type": "Type de média",
+        "media_url": "URL de l'image ou vidéo YouTube",
+        "tags": "Tags (séparés par des virgules)",
+        "title_fr": "Titre (FR)",
+        "title_en": "Titre (EN)",
+        "desc_fr": "Résumé (FR)",
+        "desc_en": "Résumé (EN)",
+        "content_fr": "Description détaillée (FR)",
+        "content_en": "Description détaillée (EN)"
+      }
+    }
+  },
   "footer": {
     "copyright": "© 2026 BKN Tech. Tous droits réservés."
   }

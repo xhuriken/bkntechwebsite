@@ -1,0 +1,82 @@
+[
+  {
+    "id": "1",
+    "category": "gaming",
+    "date": "2026-07-15",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800",
+    "title": {
+      "fr": "Aetheria: Arena Multijoueur",
+      "en": "Aetheria: Multiplayer Arena"
+    },
+    "description": {
+      "fr": "Un jeu de combat en arène 3D développé sous Unity avec synchronisation réseau avancée (Mirror/Photon) et gameplay compétitif.",
+      "en": "A 3D arena combat game developed in Unity featuring advanced network synchronization (Mirror/Photon) and competitive gameplay."
+    },
+    "content": {
+      "fr": "Aetheria est un projet de recherche et développement interne visant à repousser les limites de la physique et de la prédiction réseau côté client. Utilisant un netcode personnalisé avec compensation de lag, prédiction locale et réconciliation de serveur, le projet tourne de manière stable jusqu'à 32 joueurs.",
+      "en": "Aetheria is an internal R&D project pushing the limits of physics and client-side prediction in multiplayer gaming. Built on a custom netcode featuring lag compensation, client prediction, and server reconciliation, it maintains high stability for up to 32 players."
+    },
+    "tags": ["Unity", "C#", "Mirror", "Photon", "3D Physics"]
+  },
+  {
+    "id": "2",
+    "category": "website",
+    "date": "2026-06-20",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800",
+    "title": {
+      "fr": "Dashboard SaaS d'Analyses Financières",
+      "en": "SaaS Financial Analytics Dashboard"
+    },
+    "description": {
+      "fr": "Interface d'analyse financière haute performance avec design system ultra-réactif et bases de données de séries temporelles.",
+      "en": "High-performance financial analytics dashboard featuring an ultra-responsive design system and time-series databases."
+    },
+    "content": {
+      "fr": "Ce projet résout les problèmes de rendu à haute fréquence de flux boursiers en direct. L'application intègre des WebSockets optimisés, un cache en mémoire local ultra-rapide et des visualisations fluides sous SVG et Canvas.",
+      "en": "This project handles high-frequency rendering of live stock market feeds. The application integrates optimized WebSockets, a lightning-fast local cache, and smooth Canvas/SVG data visualizations."
+    },
+    "tags": ["React", "Vite", "WebSockets", "D3.js", "Tailwind CSS"]
+  },
+  {
+    "id": "3",
+    "category": "ai-agent",
+    "date": "2026-05-10",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1677442136019-21780efad99a?q=80&w=800",
+    "title": {
+      "fr": "Agent Autonome PoW Anti-Spam",
+      "en": "Autonomous Anti-Spam PoW Agent"
+    },
+    "description": {
+      "fr": "Un agent d'atténuation du spam par calcul cryptographique local côté client pour protéger les formulaires sans CAPTCHA tiers.",
+      "en": "A client-side cryptographic proof-of-work solver agent protecting forms against spam bots without third-party CAPTCHAs."
+    },
+    "content": {
+      "fr": "Cet agent génère un nonce cryptographique unique et exige une résolution de hachage SHA-256 locale par le navigateur avant d'autoriser l'envoi de requêtes. Cela bloque 99% des robots spammeurs automatisés en consommant moins de 100ms de temps de calcul CPU pour un humain.",
+      "en": "This agent generates a unique cryptographic nonce and requires a client-side SHA-256 proof-of-work solution before allowing requests. This blocks 99% of automated bots while taking less than 100ms of CPU compute for human users."
+    },
+    "tags": ["JavaScript", "Web Crypto API", "SHA-256", "Security"]
+  },
+  {
+    "id": "4",
+    "category": "mobile",
+    "date": "2026-04-05",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800",
+    "title": {
+      "fr": "BKN Tracker Link",
+      "en": "BKN Tracker Link"
+    },
+    "description": {
+      "fr": "Une application iOS et Android de suivi de livraison en temps réel avec géolocalisation haute précision.",
+      "en": "A high-precision real-time delivery tracking application for iOS and Android devices."
+    },
+    "content": {
+      "fr": "Développée en Flutter pour unifier le code natif, BKN Tracker Link fournit un suivi précis en arrière-plan à faible consommation énergétique grâce à une gestion dynamique des capteurs GPS et de l'accéléromètre.",
+      "en": "Built on Flutter to unify the native codebase, BKN Tracker Link provides energy-efficient background location tracking through smart sensor fusion of GPS and accelerometer data."
+    },
+    "tags": ["Flutter", "Dart", "Google Maps", "Background Geolocation"]
+  }
+]
