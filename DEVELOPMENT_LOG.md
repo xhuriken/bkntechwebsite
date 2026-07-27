@@ -61,11 +61,15 @@ Création et intégration du formulaire de contact haut de gamme, sécurisé con
 - Restructuration des liens de la navbar dans [Navbar.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Navbar.jsx) pour se conformer à la restriction du menu demandée (Accueil, Portfolio, Contact).
 - Ajustement esthétique des formulaires (labels flottants relevés, agrandissement des polices et correction du bug de décalage de ligne sur les zones de texte).
 - Ajout d'animations interactives par survol complet sur les pins de contact (translation de la ligne et zoom/inversion couleur des icônes) et liaison de l'adresse à Google Maps.
+- Refonte complète de [InputField.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/InputField.jsx) avec un design compact à étiquette fixe interne. Cela élimine les espaces vides excessifs en bas et le chevauchement avec la ligne de bordure.
+- Modification de la disposition des pins de contact à gauche dans [ContactForm.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ContactForm.jsx) (`items-start`) pour limiter le survol à la largeur du texte réel (évite l'étalement inutile de la boîte).
+- Remplacement du badge de contact générique par une ligne décorative personnalisée en dégradé, et suppression de la boîte de détails légaux secondaires peu esthétiques au profit d'un séparateur minimaliste.
 
 ### Justification Technique
 - **Sécurité & SMTP** : Le mot de passe et les détails de l'email sont conservés exclusivement côté serveur grâce aux variables d'environnement locales (`.env`), évitant toute exposition dans le bundle JS client.
 - **Anti-Spam PoW** : Le défi de Proof-of-Work (PoW) local demande au navigateur du visiteur de calculer un nonce cryptographique valide avant d'autoriser l'envoi. Cela empêche les robots spammeurs automatisés d'inonder la boîte de réception sans impacter l'expérience des utilisateurs humains (délai de résolution < 100ms).
 - **Anti-Scraping** : Le fait d'injecter dynamiquement le téléphone et le mail empêche les collecteurs d'emails automatiques de lire ces données dans le code source HTML statique.
-- **Expérience Utilisateur (UX)** : L'utilisation de Framer Motion sur les composants de formulaire et les transitions d'état (Checking -> Sending -> Success/Error) offre une interface dynamique et moderne de haut standing. Les ajustements typographiques et d'alignement (`block` layout sur le textarea) garantissent une uniformité visuelle pixel-perfect. Les animations interactives sur les pins renforcent l'identité dynamique globale.
+- **Expérience Utilisateur (UX)** : L'utilisation de Framer Motion sur les composants de formulaire et les transitions d'état (Checking -> Sending -> Success/Error) offre une interface dynamique et moderne de haut standing. Les ajustements typographiques et d'alignement (`block` layout sur le textarea) garantissent une uniformité visuelle pixel-perfect. Les animations interactives sur les pins renforcent l'identité dynamique globale. La refonte de l'input en label fixe interne corrige définitivement les problèmes d'espacements asymétriques inhérents aux floating labels classiques et améliore l'accessibilité globale.
+
 
 

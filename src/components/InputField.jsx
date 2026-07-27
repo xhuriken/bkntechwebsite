@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 
 /**
  * Reusable animated InputField Component
- * Features smooth floating label animations, glowing interactive focus states,
- * custom error messages, and support for text, email, and textarea types.
+ * Features a compact inner-label design, glowing focus states,
+ * and unified alignment for both text inputs and textareas.
  */
 export default function InputField({ 
   label, 
@@ -17,14 +17,9 @@ export default function InputField({
   rows = 4 
 }) {
   const [isFocused, setIsFocused] = useState(false);
-  const isFilled = value && value.length > 0;
-  const isFloating = isFocused || isFilled;
-
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = () => setIsFocused(false);
 
   return (
-    <div className="relative w-full flex flex-col group mb-5">
+    <div className="relative w-full flex flex-col mb-5">
       {/* Background glowing halo centered behind the input */}
       <div 
         className={`absolute inset-0 bg-primary/5 rounded-xl blur-md transition-opacity duration-500 pointer-events-none ${
@@ -32,8 +27,30 @@ export default function InputField({
         }`}
       />
 
-      <div className="relative w-full">
-        {/* Render Textarea or Standard Input based on type */}
+      {/* Input Box Wrapper */}
+      <div 
+        className={`
+          relative w-full bg-surface-container-low/45 backdrop-blur-md border rounded-xl px-4 py-2.5 
+          transition-all duration-300 flex flex-col gap-1 cursor-text
+          ${error 
+            ? 'border-red-500/40 focus-within:border-red-500/70 focus-within:ring-1 focus-within:ring-red-500/20' 
+            : 'border-white/5 hover:border-primary/20 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/10'
+          }
+        `}
+        onClick={() => document.getElementById(name)?.focus()}
+      >
+        {/* Small Fixed Label */}
+        <label 
+          htmlFor={name}
+          className={`
+            font-display font-black text-[9px] uppercase tracking-[0.2em] select-none transition-colors duration-300
+            ${error ? 'text-red-400' : isFocused ? 'text-primary' : 'text-on-surface-variant/80'}
+          `}
+        >
+          {label} {required && <span className="text-primary/70">*</span>}
+        </label>
+
+        {/* Input Control */}
         {type === 'textarea' ? (
           <textarea
             id={name}
@@ -41,17 +58,10 @@ export default function InputField({
             value={value}
             onChange={onChange}
             required={required}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
             rows={rows}
-            className={`
-              block w-full bg-surface-container-low/45 backdrop-blur-md border rounded-xl px-4 pt-6 pb-3 
-              text-sm text-on-surface font-sans transition-all duration-300 focus:outline-none resize-none
-              ${error 
-                ? 'border-red-500/40 focus:border-red-500/70 focus:ring-1 focus:ring-red-500/20' 
-                : 'border-white/5 group-hover:border-primary/20 focus:border-primary/50 focus:ring-1 focus:ring-primary/10'
-              }
-            `}
+            className="block w-full bg-transparent text-sm text-on-surface font-sans focus:outline-none resize-none pt-0.5 leading-relaxed"
           />
         ) : (
           <input
@@ -61,39 +71,13 @@ export default function InputField({
             value={value}
             onChange={onChange}
             required={required}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            className={`
-              block w-full bg-surface-container-low/45 backdrop-blur-md border rounded-xl px-4 pt-6 pb-3 
-              text-sm text-on-surface font-sans transition-all duration-300 focus:outline-none
-              ${error 
-                ? 'border-red-500/40 focus:border-red-500/70 focus:ring-1 focus:ring-red-500/20' 
-                : 'border-white/5 group-hover:border-primary/20 focus:border-primary/50 focus:ring-1 focus:ring-primary/10'
-              }
-            `}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            className="block w-full bg-transparent text-sm text-on-surface font-sans focus:outline-none pt-0.5"
           />
         )}
 
-        {/* Floating Label (position adjusted to float above the border line) */}
-        <motion.label
-          htmlFor={name}
-          initial={false}
-          animate={{
-            y: isFloating ? -24 : 15,
-            scale: isFloating ? 0.8 : 1,
-            color: error 
-              ? '#f87171' 
-              : isFocused 
-                ? 'var(--primary)' 
-                : 'var(--on-surface-variant)'
-          }}
-          transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1.0] }}
-          className="absolute left-4 top-0 origin-left pointer-events-none font-display font-black text-xs uppercase tracking-[0.2em] select-none"
-        >
-          {label} {required && <span className="text-primary/70">*</span>}
-        </motion.label>
-
-        {/* Interactive underline expanding outward on focus */}
+        {/* Focus underline animation */}
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: isFocused ? 1 : 0 }}
@@ -104,7 +88,7 @@ export default function InputField({
         />
       </div>
 
-      {/* Validation Error Message Drawer */}
+      {/* Validation Error Message */}
       <motion.div
         initial={{ opacity: 0, height: 0 }}
         animate={{ 

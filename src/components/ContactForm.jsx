@@ -141,10 +141,13 @@ export default function ContactForm() {
         {/* Info Column (Left) */}
         <div className="lg:col-span-5 flex flex-col justify-between h-full">
           <div>
-            {/* Tagline */}
-            <span className="font-display font-black text-[9px] uppercase tracking-[0.25em] text-primary bg-primary/5 border border-primary/10 rounded-full px-3 py-1">
-              Contact
-            </span>
+            {/* Custom Decorative Line Tag */}
+            <div className="flex items-center gap-3 mb-2">
+              <div className="h-[2px] w-8 bg-gradient-to-r from-primary to-transparent rounded-full" />
+              <span className="font-display font-black text-[9px] uppercase tracking-[0.3em] text-primary/80">
+                Contact
+              </span>
+            </div>
             
             <h2 className="font-display font-black text-3xl md:text-5xl uppercase tracking-tight mt-4 mb-6">
               Travaillons <br />
@@ -156,7 +159,7 @@ export default function ContactForm() {
             </p>
 
             {/* Obfuscated Contact Information Pins with Hover Actions */}
-            <div className="flex flex-col gap-3 -mx-3">
+            <div className="flex flex-col gap-3 items-start -mx-3">
               {/* E-mail Pin */}
               <motion.a 
                 href={`mailto:${emailText}`}
@@ -214,13 +217,8 @@ export default function ContactForm() {
             </div>
           </div>
 
-          {/* Legal Non-Sensitive Details (SIRET/SIREN/RCS) */}
-          <div className="mt-12 pt-8 border-t border-white/5 text-[9px] font-display font-black uppercase tracking-widest text-on-surface-variant/60 leading-loose max-w-sm">
-            <span>Bkn Tech (SAS)</span><br />
-            <span>SIRET : 104 054 150 00016</span><br />
-            <span>RCS : Paris B 104 054 150</span><br />
-            <span>TVA non applicable (art. 293 B du CGI)</span>
-          </div>
+          {/* Minimal Aesthetic Separator */}
+          <div className="mt-12 border-t border-white/5" />
         </div>
 
         {/* Form Column (Right) */}
