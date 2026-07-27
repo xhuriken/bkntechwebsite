@@ -135,7 +135,7 @@ export default function ContactForm() {
   };
 
   return (
-    <section id="contact" className="w-full py-20 px-6 md:px-12 max-w-7xl mx-auto z-10 relative">
+    <section id="contact" className="w-full pt-6 pb-20 px-6 md:px-12 max-w-7xl mx-auto z-10 relative">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         
         {/* Info Column (Left) */}
@@ -144,17 +144,17 @@ export default function ContactForm() {
             {/* Custom Decorative Line Tag */}
             <div className="flex items-center gap-3 mb-2">
               <div className="h-[2px] w-8 bg-gradient-to-r from-primary to-transparent rounded-full" />
-              <span className="font-display font-black text-[9px] uppercase tracking-[0.3em] text-primary/80">
+              <span className="font-sans font-bold text-[10px] uppercase tracking-wider text-primary/85">
                 Contact
               </span>
             </div>
             
-            <h2 className="font-display font-black text-3xl md:text-5xl uppercase tracking-tight mt-4 mb-6">
+            <h2 className="font-sans font-extrabold text-3xl md:text-5xl uppercase tracking-tight mt-4 mb-6">
               Travaillons <br />
               <span className="bg-gradient-to-r from-primary via-secondary to-tertiary bg-clip-text text-transparent">Ensemble</span>
             </h2>
 
-            <p className="text-on-surface-variant text-sm font-light leading-relaxed max-w-sm mb-10">
+            <p className="text-on-surface text-sm font-normal leading-relaxed max-w-sm mb-8">
               Vous avez un projet de développement web/mobile ou des questions sur notre projet Unity ? N'hésitez pas à nous écrire.
             </p>
 
@@ -163,15 +163,15 @@ export default function ContactForm() {
               {/* E-mail Pin */}
               <motion.a 
                 href={`mailto:${emailText}`}
-                whileHover={{ x: 6 }}
+                whileHover={{ x: 4 }}
                 className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
               >
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-black transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-105 group-hover:border-primary/45 group-hover:text-white transition-all duration-300">
                   <i className="fa-solid fa-envelope text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">E-mail</div>
-                  <span className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors">
+                  <div className="text-[11px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80 group-hover:text-primary transition-colors">E-mail</div>
+                  <span className="text-sm font-semibold text-on-surface group-hover:text-white transition-colors">
                     {emailText || 'contact [at] bkntech.fr'}
                   </span>
                 </div>
@@ -180,15 +180,15 @@ export default function ContactForm() {
               {/* Téléphone Pin */}
               <motion.a 
                 href={`tel:${phoneText.replace(/\s/g, '')}`}
-                whileHover={{ x: 6 }}
+                whileHover={{ x: 4 }}
                 className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
               >
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-black transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-105 group-hover:border-primary/45 group-hover:text-white transition-all duration-300">
                   <i className="fa-solid fa-phone text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">Téléphone</div>
-                  <span className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors">
+                  <div className="text-[11px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80 group-hover:text-primary transition-colors">Téléphone</div>
+                  <span className="text-sm font-semibold text-on-surface group-hover:text-white transition-colors">
                     {phoneText || '+33 1 00 00 00 00'}
                   </span>
                 </div>
@@ -199,15 +199,15 @@ export default function ContactForm() {
                 href="https://maps.google.com/?q=BKN+Tech+47+rue+Vivienne+75002+Paris"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ x: 6 }}
+                whileHover={{ x: 4 }}
                 className="flex items-start gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
               >
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary mt-1 group-hover:scale-110 group-hover:bg-primary group-hover:text-black transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary mt-1 group-hover:scale-105 group-hover:border-primary/45 group-hover:text-white transition-all duration-300">
                   <i className="fa-solid fa-location-dot text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">Adresse</div>
-                  <div className="text-sm font-light text-on-surface-variant leading-relaxed group-hover:text-on-surface transition-colors">
+                  <div className="text-[11px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80 group-hover:text-primary transition-colors">Adresse</div>
+                  <div className="text-sm font-normal text-on-surface leading-relaxed group-hover:text-white transition-colors">
                     Bkn Tech<br />
                     47 rue Vivienne<br />
                     75002 Paris, France
@@ -218,7 +218,7 @@ export default function ContactForm() {
           </div>
 
           {/* Minimal Aesthetic Separator */}
-          <div className="mt-12 border-t border-white/5" />
+          <div className="mt-12 border-t border-white/20" />
         </div>
 
         {/* Form Column (Right) */}

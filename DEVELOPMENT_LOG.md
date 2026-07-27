@@ -82,6 +82,10 @@ Création et intégration du formulaire de contact haut de gamme, sécurisé con
   - Ligne de pied de page : Signature nominative des associés ("Enrique Puerto, Célestin Honvault") en remplacement du label géographique parisien générique, et retrait définitif du témoin vert pulsé "All Systems Operational".
 - Remplacement global des caractères fléchés de texte et de l'icône fa-plus par des tracés vectoriels SVG (icône paper-plane pour le bouton de contact, flèche de retour SVG sur les mentions légales) pour garantir un rendu précis à haute résolution.
 - Remplacement général de la typographie à graisse lourde `font-display font-black` par des graisses standards de la police sans-serif (`font-sans font-medium` ou `font-semibold`) sur la navigation, les paragraphes et les intitulés légaux.
+- Augmentation de la visibilité des lignes de division : passage à un opacité accrue (`via-white/20` pour la ligne supérieure dans [Home.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Home.jsx) et `border-white/20` pour la ligne inférieure dans [ContactForm.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ContactForm.jsx)).
+- Réduction significative de la marge verticale sous le séparateur supérieur en ramenant le padding supérieur de la section de contact à `pt-6 pb-20` (au lieu de `py-20`), et en ajustant la marge du conteneur de division à `mt-12 mb-2` (au lieu de `my-10`) dans [Home.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Home.jsx).
+- Refonte des transitions et couleurs de survol sur les pins de contact de [ContactForm.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ContactForm.jsx) : suppression de la couleur bleue inadéquate (`primary-container`), remplacement de l'inversion violente de l'arrière-plan de l'icône par une discrète brillance de contour (`group-hover:border-primary/45`) et une mise en blanc de l'icône pour s'intégrer harmonieusement à la charte graphique sombre de l'agence.
+
 
 
 ### Justification Technique

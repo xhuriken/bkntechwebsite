@@ -43,7 +43,7 @@ export default function InputField({
         <label 
           htmlFor={name}
           className={`
-            font-display font-black text-[9px] uppercase tracking-[0.2em] select-none transition-colors duration-300
+            font-sans font-semibold text-[10px] uppercase tracking-wider select-none transition-colors duration-300
             ${error ? 'text-red-400' : isFocused ? 'text-primary' : 'text-on-surface-variant/80'}
           `}
         >
@@ -95,7 +95,7 @@ export default function InputField({
           opacity: error ? 1 : 0,
           height: error ? 'auto' : 0
         }}
-        className="text-[10px] font-display font-black uppercase tracking-wider text-red-400 mt-1.5 px-4 overflow-hidden"
+        className="text-[10px] font-sans font-semibold uppercase tracking-wider text-red-400 mt-1.5 px-4 overflow-hidden"
       >
         {error}
       </motion.div>
