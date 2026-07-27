@@ -1,0 +1,74 @@
+services:
+
+  # ─── Traefik : Reverse Proxy + SSL Let's Encrypt ─────────────────────────────
+  traefik:
+    image: traefik:v3.3
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      - "--api.insecure=false"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      # Redirection HTTP → HTTPS globale
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+      # Let's Encrypt
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=contact@bkntech.fr"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-letsencrypt:/letsencrypt
+    networks:
+      - web
+
+  # ─── Frontend : Nginx servant le build Vite ────────────────────────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bkntech-frontend
+    restart: unless-stopped
+    depends_on:
+      - api
+    labels:
+      - "traefik.enable=true"
+      # Domaine principal : bkntech.fr
+      - "traefik.http.routers.frontend.rule=Host(`bkntech.fr`) || Host(`www.bkntech.fr`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+      # Middleware : redirect www → non-www
+      - "traefik.http.middlewares.www-redirect.redirectregex.regex=^https://www\\.bkntech\\.fr(.*)"
+      - "traefik.http.middlewares.www-redirect.redirectregex.replacement=https://bkntech.fr$${1}"
+      - "traefik.http.middlewares.www-redirect.redirectregex.permanent=true"
+      - "traefik.http.routers.frontend.middlewares=www-redirect"
+    networks:
+      - web
+
+  # ─── API : Node.js / Express pour le formulaire de contact ────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    container_name: bkntech-api
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    # L'API n'est PAS exposée à internet, uniquement via Nginx interne
+    networks:
+      - web
+
+volumes:
+  traefik-letsencrypt:
+
+networks:
+  web:
+    driver: bridge
