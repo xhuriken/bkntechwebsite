@@ -6,6 +6,7 @@ import InteractiveGrid from './components/InteractiveGrid';
 import Home from './pages/Home';
 import Portfolio from './pages/Portfolio';
 import Game from './pages/Game';
+import MentionsLegales from './pages/MentionsLegales';
 
 /**
  * ScrollToAnchor component handles scrolling smoothly to anchors when URL changes.
@@ -52,6 +53,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/game" element={<Game />} />
+            <Route path="/mentions-legales" element={<MentionsLegales />} />
           </Routes>
         </main>
 

@@ -54,7 +54,7 @@ export default function Navbar() {
               key={link.path}
               to={link.path}
               onClick={(e) => handleLinkClick(e, link)}
-              className={`relative py-1 font-display font-black text-[10px] uppercase tracking-[0.3em] transition-all duration-300 ${
+              className={`relative py-1 font-sans font-semibold text-[11px] uppercase tracking-[0.15em] transition-all duration-300 ${
                 isActive ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
               } group/link`}
             >
@@ -74,7 +74,9 @@ export default function Navbar() {
       <div className="hidden md:flex items-center gap-4">
         <LanguageSwitcher />
         <Button variant="primary" onClick={(e) => handleLinkClick(e, { isAnchor: true, targetId: 'contact' })}>
-          <i className="fa-solid fa-plus text-xs"></i>
+          <svg className="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L6 12zm0 0h7.5" />
+          </svg>
           {t('nav.cta')}
         </Button>
       </div>
@@ -108,7 +110,7 @@ export default function Navbar() {
                     key={link.path}
                     to={link.path}
                     onClick={(e) => handleLinkClick(e, link)}
-                    className={`py-2 font-display font-black text-xs uppercase tracking-[0.3em] transition-all duration-300 ${
+                    className={`py-2 font-sans font-semibold text-xs uppercase tracking-[0.15em] transition-all duration-300 ${
                       isActive ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
                     }`}
                   >
@@ -123,7 +125,9 @@ export default function Navbar() {
             <div className="flex flex-col items-center gap-4 w-full">
               <LanguageSwitcher />
               <Button variant="primary" onClick={(e) => handleLinkClick(e, { isAnchor: true, targetId: 'contact' })} className="w-full max-w-[200px]">
-                <i className="fa-solid fa-plus text-xs"></i>
+                <svg className="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L6 12zm0 0h7.5" />
+                </svg>
                 {t('nav.cta')}
               </Button>
             </div>

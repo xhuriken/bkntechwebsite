@@ -52,8 +52,8 @@ export default function Home() {
       </div>
 
       {/* Decorative divider */}
-      <div className="w-full max-w-7xl px-6 md:px-12 mx-auto my-10">
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+      <div className="w-full max-w-7xl px-6 md:px-12 mx-auto mt-12 mb-2">
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
       </div>
 
       {/* Contact Form Section */}
