@@ -29,9 +29,40 @@ Initialisation des outils de suivi et de gestion du projet.
 ### Justification Technique
 Respect rigoureux du workflow d'analyse et de conception. La proposition de stack et la spécification des pages permettent d'établir des bases fonctionnelles et techniques solides avant d'écrire le code (KISS). L'architecture multi-pages (MPA) permet de mieux gérer les contenus denses et volumineux (vidéos, projets de portfolio complets) sans alourdir la page d'accueil, garantissant de meilleures performances de chargement et un meilleur SEO. L'utilisation de fichiers JSON pour les textes (i18n) permet d'implémenter le multi-langue de manière modulaire (SSOT) sans dupliquer le HTML. Le découplage Frontend/Backend assure que le site pourra être connecté à n'importe quelle API future (Node.js, Laravel) sans nécessiter de réécriture lourde.
 Le choix final de **React + Framer Motion** répond à l'exigence d'une réutilisabilité maximale des composants (composants React hautement déclaratifs) et de la création d'animations premium fluides (hover, appear, scroll) d'une grande finesse esthétique, tout en gardant une base de code propre, lisible et performante.
-La validation du build de production (`npm run build`) avec 0 warning garantit la conformité de la structure, des importations CSS et JS, et l'excellence technique exigée par le projet.
+La validation du build de production (`npm run build`) avec 0 warning garantit la conformité de la structure, des importations CSS et JS, et l'excellence technique exigée par le projet.## [2026-07-27] Liaison Git et Publication Distante
 
+### Tâche
+Sécurisation du contrôle de version (Git) et liaison du projet avec le dépôt GitHub officiel.
 
+### Modifications
+- Mise à jour du fichier [.gitignore](file:///c:/Users/celestin/Desktop/bkntechwebsite/.gitignore) pour y inclure la sécurité des variables d'environnement (`.env`, `.env.*`).
+- Configuration de l'origine distante avec l'URL du dépôt GitHub : `https://github.com/xhuriken/bkntechwebsite.git`.
+- Création du premier commit contenant l'ensemble de la structure initiale du projet (Vite, React, Tailwind, Framer Motion).
+- Publication de la branche principale `main` vers le dépôt distant.
 
+### Justification Technique
+L'ajout de règles explicites pour les fichiers `.env` dans le `.gitignore` empêche toute fuite accidentelle de clés d'API (comme les clés Resend/SendGrid pour la future page de contact). La liaison directe et le push sur la branche `main` garantissent un versioning robuste dès le début du projet.
 
+## [2026-07-27] Développement de la Page de Contact & Sécurité
+
+### Tâche
+Création et intégration du formulaire de contact haut de gamme, sécurisé contre le spam et le scraping, et connecté à un traitement SMTP via API Serverless.
+
+### Modifications
+- Création du composant réutilisable [InputField.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/InputField.jsx) gérant les inputs et textareas avec des animations fluides d'apparition des erreurs, de focus glowing, et de labels flottants animés.
+- Création du composant [ContactForm.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ContactForm.jsx) avec disposition en deux colonnes (informations de contact à gauche, formulaire à droite) :
+  - Intégration d'un champ Honeypot masqué en CSS.
+  - Implémentation d'une vérification de Proof-of-Work (PoW) côté client en utilisant l'API Web Crypto native de l'OS/navigateur (calcul de hash SHA-256 avec une complexité ciblée).
+  - Obfuscation de l'adresse email et du numéro de téléphone par injection dynamique dans le DOM à l'exécution pour bloquer les robots de scraping.
+- Création du handler API Serverless [api/contact.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/contact.js) pour valider les requêtes de formulaire et envoyer les emails de notification via `nodemailer`.
+- Création des fichiers de configuration [.env.example](file:///c:/Users/celestin/Desktop/bkntechwebsite/.env.example) et [.env](file:///c:/Users/celestin/Desktop/bkntechwebsite/.env) (exclus du contrôle de version).
+- Intégration du composant sur la page d'accueil [Home.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Home.jsx) avec des gestionnaires de défilement fluide.
+- Configuration du composant de défilement automatique `ScrollToAnchor` dans [App.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/App.jsx) pour permettre la transition transparente de pages tierces vers les sections de la page d'accueil.
+- Restructuration des liens de la navbar dans [Navbar.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Navbar.jsx) pour se conformer à la restriction du menu demandée (Accueil, Portfolio, Contact).
+
+### Justification Technique
+- **Sécurité & SMTP** : Le mot de passe et les détails de l'email sont conservés exclusivement côté serveur grâce aux variables d'environnement locales (`.env`), évitant toute exposition dans le bundle JS client.
+- **Anti-Spam PoW** : Le défi de Proof-of-Work (PoW) local demande au navigateur du visiteur de calculer un nonce cryptographique valide avant d'autoriser l'envoi. Cela empêche les robots spammeurs automatisés d'inonder la boîte de réception sans impacter l'expérience des utilisateurs humains (délai de résolution < 100ms).
+- **Anti-Scraping** : Le fait d'injecter dynamiquement le téléphone et le mail empêche les collecteurs d'emails automatiques de lire ces données dans le code source HTML statique.
+- **Expérience Utilisateur (UX)** : L'utilisation de Framer Motion sur les composants de formulaire et les transitions d'état (Checking -> Sending -> Success/Error) offre une interface dynamique et moderne de haut standing.
 

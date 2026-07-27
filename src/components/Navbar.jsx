@@ -18,8 +18,25 @@ export default function Navbar() {
   const navLinks = [
     { name: t('nav.home'), path: '/' },
     { name: t('nav.portfolio'), path: '/portfolio' },
-    { name: t('nav.game'), path: '/game' },
+    { name: t('nav.contact'), path: '/#contact', isAnchor: true, targetId: 'contact' },
   ];
+
+  const handleLinkClick = (e, link) => {
+    if (link.isAnchor) {
+      if (location.pathname === '/') {
+        e.preventDefault();
+        setIsOpen(false);
+        const element = document.getElementById(link.targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else {
+        setIsOpen(false);
+      }
+    } else {
+      setIsOpen(false);
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 glass-panel border-b border-white/5 py-4 px-6 md:px-12 flex items-center justify-between">
@@ -31,11 +48,12 @@ export default function Navbar() {
       {/* Desktop Links (Hidden on mobile) */}
       <div className="hidden md:flex items-center gap-8">
         {navLinks.map((link) => {
-          const isActive = location.pathname === link.path;
+          const isActive = location.pathname === link.path || (link.isAnchor && location.pathname === '/' && location.hash === `#${link.targetId}`);
           return (
             <Link
               key={link.path}
               to={link.path}
+              onClick={(e) => handleLinkClick(e, link)}
               className={`relative py-1 font-display font-black text-[10px] uppercase tracking-[0.3em] transition-all duration-300 ${
                 isActive ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
               } group/link`}
@@ -55,7 +73,7 @@ export default function Navbar() {
       {/* Desktop Utilities */}
       <div className="hidden md:flex items-center gap-4">
         <LanguageSwitcher />
-        <Button variant="primary">
+        <Button variant="primary" onClick={(e) => handleLinkClick(e, { isAnchor: true, targetId: 'contact' })}>
           <i className="fa-solid fa-plus text-xs"></i>
           {t('nav.cta')}
         </Button>
@@ -89,7 +107,7 @@ export default function Navbar() {
                   <Link
                     key={link.path}
                     to={link.path}
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => handleLinkClick(e, link)}
                     className={`py-2 font-display font-black text-xs uppercase tracking-[0.3em] transition-all duration-300 ${
                       isActive ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
                     }`}
@@ -104,7 +122,7 @@ export default function Navbar() {
             
             <div className="flex flex-col items-center gap-4 w-full">
               <LanguageSwitcher />
-              <Button variant="primary" onClick={() => setIsOpen(false)} className="w-full max-w-[200px]">
+              <Button variant="primary" onClick={(e) => handleLinkClick(e, { isAnchor: true, targetId: 'contact' })} className="w-full max-w-[200px]">
                 <i className="fa-solid fa-plus text-xs"></i>
                 {t('nav.cta')}
               </Button>
