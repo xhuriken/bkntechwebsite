@@ -67,7 +67,12 @@ export default async function handler(req, res) {
       }
     });
 
-    // 5. Structure Email Content
+    // 5. Structure Email Content & Reply Mailto Link (Pre-filled)
+    const replySubject = encodeURIComponent(`Re: ${subject}`);
+    const quoteBody = message.split('\n').map(line => `> ${line}`).join('\n');
+    const replyBody = encodeURIComponent(`\n\n\n---\nMessage de ${name} <${email}> :\n${quoteBody}`);
+    const mailtoUrl = `mailto:${email}?subject=${replySubject}&body=${replyBody}`;
+
     const mailOptions = {
       from: `"${name}" <${process.env.SMTP_USER || 'contact@bkntech.fr'}>`,
       replyTo: email,
@@ -80,18 +85,18 @@ export default async function handler(req, res) {
             <!-- Brand Accent Line -->
             <div style="height: 4px; background: linear-gradient(90deg, #7c3aed 0%, #3b82f6 100%);"></div>
             
-            <div style="padding: 40px 32px;">
+            <div style="padding: 28px 24px 16px 24px;">
               <!-- Logo / Brand -->
-              <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #a78bfa; margin-bottom: 24px;">
+              <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #a78bfa; margin-bottom: 16px;">
                 BKN Tech
               </div>
 
-              <h2 style="font-size: 20px; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 24px; letter-spacing: -0.02em;">
+              <h2 style="font-size: 18px; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 16px; letter-spacing: -0.02em;">
                 Nouveau message reçu
               </h2>
 
               <!-- Details List -->
-              <div style="border-top: 1px solid #27272a; border-bottom: 1px solid #27272a; padding: 16px 0; margin-bottom: 24px;">
+              <div style="border-top: 1px solid #27272a; border-bottom: 1px solid #27272a; padding: 12px 0; margin-bottom: 16px;">
                 <table style="width: 100%; border-collapse: collapse;">
                   <tr>
                     <td style="padding: 4px 0; font-size: 13px; color: #a1a1aa; width: 100px;">Expéditeur</td>
@@ -114,11 +119,11 @@ export default async function handler(req, res) {
               <div style="font-size: 15px; line-height: 1.6; color: #e4e4e7; border-left: 2px solid #7c3aed; padding-left: 16px; margin: 0; white-space: pre-wrap; font-style: normal;">${message}</div>
             </div>
             
-            <!-- Footer -->
-            <div style="background-color: #0c0d12; padding: 20px 32px; border-top: 1px solid #27272a; text-align: center;">
-              <span style="font-size: 10px; color: #52525b; text-transform: uppercase; letter-spacing: 0.1em;">
-                BKN Tech Mailer — Généré Automatiquement
-              </span>
+            <!-- Footer (CTA Action instead of plain auto-text) -->
+            <div style="background-color: #0c0d12; padding: 24px 24px; border-top: 1px solid #27272a; text-align: center;">
+              <a href="${mailtoUrl}" style="display: inline-block; background: linear-gradient(90deg, #7c3aed 0%, #4f46e5 100%); color: #ffffff; text-decoration: none; font-size: 11px; font-weight: 800; padding: 12px 28px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.15em; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);">
+                Répondre au message
+              </a>
             </div>
           </div>
         </div>
