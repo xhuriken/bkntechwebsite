@@ -74,12 +74,15 @@ Création et intégration du formulaire de contact haut de gamme, sécurisé con
 - Agrandissement général des polices de petites tailles (descriptions, labels de pins, statuts de chargement, message de succès) pour assurer un confort de lecture optimal et des proportions équilibrées.
 - Resserrement de la compacité de l'email dans [api/contact.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/contact.js) : réduction des marges du titre de message, diminution du rembourrage intérieur inférieur de `40px` à `24px` pour éliminer l'espace vide excessif entre le corps du message (test) et le séparateur.
 - Unification totale de la structure de l'e-mail dans [api/contact.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/contact.js) en éliminant la double section de pied de page et suppression complète du bouton de réponse mailto ainsi que de la watermark du footer pour ne conserver qu'un format texte blockquote ultra-compact et minimaliste.
-- Création de la page dédiée [MentionsLegales.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/MentionsLegales.jsx) et intégration de la route `/mentions-legales` dans [App.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/App.jsx) pour se conformer aux exigences réglementaires françaises (Loi LCEN, SIRET, capital, RCS, directeur publication, hébergeur).
+- Création de la page dédiée [MentionsLegales.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/MentionsLegales.jsx) et intégration de la route `/mentions-legales` dans [App.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/App.jsx) pour se conformer aux exigences réglementaires françaises (Loi LCEN, SIRET, capital, RCS, directeur publication, hébergement OVH). Correction du contraste (texte opaque à la place du mi-transparent) et retrait de la signature de droits réservés redondante.
 - Refonte complète de [Footer.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Footer.jsx) sous forme d'une grille en 3 colonnes à l'identité moderne de style studio/agence web :
-  - Colonne 1 : Slogan de marque et liste d'icônes sociales interactives (LinkedIn, GitHub, Discord pour le jeu Unity, Twitter X) avec effets de mise à l'échelle au survol.
-  - Colonne 2 : Rappels de liens de navigation interne (Accueil, Portfolio, Contact) liés dynamiquement via React Router (`Link`).
-  - Colonne 3 : Liens juridiques (Mentions Légales connectées, Politique de Confidentialité) et intégration d'un témoin de statut opérationnel de serveur vert pulsé ("All Systems Operational").
-  - Ligne de pied de page : Copyright et marqueur personnalisé localisé ("Conçu & Construit à Paris ♥").
+  - Colonne 1 : Slogan de marque épuré et liste d'icônes sociales interactives (LinkedIn, GitHub, Discord, Twitter X).
+  - Colonne 2 : Rappels de liens de navigation interne (Accueil, Portfolio, Contact) liés via React Router (`Link`).
+  - Colonne 3 : Liens juridiques (Mentions Légales connectées, Politique de Confidentialité).
+  - Ligne de pied de page : Signature nominative des associés ("Enrique Puerto, Célestin Honvault") en remplacement du label géographique parisien générique, et retrait définitif du témoin vert pulsé "All Systems Operational".
+- Remplacement global des caractères fléchés de texte et de l'icône fa-plus par des tracés vectoriels SVG (icône paper-plane pour le bouton de contact, flèche de retour SVG sur les mentions légales) pour garantir un rendu précis à haute résolution.
+- Remplacement général de la typographie à graisse lourde `font-display font-black` par des graisses standards de la police sans-serif (`font-sans font-medium` ou `font-semibold`) sur la navigation, les paragraphes et les intitulés légaux.
+
 
 ### Justification Technique
 - **Sécurité & SMTP** : Le mot de passe et les détails de l'email sont conservés exclusivement côté serveur grâce aux variables d'environnement locales (`.env`), évitant toute exposition dans le bundle JS client.

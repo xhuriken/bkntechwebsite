@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 /**
  * Footer Component
  * Premium multi-column footer containing brand tagline, interactive links,
- * social connections, and a real-time status indicator.
+ * social connections, and legal copyright.
  */
 export default function Footer() {
   const { t } = useTranslation();
@@ -16,10 +16,10 @@ export default function Footer() {
         
         {/* Column 1: Identity & Socials */}
         <div className="md:col-span-5 flex flex-col gap-4">
-          <span className="font-display font-black tracking-[0.25em] text-sm text-primary uppercase select-none">
+          <span className="font-sans font-extrabold tracking-[0.2em] text-sm text-primary uppercase select-none">
             Bkn Tech
           </span>
-          <p className="text-[10px] font-display font-black tracking-widest text-on-surface-variant/80 uppercase leading-relaxed max-w-sm">
+          <p className="text-xs font-sans font-normal text-on-surface-variant leading-relaxed max-w-sm">
             Ingénierie de plateformes sur mesure & développement de jeux multijoueurs. Excellence technique & esthétique.
           </p>
           {/* Social Icons list */}
@@ -65,10 +65,10 @@ export default function Footer() {
 
         {/* Column 2: Navigation Links */}
         <div className="md:col-span-3 flex flex-col gap-4">
-          <span className="font-display font-black tracking-widest text-[9px] uppercase text-primary/80 select-none">
+          <span className="font-sans font-semibold tracking-wider text-[11px] uppercase text-primary/80 select-none">
             Navigation
           </span>
-          <ul className="flex flex-col gap-2.5 font-display font-black text-[10px] uppercase tracking-wider text-on-surface-variant">
+          <ul className="flex flex-col gap-2.5 font-sans font-medium text-xs text-on-surface-variant">
             <li>
               <Link to="/#home" className="hover:text-primary transition-colors">
                 Accueil
@@ -87,12 +87,12 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Column 3: Legal & Live status */}
+        {/* Column 3: Legal Links */}
         <div className="md:col-span-4 flex flex-col gap-4">
-          <span className="font-display font-black tracking-widest text-[9px] uppercase text-primary/80 select-none">
-            Juridique & Statut
+          <span className="font-sans font-semibold tracking-wider text-[11px] uppercase text-primary/80 select-none">
+            Juridique
           </span>
-          <ul className="flex flex-col gap-2.5 font-display font-black text-[10px] uppercase tracking-wider text-on-surface-variant">
+          <ul className="flex flex-col gap-2.5 font-sans font-medium text-xs text-on-surface-variant">
             <li>
               <Link to="/mentions-legales" className="hover:text-primary transition-colors">
                 Mentions Légales
@@ -104,29 +104,17 @@ export default function Footer() {
               </a>
             </li>
           </ul>
-          
-          {/* Creative Live Status Indicator */}
-          <div className="flex items-center gap-2.5 mt-2 bg-surface rounded-xl border border-white/5 py-2 px-3 w-fit select-none">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
-            </span>
-            <span className="text-[8px] font-display font-black tracking-widest text-green-400 uppercase">
-              All Systems Operational
-            </span>
-          </div>
         </div>
 
       </div>
 
       {/* Bottom Row */}
-      <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-on-surface-variant/40 text-[9px] uppercase tracking-wider font-display font-black">
+      <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-on-surface-variant/40 text-[10px] uppercase tracking-wider font-sans font-medium">
         <div>
           BKN TECH &copy; {new Date().getFullYear()} &mdash; TOUS DROITS RÉSERVÉS.
         </div>
-        <div className="flex items-center gap-1.5">
-          <span>CONÇU & CONSTRUIT À PARIS</span>
-          <span className="text-primary font-sans">&hearts;</span>
+        <div className="flex items-center gap-1.5 text-on-surface-variant/60 font-sans font-semibold normal-case">
+          Enrique Puerto, Célestin Honvault
         </div>
       </div>
     </footer>
