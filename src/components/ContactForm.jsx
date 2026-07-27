@@ -154,7 +154,7 @@ export default function ContactForm() {
               <span className="bg-gradient-to-r from-primary via-secondary to-tertiary bg-clip-text text-transparent">Ensemble</span>
             </h2>
 
-            <p className="text-on-surface-variant text-xs font-light leading-relaxed max-w-sm mb-10">
+            <p className="text-on-surface-variant text-sm font-light leading-relaxed max-w-sm mb-10">
               Vous avez un projet de développement web/mobile ou des questions sur notre projet Unity ? N'hésitez pas à nous écrire.
             </p>
 
@@ -170,8 +170,8 @@ export default function ContactForm() {
                   <i className="fa-solid fa-envelope text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[8px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">E-mail</div>
-                  <span className="text-xs font-semibold text-on-surface group-hover:text-primary transition-colors">
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">E-mail</div>
+                  <span className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors">
                     {emailText || 'contact [at] bkntech.fr'}
                   </span>
                 </div>
@@ -187,8 +187,8 @@ export default function ContactForm() {
                   <i className="fa-solid fa-phone text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[8px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">Téléphone</div>
-                  <span className="text-xs font-semibold text-on-surface group-hover:text-primary transition-colors">
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">Téléphone</div>
+                  <span className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors">
                     {phoneText || '+33 1 00 00 00 00'}
                   </span>
                 </div>
@@ -206,8 +206,8 @@ export default function ContactForm() {
                   <i className="fa-solid fa-location-dot text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[8px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">Adresse</div>
-                  <div className="text-xs font-light text-on-surface-variant leading-relaxed group-hover:text-on-surface transition-colors">
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">Adresse</div>
+                  <div className="text-sm font-light text-on-surface-variant leading-relaxed group-hover:text-on-surface transition-colors">
                     Bkn Tech<br />
                     47 rue Vivienne<br />
                     75002 Paris, France
@@ -240,16 +240,40 @@ export default function ContactForm() {
             {status === 'success' ? (
               <motion.div
                 key="success"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
                 className="flex flex-col items-center justify-center py-12 text-center"
               >
-                <div className="w-16 h-16 rounded-full bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary mb-6">
-                  <i className="fa-solid fa-circle-check text-2xl animate-bounce"></i>
+                <div className="relative flex items-center justify-center w-20 h-20 mb-6">
+                  {/* Subtle primary brand glowing halo */}
+                  <div className="absolute inset-0 bg-primary/10 rounded-full blur-md animate-pulse" />
+                  
+                  <svg className="w-10 h-10 text-primary relative z-10" viewBox="0 0 52 52" fill="none">
+                    <motion.circle
+                      cx="26"
+                      cy="26"
+                      r="24"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      initial={{ pathLength: 0, opacity: 0.1 }}
+                      animate={{ pathLength: 1, opacity: 1 }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
+                    />
+                    <motion.path
+                      d="M14 27l8 8 16-16"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: 1 }}
+                      transition={{ delay: 0.4, duration: 0.4, ease: "easeOut" }}
+                    />
+                  </svg>
                 </div>
-                <h3 className="font-display font-black text-xl uppercase tracking-widest text-secondary mb-2">Message Envoyé !</h3>
-                <p className="text-on-surface-variant text-xs font-light max-w-xs leading-relaxed">
+                <h3 className="font-display font-black text-2xl uppercase tracking-widest text-primary mb-3">Message Envoyé !</h3>
+                <p className="text-on-surface-variant text-sm font-light max-w-sm leading-relaxed">
                   Merci pour votre message. Nous l'avons bien reçu et reviendrons vers vous dans les plus brefs délais.
                 </p>
                 <Button variant="secondary" onClick={() => setStatus('idle')} className="mt-8">
@@ -307,7 +331,7 @@ export default function ContactForm() {
 
                 {/* Submitting Feedback State */}
                 {(status === 'checking' || status === 'sending') && (
-                  <div className="flex items-center gap-3 mb-6 p-4 rounded-xl bg-primary/5 border border-primary/10 text-primary text-xs font-display font-semibold uppercase tracking-wider">
+                  <div className="flex items-center gap-3 mb-6 p-4 rounded-xl bg-primary/5 border border-primary/10 text-primary text-sm font-display font-semibold uppercase tracking-wider">
                     <i className="fa-solid fa-spinner animate-spin text-sm"></i>
                     {statusMessage}
                   </div>
@@ -315,7 +339,7 @@ export default function ContactForm() {
 
                 {/* Error Feedback State */}
                 {status === 'error' && (
-                  <div className="flex items-center gap-3 mb-6 p-4 rounded-xl bg-red-500/5 border border-red-500/10 text-red-400 text-xs font-display font-semibold uppercase tracking-wider">
+                  <div className="flex items-center gap-3 mb-6 p-4 rounded-xl bg-red-500/5 border border-red-500/10 text-red-400 text-sm font-display font-semibold uppercase tracking-wider">
                     <i className="fa-solid fa-circle-exclamation text-sm"></i>
                     {statusMessage}
                   </div>

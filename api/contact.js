@@ -75,29 +75,51 @@ export default async function handler(req, res) {
       subject: `[BKN Tech - Contact] ${subject}`,
       text: `Nouveau message de contact BKN Tech :\n\nNom : ${name}\nEmail : ${email}\nSujet : ${subject}\n\nMessage :\n${message}`,
       html: `
-        <div style="font-family: 'Inter', sans-serif; background-color: #0d0e16; padding: 30px; color: #e3e1ed; max-width: 600px; margin: 0 auto; border-radius: 12px; border: 1px solid rgba(190, 194, 255, 0.15);">
-          <h2 style="font-family: 'Space Grotesk', sans-serif; color: #bec2ff; font-size: 20px; border-bottom: 1px solid rgba(190, 194, 255, 0.1); padding-bottom: 15px; margin-top: 0; text-transform: uppercase; letter-spacing: 0.1em;">
-            Nouveau message reçu
-          </h2>
-          <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
-            <tr>
-              <td style="padding: 6px 0; color: #ababcf; font-size: 13px; width: 80px;"><strong>Expéditeur :</strong></td>
-              <td style="padding: 6px 0; color: #e3e1ed; font-size: 13px;">${name}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 0; color: #ababcf; font-size: 13px;"><strong>E-mail :</strong></td>
-              <td style="padding: 6px 0; color: #bec2ff; font-size: 13px;"><a href="mailto:${email}" style="color: #bec2ff; text-decoration: none;">${email}</a></td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 0; color: #ababcf; font-size: 13px;"><strong>Sujet :</strong></td>
-              <td style="padding: 6px 0; color: #e3e1ed; font-size: 13px;">${subject}</td>
-            </tr>
-          </table>
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(190, 194, 255, 0.1); padding: 20px; border-radius: 8px; margin-top: 25px; border-left: 3px solid #bec2ff;">
-            <p style="white-space: pre-wrap; margin: 0; font-size: 14px; line-height: 1.6; color: #e3e1ed;">${message}</p>
-          </div>
-          <div style="margin-top: 30px; text-align: center; font-size: 10px; color: #ababcf; letter-spacing: 0.05em; text-transform: uppercase;">
-            BKN Tech Mailer — Généré Automatiquement
+        <div style="background-color: #0c0d12; color: #f4f4f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 40px 20px; text-align: left;">
+          <div style="max-width: 560px; margin: 0 auto; background-color: #12131a; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);">
+            <!-- Brand Accent Line -->
+            <div style="height: 4px; background: linear-gradient(90deg, #7c3aed 0%, #3b82f6 100%);"></div>
+            
+            <div style="padding: 40px 32px;">
+              <!-- Logo / Brand -->
+              <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #a78bfa; margin-bottom: 24px;">
+                BKN Tech
+              </div>
+
+              <h2 style="font-size: 20px; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 24px; letter-spacing: -0.02em;">
+                Nouveau message reçu
+              </h2>
+
+              <!-- Details List -->
+              <div style="border-top: 1px solid #27272a; border-bottom: 1px solid #27272a; padding: 16px 0; margin-bottom: 24px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tr>
+                    <td style="padding: 4px 0; font-size: 13px; color: #a1a1aa; width: 100px;">Expéditeur</td>
+                    <td style="padding: 4px 0; font-size: 13px; font-weight: 500; color: #ffffff;">${name}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 4px 0; font-size: 13px; color: #a1a1aa;">E-mail</td>
+                    <td style="padding: 4px 0; font-size: 13px; font-weight: 500; color: #a78bfa;">
+                      <a href="mailto:${email}" style="color: #a78bfa; text-decoration: none;">${email}</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 4px 0; font-size: 13px; color: #a1a1aa;">Sujet</td>
+                    <td style="padding: 4px 0; font-size: 13px; font-weight: 500; color: #ffffff;">${subject}</td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- Message Blockquote -->
+              <div style="font-size: 15px; line-height: 1.6; color: #e4e4e7; border-left: 2px solid #7c3aed; padding-left: 16px; margin: 0; white-space: pre-wrap; font-style: normal;">${message}</div>
+            </div>
+            
+            <!-- Footer -->
+            <div style="background-color: #0c0d12; padding: 20px 32px; border-top: 1px solid #27272a; text-align: center;">
+              <span style="font-size: 10px; color: #52525b; text-transform: uppercase; letter-spacing: 0.1em;">
+                BKN Tech Mailer — Généré Automatiquement
+              </span>
+            </div>
           </div>
         </div>
       `

@@ -69,6 +69,9 @@ Création et intégration du formulaire de contact haut de gamme, sécurisé con
 - Ajout d'un middleware d'interception d'API `/api/contact` et d'un chargeur `.env` manuel dans [vite.config.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/vite.config.js) pour émuler localement le fonctionnement des fonctions Serverless de Vercel/Netlify en mode de développement (`npm run dev`).
 - Résolution DNS des serveurs de messagerie (MX) de `bkntech.fr` montrant l'hébergement par OVH (`mx0.mail.ovh.net`).
 - Correction de `SMTP_HOST` de `smtp.bkntech.fr` vers `ssl0.ovh.net` dans [.env](file:///c:/Users/celestin/Desktop/bkntechwebsite/.env), [.env.example](file:///c:/Users/celestin/Desktop/bkntechwebsite/.env.example) et [api/contact.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/contact.js) pour assurer un envoi fonctionnel.
+- Refonte complète de la structure HTML de l'email dans [api/contact.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/contact.js) : suppression des bordures dures et conteneurs imbriqués, intégration d'une ligne de dégradé supérieure élégante, présentation des expéditeurs sous forme de liste épurée, et message structuré comme une citation blockquote avec filet violet à gauche.
+- Remplacement du logo vert de succès rebondissant "IA-like" dans [ContactForm.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ContactForm.jsx) par une animation haut de gamme SVG auto-tracée (dessin du cercle puis du crochet) avec un halo lumineux pulsé aux couleurs de la marque (violet/indigo).
+- Agrandissement général des polices de petites tailles (descriptions, labels de pins, statuts de chargement, message de succès) pour assurer un confort de lecture optimal et des proportions équilibrées.
 
 ### Justification Technique
 - **Sécurité & SMTP** : Le mot de passe et les détails de l'email sont conservés exclusivement côté serveur grâce aux variables d'environnement locales (`.env`), évitant toute exposition dans le bundle JS client.
@@ -78,6 +81,8 @@ Création et intégration du formulaire de contact haut de gamme, sécurisé con
 - **Assurance Sécurité (Purge Git)** : La réécriture totale de l'historique de commits Git et le `push --force` étaient cruciaux pour éliminer toute trace historique des identifiants SMTP partagés par l'utilisateur, garantissant qu'aucune version obsolète ne reste accessible dans les commits passés sur GitHub.
 - **Simulateur Dev Local (Middleware)** : En mode de développement classique via `npm run dev`, le serveur d'évaluation de Vite ne sait pas traiter nativement les fonctions backend dans `api/`. En ajoutant un middleware d'interception personnalisé dans Vite qui charge manuellement les identifiants locaux secrets de `.env` (sans aucune dépendance tierce), nous permettons de simuler l'exécution du handler API en local de manière totalement autonome et transparente pour le développeur.
 - **Résolution DNS & Correction Hôte (OVH)** : L'adresse SMTP par défaut `smtp.bkntech.fr` ne répondait pas car le nom de domaine `bkntech.fr` utilise les serveurs de messagerie partagés d'OVH. L'identification de l'enregistrement MX (`mx0.mail.ovh.net`) a permis de reconfigurer l'hôte sur le serveur officiel d'OVH (`ssl0.ovh.net`), résolvant l'erreur d'envoi `ENOTFOUND` et finalisant l'envoi de mail avec succès.
+- **Refonte Graphique (E-mail & Validation)** : L'abandon de l'icône verte rebondissante standardisée et des boîtes d'e-mail à bordures doubles permet d'adopter des codes de design beaucoup plus haut de gamme et personnalisés. Le dessin SVG vectoriel dynamique du crochet de validation sous Framer Motion et le rendu épuré de l'email HTML s'alignent sur les standards des meilleures plateformes SaaS modernes (type Linear, Stripe).
+
 
 
 
