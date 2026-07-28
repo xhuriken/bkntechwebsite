@@ -1,6 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+
+/**
+ * Animated digital clock displaying Paris, FR time with live pulse indicator
+ */
+function ParisClock() {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const timeString = time.toLocaleTimeString('fr-FR', {
+    timeZone: 'Europe/Paris',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+
+  return (
+    <div className="flex flex-col gap-1.5 font-mono text-[9px] text-on-surface-variant/40 border border-white/5 bg-black/45 backdrop-blur-sm rounded-xl p-3.5 select-none w-[170px] self-start md:self-end">
+      <div className="flex items-center justify-between border-b border-white/5 pb-1.5 mb-1">
+        <span className="text-[8px] uppercase tracking-wider font-semibold text-on-surface-variant/70">Paris, FR</span>
+        <span className="flex h-1.5 w-1.5 relative">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+        </span>
+      </div>
+      <div className="text-sm font-bold text-green-400 tracking-widest">{timeString}</div>
+      <div className="text-[8px] opacity-75 uppercase tracking-widest">Studio Local Time</div>
+    </div>
+  );
+}
 
 /**
  * Footer Component
@@ -96,7 +131,7 @@ export default function Footer() {
         </div>
 
         {/* Column 3: Legal Links */}
-        <div className="md:col-span-4 flex flex-col gap-4">
+        <div className="md:col-span-2 flex flex-col gap-4">
           <span className="font-sans font-semibold tracking-wider text-[11px] uppercase text-primary/80 select-none">
             Juridique
           </span>
@@ -112,6 +147,11 @@ export default function Footer() {
               </a>
             </li>
           </ul>
+        </div>
+
+        {/* Column 4: Studio Connectivity / Live Paris Clock */}
+        <div className="md:col-span-2 flex flex-col gap-4">
+          <ParisClock />
         </div>
 
       </div>

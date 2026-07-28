@@ -17,13 +17,19 @@ function getYouTubeId(url) {
 /**
  * A dynamic typing effect terminal list of technologies inside portfolio cards
  */
-function ProjectTerminalList({ tags = [] }) {
+/**
+ * A dynamic typing effect terminal list of technologies inside portfolio cards
+ */
+function ProjectTerminalList({ tags = [], category = 'gaming' }) {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [typedCommand, setTypedCommand] = useState("");
   const [showTagsCount, setShowTagsCount] = useState(0);
   const [coloredTagsCount, setColoredTagsCount] = useState(0);
   const commandText = "ls keywords";
+
+  // Stagger typing launch randomly between 150ms and 550ms to prevent synchronized screen drops
+  const randomDelay = useRef(Math.floor(Math.random() * 400) + 150);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -66,12 +72,38 @@ function ProjectTerminalList({ tags = [] }) {
       }
     };
 
-    typeCommand(0);
+    // Staggered trigger delay
+    const initialDelayTimeout = setTimeout(() => {
+      typeCommand(0);
+    }, randomDelay.current);
 
-    return () => clearTimeout(timeoutId);
+    return () => {
+      clearTimeout(initialDelayTimeout);
+      clearTimeout(timeoutId);
+    };
   }, [isVisible, tags]);
 
   if (!tags || tags.length === 0) return null;
+
+  // Determine tag validation text and cursor color theme by category
+  const getTagColorClass = () => {
+    const c = category ? category.toLowerCase() : '';
+    if (c === 'website') return 'text-secondary font-bold'; // Green-accent `#4edea3`
+    if (c === 'ai-agent') return 'text-tertiary font-bold'; // Orange-accent `#ffb95f`
+    if (c === 'mobile') return 'text-primary font-bold'; // Purple-accent `#bec2ff`
+    return 'text-green-400 font-bold'; // Gaming
+  };
+
+  const getCursorColorClass = () => {
+    const c = category ? category.toLowerCase() : '';
+    if (c === 'website') return 'bg-secondary';
+    if (c === 'ai-agent') return 'bg-tertiary';
+    if (c === 'mobile') return 'bg-primary';
+    return 'bg-green-400';
+  };
+
+  const colorClass = getTagColorClass();
+  const cursorClass = getCursorColorClass();
 
   return (
     <div ref={ref} className="flex flex-col gap-2 flex-grow justify-between min-h-[110px] w-full font-mono text-[9px] select-none text-left">
@@ -81,7 +113,7 @@ function ProjectTerminalList({ tags = [] }) {
           <span className="text-white/20">$</span>
           <span>{typedCommand}</span>
           {typedCommand.length < commandText.length && isVisible && (
-            <span className="w-1 h-2.5 bg-primary/70 animate-pulse" />
+            <span className={`w-1 h-2.5 ${cursorClass}/70 animate-pulse`} />
           )}
         </div>
 
@@ -92,7 +124,7 @@ function ProjectTerminalList({ tags = [] }) {
             return (
               <div key={idx} className="flex items-center gap-1.5">
                 <span className="text-white/20">&gt;</span>
-                <span className={isColored ? "text-green-400 font-bold transition-all duration-300" : "text-white/50"}>
+                <span className={isColored ? `${colorClass} transition-all duration-300` : "text-white/50"}>
                   {tag}
                 </span>
               </div>
@@ -105,9 +137,49 @@ function ProjectTerminalList({ tags = [] }) {
       <div className="flex items-center gap-1 text-white/30 text-[8px] mt-2">
         <span>$</span>
         {coloredTagsCount === tags.length && (
-          <span className="w-1.5 h-2.5 bg-green-400 animate-pulse" />
+          <span className={`w-1.5 h-2.5 ${cursorClass} animate-pulse`} />
         )}
       </div>
+    </div>
+  );
+}
+
+/**
+ * A horizontal scroll wrapper that redirects vertical mouse wheel input 
+ * into smooth horizontal scroll, without blocking native layout click/scrolling.
+ */
+function CarouselList({ children }) {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e) => {
+      if (e.deltaY !== 0) {
+        const canScrollLeft = container.scrollLeft > 0;
+        const canScrollRight = container.scrollLeft < container.scrollWidth - container.clientWidth - 5;
+        
+        // Intercept vertical scroll only if we can scroll the carousel in the desired direction
+        if ((e.deltaY > 0 && canScrollRight) || (e.deltaY < 0 && canScrollLeft)) {
+          e.preventDefault();
+          container.scrollLeft += e.deltaY * 0.9; // comfortable horizontal scroll factor
+        }
+      }
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
+  }, []);
+
+  return (
+    <div 
+      ref={containerRef} 
+      className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent snap-x snap-mandatory scroll-smooth -mx-6 px-6 md:mx-0 md:px-0"
+    >
+      {children}
     </div>
   );
 }
@@ -341,7 +413,7 @@ export default function Portfolio() {
                 ) : (
                   <div className="relative">
                     {/* Carousel Scroll Wrapper */}
-                    <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent snap-x snap-mandatory scroll-smooth -mx-6 px-6 md:mx-0 md:px-0">
+                    <CarouselList>
                       {catPosts.map((post) => (
                         <Link 
                           to={`/portfolio/section/${post.category}`}
@@ -405,10 +477,10 @@ export default function Portfolio() {
 
                                 {/* Text details */}
                                 <div className="flex flex-col gap-1.5">
-                                  <h3 className="font-sans font-extrabold text-xs sm:text-sm uppercase tracking-tight text-on-surface group-hover:text-primary transition-colors line-clamp-1">
+                                  <h3 className="font-sans font-extrabold text-sm sm:text-base uppercase tracking-tight text-on-surface group-hover:text-primary transition-colors line-clamp-1">
                                     {post.title[currentLang] || post.title['fr']}
                                   </h3>
-                                  <p className="text-[11px] font-sans font-normal text-on-surface-variant/90 leading-relaxed line-clamp-3">
+                                  <p className="text-xs sm:text-[13px] font-sans font-normal text-on-surface-variant/90 leading-relaxed line-clamp-3">
                                     {post.description[currentLang] || post.description['fr']}
                                   </p>
                                 </div>
@@ -417,12 +489,12 @@ export default function Portfolio() {
 
                             {/* Right Column (Fixed cmd column: 130px on mobile, 145px on small and up) */}
                             <div className="w-[130px] sm:w-[145px] flex-shrink-0 p-4 pt-3.5 flex flex-col justify-between bg-black/35 border-l border-white/5">
-                              <ProjectTerminalList tags={post.tags} />
+                              <ProjectTerminalList tags={post.tags} category={post.category} />
                             </div>
                           </div>
                         </Link>
                       ))}
-                    </div>
+                    </CarouselList>
                   </div>
                 )}
               </motion.section>

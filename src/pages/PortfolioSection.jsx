@@ -33,13 +33,16 @@ const getDotColors = (type = '', category = '') => {
 /**
  * A dynamic typing effect terminal list of technologies inside project cards
  */
-function ProjectTerminalList({ tags = [] }) {
+function ProjectTerminalList({ tags = [], category = 'gaming' }) {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [typedCommand, setTypedCommand] = useState("");
   const [showTagsCount, setShowTagsCount] = useState(0);
   const [coloredTagsCount, setColoredTagsCount] = useState(0);
   const commandText = "ls keywords";
+
+  // Stagger typing launch randomly between 150ms and 550ms to prevent synchronized screen drops
+  const randomDelay = useRef(Math.floor(Math.random() * 400) + 150);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -82,12 +85,38 @@ function ProjectTerminalList({ tags = [] }) {
       }
     };
 
-    typeCommand(0);
+    // Staggered trigger delay
+    const initialDelayTimeout = setTimeout(() => {
+      typeCommand(0);
+    }, randomDelay.current);
 
-    return () => clearTimeout(timeoutId);
+    return () => {
+      clearTimeout(initialDelayTimeout);
+      clearTimeout(timeoutId);
+    };
   }, [isVisible, tags]);
 
   if (!tags || tags.length === 0) return null;
+
+  // Determine tag validation text and cursor color theme by category
+  const getTagColorClass = () => {
+    const c = category ? category.toLowerCase() : '';
+    if (c === 'website') return 'text-secondary font-bold'; // Green-accent `#4edea3`
+    if (c === 'ai-agent') return 'text-tertiary font-bold'; // Orange-accent `#ffb95f`
+    if (c === 'mobile') return 'text-primary font-bold'; // Purple-accent `#bec2ff`
+    return 'text-green-400 font-bold'; // Gaming
+  };
+
+  const getCursorColorClass = () => {
+    const c = category ? category.toLowerCase() : '';
+    if (c === 'website') return 'bg-secondary';
+    if (c === 'ai-agent') return 'bg-tertiary';
+    if (c === 'mobile') return 'bg-primary';
+    return 'bg-green-400';
+  };
+
+  const colorClass = getTagColorClass();
+  const cursorClass = getCursorColorClass();
 
   return (
     <div ref={ref} className="flex flex-col gap-2 flex-grow justify-between min-h-[110px] w-full font-mono text-[9px] select-none text-left">
@@ -97,7 +126,7 @@ function ProjectTerminalList({ tags = [] }) {
           <span className="text-white/20">$</span>
           <span>{typedCommand}</span>
           {typedCommand.length < commandText.length && isVisible && (
-            <span className="w-1 h-2.5 bg-primary/70 animate-pulse" />
+            <span className={`w-1 h-2.5 ${cursorClass}/70 animate-pulse`} />
           )}
         </div>
 
@@ -108,7 +137,7 @@ function ProjectTerminalList({ tags = [] }) {
             return (
               <div key={idx} className="flex items-center gap-1.5">
                 <span className="text-white/20">&gt;</span>
-                <span className={isColored ? "text-green-400 font-bold transition-all duration-300" : "text-white/50"}>
+                <span className={isColored ? `${colorClass} transition-all duration-300` : "text-white/50"}>
                   {tag}
                 </span>
               </div>
@@ -121,7 +150,7 @@ function ProjectTerminalList({ tags = [] }) {
       <div className="flex items-center gap-1 text-white/30 text-[8px] mt-2">
         <span>$</span>
         {coloredTagsCount === tags.length && (
-          <span className="w-1.5 h-2.5 bg-green-400 animate-pulse" />
+          <span className={`w-1.5 h-2.5 ${cursorClass} animate-pulse`} />
         )}
       </div>
     </div>
@@ -291,7 +320,7 @@ export default function PortfolioSection() {
                     </div>
 
                     {/* Content description */}
-                    <div className="text-on-surface/90 text-sm font-normal leading-relaxed whitespace-pre-wrap max-w-3xl">
+                    <div className="text-on-surface/90 text-sm sm:text-base font-normal leading-relaxed whitespace-pre-wrap max-w-3xl">
                       {post.content[currentLang] || post.content['fr']}
                     </div>
                   </div>
@@ -299,7 +328,7 @@ export default function PortfolioSection() {
                   {/* Right Panel: Mini Terminal (with left border acting as the divider) */}
                   <div className="lg:col-span-2 flex flex-col justify-stretch min-h-[160px] lg:border-l lg:border-white/10 lg:pl-6">
                     <div className="flex-grow flex flex-col bg-black/50 border border-white/5 rounded-xl p-4 font-mono text-[10px] text-green-400 select-none shadow-inner justify-between h-full">
-                      <ProjectTerminalList tags={post.tags} />
+                      <ProjectTerminalList tags={post.tags} category={post.category} />
                     </div>
                   </div>
                 </div>
