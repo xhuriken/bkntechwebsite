@@ -32,6 +32,35 @@ async function solveChallenge(salt) {
   }
 }
 
+/**
+ * A dynamic typing effect terminal list of technologies
+ */
+function TerminalList() {
+  const stack = ['laravel', 'react', 'unity', 'flutter', 'docker', 'tailwind', 'mirror'];
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex(prev => (prev + 1) % (stack.length + 3)); // +3 to pause at the end before loop reset
+    }, 900);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="flex flex-col gap-1 font-mono text-[9px] text-green-400">
+      {stack.slice(0, index + 1).map((item, idx) => (
+        <div key={idx} className="flex items-center gap-1.5">
+          <span className="text-white/20">&gt;</span>
+          <span className={idx === index ? "text-white" : ""}>
+            {item}
+            {idx === index && <span className="animate-pulse">_</span>}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function ContactForm() {
   const { t } = useTranslation();
 
@@ -82,7 +111,7 @@ export default function ContactForm() {
     }
     if (!formData.subject.trim()) tempErrors.subject = "Le sujet est requis.";
     if (!formData.message.trim()) tempErrors.message = "Le message est requis.";
-    
+
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
@@ -99,20 +128,21 @@ export default function ContactForm() {
       const salt = formData.email + Date.now();
       const powResult = await solveChallenge(salt);
 
-      setStatus('sending');
-      setStatusMessage("Envoi en cours...");
+      setStatusMessage("Envoi du message...");
 
-      // 2. Send payload to serverless route
+      // 2. Send request to endpoint
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
           ...formData,
-          pow: powResult
+          powNonce: powResult.nonce,
+          powHash: powResult.hash,
+          powSalt: salt
         })
       });
-
-      const data = await response.json();
 
       if (response.ok) {
         setStatus('success');
@@ -124,20 +154,21 @@ export default function ContactForm() {
           bkn_website_bot_trap: ''
         });
       } else {
+        const errorData = await response.json();
         setStatus('error');
-        setStatusMessage(data.error || "Une erreur est survenue lors de l'envoi.");
+        setStatusMessage(errorData.error || "Une erreur est survenue lors de l'envoi.");
       }
     } catch (err) {
       console.error(err);
       setStatus('error');
-      setStatusMessage("Impossible de joindre le serveur de messagerie.");
+      setStatusMessage("Erreur de connexion avec le serveur.");
     }
   };
 
   return (
     <section id="contact" className="w-full pt-6 pb-20 px-6 md:px-12 max-w-7xl mx-auto z-10 relative">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        
+
         {/* Info Column (Left) */}
         <div className="lg:col-span-5 flex flex-col justify-between h-full">
           <div>
@@ -148,72 +179,76 @@ export default function ContactForm() {
                 Contact
               </span>
             </div>
-            
+
             <h2 className="font-sans font-extrabold text-3xl md:text-5xl uppercase tracking-tight mt-4 mb-6">
               Travaillons <br />
               <span className="bg-gradient-to-r from-primary via-secondary to-tertiary bg-clip-text text-transparent">Ensemble</span>
             </h2>
 
-            <p className="text-on-surface text-sm font-normal leading-relaxed max-w-sm mb-8">
+            <p className="text-on-surface text-sm font-normal leading-relaxed max-w-sm mb-6">
               Vous avez un projet de développement web/mobile ou des questions sur notre projet Unity ? N'hésitez pas à nous écrire.
             </p>
 
-            {/* Obfuscated Contact Information Pins with Hover Actions */}
-            <div className="flex flex-col gap-3 items-start -mx-3">
-              {/* E-mail Pin */}
-              <motion.a 
-                href={`mailto:${emailText}`}
-                whileHover={{ x: 4 }}
-                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
-              >
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-105 group-hover:border-primary/45 group-hover:text-white transition-all duration-300">
-                  <i className="fa-solid fa-envelope text-sm"></i>
-                </div>
-                <div>
-                  <div className="text-[11px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80 group-hover:text-primary transition-colors">E-mail</div>
-                  <span className="text-sm font-semibold text-on-surface group-hover:text-white transition-colors">
+            {/* Double Panel Layout with vertical separation */}
+            <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 mt-6">
+              {/* Left Panel: Minimal details */}
+              <div className="sm:col-span-6 flex flex-col gap-4 justify-center pr-2">
+                <div className="group">
+                  <div className="text-[9px] font-sans font-bold uppercase tracking-wider text-primary/80 mb-0.5">E-mail</div>
+                  <a
+                    href={`mailto:${emailText}`}
+                    className="text-xs font-semibold text-on-surface hover:text-white transition-colors duration-200"
+                  >
                     {emailText || 'contact [at] bkntech.fr'}
-                  </span>
+                  </a>
                 </div>
-              </motion.a>
 
-              {/* Téléphone Pin */}
-              <motion.a 
-                href={`tel:${phoneText.replace(/\s/g, '')}`}
-                whileHover={{ x: 4 }}
-                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
-              >
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-105 group-hover:border-primary/45 group-hover:text-white transition-all duration-300">
-                  <i className="fa-solid fa-phone text-sm"></i>
-                </div>
-                <div>
-                  <div className="text-[11px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80 group-hover:text-primary transition-colors">Téléphone</div>
-                  <span className="text-sm font-semibold text-on-surface group-hover:text-white transition-colors">
+                <div className="group">
+                  <div className="text-[9px] font-sans font-bold uppercase tracking-wider text-secondary/80 mb-0.5">Téléphone</div>
+                  <a
+                    href={`tel:${phoneText.replace(/\s/g, '')}`}
+                    className="text-xs font-semibold text-on-surface hover:text-white transition-colors duration-200"
+                  >
                     {phoneText || '+33 1 00 00 00 00'}
-                  </span>
+                  </a>
                 </div>
-              </motion.a>
 
-              {/* Localisation Pin */}
-              <motion.a 
-                href="https://maps.google.com/?q=BKN+Tech+47+rue+Vivienne+75002+Paris"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ x: 4 }}
-                className="flex items-start gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
-              >
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary mt-1 group-hover:scale-105 group-hover:border-primary/45 group-hover:text-white transition-all duration-300">
-                  <i className="fa-solid fa-location-dot text-sm"></i>
-                </div>
-                <div>
-                  <div className="text-[11px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80 group-hover:text-primary transition-colors">Adresse</div>
-                  <div className="text-sm font-normal text-on-surface leading-relaxed group-hover:text-white transition-colors">
+                <div className="group">
+                  <div className="text-[9px] font-sans font-bold uppercase tracking-wider text-tertiary/80 mb-0.5">Adresse</div>
+                  <a
+                    href="https://maps.google.com/?q=BKN+Tech+47+rue+Vivienne+75002+Paris"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-normal text-on-surface-variant leading-relaxed hover:text-white transition-colors duration-200 block"
+                  >
                     Bkn Tech<br />
                     47 rue Vivienne<br />
                     75002 Paris, France
+                  </a>
+                </div>
+              </div>
+
+              {/* Vertical Divider */}
+              <div className="hidden sm:block sm:col-span-1 justify-self-center w-px h-[160px] bg-gradient-to-b from-white/10 via-white/20 to-transparent" />
+
+              {/* Right Panel: Thin Mini-Terminal */}
+              <div className="sm:col-span-5 flex flex-col justify-stretch">
+                <div className="flex-grow flex flex-col bg-black/40 border border-white/5 rounded-xl p-3.5 font-mono text-[9px] text-green-400 select-none shadow-inner h-[160px] justify-between">
+                  <div className="flex flex-col gap-1.5">
+                    <div className="flex items-center gap-1.5 text-on-surface-variant/40 border-b border-white/5 pb-1 mb-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-500/60" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/60" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
+                      <span className="text-[7px] uppercase tracking-wider ml-1 text-on-surface-variant/40">stack.sh</span>
+                    </div>
+                    <TerminalList />
+                  </div>
+                  <div className="flex items-center gap-1 mt-1 text-white/40">
+                    <span>$</span>
+                    <span className="w-1 h-2.5 bg-green-400 animate-pulse" />
                   </div>
                 </div>
-              </motion.a>
+              </div>
             </div>
           </div>
 
@@ -223,7 +258,7 @@ export default function ContactForm() {
 
         {/* Form Column (Right) */}
         <div className="lg:col-span-7 glass-panel p-8 md:p-10 rounded-2xl relative overflow-hidden">
-          
+
           {/* Honeypot Spam Trap (Hidden) */}
           <input
             type="text"
@@ -248,7 +283,7 @@ export default function ContactForm() {
                 <div className="relative flex items-center justify-center w-20 h-20 mb-6">
                   {/* Subtle primary brand glowing halo */}
                   <div className="absolute inset-0 bg-primary/10 rounded-full blur-md animate-pulse" />
-                  
+
                   <svg className="w-10 h-10 text-primary relative z-10" viewBox="0 0 52 52" fill="none">
                     <motion.circle
                       cx="26"
@@ -298,7 +333,7 @@ export default function ContactForm() {
                   error={errors.name}
                   required
                 />
-                
+
                 <InputField
                   label="Adresse E-mail"
                   name="email"
@@ -308,7 +343,7 @@ export default function ContactForm() {
                   error={errors.email}
                   required
                 />
-                
+
                 <InputField
                   label="Sujet"
                   name="subject"
@@ -317,7 +352,7 @@ export default function ContactForm() {
                   error={errors.subject}
                   required
                 />
-                
+
                 <InputField
                   label="Votre Message"
                   name="message"

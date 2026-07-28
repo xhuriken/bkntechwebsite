@@ -40,7 +40,6 @@ export default function Portfolio() {
   }, []);
 
   const categories = [
-    { key: 'gaming', title: t('portfolio.categories.gaming'), color: 'from-primary/20 to-transparent' },
     { key: 'website', title: t('portfolio.categories.website'), color: 'from-secondary/20 to-transparent' },
     { key: 'ai-agent', title: t('portfolio.categories.ai-agent'), color: 'from-tertiary/20 to-transparent' },
     { key: 'mobile', title: t('portfolio.categories.mobile'), color: 'from-primary/20 to-transparent' }
@@ -103,6 +102,81 @@ export default function Portfolio() {
           animate="visible"
           className="flex flex-col gap-16 md:gap-20"
         >
+          {/* Projet à la une : Vacuum Protocol */}
+          <motion.div 
+            variants={sectionVariants}
+            className="w-full bg-surface-container-low/40 backdrop-blur-md border border-white/5 hover:border-primary/10 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-8 items-stretch relative overflow-hidden transition-all duration-300"
+          >
+            {/* Ambient background decorative glow */}
+            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-primary/5 rounded-full filter blur-[80px] pointer-events-none" />
+
+            {/* Left side: Cinematic Banner Image/Thumbnail */}
+            <div className="md:w-1/2 aspect-video overflow-hidden rounded-xl border border-white/5 relative bg-black/40 flex-shrink-0">
+              <img 
+                src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800" 
+                alt="Vacuum Protocol" 
+                className="w-full h-full object-cover hover:scale-102 transition-transform duration-700" 
+              />
+              <div className="absolute top-3 left-3 bg-primary text-black font-sans font-bold text-[9px] uppercase tracking-wider px-2.5 py-1 rounded-lg">
+                Projet à la une
+              </div>
+            </div>
+
+            {/* Right side: Information and CTAs */}
+            <div className="md:w-1/2 flex flex-col justify-between gap-6 py-2">
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-primary">
+                    Unity Game Development
+                  </span>
+                  <span className="text-[10px] text-on-surface-variant/40">•</span>
+                  <span className="text-[10px] font-sans text-on-surface-variant/60">
+                    Production active
+                  </span>
+                </div>
+
+                <h2 className="font-sans font-extrabold text-2xl md:text-3xl uppercase tracking-tight text-on-surface">
+                  Vacuum Protocol
+                </h2>
+
+                <p className="text-xs md:text-sm font-sans font-normal text-on-surface-variant leading-relaxed">
+                  Un jeu de tir tactique multijoueur compétitif en 3D développé sous Unity HDRP. Explorez notre cycle de développement à long terme, nos optimisations netcode et nos avancées d'intégration de gameplay.
+                </p>
+
+                {/* Tech badges */}
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <span className="text-[9px] font-sans font-semibold px-2.5 py-0.5 bg-surface border border-white/5 rounded-full text-on-surface-variant/80 uppercase tracking-wide">Unity</span>
+                  <span className="text-[9px] font-sans font-semibold px-2.5 py-0.5 bg-surface border border-white/5 rounded-full text-on-surface-variant/80 uppercase tracking-wide">C#</span>
+                  <span className="text-[9px] font-sans font-semibold px-2.5 py-0.5 bg-surface border border-white/5 rounded-full text-on-surface-variant/80 uppercase tracking-wide">Mirror Netcode</span>
+                  <span className="text-[9px] font-sans font-semibold px-2.5 py-0.5 bg-surface border border-white/5 rounded-full text-on-surface-variant/80 uppercase tracking-wide">3D Physics</span>
+                </div>
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-wrap gap-4 mt-auto">
+                <Link 
+                  to="/portfolio/section/gaming"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-black font-sans font-bold text-xs uppercase tracking-wider hover:bg-primary/95 transition-all duration-300 shadow-lg cursor-pointer group"
+                >
+                  <span>Visiter le Devlog</span>
+                  <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </Link>
+
+                <a 
+                  href="https://discord.gg/bkntech"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-surface border border-white/10 hover:border-white/30 text-on-surface font-sans font-semibold text-xs uppercase tracking-wider transition-colors cursor-pointer group"
+                >
+                  <i className="fa-brands fa-discord text-sm text-primary"></i>
+                  <span>Rejoindre le Discord</span>
+                </a>
+              </div>
+            </div>
+          </motion.div>
+
           {categories.map((cat) => {
             const catPosts = posts.filter(p => p.category === cat.key);
             
@@ -138,9 +212,10 @@ export default function Portfolio() {
                     {/* Carousel Scroll Wrapper */}
                     <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent snap-x snap-mandatory scroll-smooth -mx-6 px-6 md:mx-0 md:px-0">
                       {catPosts.map((post) => (
-                        <div 
+                        <Link 
+                          to={`/portfolio/section/${post.category}`}
                           key={post.id}
-                          className="snap-start flex-shrink-0 w-[290px] sm:w-[350px] bg-surface-container-low/45 backdrop-blur-md border border-white/5 hover:border-primary/20 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group"
+                          className="snap-start flex-shrink-0 w-[290px] sm:w-[350px] bg-surface-container-low/45 backdrop-blur-md border border-white/5 hover:border-primary/20 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer"
                         >
                           {/* Image/Video banner preview */}
                           <div className="relative aspect-video overflow-hidden bg-black/40">
@@ -190,7 +265,7 @@ export default function Portfolio() {
                               )}
                             </div>
                           </div>
-                        </div>
+                        </Link>
                       ))}
                     </div>
                   </div>

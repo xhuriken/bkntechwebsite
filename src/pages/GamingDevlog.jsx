@@ -48,21 +48,21 @@ function getRelativeDateString(dateStr, currentLang) {
 function getTypeStyles(type = '') {
   const t = type.toLowerCase();
   if (t.includes('ui')) {
-    return 'text-primary border-primary/20 bg-primary/5';
+    return 'text-primary border-primary/35 bg-primary/[0.08] shadow-[0_0_8px_rgba(190,194,255,0.05)]';
   }
   if (t.includes('player') || t.includes('joueur') || t.includes('améliorations')) {
-    return 'text-secondary border-secondary/20 bg-secondary/5';
+    return 'text-secondary border-secondary/35 bg-secondary/[0.08] shadow-[0_0_8px_rgba(78,222,163,0.05)]';
   }
   if (t.includes('multiplayer') || t.includes('multijoueur') || t.includes('reseau') || t.includes('netcode')) {
-    return 'text-tertiary border-tertiary/20 bg-tertiary/5';
+    return 'text-tertiary border-tertiary/35 bg-tertiary/[0.08] shadow-[0_0_8px_rgba(255,185,95,0.05)]';
   }
   if (t.includes('core') || t.includes('systeme') || t.includes('gameplay')) {
-    return 'text-orange-400 border-orange-400/20 bg-orange-400/5';
+    return 'text-orange-400 border-orange-400/35 bg-orange-400/[0.08] shadow-[0_0_8px_rgba(251,146,60,0.05)]';
   }
   if (t.includes('modeling') || t.includes('modelisation') || t.includes('3d')) {
-    return 'text-pink-400 border-pink-400/20 bg-pink-400/5';
+    return 'text-pink-400 border-pink-400/35 bg-pink-400/[0.08] shadow-[0_0_8px_rgba(244,114,182,0.05)]';
   }
-  return 'text-on-surface-variant/80 border-white/5 bg-white/[0.02]';
+  return 'text-on-surface-variant/80 border-white/10 bg-white/[0.04]';
 }
 
 export default function GamingDevlog() {
@@ -195,12 +195,15 @@ export default function GamingDevlog() {
             </svg>
           </a>
           <a 
-            href="https://github.com/xhuriken/bkntechwebsite" 
+            href="https://discord.gg/bkntech" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="flex items-center justify-between text-xs font-sans font-medium text-on-surface hover:text-primary transition-colors py-1 group"
           >
-            <span>Dépôt Source BKN</span>
+            <span className="flex items-center gap-1.5">
+              <i className="fa-brands fa-discord text-primary text-xs"></i>
+              Rejoindre le Discord
+            </span>
             <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
             </svg>
@@ -259,36 +262,50 @@ export default function GamingDevlog() {
         </div>
 
         {/* Filter and Sort Dropdowns */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-4">
           {/* Trier et afficher */}
-          <div className="relative flex items-center gap-2">
-            <span className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-on-surface-variant/75">
               Filtrer par :
             </span>
-            <select
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
-              className="bg-surface-container-low/60 border border-white/5 rounded-xl px-3 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary/50 cursor-pointer"
-            >
-              <option value="all">{currentLang === 'fr' ? "Tous les types" : "All Types"}</option>
-              {uniqueTypes.filter(t => t !== 'all').map(t => (
-                <option key={t} value={t}>{t}</option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                className="appearance-none bg-surface-container-low/60 border border-white/10 rounded-md pl-3 pr-8 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary/50 cursor-pointer transition-colors"
+              >
+                <option value="all">{currentLang === 'fr' ? "Tous les types" : "All Types"}</option>
+                {uniqueTypes.filter(t => t !== 'all').map(t => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
+              <div className="absolute inset-y-0 right-2.5 flex items-center pointer-events-none text-on-surface-variant/60">
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+              </div>
+            </div>
           </div>
 
-          <div className="relative flex items-center gap-2">
-            <span className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-on-surface-variant/75">
               Tri :
             </span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="bg-surface-container-low/60 border border-white/5 rounded-xl px-3 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary/50 cursor-pointer"
-            >
-              <option value="newest">{currentLang === 'fr' ? "Plus récents" : "Newest"}</option>
-              <option value="oldest">{currentLang === 'fr' ? "Plus anciens" : "Oldest"}</option>
-            </select>
+            <div className="relative">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="appearance-none bg-surface-container-low/60 border border-white/10 rounded-md pl-3 pr-8 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary/50 cursor-pointer transition-colors"
+              >
+                <option value="newest">{currentLang === 'fr' ? "Plus récents" : "Newest"}</option>
+                <option value="oldest">{currentLang === 'fr' ? "Plus anciens" : "Oldest"}</option>
+              </select>
+              <div className="absolute inset-y-0 right-2.5 flex items-center pointer-events-none text-on-surface-variant/60">
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -311,9 +328,12 @@ export default function GamingDevlog() {
           {/* Recent Posts Section (if matching) */}
           {recentPosts.length > 0 && (
             <div className="flex flex-col gap-8">
-              <h2 className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-primary border-b border-primary/20 pb-2">
-                Nouveaux posts
-              </h2>
+              <div className="flex items-center gap-3 border-b border-primary/20 pb-2.5">
+                <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+                <h2 className="text-xs md:text-sm font-sans font-bold uppercase tracking-widest text-primary">
+                  Nouveaux posts de devlog
+                </h2>
+              </div>
 
               <motion.div 
                 variants={containerVariants}
@@ -330,10 +350,13 @@ export default function GamingDevlog() {
 
           {/* Ancient Posts Section (if matching) */}
           {oldPosts.length > 0 && (
-            <div className="flex flex-col gap-8 mt-4">
-              <h2 className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-on-surface-variant/60 border-b border-white/5 pb-2">
-                Anciens posts
-              </h2>
+            <div className="flex flex-col gap-8 mt-6">
+              <div className="flex items-center gap-3 border-b border-white/10 pb-2.5">
+                <span className="w-2 h-2 rounded-full bg-white/20" />
+                <h2 className="text-xs md:text-sm font-sans font-bold uppercase tracking-widest text-on-surface-variant/60">
+                  Anciens posts
+                </h2>
+              </div>
 
               <motion.div 
                 variants={containerVariants}
@@ -362,6 +385,19 @@ function DevlogPostCard({ post, currentLang }) {
   const relativeDate = getRelativeDateString(post.date, currentLang);
   const typeStyle = getTypeStyles(post.type);
 
+  // Determine dot border and bg color based on category/type
+  const getDotColors = (type = '') => {
+    const t = type.toLowerCase();
+    if (t.includes('ui')) return { border: 'border-primary', bg: 'bg-primary' };
+    if (t.includes('player') || t.includes('joueur') || t.includes('améliorations')) return { border: 'border-secondary', bg: 'bg-secondary' };
+    if (t.includes('multiplayer') || t.includes('netcode') || t.includes('reseau')) return { border: 'border-tertiary', bg: 'bg-tertiary' };
+    if (t.includes('core')) return { border: 'border-orange-400', bg: 'bg-orange-400' };
+    if (t.includes('modeling') || t.includes('3d')) return { border: 'border-pink-400', bg: 'bg-pink-400' };
+    return { border: 'border-white/20', bg: 'bg-white/40' };
+  };
+
+  const dotColors = getDotColors(post.type);
+
   return (
     <motion.article 
       variants={{
@@ -371,12 +407,12 @@ function DevlogPostCard({ post, currentLang }) {
       className="relative w-full bg-surface-container-low/40 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl p-5 md:p-6 transition-all duration-300 flex flex-col gap-4 group"
     >
       {/* Timeline Dot */}
-      <div className="absolute -left-[39px] md:-left-[57px] top-7 w-4 h-4 rounded-full bg-surface border-2 border-primary flex items-center justify-center">
-        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+      <div className={`absolute -left-[39px] md:-left-[57px] top-[24px] w-4 h-4 rounded-full bg-surface border-2 ${dotColors.border} flex items-center justify-center`}>
+        <div className={`w-1.5 h-1.5 rounded-full ${dotColors.bg}`} />
       </div>
 
       {/* Timeline Date (Desktop only) */}
-      <div className="hidden md:block absolute -left-[180px] top-6 w-[120px] text-right font-sans font-bold text-[10px] uppercase tracking-wider text-on-surface-variant/70">
+      <div className="hidden md:block absolute -left-[150px] top-[24px] w-[100px] text-right font-mono text-[10px] tracking-wide text-on-surface-variant/65">
         {post.date}
       </div>
 
@@ -384,17 +420,15 @@ function DevlogPostCard({ post, currentLang }) {
       <div className="flex justify-between items-center border-b border-white/5 pb-2">
         <div className="flex items-center gap-2">
           {post.type && (
-            <span className={`text-[10px] font-sans font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-lg border ${typeStyle}`}>
+            <span className={`inline-flex items-center gap-1.5 text-[9px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded-md border ${typeStyle}`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${dotColors.bg} animate-pulse`} />
               {post.type}
             </span>
           )}
-          <span className="text-[10px] font-sans font-semibold text-primary">
-            {post.category === 'gaming' ? '@vacuum_protocol' : ''}
-          </span>
         </div>
         
         {/* Date on Mobile */}
-        <span className="md:hidden text-[9px] font-sans font-medium text-on-surface-variant/50">
+        <span className="md:hidden font-mono text-[9px] text-on-surface-variant/50">
           {post.date}
         </span>
       </div>
