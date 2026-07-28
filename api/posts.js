@@ -76,7 +76,8 @@ export default async function handler(req, res) {
 
   // Authentication Helper
   const checkAuth = () => {
-    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    if (!adminPassword) return false;
     const clientPassword = req.headers['x-admin-password'] || req.body?.adminPassword;
     return clientPassword === adminPassword;
   };

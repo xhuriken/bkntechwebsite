@@ -76,7 +76,7 @@ Write-Host "`n[4/5] Creation du .env.production..." -ForegroundColor Yellow
 $smtpPass = [System.Environment]::GetEnvironmentVariable("SMTP_PASS")
 if (-not $smtpPass) { $smtpPass = "" }
 $adminPass = [System.Environment]::GetEnvironmentVariable("ADMIN_PASSWORD")
-if (-not $adminPass) { $adminPass = "admin123" }
+if (-not $adminPass) { $adminPass = "" }
 
 SSH-CMD @"
 cat > $VPS_PATH/.env.production << 'ENVEOF'

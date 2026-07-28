@@ -54,7 +54,7 @@ VPS_PORT     = int(env_vars.get("VPS_PORT", "22"))
 VPS_SSH_KEY  = env_vars.get("VPS_SSH_KEY_PATH", "~/.ssh/id_ed25519").strip()
 VPS_SSH_KEY  = str(Path(VPS_SSH_KEY.replace("~", str(Path.home()))))
 SMTP_PASS    = env_vars.get("SMTP_PASS", "")
-ADMIN_PASSWORD = env_vars.get("ADMIN_PASSWORD", "admin123")
+ADMIN_PASSWORD = env_vars.get("ADMIN_PASSWORD", "")
 REMOTE_PATH  = "/var/www/bkntech"
 
 print(f"\n{C}==============================================={NC}")

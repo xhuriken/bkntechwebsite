@@ -88,7 +88,7 @@ SMTP_SECURE=true
 SMTP_USER=contact@bkntech.fr
 SMTP_PASS=${SMTP_PASS}
 SMTP_TO=contact@bkntech.fr
-ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+ADMIN_PASSWORD=${ADMIN_PASSWORD}
 ENVEOF"
 echo -e "  ${GREEN}✓ .env.production créé${NC}"
 
