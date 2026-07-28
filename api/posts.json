@@ -126,10 +126,54 @@
     },
     "content": {
       "fr": "Ce projet résout les problèmes de rendu à haute fréquence de flux boursiers en direct. L'application intègre des WebSockets optimisés, un cache en mémoire local ultra-rapide et des visualisations fluides sous SVG et Canvas.",
-      "en": "This project handles high-frequency rendering of live stock market feeds. The application integrates optimized WebSockets, a lightning-fast local cache, and smooth Canvas/SVG data visualizations."
+      "en": "This project handles high-frequency rendering of live stock market feeds. The application integrates optimized WebSockets, a lightning-fast local cache, and data visualizations under Canvas."
     },
     "tags": ["React", "Vite", "WebSockets", "D3.js", "Tailwind CSS"],
     "commentsCount": 12
+  },
+  {
+    "id": "9",
+    "category": "website",
+    "type": "E-Commerce",
+    "date": "2026-07-10",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800",
+    "title": {
+      "fr": "Plateforme E-commerce Headless",
+      "en": "Headless E-commerce Platform"
+    },
+    "description": {
+      "fr": "Boutique en ligne moderne ultra-rapide connectée à Stripe et GraphQL.",
+      "en": "Ultra-fast headless online storefront powered by Stripe and GraphQL."
+    },
+    "content": {
+      "fr": "Cette architecture sépare le CMS de gestion du rendu dynamique Next.js. Elle permet des temps de chargement ultra-rapides (Lighthouse score 100/100) et intègre des webhooks Stripe résilients pour la gestion de stock.",
+      "en": "This architecture decouples the CMS from the dynamic Next.js storefront. It yields instant page loads (100/100 Lighthouse score) and integrates robust Stripe webhooks for real-time inventory management."
+    },
+    "tags": ["Next.js", "GraphQL", "Stripe API", "Tailwind CSS", "Headless CMS"],
+    "commentsCount": 22
+  },
+  {
+    "id": "10",
+    "category": "website",
+    "type": "Real-time",
+    "date": "2026-06-02",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1542744094-3a31f103e35f?q=80&w=800",
+    "title": {
+      "fr": "Tableau Collaboratif Temps Réel",
+      "en": "Real-time Collaborative Board"
+    },
+    "description": {
+      "fr": "Application de tableau blanc partagé utilisant des protocoles WebRTC et CRDT.",
+      "en": "A shared digital whiteboard application using WebRTC and CRDT conflict resolution."
+    },
+    "content": {
+      "fr": "Notre outil permet à des centaines d'utilisateurs de dessiner et d'organiser des notes simultanément sans serveur centralisé grâce au protocole WebRTC. La cohérence des données est garantie par Yjs.",
+      "en": "Our tool lets hundreds of users draw and organize notes simultaneously without a central server using WebRTC. Data consistency is guaranteed by Yjs CRDTs."
+    },
+    "tags": ["React", "Vite", "WebRTC", "Yjs CRDTs", "HTML5 Canvas"],
+    "commentsCount": 14
   },
   {
     "id": "7",
@@ -154,6 +198,50 @@
     "commentsCount": 8
   },
   {
+    "id": "11",
+    "category": "ai-agent",
+    "type": "LLM Orchestration",
+    "date": "2026-07-20",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1685828456637-29009eb73595?q=80&w=800",
+    "title": {
+      "fr": "Agent IA Support Client (RAG)",
+      "en": "AI Customer Support Agent (RAG)"
+    },
+    "description": {
+      "fr": "Un agent conversationnel autonome connecté aux bases de connaissances d'entreprise avec filtrage sémantique.",
+      "en": "An autonomous conversational agent linked to enterprise knowledge bases with semantic search."
+    },
+    "content": {
+      "fr": "Cet agent exploite une architecture RAG (Retrieval-Augmented Generation) pour répondre avec précision aux requêtes clients. Il inclut un pipeline de vectorisation automatisé (Pinecone/OpenAI) et un garde-fou sémantique pour éliminer les hallucinations.",
+      "en": "This agent leverages RAG (Retrieval-Augmented Generation) to answer client queries accurately. It features an automated vectorization pipeline (Pinecone/OpenAI) and semantic guardrails to prevent hallucinations."
+    },
+    "tags": ["LangChain", "OpenAI API", "Pinecone", "Python", "RAG"],
+    "commentsCount": 55
+  },
+  {
+    "id": "12",
+    "category": "ai-agent",
+    "type": "DevOps IA",
+    "date": "2026-06-08",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1618401471353-b98aedd07871?q=80&w=800",
+    "title": {
+      "fr": "Agent DevOps IA Refactoring",
+      "en": "AI DevOps Refactoring Agent"
+    },
+    "description": {
+      "fr": "Analyseur autonome de pull requests pour détecter les failles de sécurité et proposer des corrections automatiques.",
+      "en": "An autonomous pull request analyzer detecting security flaws and submitting automated code corrections."
+    },
+    "content": {
+      "fr": "Intégré dans le pipeline CI/CD, cet agent analyse chaque ligne modifiée, détecte les failles de type OWASP Top 10 et propose directement des commits de correction. Il réduit le temps de revue de code de 40%.",
+      "en": "Integrated into the CI/CD pipeline, this agent analyzes every modified line, detects OWASP Top 10 security flaws, and proposes direct pull request edits. It cuts down code review time by 40%."
+    },
+    "tags": ["GitHub Actions", "Docker", "LLM Fine-tuning", "AST Parsers"],
+    "commentsCount": 30
+  },
+  {
     "id": "8",
     "category": "mobile",
     "type": "Logistics",
@@ -174,5 +262,49 @@
     },
     "tags": ["Flutter", "Dart", "Google Maps", "Background Geolocation"],
     "commentsCount": 15
+  },
+  {
+    "id": "13",
+    "category": "mobile",
+    "type": "Health",
+    "date": "2026-07-02",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1510051640316-ecc39186b64b?q=80&w=800",
+    "title": {
+      "fr": "Fitness Coach Interactif",
+      "en": "Interactive Fitness Coach"
+    },
+    "description": {
+      "fr": "Application mobile de suivi d'entraînements avec détection de posture par caméra.",
+      "en": "Mobile workout tracking application featuring real-time camera pose estimation."
+    },
+    "content": {
+      "fr": "Développée en React Native, l'application intègre des modèles TensorFlow Lite locaux pour analyser la posture de l'utilisateur en temps réel lors de ses exercices physiques, protégeant ainsi l'anonymat des données.",
+      "en": "Developed using React Native, the app integrates local TensorFlow Lite models to analyze user posture in real-time during physical workouts, keeping all tracking data private."
+    },
+    "tags": ["React Native", "TensorFlow Lite", "Expo", "iOS & Android"],
+    "commentsCount": 19
+  },
+  {
+    "id": "14",
+    "category": "mobile",
+    "type": "Fintech",
+    "date": "2026-05-15",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?q=80&w=800",
+    "title": {
+      "fr": "Wallet Multi-Chaînes Sécurisé",
+      "en": "Secure Multi-Chain Wallet"
+    },
+    "description": {
+      "fr": "Portefeuille mobile non-dépositaire avec cryptage biométrique local et signature multi-partie (MPC).",
+      "en": "Non-custodial mobile wallet featuring local biometric encryption and multi-party computation (MPC) signatures."
+    },
+    "content": {
+      "fr": "Cette application permet aux utilisateurs de stocker et d'échanger des crypto-actifs en toute sécurité. Les clés privées sont cryptées localement dans l'enclave sécurisée de l'appareil (Secure Enclave / KeyStore).",
+      "en": "This application enables users to store and trade cryptographic assets securely. Private keys are encrypted locally inside the hardware enclave of the mobile device (Secure Enclave / KeyStore)."
+    },
+    "tags": ["Flutter", "Dart", "Web3", "Cryptography", "Secure Enclave"],
+    "commentsCount": 26
   }
 ]
