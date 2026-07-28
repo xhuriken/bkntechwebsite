@@ -245,12 +245,17 @@ export default function Portfolio() {
                   Un jeu de tir tactique multijoueur compétitif en 3D développé sous Unity HDRP. Explorez notre cycle de développement à long terme, nos optimisations netcode et nos avancées d'intégration de gameplay.
                 </p>
 
-                {/* Tech badges */}
-                <div className="flex flex-wrap gap-2 mt-1">
-                  <span className="text-[9px] font-sans font-semibold px-2.5 py-0.5 bg-surface border border-white/5 rounded-full text-on-surface-variant/80 uppercase tracking-wide">Unity</span>
-                  <span className="text-[9px] font-sans font-semibold px-2.5 py-0.5 bg-surface border border-white/5 rounded-full text-on-surface-variant/80 uppercase tracking-wide">C#</span>
-                  <span className="text-[9px] font-sans font-semibold px-2.5 py-0.5 bg-surface border border-white/5 rounded-full text-on-surface-variant/80 uppercase tracking-wide">Mirror Netcode</span>
-                  <span className="text-[9px] font-sans font-semibold px-2.5 py-0.5 bg-surface border border-white/5 rounded-full text-on-surface-variant/80 uppercase tracking-wide">3D Physics</span>
+                {/* Terminal line for tags */}
+                <div className="w-full max-w-md font-mono text-[9px] bg-black/40 border border-white/5 rounded-lg p-2.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-green-400 select-none mt-1">
+                  <span className="text-white/20">$</span>
+                  <span className="text-on-surface-variant/50">ls keywords:</span>
+                  <span className="text-white font-bold">unity</span>
+                  <span className="text-white/20">•</span>
+                  <span className="text-white font-bold">c#</span>
+                  <span className="text-white/20">•</span>
+                  <span className="text-white font-bold">mirror_netcode</span>
+                  <span className="text-white/20">•</span>
+                  <span className="text-white font-bold">3d_physics</span>
                 </div>
               </div>
 

@@ -213,8 +213,16 @@ export default function PortfolioSection() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="relative border-l border-white/5 ml-4 md:ml-32 pl-8 md:pl-12 flex flex-col gap-16 md:gap-24"
+          className="relative ml-4 md:ml-32 pl-8 md:pl-12 flex flex-col gap-16 md:gap-24"
         >
+          {/* Self-drawing vertical timeline border */}
+          <motion.div 
+            initial={{ height: 0 }}
+            whileInView={{ height: '100%' }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
+            className="absolute left-0 top-0 w-px bg-gradient-to-b from-white/15 via-white/5 to-transparent origin-top"
+          />
           {posts.map((post) => {
             const ytId = post.mediaType === 'video' ? getYouTubeId(post.mediaUrl) : null;
             const dotColors = getDotColors(post.type, post.category);
@@ -225,15 +233,27 @@ export default function PortfolioSection() {
                 variants={itemVariants}
                 className="relative w-full bg-surface-container-low/25 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl p-6 md:p-8 transition-all duration-300 flex flex-col gap-6 group"
               >
-                {/* Timeline Dot */}
-                <div className={`absolute -left-[39px] md:-left-[57px] top-[30px] w-4 h-4 rounded-full bg-surface border-2 ${dotColors.border} flex items-center justify-center`}>
+                {/* Timeline Dot (Desktop & Mobile) - Spring pop on viewport entry */}
+                <motion.div 
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ type: 'spring', stiffness: 220, delay: 0.15 }}
+                  className={`absolute -left-[39px] md:-left-[57px] top-[30px] w-4 h-4 rounded-full bg-surface border-2 ${dotColors.border} flex items-center justify-center`}
+                >
                   <div className={`w-1.5 h-1.5 rounded-full ${dotColors.bg} animate-pulse`} />
-                </div>
+                </motion.div>
 
-                {/* Timeline Date (hidden on mobile, positioned left of vertical line on desktop) */}
-                <div className={`hidden md:block absolute -left-[175px] top-[26px] w-[110px] text-right font-mono text-[10px] tracking-wide font-bold ${dotColors.text}`}>
+                {/* Timeline Date (Desktop only) - Fade and slide on viewport entry */}
+                <motion.div 
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.5, delay: 0.05 }}
+                  className={`hidden md:block absolute -left-[175px] top-[26px] w-[110px] text-right font-mono text-[10px] tracking-wide font-bold ${dotColors.text}`}
+                >
                   {post.date}
-                </div>
+                </motion.div>
 
                 {/* Mobile Date (visible only on mobile) */}
                 <div className={`md:hidden font-mono text-[10px] font-bold ${dotColors.text}`}>
