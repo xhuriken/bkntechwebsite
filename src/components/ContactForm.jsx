@@ -154,7 +154,7 @@ export default function ContactForm() {
   useEffect(() => {
     // Obfuscation assembly on mount
     const emailParts = ['contact', '@', 'bkntech', '.', 'fr'];
-    const phoneParts = ['+', '33', ' ', '1', ' ', '00', ' ', '00', ' ', '00', ' ', '00'];
+    const phoneParts = ['+', '33', ' ', '6', ' ', '61', ' ', '20', ' ', '14', ' ', '18'];
     setEmailText(emailParts.join(''));
     setPhoneText(phoneParts.join(''));
   }, []);
@@ -290,7 +290,7 @@ export default function ContactForm() {
                 <div>
                   <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-secondary transition-colors">Téléphone</div>
                   <span className="text-sm font-semibold text-on-surface group-hover:text-white transition-colors">
-                    {phoneText || '+33 1 00 00 00 00'}
+                    {phoneText || '+33 6 61 20 14 18'}
                   </span>
                 </div>
               </motion.a>

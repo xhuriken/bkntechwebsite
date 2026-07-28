@@ -1,0 +1,77 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install sshpass and rsync
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq sshpass rsync
+
+      - name: Sync files to VPS
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
+        run: |
+          VPS_HOST="${VPS_HOST:-151.80.147.208}"
+          VPS_PORT="${VPS_PORT:-22}"
+          VPS_USER="${VPS_USER:-ubuntu}"
+          REMOTE_PATH="/var/www/bkntech"
+
+          sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "mkdir -p $REMOTE_PATH"
+
+          sshpass -p "$VPS_PASSWORD" rsync -avz --delete \
+            --exclude='node_modules' \
+            --exclude='dist' \
+            --exclude='.git' \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='*.log' \
+            -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p $VPS_PORT" \
+            ./ "${VPS_USER}@${VPS_HOST}:$REMOTE_PATH/"
+
+      - name: Update .env.production and Restart Docker
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        run: |
+          VPS_HOST="${VPS_HOST:-151.80.147.208}"
+          VPS_PORT="${VPS_PORT:-22}"
+          VPS_USER="${VPS_USER:-ubuntu}"
+          REMOTE_PATH="/var/www/bkntech"
+
+          sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "
+            set -e
+            cd $REMOTE_PATH
+
+            cat > .env.production << 'ENVEOF'
+          SMTP_HOST=ssl0.ovh.net
+          SMTP_PORT=465
+          SMTP_SECURE=true
+          SMTP_USER=contact@bkntech.fr
+          SMTP_PASS=${SMTP_PASS}
+          SMTP_TO=contact@bkntech.fr
+          ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+          ENVEOF
+
+            echo 'Rebuilding Docker containers...'
+            docker compose build --no-cache
+            docker compose up -d
+            docker compose ps
+          "

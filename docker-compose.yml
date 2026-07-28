@@ -2,15 +2,17 @@ services:
 
   # ─── Traefik : Reverse Proxy + SSL Let's Encrypt ─────────────────────────────
   traefik:
-    image: traefik:v3.3
+    image: traefik:v2.11
     container_name: traefik
     restart: unless-stopped
     command:
+      - "--log.level=DEBUG"
       - "--api.insecure=false"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls=true"
       # Redirection HTTP → HTTPS globale
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
