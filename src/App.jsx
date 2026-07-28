@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Portfolio from './pages/Portfolio';
 import Game from './pages/Game';
 import MentionsLegales from './pages/MentionsLegales';
+import PolitiqueConfidentialite from './pages/PolitiqueConfidentialite';
 import PortfolioSection from './pages/PortfolioSection';
 import PortfolioAdmin from './pages/PortfolioAdmin';
 import GamingDevlog from './pages/GamingDevlog';
@@ -60,6 +61,7 @@ function App() {
             <Route path="/portfolio/admin" element={<PortfolioAdmin />} />
             <Route path="/game" element={<Game />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
+            <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
           </Routes>
         </main>
 

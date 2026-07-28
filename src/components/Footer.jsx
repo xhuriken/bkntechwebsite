@@ -296,9 +296,9 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
+                  <Link to="/politique-de-confidentialite" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
                     Politique de Confidentialité
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
