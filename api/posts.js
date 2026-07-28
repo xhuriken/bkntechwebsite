@@ -101,7 +101,7 @@ export default async function handler(req, res) {
 
   // 3. POST / PUT Request (Create or Edit)
   if (req.method === 'POST') {
-    const { id, category, date, mediaType, mediaUrl, title, description, content, tags } = req.body;
+    const { id, category, type, date, mediaType, mediaUrl, title, description, content, tags, commentsCount, postToDiscord } = req.body;
 
     if (!category || !title?.fr || !title?.en || !description?.fr || !description?.en || !content?.fr || !content?.en) {
       return res.status(400).json({ error: 'Missing required fields.' });
@@ -110,13 +110,15 @@ export default async function handler(req, res) {
     const postData = {
       id: id || Date.now().toString(),
       category,
+      type: type || (category === 'gaming' ? 'General' : ''),
       date: date || new Date().toISOString().split('T')[0],
       mediaType: mediaType || 'image',
       mediaUrl: mediaUrl || 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800',
       title,
       description,
       content,
-      tags: Array.isArray(tags) ? tags : []
+      tags: Array.isArray(tags) ? tags : [],
+      commentsCount: commentsCount !== undefined ? parseInt(commentsCount, 10) : 0
     };
 
     const existingIndex = posts.findIndex(p => p.id === postData.id);
@@ -129,6 +131,31 @@ export default async function handler(req, res) {
     const success = writeDb(posts);
     if (!success) {
       return res.status(500).json({ error: 'Failed to write to database.' });
+    }
+
+    // Trigger Discord Webhook Notification if configured and category is gaming
+    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+    if (postToDiscord && webhookUrl && category === 'gaming') {
+      try {
+        fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            embeds: [{
+              title: `🛠️ BKN Tech Devlog : ${title.fr}`,
+              description: `**${description.fr}**\n\n${content.fr.slice(0, 400)}`,
+              fields: [
+                { name: 'Catégorie / Type', value: postData.type, inline: true },
+                { name: 'Date', value: postData.date, inline: true }
+              ],
+              image: postData.mediaType === 'image' ? { url: postData.mediaUrl } : undefined,
+              color: 0xbec2ff
+            }]
+          })
+        }).catch(err => console.error("Error executing discord webhook promise:", err));
+      } catch (webhookErr) {
+        console.error("Failed to invoke Discord Webhook:", webhookErr);
+      }
     }
 
     return res.status(200).json(posts);

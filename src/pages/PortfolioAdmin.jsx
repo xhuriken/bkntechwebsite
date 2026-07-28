@@ -21,8 +21,10 @@ export default function PortfolioAdmin() {
 
   // Form states
   const [editingId, setEditingId] = useState(null);
+  const [postToDiscord, setPostToDiscord] = useState(true);
   const [formData, setFormData] = useState({
     category: 'gaming',
+    type: '',
     date: new Date().toISOString().split('T')[0],
     mediaType: 'image',
     mediaUrl: '',
@@ -32,7 +34,8 @@ export default function PortfolioAdmin() {
     descFr: '',
     descEn: '',
     contentFr: '',
-    contentEn: ''
+    contentEn: '',
+    commentsCount: '0'
   });
 
   // Verify auth on mount if password exists
@@ -89,6 +92,7 @@ export default function PortfolioAdmin() {
     setEditingId(post.id);
     setFormData({
       category: post.category,
+      type: post.type || '',
       date: post.date,
       mediaType: post.mediaType || 'image',
       mediaUrl: post.mediaUrl || '',
@@ -98,7 +102,8 @@ export default function PortfolioAdmin() {
       descFr: post.description.fr,
       descEn: post.description.en,
       contentFr: post.content.fr,
-      contentEn: post.content.en
+      contentEn: post.content.en,
+      commentsCount: post.commentsCount !== undefined ? String(post.commentsCount) : '0'
     });
     // Scroll smoothly to form
     document.getElementById('edit-form-anchor')?.scrollIntoView({ behavior: 'smooth' });
@@ -112,6 +117,7 @@ export default function PortfolioAdmin() {
   const resetForm = () => {
     setFormData({
       category: 'gaming',
+      type: '',
       date: new Date().toISOString().split('T')[0],
       mediaType: 'image',
       mediaUrl: '',
@@ -121,8 +127,10 @@ export default function PortfolioAdmin() {
       descFr: '',
       descEn: '',
       contentFr: '',
-      contentEn: ''
+      contentEn: '',
+      commentsCount: '0'
     });
+    setPostToDiscord(true);
   };
 
   const handleSubmit = (e) => {
@@ -133,6 +141,7 @@ export default function PortfolioAdmin() {
     const payload = {
       id: editingId, // Will create new if null, or edit if matches existing ID
       category: formData.category,
+      type: formData.type || (formData.category === 'gaming' ? 'General' : ''),
       date: formData.date,
       mediaType: formData.mediaType,
       mediaUrl: formData.mediaUrl,
@@ -148,7 +157,9 @@ export default function PortfolioAdmin() {
       content: {
         fr: formData.contentFr,
         en: formData.contentEn
-      }
+      },
+      commentsCount: parseInt(formData.commentsCount || '0', 10),
+      postToDiscord
     };
 
     fetch('/api/posts', {
@@ -441,6 +452,56 @@ export default function PortfolioAdmin() {
                   required
                 />
               </div>
+
+              {/* Devlog Type (Gaming category specific) */}
+              {formData.category === 'gaming' && (
+                <div className="flex flex-col gap-1">
+                  <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
+                    Type de Devlog (ex: UI, Multiplayer, Core, 3D modeling)
+                  </label>
+                  <input 
+                    type="text"
+                    name="type"
+                    value={formData.type}
+                    onChange={handleChange}
+                    placeholder="UI, Multiplayer, etc."
+                    className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50"
+                    required={formData.category === 'gaming'}
+                  />
+                </div>
+              )}
+
+              {/* Comments Count Simulation */}
+              <div className="flex flex-col gap-1">
+                <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
+                  Nombre de Commentaires
+                </label>
+                <input 
+                  type="number"
+                  name="commentsCount"
+                  value={formData.commentsCount}
+                  onChange={handleChange}
+                  min="0"
+                  className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50"
+                  required
+                />
+              </div>
+
+              {/* Discord Webhook Option (Gaming specific) */}
+              {formData.category === 'gaming' && (
+                <div className="md:col-span-2 flex items-center gap-2 py-1">
+                  <input 
+                    type="checkbox"
+                    id="postToDiscord"
+                    checked={postToDiscord}
+                    onChange={(e) => setPostToDiscord(e.target.checked)}
+                    className="rounded border-white/10 text-primary focus:ring-0 cursor-pointer"
+                  />
+                  <label htmlFor="postToDiscord" className="text-xs font-sans text-on-surface-variant cursor-pointer select-none">
+                    Publier une notification sur Discord (Webhook)
+                  </label>
+                </div>
+              )}
 
               {/* Tags */}
               <div className="md:col-span-2 flex flex-col gap-1">
