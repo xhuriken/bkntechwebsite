@@ -186,7 +186,7 @@ export default function Footer() {
   const { t } = useTranslation();
 
   return (
-    <footer className="w-full bg-surface-container-lowest/30 backdrop-blur-md border-t border-white/5 pt-16 pb-8 px-6 md:px-12 z-10 relative mt-auto overflow-hidden">
+    <footer className="w-full bg-surface-container-lowest/30 backdrop-blur-md border-t border-white/5 pt-4 pb-4 px-6 md:px-12 z-10 relative mt-auto overflow-hidden">
       {/* Passive Noise Texture background */}
       <div 
         className="absolute inset-0 opacity-15 pointer-events-none" 
@@ -195,15 +195,15 @@ export default function Footer() {
           backgroundBlendMode: 'soft-light'
         }}
       />
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 pb-4 items-stretch">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 pb-1 items-stretch">
         
         {/* Part 1: Info, Links & Copyright (Left) - col-span-8 */}
-        <div className="lg:col-span-8 flex flex-col justify-between gap-8 pb-4 border-l-2 border-secondary/30 pl-6 md:pl-8">
+        <div className="lg:col-span-8 flex flex-col justify-between gap-8 pb-1">
           
           {/* Row 1: Columns */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
             {/* Column 1: Identity & Socials */}
-            <div className="md:col-span-6 flex flex-col gap-4 md:border-r border-white/5 md:pr-8">
+            <div className="md:col-span-6 flex flex-col gap-4 md:border-r border-white/5 md:pr-8 mt-4 lg:mt-6">
               <div className="flex items-center gap-1.5">
                 <span className="text-primary font-bold text-xs select-none">&gt;</span>
                 <span className="font-sans font-extrabold tracking-[0.2em] text-sm text-primary uppercase select-none">
@@ -255,7 +255,7 @@ export default function Footer() {
             </div>
 
             {/* Column 2: Navigation Links */}
-            <div className="md:col-span-3 flex flex-col gap-4 md:border-r border-white/5 md:pr-8">
+            <div className="md:col-span-3 flex flex-col gap-4 md:border-r border-white/5 md:pr-8 mt-4 lg:mt-6">
               <div className="flex items-center gap-1.5 select-none">
                 <span className="text-primary/75 font-semibold text-[9px]">&gt;</span>
                 <span className="font-sans font-semibold tracking-wider text-[11px] uppercase text-primary/80">
@@ -282,7 +282,7 @@ export default function Footer() {
             </div>
 
             {/* Column 3: Legal Links */}
-            <div className="md:col-span-3 flex flex-col gap-4 md:pl-2">
+            <div className="md:col-span-3 flex flex-col gap-4 md:pl-2 mt-4 lg:mt-6">
               <div className="flex items-center gap-1.5 select-none">
                 <span className="text-primary/75 font-semibold text-[9px]">&gt;</span>
                 <span className="font-sans font-semibold tracking-wider text-[11px] uppercase text-primary/80">
@@ -305,7 +305,7 @@ export default function Footer() {
           </div>
 
           {/* Row 2: Bottom copyright / authors inside Part 1 */}
-          <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-on-surface-variant/40 text-[10px] uppercase tracking-wider font-sans font-medium">
+          <div className="pt-6 pb-2 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-on-surface-variant/40 text-[10px] uppercase tracking-wider font-sans font-medium mb-1">
             <div>
               BKN TECH &copy; {new Date().getFullYear()} &mdash; TOUS DROITS RÉSERVÉS.
             </div>
@@ -317,7 +317,7 @@ export default function Footer() {
         </div>
 
         {/* Part 2: Interactive Cyberpunk Vector Node Canvas (Right) - col-span-4 */}
-        <div className="lg:col-span-4 flex border-r-2 border-secondary/30 pr-6 md:pr-8">
+        <div className="lg:col-span-4 flex">
           <InteractiveNetwork />
         </div>
 
