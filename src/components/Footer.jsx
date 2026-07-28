@@ -42,10 +42,9 @@ function InteractiveNetwork() {
     }
 
     const handleMouseMove = (e) => {
-      const rect = canvas.getBoundingClientRect();
       mouseRef.current = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
+        x: e.offsetX,
+        y: e.offsetY,
         active: true
       };
     };
@@ -318,7 +317,7 @@ export default function Footer() {
         </div>
 
         {/* Part 2: Interactive Cyberpunk Vector Node Canvas (Right) - col-span-4 */}
-        <div className="lg:col-span-4 flex">
+        <div className="lg:col-span-4 flex lg:py-3">
           <InteractiveNetwork />
         </div>
 
