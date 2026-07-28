@@ -177,7 +177,7 @@ function CarouselList({ children }) {
   return (
     <div 
       ref={containerRef} 
-      className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent snap-x snap-mandatory scroll-smooth -mx-6 px-6 md:mx-0 md:px-0"
+      className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent -mx-6 px-6 md:mx-0 md:px-0"
     >
       {children}
     </div>
@@ -418,7 +418,7 @@ export default function Portfolio() {
                         <Link 
                           to={`/portfolio/section/${post.category}`}
                           key={post.id}
-                          className="snap-start flex-shrink-0 w-[360px] sm:w-[440px] bg-surface-container-low/45 backdrop-blur-md border border-white/5 hover:border-primary/20 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer"
+                          className="flex-shrink-0 w-[360px] sm:w-[440px] bg-surface-container-low/45 backdrop-blur-md border border-white/5 hover:border-primary/20 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer"
                         >
                           {/* Terminal Header */}
                           <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none relative overflow-hidden">
