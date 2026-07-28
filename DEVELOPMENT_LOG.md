@@ -139,4 +139,27 @@ Création et intégration du formulaire de contact haut de gamme, sécurisé con
 - **Persistance & Architecture (Portfolio / Blog d'Administration)** : Afin de respecter le principe KISS et d'éviter les coûts d'infrastructure d'une base de données externe, le portfolio utilise un fichier JSON [posts.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/posts.json) comme base de données (SSOT). Nous l'avons enrichi en ajoutant 6 nouveaux posts réalistes et complets répartis sur toutes les catégories (SaaS, RAG, WebRTC, Fitness React Native, Wallet Flutter, DevOps CI/CD). Pour pallier la restriction des environnements cloud de type serverless en lecture seule (ex: Vercel), l'API met en place une bascule automatique vers le répertoire temporaire `/tmp` de l'instance d'exécution à chaud. Une fonctionnalité d'export de sauvegarde (Download JSON) permet à l'administrateur de télécharger l'état de la base de données après édition en ligne, pour pouvoir la versionner et la réintégrer définitivement dans le code source de production via Git. La gestion multilingue est intégrée directement dans le schéma de chaque projet (`title.fr` / `title.en`) pour éliminer toute redondance de structure de page.
 - **Intégration Devlog Gaming & Webhook Discord** : La conversion de la section Gaming en Devlog de projet ("Vacuum Protocol") répond à la nature de production à long terme de l'agence. Le filtrage et l'esthétique "Discord-like" (compteurs de commentaires, types de posts, classification temporelle "Nouveaux posts" et "Anciens posts" de plus de 30 jours calculée dynamiquement, et timeline de dates sur le côté gauche) procurent une immersion complète. Le pontage de l'API de publication vers un Webhook Discord optionnel (`DISCORD_WEBHOOK_URL`) permet de notifier instantanément la communauté de développeurs ou les associés lors d'un nouveau commit de devlog, créant un pipeline de communication unifié.
 
+---
+
+## [2026-07-29] Audit RGPD, Sécurisation Nginx & Optimisation SEO OpenGraph
+
+### Tâche
+Audit complet de la politique de confidentialité, mise en conformité stricte des mentions légales et renforcement des en-têtes de sécurité HTTP ainsi que du SEO social.
+
+### Modifications
+- Audit de conformité RGPD / CNIL de la page [PolitiqueConfidentialite.jsx](file:///c:/Users/kikep/Desktop/Bkn%20Society/bkntechwebsite/src/pages/PolitiqueConfidentialite.jsx) : validation de l'absence totale de trackers tiers/analytics et de la minimisation des données transmises via le formulaire.
+- Mise à jour corrective de [MentionsLegales.jsx](file:///c:/Users/kikep/Desktop/Bkn%20Society/bkntechwebsite/src/pages/MentionsLegales.jsx) :
+  - Ajustement du capital social exact à `2 020,00 €` (selon les statuts officiels du KBIS).
+  - Désignation nominative obligatoire du Directeur de la publication : `Enrique Puerto (Président)` (conformément à l'Art. 93-2 de la loi sur la communication audiovisuelle).
+  - Ajout du contact e-mail direct `contact@bkntech.fr` dans la section Éditeur (Art. 6.I.1.c de la LCEN).
+- Intégration des en-têtes de sécurité HTTP (OWASP) dans [nginx.conf](file:///c:/Users/kikep/Desktop/Bkn%20Society/bkntechwebsite/nginx.conf) (`X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`).
+- Intégration des balises meta Open Graph (`og:type`, `og:title`, `og:description`, `og:url`, `og:site_name`) et Twitter Cards (`twitter:card`) dans [index.html](file:///c:/Users/kikep/Desktop/Bkn%20Society/bkntechwebsite/index.html) pour l'optimisation de l'aperçu du site lors des partages sur les réseaux sociaux (LinkedIn, WhatsApp, Discord, Twitter).
+- Validation complète de la compilation de production (`npm run build`) réussie en 354ms avec 0 erreur.
+
+### Justification Technique
+- **Légalité & Conformité** : L'ajustement du capital social et la nomination explicite du Directeur de la publication garantissent le respect strict de la LCEN et protègent l'entreprise en cas de contrôle réglementaire.
+- **Sécurité Réseau (OWASP)** : L'ajout des en-têtes HTTP de sécurité dans Nginx prémunit le site contre le clickjacking et la manipulation de types MIME, renforçant la note de sécurité sur des outils d'audit comme Mozilla Observatory.
+- **Visibilité & SEO (OpenGraph)** : Les métadonnées OpenGraph et Twitter Cards garantissent que tout partage d'URL par un client ou sur les réseaux sociaux générera une vignette de présentation professionnelle et structurée.
+
+
 

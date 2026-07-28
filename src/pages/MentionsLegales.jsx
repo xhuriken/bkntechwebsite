@@ -63,9 +63,13 @@ export default function MentionsLegales() {
           </h2>
           <div className="text-sm font-normal text-on-surface leading-relaxed">
             <strong className="text-on-surface font-semibold">Bkn Tech</strong> (SAS)<br />
-            Société par Actions Simplifiée au capital de 1 000 €<br />
+            Société par Actions Simplifiée au capital de 2 020,00 €<br />
             Siège social : 47 rue Vivienne, 75002 Paris, France<br />
-            Directeurs de la publication : Associés fondateurs de Bkn Tech
+            Directeur de la publication : Enrique Puerto (Président)<br />
+            E-mail de contact :{' '}
+            <a href="mailto:contact@bkntech.fr" className="text-secondary hover:underline font-medium">
+              contact@bkntech.fr
+            </a>
           </div>
         </motion.section>
 
