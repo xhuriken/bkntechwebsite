@@ -202,7 +202,7 @@ export default function Portfolio() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-col gap-16 md:gap-20"
+          className="flex flex-col gap-10 md:gap-12"
         >
           {/* Projet à la une : Vacuum Protocol */}
           <motion.div 
@@ -300,17 +300,28 @@ export default function Portfolio() {
           {categories.map((cat) => {
             const catPosts = posts.filter(p => p.category === cat.key);
             
+            // Map category key to its specific brand color gradient
+            const getCategoryGradient = (catKey) => {
+              if (catKey === 'website') return 'from-secondary to-transparent';
+              if (catKey === 'ai-agent') return 'from-tertiary to-transparent';
+              return 'from-primary to-transparent';
+            };
+
             return (
               <motion.section 
                 key={cat.key} 
                 variants={sectionVariants}
-                className="flex flex-col gap-6"
+                className="flex flex-col gap-5"
               >
                 {/* Section Header */}
                 <div className="flex justify-between items-center border-b border-white/5 pb-3">
-                  <h2 className="font-sans font-bold text-lg md:text-xl uppercase tracking-wider text-primary">
-                    {cat.title}
-                  </h2>
+                  <div className="flex items-center gap-3">
+                    {/* Animated vertical brand-colored gradient pill */}
+                    <span className={`w-1.5 h-6 rounded-full bg-gradient-to-b ${getCategoryGradient(cat.key)}`} />
+                    <h2 className="font-sans font-extrabold text-xl md:text-2xl uppercase tracking-tight text-on-surface">
+                      {cat.title}
+                    </h2>
+                  </div>
                   <Link 
                     to={`/portfolio/section/${cat.key}`}
                     className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold uppercase tracking-wider text-on-surface hover:text-primary transition-colors group"
