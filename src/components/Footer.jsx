@@ -81,27 +81,50 @@ function InteractiveNetwork() {
       
       // Update & Draw particles
       particles.forEach((p) => {
+        // Base movement displacement
         p.x += p.vx;
         p.y += p.vy;
 
-        if (p.x < 0 || p.x > width) p.vx *= -1;
-        if (p.y < 0 || p.y > height) p.vy *= -1;
+        // Bounce boundaries check with coordinate containment
+        if (p.x < 0) { p.x = 0; p.vx *= -1; }
+        if (p.x > width) { p.x = width; p.vx *= -1; }
+        if (p.y < 0) { p.y = 0; p.vy *= -1; }
+        if (p.y > height) { p.y = height; p.vy *= -1; }
 
+        // Gravitational steering from mouse cursor
         if (mouse.active) {
           const dx = mouse.x - p.x;
           const dy = mouse.y - p.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           
-          if (dist < 80) {
-            const force = (80 - dist) / 80;
-            p.x += (dx / dist) * force * 0.7;
-            p.y += (dy / dist) * force * 0.7;
+          if (dist < 90) {
+            const force = (90 - dist) / 90;
+            // Add light acceleration towards cursor coordinate
+            p.vx += (dx / dist) * force * 0.08;
+            p.vy += (dy / dist) * force * 0.08;
           }
+        }
+
+        // Apply friction dampening to prevent speed building up infinitely
+        p.vx *= 0.96;
+        p.vy *= 0.96;
+
+        // Force containment within target speed limits
+        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        const minSpeed = 0.2;
+        const maxSpeed = 0.75;
+        if (speed < minSpeed) {
+          const angle = Math.atan2(p.vy, p.vx) || Math.random() * Math.PI * 2;
+          p.vx = Math.cos(angle) * minSpeed;
+          p.vy = Math.sin(angle) * minSpeed;
+        } else if (speed > maxSpeed) {
+          p.vx = (p.vx / speed) * maxSpeed;
+          p.vy = (p.vy / speed) * maxSpeed;
         }
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(190, 194, 255, 0.25)'; // primary color faded
+        ctx.fillStyle = 'rgba(190, 194, 255, 0.35)'; // primary color faded
         ctx.fill();
       });
 
@@ -158,8 +181,8 @@ function InteractiveNetwork() {
   }, []);
 
   return (
-    <div ref={containerRef} className="w-full h-full min-h-[160px] bg-black/45 border border-white/5 rounded-xl overflow-hidden relative cursor-crosshair">
-      <canvas ref={canvasRef} className="w-full h-full block" />
+    <div ref={containerRef} className="w-full h-full min-h-[160px] flex flex-col flex-grow bg-black/45 border border-white/5 rounded-xl overflow-hidden relative cursor-crosshair">
+      <canvas ref={canvasRef} className="w-full h-full block flex-grow" />
     </div>
   );
 }
@@ -289,7 +312,7 @@ export default function Footer() {
         </div>
 
         {/* Part 2: Interactive Cyberpunk Vector Node Canvas (Right) - col-span-4 */}
-        <div className="lg:col-span-4 flex flex-col justify-stretch">
+        <div className="lg:col-span-4 flex">
           <InteractiveNetwork />
         </div>
 
