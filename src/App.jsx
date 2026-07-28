@@ -7,6 +7,9 @@ import Home from './pages/Home';
 import Portfolio from './pages/Portfolio';
 import Game from './pages/Game';
 import MentionsLegales from './pages/MentionsLegales';
+import PortfolioSection from './pages/PortfolioSection';
+import PortfolioAdmin from './pages/PortfolioAdmin';
+import GamingDevlog from './pages/GamingDevlog';
 
 /**
  * ScrollToAnchor component handles scrolling smoothly to anchors when URL changes.
@@ -52,6 +55,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/portfolio/section/gaming" element={<GamingDevlog />} />
+            <Route path="/portfolio/section/:category" element={<PortfolioSection />} />
+            <Route path="/portfolio/admin" element={<PortfolioAdmin />} />
             <Route path="/game" element={<Game />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
           </Routes>

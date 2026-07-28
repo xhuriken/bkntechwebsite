@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import InputField from './InputField';
@@ -27,9 +27,108 @@ async function solveChallenge(salt) {
       return { nonce, hash };
     }
     nonce++;
-    // Safety break to prevent freeze (though complexity 3 takes ~10-100ms)
     if (nonce > 50000) return { nonce, hash };
   }
+}
+
+/**
+ * A dynamic typing effect terminal list of technologies inside the contact panel
+ */
+function TerminalList() {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [typedCommand, setTypedCommand] = useState("");
+  const [showTagsCount, setShowTagsCount] = useState(0);
+  const [coloredTagsCount, setColoredTagsCount] = useState(0);
+  
+  const stack = ['laravel', 'react', 'unity', 'flutter', 'docker', 'tailwind', 'mirror'];
+  const commandText = "ls keywords";
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.1 });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible || !stack || stack.length === 0) return;
+
+    let timeoutId;
+    
+    const typeCommand = (charIndex) => {
+      if (charIndex <= commandText.length) {
+        setTypedCommand(commandText.slice(0, charIndex));
+        timeoutId = setTimeout(() => typeCommand(charIndex + 1), 70);
+      } else {
+        timeoutId = setTimeout(() => startOutputtingTags(1), 300);
+      }
+    };
+
+    const startOutputtingTags = (count) => {
+      if (count <= stack.length) {
+        setShowTagsCount(count);
+        timeoutId = setTimeout(() => startOutputtingTags(count + 1), 160);
+      } else {
+        timeoutId = setTimeout(() => colorTags(1), 250);
+      }
+    };
+
+    const colorTags = (count) => {
+      if (count <= stack.length) {
+        setColoredTagsCount(count);
+        timeoutId = setTimeout(() => colorTags(count + 1), 120);
+      }
+    };
+
+    typeCommand(0);
+
+    return () => clearTimeout(timeoutId);
+  }, [isVisible]);
+
+  if (!stack || stack.length === 0) return null;
+
+  return (
+    <div ref={ref} className="flex flex-col gap-2 flex-grow justify-between min-h-[110px] w-full font-mono text-[9px] select-none text-left text-green-400">
+      <div className="flex flex-col gap-1.5">
+        {/* Terminal Command Header */}
+        <div className="text-[8px] font-mono text-on-surface-variant/40 border-b border-white/5 pb-1 mb-1.5 flex items-center gap-1.5 h-4">
+          <span className="text-white/20">$</span>
+          <span>{typedCommand}</span>
+          {typedCommand.length < commandText.length && isVisible && (
+            <span className="w-1 h-2.5 bg-primary/70 animate-pulse" />
+          )}
+        </div>
+
+        {/* Tags outputs */}
+        <div className="flex flex-col gap-1">
+          {stack.slice(0, showTagsCount).map((item, idx) => {
+            const isColored = idx < coloredTagsCount;
+            return (
+              <div key={idx} className="flex items-center gap-1.5">
+                <span className="text-white/20">&gt;</span>
+                <span className={isColored ? "text-green-400 font-bold transition-all duration-300" : "text-white/50"}>
+                  {item}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      
+      {/* Bottom prompt indicator */}
+      <div className="flex items-center gap-1 text-white/30 text-[8px] mt-2">
+        <span>$</span>
+        {coloredTagsCount === stack.length && (
+          <span className="w-1.5 h-2.5 bg-green-400 animate-pulse" />
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default function ContactForm() {
@@ -82,7 +181,7 @@ export default function ContactForm() {
     }
     if (!formData.subject.trim()) tempErrors.subject = "Le sujet est requis.";
     if (!formData.message.trim()) tempErrors.message = "Le message est requis.";
-    
+
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
@@ -99,20 +198,21 @@ export default function ContactForm() {
       const salt = formData.email + Date.now();
       const powResult = await solveChallenge(salt);
 
-      setStatus('sending');
-      setStatusMessage("Envoi en cours...");
+      setStatusMessage("Envoi du message...");
 
-      // 2. Send payload to serverless route
+      // 2. Send request to endpoint
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
           ...formData,
-          pow: powResult
+          powNonce: powResult.nonce,
+          powHash: powResult.hash,
+          powSalt: salt
         })
       });
-
-      const data = await response.json();
 
       if (response.ok) {
         setStatus('success');
@@ -124,20 +224,21 @@ export default function ContactForm() {
           bkn_website_bot_trap: ''
         });
       } else {
+        const errorData = await response.json();
         setStatus('error');
-        setStatusMessage(data.error || "Une erreur est survenue lors de l'envoi.");
+        setStatusMessage(errorData.error || "Une erreur est survenue lors de l'envoi.");
       }
     } catch (err) {
       console.error(err);
       setStatus('error');
-      setStatusMessage("Impossible de joindre le serveur de messagerie.");
+      setStatusMessage("Erreur de connexion avec le serveur.");
     }
   };
 
   return (
     <section id="contact" className="w-full pt-6 pb-20 px-6 md:px-12 max-w-7xl mx-auto z-10 relative">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        
+
         {/* Info Column (Left) */}
         <div className="lg:col-span-5 flex flex-col justify-between h-full">
           <div>
@@ -148,29 +249,29 @@ export default function ContactForm() {
                 Contact
               </span>
             </div>
-            
+
             <h2 className="font-sans font-extrabold text-3xl md:text-5xl uppercase tracking-tight mt-4 mb-6">
               Travaillons <br />
               <span className="bg-gradient-to-r from-primary via-secondary to-tertiary bg-clip-text text-transparent">Ensemble</span>
             </h2>
 
-            <p className="text-on-surface text-sm font-normal leading-relaxed max-w-sm mb-8">
+            <p className="text-on-surface text-sm font-normal leading-relaxed max-w-sm mb-6">
               Vous avez un projet de développement web/mobile ou des questions sur notre projet Unity ? N'hésitez pas à nous écrire.
             </p>
 
             {/* Obfuscated Contact Information Pins with Hover Actions */}
-            <div className="flex flex-col gap-3 items-start -mx-3">
+            <div className="flex flex-col gap-3 items-start -mx-3 mt-6">
               {/* E-mail Pin */}
               <motion.a 
                 href={`mailto:${emailText}`}
-                whileHover={{ x: 4 }}
-                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+                whileHover={{ x: 6 }}
+                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer"
               >
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-105 group-hover:border-primary/45 group-hover:text-white transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-black/50 border border-white/5 flex items-center justify-center text-on-surface-variant/70 group-hover:scale-105 group-hover:bg-black/90 group-hover:border-white/20 group-hover:text-white shadow-[0_0_12px_rgba(0,0,0,0.4)] transition-all duration-300">
                   <i className="fa-solid fa-envelope text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[11px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80 group-hover:text-primary transition-colors">E-mail</div>
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">E-mail</div>
                   <span className="text-sm font-semibold text-on-surface group-hover:text-white transition-colors">
                     {emailText || 'contact [at] bkntech.fr'}
                   </span>
@@ -180,14 +281,14 @@ export default function ContactForm() {
               {/* Téléphone Pin */}
               <motion.a 
                 href={`tel:${phoneText.replace(/\s/g, '')}`}
-                whileHover={{ x: 4 }}
-                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+                whileHover={{ x: 6 }}
+                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer"
               >
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-105 group-hover:border-primary/45 group-hover:text-white transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-black/50 border border-white/5 flex items-center justify-center text-on-surface-variant/70 group-hover:scale-105 group-hover:bg-black/90 group-hover:border-white/20 group-hover:text-white shadow-[0_0_12px_rgba(0,0,0,0.4)] transition-all duration-300">
                   <i className="fa-solid fa-phone text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[11px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80 group-hover:text-primary transition-colors">Téléphone</div>
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-secondary transition-colors">Téléphone</div>
                   <span className="text-sm font-semibold text-on-surface group-hover:text-white transition-colors">
                     {phoneText || '+33 1 00 00 00 00'}
                   </span>
@@ -199,15 +300,15 @@ export default function ContactForm() {
                 href="https://maps.google.com/?q=BKN+Tech+47+rue+Vivienne+75002+Paris"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ x: 4 }}
-                className="flex items-start gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+                whileHover={{ x: 6 }}
+                className="flex items-start gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer"
               >
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary mt-1 group-hover:scale-105 group-hover:border-primary/45 group-hover:text-white transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-black/50 border border-white/5 flex items-center justify-center text-on-surface-variant/70 group-hover:scale-105 group-hover:bg-black/90 group-hover:border-white/20 group-hover:text-white shadow-[0_0_12px_rgba(0,0,0,0.4)] mt-1 transition-all duration-300">
                   <i className="fa-solid fa-location-dot text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[11px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80 group-hover:text-primary transition-colors">Adresse</div>
-                  <div className="text-sm font-normal text-on-surface leading-relaxed group-hover:text-white transition-colors">
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-tertiary transition-colors">Adresse</div>
+                  <div className="text-sm font-light text-on-surface-variant leading-relaxed group-hover:text-white transition-colors">
                     Bkn Tech<br />
                     47 rue Vivienne<br />
                     75002 Paris, France
@@ -223,7 +324,7 @@ export default function ContactForm() {
 
         {/* Form Column (Right) */}
         <div className="lg:col-span-7 glass-panel p-8 md:p-10 rounded-2xl relative overflow-hidden">
-          
+
           {/* Honeypot Spam Trap (Hidden) */}
           <input
             type="text"
@@ -248,7 +349,7 @@ export default function ContactForm() {
                 <div className="relative flex items-center justify-center w-20 h-20 mb-6">
                   {/* Subtle primary brand glowing halo */}
                   <div className="absolute inset-0 bg-primary/10 rounded-full blur-md animate-pulse" />
-                  
+
                   <svg className="w-10 h-10 text-primary relative z-10" viewBox="0 0 52 52" fill="none">
                     <motion.circle
                       cx="26"
@@ -298,7 +399,7 @@ export default function ContactForm() {
                   error={errors.name}
                   required
                 />
-                
+
                 <InputField
                   label="Adresse E-mail"
                   name="email"
@@ -308,7 +409,7 @@ export default function ContactForm() {
                   error={errors.email}
                   required
                 />
-                
+
                 <InputField
                   label="Sujet"
                   name="subject"
@@ -317,7 +418,7 @@ export default function ContactForm() {
                   error={errors.subject}
                   required
                 />
-                
+
                 <InputField
                   label="Votre Message"
                   name="message"

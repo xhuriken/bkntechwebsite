@@ -1,0 +1,522 @@
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+/**
+ * Helper to extract YouTube video ID
+ */
+function getYouTubeId(url) {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+/**
+ * Helper to compute relative date string
+ */
+function getRelativeDateString(dateStr, currentLang) {
+  const date = new Date(dateStr);
+  const now = new Date();
+  
+  // Set times to midnight to calculate pure day difference
+  const dateMidnight = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  
+  const diffTime = nowMidnight - dateMidnight;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+  if (diffDays < 0) {
+    return currentLang === 'fr' ? "Planifié" : "Scheduled";
+  }
+  if (diffDays === 0) {
+    return currentLang === 'fr' ? "Aujourd'hui" : "Today";
+  }
+  if (diffDays === 1) {
+    return currentLang === 'fr' ? "Hier" : "Yesterday";
+  }
+  if (diffDays < 30) {
+    return currentLang === 'fr' ? `Il y a ${diffDays} j` : `${diffDays}d ago`;
+  }
+  return currentLang === 'fr' ? "Il y a plus de 30 j" : "More than 30 days ago";
+}
+
+/**
+ * Get visual classes for different devlog types
+ */
+function getTypeStyles(type = '') {
+  const t = type.toLowerCase();
+  if (t.includes('ui')) {
+    return 'text-primary border-primary/35 bg-primary/[0.08] shadow-[0_0_8px_rgba(190,194,255,0.05)]';
+  }
+  if (t.includes('player') || t.includes('joueur') || t.includes('améliorations')) {
+    return 'text-secondary border-secondary/35 bg-secondary/[0.08] shadow-[0_0_8px_rgba(78,222,163,0.05)]';
+  }
+  if (t.includes('multiplayer') || t.includes('multijoueur') || t.includes('reseau') || t.includes('netcode')) {
+    return 'text-tertiary border-tertiary/35 bg-tertiary/[0.08] shadow-[0_0_8px_rgba(255,185,95,0.05)]';
+  }
+  if (t.includes('core') || t.includes('systeme') || t.includes('gameplay')) {
+    return 'text-orange-400 border-orange-400/35 bg-orange-400/[0.08] shadow-[0_0_8px_rgba(251,146,60,0.05)]';
+  }
+  if (t.includes('modeling') || t.includes('modelisation') || t.includes('3d')) {
+    return 'text-pink-400 border-pink-400/35 bg-pink-400/[0.08] shadow-[0_0_8px_rgba(244,114,182,0.05)]';
+  }
+  return 'text-on-surface-variant/80 border-white/10 bg-white/[0.04]';
+}
+
+export default function GamingDevlog() {
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language || 'fr';
+
+  // API posts loading
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+  // Search and filters states
+  const [search, setSearch] = useState('');
+  const [selectedType, setSelectedType] = useState('all');
+  const [sortBy, setSortBy] = useState('newest'); // 'newest' | 'oldest'
+
+  // Load devlog posts
+  useEffect(() => {
+    fetch('/api/posts')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          // Filter to 'gaming' category only
+          const gamingPosts = data.filter(p => p.category === 'gaming');
+          setPosts(gamingPosts);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to load devlog posts:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  // Extract unique devlog types for the filter dropdown
+  const uniqueTypes = ['all', ...new Set(posts.map(p => p.type).filter(Boolean))];
+
+  // Filtering & Sorting logic
+  const filteredPosts = posts
+    .filter(post => {
+      // 1. Search Query Filter (Title, Desc, or content)
+      const query = search.toLowerCase();
+      const titleMatch = (post.title[currentLang] || post.title['fr'] || '').toLowerCase().includes(query);
+      const descMatch = (post.description[currentLang] || post.description['fr'] || '').toLowerCase().includes(query);
+      const typeMatch = (post.type || '').toLowerCase().includes(query);
+      const searchMatch = titleMatch || descMatch || typeMatch;
+
+      // 2. Type Filter dropdown
+      const typeDropdownMatch = selectedType === 'all' || post.type === selectedType;
+
+      return searchMatch && typeDropdownMatch;
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return sortBy === 'newest' ? dateB - dateA : dateA - dateB;
+    });
+
+  // Split filtered posts into "Nouveaux" (< 30 days) and "Anciens" (>= 30 days)
+  const isRecent = (dateStr) => {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffTime = now - date;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays < 30;
+  };
+
+  const recentPosts = filteredPosts.filter(p => isRecent(p.date));
+  const oldPosts = filteredPosts.filter(p => !isRecent(p.date));
+
+  // Layout animations
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 25 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
+  };
+
+  return (
+    <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-10 z-10 relative">
+      
+      {/* Return button */}
+      <div className="mb-8">
+        <Link 
+          to="/portfolio" 
+          className="inline-flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-on-surface hover:text-primary transition-colors group"
+        >
+          <svg className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          {t('portfolio.back')}
+        </Link>
+      </div>
+
+      {/* Devlog Game Header */}
+      <div className="bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+        <div className="max-w-xl">
+          <h1 className="font-sans font-extrabold text-3xl md:text-4xl uppercase tracking-tight mb-3 text-on-surface">
+            Vacuum Protocol
+          </h1>
+          <p className="text-on-surface/80 text-sm font-normal leading-relaxed">
+            Notre projet phare de jeu de tir tactique multijoueur en arène 3D. Ce devlog documente notre cycle de production à long terme, nos expérimentations physiques et nos optimisations netcode.
+          </p>
+        </div>
+
+        {/* Documentation Links Panel */}
+        <div className="flex flex-col gap-2.5 w-full md:w-auto min-w-[200px] bg-black/20 border border-white/5 rounded-xl p-4">
+          <span className="text-[9px] font-sans font-bold uppercase tracking-wider text-on-surface-variant/65">
+            Documentation & Liens
+          </span>
+          <a 
+            href="https://unity.com/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center justify-between text-xs font-sans font-medium text-on-surface hover:text-primary transition-colors py-1 group"
+          >
+            <span>Documentation Unity</span>
+            <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+            </svg>
+          </a>
+          <a 
+            href="https://discord.gg/bkntech" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center justify-between text-xs font-sans font-medium text-on-surface hover:text-primary transition-colors py-1 group"
+          >
+            <span className="flex items-center gap-1.5">
+              <i className="fa-brands fa-discord text-primary text-xs"></i>
+              Rejoindre le Discord
+            </span>
+            <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+            </svg>
+          </a>
+          <div className="border-t border-white/5 my-1" />
+          <div className="flex flex-col gap-1 text-[9px] font-mono text-on-surface-variant/60">
+            <div>Version : v0.0.6</div>
+            <div>Mises à jour : Fréquentes</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Feature Context Explanation Containers */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="bg-surface-container-low/30 border border-white/5 rounded-xl p-5 hover:border-primary/10 transition-colors">
+          <h3 className="font-sans font-bold text-sm text-primary uppercase tracking-wider mb-2">
+            Netcode Réseau
+          </h3>
+          <p className="text-xs text-on-surface-variant leading-relaxed">
+            Utilisation d'une topologie serveur faisant autorité avec prédiction locale, réconciliation client et compensation du lag. Latence compensée jusqu'à 250ms de ping.
+          </p>
+        </div>
+        <div className="bg-surface-container-low/30 border border-white/5 rounded-xl p-5 hover:border-secondary/10 transition-colors">
+          <h3 className="font-sans font-bold text-sm text-secondary uppercase tracking-wider mb-2">
+            Physique & Mouvement
+          </h3>
+          <p className="text-xs text-on-surface-variant leading-relaxed">
+            Moteur de déplacement basé sur la physique rigide d'Unity (Rigidbody) avec contrôleur personnalisé à haute vélocité, gestion des pentes et friction dynamique.
+          </p>
+        </div>
+        <div className="bg-surface-container-low/30 border border-white/5 rounded-xl p-5 hover:border-tertiary/10 transition-colors">
+          <h3 className="font-sans font-bold text-sm text-tertiary uppercase tracking-wider mb-2">
+            Rendu Graphique (HDRP)
+          </h3>
+          <p className="text-xs text-on-surface-variant leading-relaxed">
+            Pipeline HDRP (High Definition Render Pipeline) pour un rendu visuel photoréaliste de type cyberpunk. Volumétrie de brouillard avancée et reflets ray-tracés.
+          </p>
+        </div>
+      </div>
+
+      {/* Search & Sort Panel */}
+      <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 border-b border-white/5 pb-6 mb-12">
+        {/* Search Bar */}
+        <div className="relative flex-grow max-w-md">
+          <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-on-surface-variant/50">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </span>
+          <input 
+            type="text"
+            placeholder={currentLang === 'fr' ? "Rechercher dans le devlog..." : "Search in devlog..."}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full bg-surface-container-low/60 border border-white/5 rounded-xl pl-10 pr-4 py-2 text-sm text-on-surface placeholder-on-surface-variant/40 focus:outline-none focus:border-primary/50 transition-colors"
+          />
+        </div>
+
+        {/* Filter and Sort Dropdowns */}
+        <div className="flex flex-wrap items-center gap-4">
+          {/* Trier et afficher */}
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-on-surface-variant/75">
+              Filtrer par :
+            </span>
+            <div className="relative">
+              <select
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                className="appearance-none bg-surface-container-low/60 border border-white/10 rounded-md pl-3 pr-8 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary/50 cursor-pointer transition-colors"
+              >
+                <option value="all">{currentLang === 'fr' ? "Tous les types" : "All Types"}</option>
+                {uniqueTypes.filter(t => t !== 'all').map(t => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
+              <div className="absolute inset-y-0 right-2.5 flex items-center pointer-events-none text-on-surface-variant/60">
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-on-surface-variant/75">
+              Tri :
+            </span>
+            <div className="relative">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="appearance-none bg-surface-container-low/60 border border-white/10 rounded-md pl-3 pr-8 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary/50 cursor-pointer transition-colors"
+              >
+                <option value="newest">{currentLang === 'fr' ? "Plus récents" : "Newest"}</option>
+                <option value="oldest">{currentLang === 'fr' ? "Plus anciens" : "Oldest"}</option>
+              </select>
+              <div className="absolute inset-y-0 right-2.5 flex items-center pointer-events-none text-on-surface-variant/60">
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {loading ? (
+        <div className="flex flex-col items-center justify-center min-h-[30vh] text-on-surface-variant/80 font-sans font-medium text-sm">
+          <svg className="animate-spin -ml-1 mr-3 h-8 w-8 text-primary mb-4" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Chargement du devlog...
+        </div>
+      ) : filteredPosts.length === 0 ? (
+        <div className="bg-surface-container-low/30 backdrop-blur-sm border border-white/5 rounded-2xl py-16 px-6 text-center text-xs font-sans font-semibold text-on-surface-variant/70 uppercase tracking-wide">
+          Aucun post de devlog trouvé.
+        </div>
+      ) : (
+        <div className="flex flex-col gap-12">
+          
+          {/* Recent Posts Section (if matching) */}
+          {recentPosts.length > 0 && (
+            <div className="flex flex-col gap-8">
+              <div className="flex items-center gap-3 border-b border-primary/20 pb-2.5">
+                <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+                <h2 className="text-xs md:text-sm font-sans font-bold uppercase tracking-widest text-primary">
+                  Nouveaux posts de devlog
+                </h2>
+              </div>
+
+              <motion.div 
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="relative ml-4 md:ml-32 pl-8 md:pl-12 flex flex-col gap-8"
+              >
+                {/* Self-drawing vertical timeline border */}
+                <motion.div 
+                  initial={{ height: 0 }}
+                  whileInView={{ height: '100%' }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.2, ease: 'easeInOut' }}
+                  className="absolute left-0 top-0 w-px bg-gradient-to-b from-white/15 via-white/5 to-transparent origin-top"
+                />
+                {recentPosts.map((post) => (
+                  <DevlogPostCard key={post.id} post={post} currentLang={currentLang} />
+                ))}
+              </motion.div>
+            </div>
+          )}
+
+          {/* Ancient Posts Section (if matching) */}
+          {oldPosts.length > 0 && (
+            <div className="flex flex-col gap-8 mt-6">
+              <div className="flex items-center gap-3 border-b border-white/10 pb-2.5">
+                <span className="w-2 h-2 rounded-full bg-white/20" />
+                <h2 className="text-xs md:text-sm font-sans font-bold uppercase tracking-widest text-on-surface-variant/60">
+                  Anciens posts
+                </h2>
+              </div>
+
+              <motion.div 
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="relative ml-4 md:ml-32 pl-8 md:pl-12 flex flex-col gap-8"
+              >
+                {/* Self-drawing vertical timeline border */}
+                <motion.div 
+                  initial={{ height: 0 }}
+                  whileInView={{ height: '100%' }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.2, ease: 'easeInOut' }}
+                  className="absolute left-0 top-0 w-px bg-gradient-to-b from-white/15 via-white/5 to-transparent origin-top"
+                />
+                {oldPosts.map((post) => (
+                  <DevlogPostCard key={post.id} post={post} currentLang={currentLang} />
+                ))}
+              </motion.div>
+            </div>
+          )}
+
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Devlog Post Card component (Discord-like look but with beautiful timeline on the left)
+ */
+function DevlogPostCard({ post, currentLang }) {
+  const ytId = post.mediaType === 'video' ? getYouTubeId(post.mediaUrl) : null;
+  const relativeDate = getRelativeDateString(post.date, currentLang);
+  const typeStyle = getTypeStyles(post.type);
+
+  // Determine dot border, bg, and text color based on category/type
+  const getDotColors = (type = '') => {
+    const t = type.toLowerCase();
+    if (t.includes('ui')) return { border: 'border-primary', bg: 'bg-primary', text: 'text-primary' };
+    if (t.includes('player') || t.includes('joueur') || t.includes('amélioration')) return { border: 'border-secondary', bg: 'bg-secondary', text: 'text-secondary' };
+    if (t.includes('multiplayer') || t.includes('netcode') || t.includes('reseau')) return { border: 'border-tertiary', bg: 'bg-tertiary', text: 'text-tertiary' };
+    if (t.includes('core')) return { border: 'border-orange-400', bg: 'bg-orange-400', text: 'text-orange-400' };
+    if (t.includes('modeling') || t.includes('3d')) return { border: 'border-pink-400', bg: 'bg-pink-400', text: 'text-pink-400' };
+    return { border: 'border-white/20', bg: 'bg-white/40', text: 'text-on-surface-variant/70' };
+  };
+
+  const dotColors = getDotColors(post.type);
+
+  return (
+    <motion.article 
+      variants={{
+        hidden: { opacity: 0, y: 15 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+      }}
+      className="relative w-full group flex flex-col"
+    >
+      {/* Timeline Dot (Desktop & Mobile) - Spring pop on viewport entry */}
+      <motion.div 
+        initial={{ scale: 0, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 1 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ type: 'spring', stiffness: 220, delay: 0.15 }}
+        className={`absolute -left-[39px] md:-left-[57px] top-[30px] w-4 h-4 rounded-full bg-surface border-2 ${dotColors.border} flex items-center justify-center z-10`}
+      >
+        <div className={`w-1.5 h-1.5 rounded-full ${dotColors.bg} animate-pulse`} />
+      </motion.div>
+
+      {/* Timeline Date (Desktop only) - Fade and slide on viewport entry */}
+      <motion.div 
+        initial={{ opacity: 0, x: -10 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.5, delay: 0.05 }}
+        className={`hidden md:block absolute -left-[175px] top-[26px] w-[110px] text-right font-mono text-[10px] tracking-wide font-bold z-10 ${dotColors.text}`}
+      >
+        {post.date}
+      </motion.div>
+
+      {/* Card Wrapper (maintains overflow-hidden and hover styling) */}
+      <div className="w-full bg-surface-container-low/40 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col">
+        {/* Terminal Header - Full Width, Flush, No Margins */}
+        <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none relative overflow-hidden">
+          {/* Passive Noise Texture background */}
+          <div 
+            className="absolute inset-0 opacity-15 pointer-events-none" 
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+              backgroundBlendMode: 'soft-light'
+            }}
+          />
+          <div className="flex items-center gap-1.5 relative z-10">
+            {/* Sexy Folder Open/Close Icon with group-hover dynamic toggle */}
+            <span className="relative w-3.5 h-3.5 flex items-center justify-center text-primary mr-1.5 flex-shrink-0">
+              <i className="fa-regular fa-folder absolute transition-all duration-200 group-hover:opacity-0 group-hover:scale-90"></i>
+              <i className="fa-regular fa-folder-open absolute transition-all duration-200 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"></i>
+            </span>
+            <span className="text-on-surface-variant/40">bkn@tech:~/vacuum$</span>
+            {post.type && (
+              <span className={`px-1.5 py-0.5 rounded border border-white/5 bg-white/[0.02] ${typeStyle} lowercase font-bold`}>
+                ./{post.type.replace(/\s+/g, '_')}.log
+              </span>
+            )}
+          </div>
+          
+          {/* Date on Right (Absolute & Relative) */}
+          <div className="flex items-center gap-2 text-on-surface-variant/70 font-semibold relative z-10">
+            <span className="md:hidden text-on-surface-variant/90 font-bold">{post.date}</span>
+            <span className="hidden md:inline text-on-surface-variant/30">•</span>
+            <span className="text-on-surface font-bold">{relativeDate}</span>
+          </div>
+        </div>
+
+        {/* Card Content - Inner Padding */}
+        <div className="p-5 md:p-6 flex flex-col gap-4">
+          {/* Post Text Description */}
+          <div className="flex flex-col gap-2">
+            <h3 className="font-sans font-bold text-sm text-on-surface group-hover:text-primary transition-colors">
+              {post.title[currentLang] || post.title['fr']}
+            </h3>
+            {post.description && (
+              <p className="text-xs text-on-surface-variant leading-relaxed italic">
+                {post.description[currentLang] || post.description['fr']}
+              </p>
+            )}
+          </div>
+
+          {/* Media Embedding (if present) */}
+          {post.mediaUrl && (
+            <div className="w-full max-w-xl overflow-hidden rounded-xl bg-black/10 border border-white/5 mt-1">
+              {post.mediaType === 'video' && ytId ? (
+                <div className="aspect-video w-full">
+                  <iframe 
+                    src={`https://www.youtube.com/embed/${ytId}`} 
+                    className="w-full h-full border-none bg-black"
+                    title={post.title[currentLang] || post.title['fr']}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              ) : (
+                <img 
+                  src={post.mediaUrl} 
+                  alt={post.title[currentLang] || post.title['fr']}
+                  className="w-full max-h-[300px] object-cover group-hover:scale-[1.01] transition-transform duration-500"
+                  loading="lazy"
+                />
+              )}
+            </div>
+          )}
+
+          {/* Long Detailed Content */}
+          {post.content && (
+            <div className="text-xs font-sans font-normal text-on-surface/90 leading-relaxed whitespace-pre-wrap mt-1">
+              {post.content[currentLang] || post.content['fr']}
+            </div>
+          )}
+        </div>
+      </div>
+    </motion.article>
+  );
+}
