@@ -378,15 +378,15 @@ function DevlogPostCard({ post, currentLang }) {
   const relativeDate = getRelativeDateString(post.date, currentLang);
   const typeStyle = getTypeStyles(post.type);
 
-  // Determine dot border and bg color based on category/type
+  // Determine dot border, bg, and text color based on category/type
   const getDotColors = (type = '') => {
     const t = type.toLowerCase();
-    if (t.includes('ui')) return { border: 'border-primary', bg: 'bg-primary' };
-    if (t.includes('player') || t.includes('joueur') || t.includes('améliorations')) return { border: 'border-secondary', bg: 'bg-secondary' };
-    if (t.includes('multiplayer') || t.includes('netcode') || t.includes('reseau')) return { border: 'border-tertiary', bg: 'bg-tertiary' };
-    if (t.includes('core')) return { border: 'border-orange-400', bg: 'bg-orange-400' };
-    if (t.includes('modeling') || t.includes('3d')) return { border: 'border-pink-400', bg: 'bg-pink-400' };
-    return { border: 'border-white/20', bg: 'bg-white/40' };
+    if (t.includes('ui')) return { border: 'border-primary', bg: 'bg-primary', text: 'text-primary' };
+    if (t.includes('player') || t.includes('joueur') || t.includes('amélioration')) return { border: 'border-secondary', bg: 'bg-secondary', text: 'text-secondary' };
+    if (t.includes('multiplayer') || t.includes('netcode') || t.includes('reseau')) return { border: 'border-tertiary', bg: 'bg-tertiary', text: 'text-tertiary' };
+    if (t.includes('core')) return { border: 'border-orange-400', bg: 'bg-orange-400', text: 'text-orange-400' };
+    if (t.includes('modeling') || t.includes('3d')) return { border: 'border-pink-400', bg: 'bg-pink-400', text: 'text-pink-400' };
+    return { border: 'border-white/20', bg: 'bg-white/40', text: 'text-on-surface-variant/70' };
   };
 
   const dotColors = getDotColors(post.type);
@@ -400,12 +400,12 @@ function DevlogPostCard({ post, currentLang }) {
       className="relative w-full bg-surface-container-low/40 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col group"
     >
       {/* Timeline Dot (Desktop only) */}
-      <div className={`absolute -left-[39px] md:-left-[57px] top-[24px] w-4 h-4 rounded-full bg-surface border-2 ${dotColors.border} flex items-center justify-center z-10`}>
-        <div className={`w-1.5 h-1.5 rounded-full ${dotColors.bg}`} />
+      <div className={`absolute -left-[39px] md:-left-[57px] top-[30px] w-4 h-4 rounded-full bg-surface border-2 ${dotColors.border} flex items-center justify-center z-10`}>
+        <div className={`w-1.5 h-1.5 rounded-full ${dotColors.bg} animate-pulse`} />
       </div>
 
       {/* Timeline Date (Desktop only) */}
-      <div className="hidden md:block absolute -left-[150px] top-[24px] w-[100px] text-right font-mono text-[10px] tracking-wide text-on-surface/90 font-bold z-10">
+      <div className={`hidden md:block absolute -left-[175px] top-[26px] w-[110px] text-right font-mono text-[10px] tracking-wide font-bold z-10 ${dotColors.text}`}>
         {post.date}
       </div>
 

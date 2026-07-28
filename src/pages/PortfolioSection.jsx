@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -14,32 +14,116 @@ function getYouTubeId(url) {
 }
 
 /**
+ * Helper to get themed dot & date colors based on post type or category
+ */
+const getDotColors = (type = '', category = '') => {
+  const t = type ? type.toLowerCase() : '';
+  if (t.includes('ui')) return { border: 'border-primary', bg: 'bg-primary', text: 'text-primary' };
+  if (t.includes('player') || t.includes('joueur') || t.includes('amélioration')) return { border: 'border-secondary', bg: 'bg-secondary', text: 'text-secondary' };
+  if (t.includes('multiplayer') || t.includes('netcode') || t.includes('reseau')) return { border: 'border-tertiary', bg: 'bg-tertiary', text: 'text-tertiary' };
+  if (t.includes('core')) return { border: 'border-orange-400', bg: 'bg-orange-400', text: 'text-orange-400' };
+  if (t.includes('modeling') || t.includes('3d')) return { border: 'border-pink-400', bg: 'bg-pink-400', text: 'text-pink-400' };
+  
+  // Fallback based on category
+  if (category === 'website') return { border: 'border-secondary', bg: 'bg-secondary', text: 'text-secondary' };
+  if (category === 'ai-agent') return { border: 'border-tertiary', bg: 'bg-tertiary', text: 'text-tertiary' };
+  return { border: 'border-primary', bg: 'bg-primary', text: 'text-primary' };
+};
+
+/**
  * A dynamic typing effect terminal list of technologies inside project cards
  */
 function ProjectTerminalList({ tags = [] }) {
-  const [index, setIndex] = useState(0);
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [typedCommand, setTypedCommand] = useState("");
+  const [showTagsCount, setShowTagsCount] = useState(0);
+  const [coloredTagsCount, setColoredTagsCount] = useState(0);
+  const commandText = "ls keywords";
 
   useEffect(() => {
-    if (!tags || tags.length === 0) return;
-    const interval = setInterval(() => {
-      setIndex(prev => (prev + 1) % (tags.length + 3)); // +3 to pause at the end before loop reset
-    }, 900);
-    return () => clearInterval(interval);
-  }, [tags]);
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.1 });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible || !tags || tags.length === 0) return;
+
+    let timeoutId;
+    
+    const typeCommand = (charIndex) => {
+      if (charIndex <= commandText.length) {
+        setTypedCommand(commandText.slice(0, charIndex));
+        timeoutId = setTimeout(() => typeCommand(charIndex + 1), 70);
+      } else {
+        timeoutId = setTimeout(() => startOutputtingTags(1), 300);
+      }
+    };
+
+    const startOutputtingTags = (count) => {
+      if (count <= tags.length) {
+        setShowTagsCount(count);
+        timeoutId = setTimeout(() => startOutputtingTags(count + 1), 160);
+      } else {
+        timeoutId = setTimeout(() => colorTags(1), 250);
+      }
+    };
+
+    const colorTags = (count) => {
+      if (count <= tags.length) {
+        setColoredTagsCount(count);
+        timeoutId = setTimeout(() => colorTags(count + 1), 120);
+      }
+    };
+
+    typeCommand(0);
+
+    return () => clearTimeout(timeoutId);
+  }, [isVisible, tags]);
 
   if (!tags || tags.length === 0) return null;
 
   return (
-    <div className="flex flex-col gap-1 font-mono text-[9px] text-green-400">
-      {tags.slice(0, index + 1).map((tag, idx) => (
-        <div key={idx} className="flex items-center gap-1.5">
-          <span className="text-white/20">&gt;</span>
-          <span className={idx === index ? "text-white font-bold" : ""}>
-            {tag}
-            {idx === index && <span className="animate-pulse">_</span>}
-          </span>
+    <div ref={ref} className="flex flex-col gap-2 flex-grow justify-between min-h-[110px] w-full font-mono text-[9px] select-none text-left">
+      <div className="flex flex-col gap-1.5">
+        {/* Terminal Command Header */}
+        <div className="text-[8px] font-mono text-on-surface-variant/40 border-b border-white/5 pb-1 mb-1.5 flex items-center gap-1.5 h-4">
+          <span className="text-white/20">$</span>
+          <span>{typedCommand}</span>
+          {typedCommand.length < commandText.length && isVisible && (
+            <span className="w-1 h-2.5 bg-primary/70 animate-pulse" />
+          )}
         </div>
-      ))}
+
+        {/* Tags outputs */}
+        <div className="flex flex-col gap-1">
+          {tags.slice(0, showTagsCount).map((tag, idx) => {
+            const isColored = idx < coloredTagsCount;
+            return (
+              <div key={idx} className="flex items-center gap-1.5">
+                <span className="text-white/20">&gt;</span>
+                <span className={isColored ? "text-green-400 font-bold transition-all duration-300" : "text-white/50"}>
+                  {tag}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      
+      {/* Bottom prompt indicator */}
+      <div className="flex items-center gap-1 text-white/30 text-[8px] mt-2">
+        <span>$</span>
+        {coloredTagsCount === tags.length && (
+          <span className="w-1.5 h-2.5 bg-green-400 animate-pulse" />
+        )}
+      </div>
     </div>
   );
 }
@@ -133,6 +217,7 @@ export default function PortfolioSection() {
         >
           {posts.map((post) => {
             const ytId = post.mediaType === 'video' ? getYouTubeId(post.mediaUrl) : null;
+            const dotColors = getDotColors(post.type, post.category);
 
             return (
               <motion.article 
@@ -141,17 +226,17 @@ export default function PortfolioSection() {
                 className="relative w-full bg-surface-container-low/25 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl p-6 md:p-8 transition-all duration-300 flex flex-col gap-6 group"
               >
                 {/* Timeline Dot */}
-                <div className="absolute -left-[39px] md:-left-[57px] top-7 w-4 h-4 rounded-full bg-surface border-2 border-primary flex items-center justify-center">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                <div className={`absolute -left-[39px] md:-left-[57px] top-[30px] w-4 h-4 rounded-full bg-surface border-2 ${dotColors.border} flex items-center justify-center`}>
+                  <div className={`w-1.5 h-1.5 rounded-full ${dotColors.bg} animate-pulse`} />
                 </div>
 
                 {/* Timeline Date (hidden on mobile, positioned left of vertical line on desktop) */}
-                <div className="hidden md:block absolute -left-[160px] top-6 w-[100px] text-right font-mono text-[10px] tracking-wide text-on-surface/90 font-bold">
+                <div className={`hidden md:block absolute -left-[175px] top-[26px] w-[110px] text-right font-mono text-[10px] tracking-wide font-bold ${dotColors.text}`}>
                   {post.date}
                 </div>
 
                 {/* Mobile Date (visible only on mobile) */}
-                <div className="md:hidden font-mono text-[10px] text-primary font-bold">
+                <div className={`md:hidden font-mono text-[10px] font-bold ${dotColors.text}`}>
                   {post.date}
                 </div>
 
@@ -194,24 +279,7 @@ export default function PortfolioSection() {
                   {/* Right Panel: Mini Terminal (with left border acting as the divider) */}
                   <div className="lg:col-span-2 flex flex-col justify-stretch min-h-[160px] lg:border-l lg:border-white/10 lg:pl-6">
                     <div className="flex-grow flex flex-col bg-black/50 border border-white/5 rounded-xl p-4 font-mono text-[10px] text-green-400 select-none shadow-inner justify-between h-full">
-                      <div className="flex flex-col gap-2">
-                        {/* Terminal Header */}
-                        <div className="flex items-center gap-1.5 text-on-surface-variant/40 border-b border-white/5 pb-2 mb-1.5">
-                          <span className="relative w-3.5 h-3.5 flex items-center justify-center text-primary mr-1.5 flex-shrink-0">
-                            <i className="fa-regular fa-folder absolute transition-all duration-200 group-hover:opacity-0 group-hover:scale-90"></i>
-                            <i className="fa-regular fa-folder-open absolute transition-all duration-200 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"></i>
-                          </span>
-                          <span className="text-[8px] uppercase tracking-wider font-mono">tags.log</span>
-                        </div>
-                        
-                        {/* Dynamic Terminal Stack List */}
-                        <ProjectTerminalList tags={post.tags} />
-                      </div>
-                      
-                      <div className="flex items-center gap-1 mt-2 text-white/40 text-[9px]">
-                        <span>$</span>
-                        <span className="w-1 h-2.5 bg-green-400 animate-pulse" />
-                      </div>
+                      <ProjectTerminalList tags={post.tags} />
                     </div>
                   </div>
                 </div>

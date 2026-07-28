@@ -101,7 +101,9 @@ Création et intégration du formulaire de contact haut de gamme, sécurisé con
   - Refonte des cartes carrousels de la page Portfolio principale [Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx) : structurées en double panneau avec en-tête horizontal Kali Linux (Ouvrir à droite) et mini-terminal de tags dynamique (droite) conformément au schéma de l'utilisateur.
   - Ajustement géométrique des cartes Portfolio : passage à une largeur de `360px` / `440px` (plus d'importance au contenu de gauche, colonne CMD droite fixe de `145px`), image calée flush aux bordures de la boîte gauche, en-tête de tags `$ ls keywords` et icône de dossier dynamique stabilisée en absolu pour éliminer tout bug de chevauchement.
   - Correction de l'alignement de la console dans [PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx) : élargissement de la colonne gauche de contenu (de col-span-9 à col-span-10) et rattachement de la ligne séparatrice directement en bordure de la console de droite (avec pl-6) pour resserrer l'espacement vide.
-  - Intégration des routes dynamiques correspondantes dans [App.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/App.jsx).
+  - Synchronisation et fiabilisation de l'animation de tous les terminaux (`TerminalList` et `ProjectTerminalList`) : démarrage déclenché uniquement par `IntersectionObserver` lors de l'entrée dans le viewport, saisie progressive caractère par caractère de la commande `$ ls keywords`, pause puis impression séquentielle rapide des tags, et enfin coloration verte de validation de chaque tag sans boucle.
+  - Correction géométrique de la timeline : décalage de la date à `-left-[175px]` (largeur `110px`) et calage top pixel-perfect des puces et dates pour éviter les collisions de texte, et restauration de la coloration thématique des dates et points de la timeline en fonction du type/catégorie de post.
+  - Intégration des routes dynamiques correspondantes dans [App.jsx](file:///app.jsx).
 
 
 

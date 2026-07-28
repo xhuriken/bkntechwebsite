@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -18,29 +18,96 @@ function getYouTubeId(url) {
  * A dynamic typing effect terminal list of technologies inside portfolio cards
  */
 function ProjectTerminalList({ tags = [] }) {
-  const [index, setIndex] = useState(0);
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [typedCommand, setTypedCommand] = useState("");
+  const [showTagsCount, setShowTagsCount] = useState(0);
+  const [coloredTagsCount, setColoredTagsCount] = useState(0);
+  const commandText = "ls keywords";
 
   useEffect(() => {
-    if (!tags || tags.length === 0) return;
-    const interval = setInterval(() => {
-      setIndex(prev => (prev + 1) % (tags.length + 3)); // +3 to pause at the end before loop reset
-    }, 900);
-    return () => clearInterval(interval);
-  }, [tags]);
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.1 });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible || !tags || tags.length === 0) return;
+
+    let timeoutId;
+    
+    const typeCommand = (charIndex) => {
+      if (charIndex <= commandText.length) {
+        setTypedCommand(commandText.slice(0, charIndex));
+        timeoutId = setTimeout(() => typeCommand(charIndex + 1), 70);
+      } else {
+        timeoutId = setTimeout(() => startOutputtingTags(1), 300);
+      }
+    };
+
+    const startOutputtingTags = (count) => {
+      if (count <= tags.length) {
+        setShowTagsCount(count);
+        timeoutId = setTimeout(() => startOutputtingTags(count + 1), 160);
+      } else {
+        timeoutId = setTimeout(() => colorTags(1), 250);
+      }
+    };
+
+    const colorTags = (count) => {
+      if (count <= tags.length) {
+        setColoredTagsCount(count);
+        timeoutId = setTimeout(() => colorTags(count + 1), 120);
+      }
+    };
+
+    typeCommand(0);
+
+    return () => clearTimeout(timeoutId);
+  }, [isVisible, tags]);
 
   if (!tags || tags.length === 0) return null;
 
   return (
-    <div className="flex flex-col gap-1 font-mono text-[9px] text-green-400">
-      {tags.slice(0, index + 1).map((tag, idx) => (
-        <div key={idx} className="flex items-center gap-1.5">
-          <span className="text-white/20">&gt;</span>
-          <span className={idx === index ? "text-white font-bold" : ""}>
-            {tag}
-            {idx === index && <span className="animate-pulse">_</span>}
-          </span>
+    <div ref={ref} className="flex flex-col gap-2 flex-grow justify-between min-h-[110px] w-full font-mono text-[9px] select-none text-left">
+      <div className="flex flex-col gap-1.5">
+        {/* Terminal Command Header */}
+        <div className="text-[8px] font-mono text-on-surface-variant/40 border-b border-white/5 pb-1 mb-1.5 flex items-center gap-1.5 h-4">
+          <span className="text-white/20">$</span>
+          <span>{typedCommand}</span>
+          {typedCommand.length < commandText.length && isVisible && (
+            <span className="w-1 h-2.5 bg-primary/70 animate-pulse" />
+          )}
         </div>
-      ))}
+
+        {/* Tags outputs */}
+        <div className="flex flex-col gap-1">
+          {tags.slice(0, showTagsCount).map((tag, idx) => {
+            const isColored = idx < coloredTagsCount;
+            return (
+              <div key={idx} className="flex items-center gap-1.5">
+                <span className="text-white/20">&gt;</span>
+                <span className={isColored ? "text-green-400 font-bold transition-all duration-300" : "text-white/50"}>
+                  {tag}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      
+      {/* Bottom prompt indicator */}
+      <div className="flex items-center gap-1 text-white/30 text-[8px] mt-2">
+        <span>$</span>
+        {coloredTagsCount === tags.length && (
+          <span className="w-1.5 h-2.5 bg-green-400 animate-pulse" />
+        )}
+      </div>
     </div>
   );
 }
@@ -312,18 +379,8 @@ export default function Portfolio() {
                             </div>
 
                             {/* Right Column (Fixed cmd column: 130px on mobile, 145px on small and up) */}
-                            <div className="w-[130px] sm:w-[145px] flex-shrink-0 p-4 pt-3.5 flex flex-col justify-between font-mono bg-black/35 text-[9px] text-green-400 select-none border-l border-white/5">
-                              <div className="flex flex-col gap-2">
-                                {/* Subheader */}
-                                <div className="text-[8px] font-mono text-on-surface-variant/40 border-b border-white/5 pb-1 mb-1">
-                                  $ ls keywords
-                                </div>
-                                <ProjectTerminalList tags={post.tags} />
-                              </div>
-                              <div className="flex items-center gap-1 text-white/30 text-[8px] mt-2">
-                                <span>$</span>
-                                <span className="w-1 h-2 bg-green-400 animate-pulse" />
-                              </div>
+                            <div className="w-[130px] sm:w-[145px] flex-shrink-0 p-4 pt-3.5 flex flex-col justify-between bg-black/35 border-l border-white/5">
+                              <ProjectTerminalList tags={post.tags} />
                             </div>
                           </div>
                         </Link>

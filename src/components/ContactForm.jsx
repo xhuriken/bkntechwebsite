@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import InputField from './InputField';
@@ -27,36 +27,106 @@ async function solveChallenge(salt) {
       return { nonce, hash };
     }
     nonce++;
-    // Safety break to prevent freeze (though complexity 3 takes ~10-100ms)
     if (nonce > 50000) return { nonce, hash };
   }
 }
 
 /**
- * A dynamic typing effect terminal list of technologies
+ * A dynamic typing effect terminal list of technologies inside the contact panel
  */
 function TerminalList() {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [typedCommand, setTypedCommand] = useState("");
+  const [showTagsCount, setShowTagsCount] = useState(0);
+  const [coloredTagsCount, setColoredTagsCount] = useState(0);
+  
   const stack = ['laravel', 'react', 'unity', 'flutter', 'docker', 'tailwind', 'mirror'];
-  const [index, setIndex] = useState(0);
+  const commandText = "ls keywords";
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex(prev => (prev + 1) % (stack.length + 3)); // +3 to pause at the end before loop reset
-    }, 900);
-    return () => clearInterval(interval);
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.1 });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!isVisible || !stack || stack.length === 0) return;
+
+    let timeoutId;
+    
+    const typeCommand = (charIndex) => {
+      if (charIndex <= commandText.length) {
+        setTypedCommand(commandText.slice(0, charIndex));
+        timeoutId = setTimeout(() => typeCommand(charIndex + 1), 70);
+      } else {
+        timeoutId = setTimeout(() => startOutputtingTags(1), 300);
+      }
+    };
+
+    const startOutputtingTags = (count) => {
+      if (count <= stack.length) {
+        setShowTagsCount(count);
+        timeoutId = setTimeout(() => startOutputtingTags(count + 1), 160);
+      } else {
+        timeoutId = setTimeout(() => colorTags(1), 250);
+      }
+    };
+
+    const colorTags = (count) => {
+      if (count <= stack.length) {
+        setColoredTagsCount(count);
+        timeoutId = setTimeout(() => colorTags(count + 1), 120);
+      }
+    };
+
+    typeCommand(0);
+
+    return () => clearTimeout(timeoutId);
+  }, [isVisible]);
+
+  if (!stack || stack.length === 0) return null;
+
   return (
-    <div className="flex flex-col gap-1 font-mono text-[9px] text-green-400">
-      {stack.slice(0, index + 1).map((item, idx) => (
-        <div key={idx} className="flex items-center gap-1.5">
-          <span className="text-white/20">&gt;</span>
-          <span className={idx === index ? "text-white" : ""}>
-            {item}
-            {idx === index && <span className="animate-pulse">_</span>}
-          </span>
+    <div ref={ref} className="flex flex-col gap-2 flex-grow justify-between min-h-[110px] w-full font-mono text-[9px] select-none text-left text-green-400">
+      <div className="flex flex-col gap-1.5">
+        {/* Terminal Command Header */}
+        <div className="text-[8px] font-mono text-on-surface-variant/40 border-b border-white/5 pb-1 mb-1.5 flex items-center gap-1.5 h-4">
+          <span className="text-white/20">$</span>
+          <span>{typedCommand}</span>
+          {typedCommand.length < commandText.length && isVisible && (
+            <span className="w-1 h-2.5 bg-primary/70 animate-pulse" />
+          )}
         </div>
-      ))}
+
+        {/* Tags outputs */}
+        <div className="flex flex-col gap-1">
+          {stack.slice(0, showTagsCount).map((item, idx) => {
+            const isColored = idx < coloredTagsCount;
+            return (
+              <div key={idx} className="flex items-center gap-1.5">
+                <span className="text-white/20">&gt;</span>
+                <span className={isColored ? "text-green-400 font-bold transition-all duration-300" : "text-white/50"}>
+                  {item}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      
+      {/* Bottom prompt indicator */}
+      <div className="flex items-center gap-1 text-white/30 text-[8px] mt-2">
+        <span>$</span>
+        {coloredTagsCount === stack.length && (
+          <span className="w-1.5 h-2.5 bg-green-400 animate-pulse" />
+        )}
+      </div>
     </div>
   );
 }
