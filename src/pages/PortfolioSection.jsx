@@ -155,9 +155,9 @@ export default function PortfolioSection() {
                   {post.date}
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                   {/* Left Panel: Content & Media */}
-                  <div className="lg:col-span-9 flex flex-col gap-5">
+                  <div className="lg:col-span-10 flex flex-col gap-5">
                     {/* Title */}
                     <h2 className="font-sans font-extrabold text-xl md:text-2xl text-on-surface leading-snug">
                       {post.title[currentLang] || post.title['fr']}
@@ -191,18 +191,15 @@ export default function PortfolioSection() {
                     </div>
                   </div>
 
-                  {/* Vertical Divider Line */}
-                  <div className="hidden lg:block lg:col-span-1 justify-self-center w-px h-full bg-gradient-to-b from-white/10 via-white/20 to-transparent" />
-
-                  {/* Right Panel: Mini Terminal cmd long and thin */}
-                  <div className="lg:col-span-2 flex flex-col justify-stretch min-h-[160px]">
+                  {/* Right Panel: Mini Terminal (with left border acting as the divider) */}
+                  <div className="lg:col-span-2 flex flex-col justify-stretch min-h-[160px] lg:border-l lg:border-white/10 lg:pl-6">
                     <div className="flex-grow flex flex-col bg-black/50 border border-white/5 rounded-xl p-4 font-mono text-[10px] text-green-400 select-none shadow-inner justify-between h-full">
                       <div className="flex flex-col gap-2">
                         {/* Terminal Header */}
                         <div className="flex items-center gap-1.5 text-on-surface-variant/40 border-b border-white/5 pb-2 mb-1.5">
-                          <span className="text-[10px] text-primary flex items-center">
-                            <i className="fa-regular fa-folder group-hover:hidden"></i>
-                            <i className="fa-regular fa-folder-open hidden group-hover:inline"></i>
+                          <span className="relative w-3.5 h-3.5 flex items-center justify-center text-primary mr-1.5 flex-shrink-0">
+                            <i className="fa-regular fa-folder absolute transition-all duration-200 group-hover:opacity-0 group-hover:scale-90"></i>
+                            <i className="fa-regular fa-folder-open absolute transition-all duration-200 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"></i>
                           </span>
                           <span className="text-[8px] uppercase tracking-wider font-mono">tags.log</span>
                         </div>

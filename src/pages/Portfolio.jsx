@@ -250,14 +250,14 @@ export default function Portfolio() {
                         <Link 
                           to={`/portfolio/section/${post.category}`}
                           key={post.id}
-                          className="snap-start flex-shrink-0 w-[310px] sm:w-[350px] bg-surface-container-low/45 backdrop-blur-md border border-white/5 hover:border-primary/20 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer"
+                          className="snap-start flex-shrink-0 w-[360px] sm:w-[440px] bg-surface-container-low/45 backdrop-blur-md border border-white/5 hover:border-primary/20 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer"
                         >
                           {/* Terminal Header */}
                           <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none">
                             <div className="flex items-center gap-1.5 overflow-hidden">
-                              <span className="text-[10px] text-primary flex items-center">
-                                <i className="fa-regular fa-folder group-hover:hidden"></i>
-                                <i className="fa-regular fa-folder-open hidden group-hover:inline"></i>
+                              <span className="relative w-3.5 h-3.5 flex items-center justify-center text-primary mr-1.5 flex-shrink-0">
+                                <i className="fa-regular fa-folder absolute transition-all duration-200 group-hover:opacity-0 group-hover:scale-90"></i>
+                                <i className="fa-regular fa-folder-open absolute transition-all duration-200 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"></i>
                               </span>
                               <span className="text-[8px] uppercase tracking-wider text-on-surface-variant/40">~/{post.category}</span>
                             </div>
@@ -271,14 +271,14 @@ export default function Portfolio() {
 
                           {/* Body Split */}
                           <div className="flex flex-row items-stretch flex-grow">
-                            {/* Left Column (68%) */}
-                            <div className="w-[68%] p-4 flex flex-col gap-3">
-                              {/* Image/Video preview */}
-                              <div className="relative aspect-video overflow-hidden bg-black/40 rounded-lg border border-white/5">
+                            {/* Left Column (flex-grow) - Image flush & Text details */}
+                            <div className="flex-1 flex flex-col justify-between overflow-hidden">
+                              {/* Image/Video preview (flush to borders) */}
+                              <div className="relative aspect-video overflow-hidden bg-black/40 border-b border-white/5 w-full flex-shrink-0">
                                 <img 
                                   src={getMediaThumbnail(post)} 
                                   alt={post.title[currentLang] || post.title['fr']}
-                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                  className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
                                   loading="lazy"
                                 />
                                 {post.mediaType === 'video' && (
@@ -292,34 +292,31 @@ export default function Portfolio() {
                                 )}
                               </div>
 
-                              {/* Divider line */}
-                              <div className="border-t border-white/5" />
+                              {/* Padded Text details */}
+                              <div className="p-4 flex flex-col gap-2 flex-grow justify-start">
+                                {/* Date */}
+                                <span className="font-mono text-[9px] text-on-surface-variant/60 font-bold">
+                                  {post.date}
+                                </span>
 
-                              {/* Date */}
-                              <span className="font-mono text-[9px] text-on-surface-variant/50">
-                                {post.date}
-                              </span>
-
-                              {/* Text details */}
-                              <div className="flex flex-col gap-1.5">
-                                <h3 className="font-sans font-bold text-xs text-on-surface group-hover:text-primary transition-colors line-clamp-1">
-                                  {post.title[currentLang] || post.title['fr']}
-                                </h3>
-                                <p className="text-[10px] font-sans font-normal text-on-surface-variant leading-relaxed line-clamp-2">
-                                  {post.description[currentLang] || post.description['fr']}
-                                </p>
+                                {/* Text details */}
+                                <div className="flex flex-col gap-1.5">
+                                  <h3 className="font-sans font-extrabold text-xs sm:text-sm uppercase tracking-tight text-on-surface group-hover:text-primary transition-colors line-clamp-1">
+                                    {post.title[currentLang] || post.title['fr']}
+                                  </h3>
+                                  <p className="text-[11px] font-sans font-normal text-on-surface-variant/90 leading-relaxed line-clamp-3">
+                                    {post.description[currentLang] || post.description['fr']}
+                                  </p>
+                                </div>
                               </div>
                             </div>
 
-                            {/* Vertical divider */}
-                            <div className="w-px bg-gradient-to-b from-white/10 via-white/20 to-transparent" />
-
-                            {/* Right Column (32%) - Colonne CMD */}
-                            <div className="w-[32%] p-4 flex flex-col justify-between font-mono bg-black/35 text-[9px] text-green-400 select-none">
+                            {/* Right Column (Fixed cmd column: 130px on mobile, 145px on small and up) */}
+                            <div className="w-[130px] sm:w-[145px] flex-shrink-0 p-4 pt-3.5 flex flex-col justify-between font-mono bg-black/35 text-[9px] text-green-400 select-none border-l border-white/5">
                               <div className="flex flex-col gap-2">
                                 {/* Subheader */}
-                                <div className="text-[7px] text-on-surface-variant/40 border-b border-white/5 pb-1 mb-1 font-bold uppercase tracking-wider">
-                                  tags.log
+                                <div className="text-[8px] font-mono text-on-surface-variant/40 border-b border-white/5 pb-1 mb-1">
+                                  $ ls keywords
                                 </div>
                                 <ProjectTerminalList tags={post.tags} />
                               </div>

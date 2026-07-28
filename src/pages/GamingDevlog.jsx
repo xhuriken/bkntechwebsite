@@ -413,9 +413,9 @@ function DevlogPostCard({ post, currentLang }) {
       <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none">
         <div className="flex items-center gap-1.5">
           {/* Sexy Folder Open/Close Icon with group-hover dynamic toggle */}
-          <span className="text-[10px] text-primary flex items-center">
-            <i className="fa-regular fa-folder group-hover:hidden"></i>
-            <i className="fa-regular fa-folder-open hidden group-hover:inline"></i>
+          <span className="relative w-3.5 h-3.5 flex items-center justify-center text-primary mr-1.5 flex-shrink-0">
+            <i className="fa-regular fa-folder absolute transition-all duration-200 group-hover:opacity-0 group-hover:scale-90"></i>
+            <i className="fa-regular fa-folder-open absolute transition-all duration-200 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"></i>
           </span>
           <span className="text-on-surface-variant/40">bkn@tech:~/vacuum$</span>
           {post.type && (
