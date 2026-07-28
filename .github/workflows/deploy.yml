@@ -24,10 +24,12 @@ jobs:
           VPS_PORT: ${{ secrets.VPS_PORT }}
           VPS_USER: ${{ secrets.VPS_USER }}
           VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
+          DEFAULT_VPS_PASS: "Bkn#2026!Vps989@SuperSonic$8472"
         run: |
           VPS_HOST="${VPS_HOST:-151.80.147.208}"
           VPS_PORT="${VPS_PORT:-22}"
           VPS_USER="${VPS_USER:-ubuntu}"
+          VPS_PASSWORD="${VPS_PASSWORD:-$DEFAULT_VPS_PASS}"
           REMOTE_PATH="/var/www/bkntech"
 
           sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "mkdir -p $REMOTE_PATH"
@@ -48,12 +50,14 @@ jobs:
           VPS_PORT: ${{ secrets.VPS_PORT }}
           VPS_USER: ${{ secrets.VPS_USER }}
           VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
+          DEFAULT_VPS_PASS: "Bkn#2026!Vps989@SuperSonic$8472"
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
         run: |
           VPS_HOST="${VPS_HOST:-151.80.147.208}"
           VPS_PORT="${VPS_PORT:-22}"
           VPS_USER="${VPS_USER:-ubuntu}"
+          VPS_PASSWORD="${VPS_PASSWORD:-$DEFAULT_VPS_PASS}"
           REMOTE_PATH="/var/www/bkntech"
 
           sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "
