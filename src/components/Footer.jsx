@@ -81,6 +81,28 @@ function InteractiveNetwork() {
       
       // Update & Draw particles
       particles.forEach((p) => {
+        // Gravitational steering from mouse cursor
+        if (mouse.active) {
+          const dx = mouse.x - p.x;
+          const dy = mouse.y - p.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (dist < 100) {
+            const force = (100 - dist) / 100;
+            // Add light steering force towards cursor coordinate
+            p.vx += (dx / dist) * force * 0.12;
+            p.vy += (dy / dist) * force * 0.12;
+          }
+        }
+
+        // Normalize velocity to keep speed perfectly constant
+        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        const targetSpeed = 0.55; // uniform ambient speed
+        if (speed > 0) {
+          p.vx = (p.vx / speed) * targetSpeed;
+          p.vy = (p.vy / speed) * targetSpeed;
+        }
+
         // Base movement displacement
         p.x += p.vx;
         p.y += p.vy;
@@ -90,37 +112,6 @@ function InteractiveNetwork() {
         if (p.x > width) { p.x = width; p.vx *= -1; }
         if (p.y < 0) { p.y = 0; p.vy *= -1; }
         if (p.y > height) { p.y = height; p.vy *= -1; }
-
-        // Gravitational steering from mouse cursor
-        if (mouse.active) {
-          const dx = mouse.x - p.x;
-          const dy = mouse.y - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          
-          if (dist < 90) {
-            const force = (90 - dist) / 90;
-            // Add light acceleration towards cursor coordinate
-            p.vx += (dx / dist) * force * 0.08;
-            p.vy += (dy / dist) * force * 0.08;
-          }
-        }
-
-        // Apply friction dampening to prevent speed building up infinitely
-        p.vx *= 0.96;
-        p.vy *= 0.96;
-
-        // Force containment within target speed limits
-        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        const minSpeed = 0.2;
-        const maxSpeed = 0.75;
-        if (speed < minSpeed) {
-          const angle = Math.atan2(p.vy, p.vx) || Math.random() * Math.PI * 2;
-          p.vx = Math.cos(angle) * minSpeed;
-          p.vy = Math.sin(angle) * minSpeed;
-        } else if (speed > maxSpeed) {
-          p.vx = (p.vx / speed) * maxSpeed;
-          p.vy = (p.vy / speed) * maxSpeed;
-        }
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -205,110 +196,125 @@ export default function Footer() {
           backgroundBlendMode: 'soft-light'
         }}
       />
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 items-stretch">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 pb-4 items-stretch">
         
-        {/* Part 1: Info & Links (Left) - col-span-8 */}
-        <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-          {/* Column 1: Identity & Socials */}
-          <div className="md:col-span-6 flex flex-col gap-4">
-            <div className="flex items-center gap-1.5">
-              <span className="text-primary font-bold text-xs select-none">&gt;</span>
-              <span className="font-sans font-extrabold tracking-[0.2em] text-sm text-primary uppercase select-none">
-                Bkn Tech
-              </span>
-            </div>
-            <p className="text-xs font-sans font-normal text-on-surface-variant leading-relaxed max-w-sm">
-              Ingénierie de plateformes sur mesure & développement de jeux multijoueurs. Excellence technique & esthétique.
-            </p>
-            {/* Social Icons list */}
-            <div className="flex gap-4 mt-2">
-              <a 
-                href="https://linkedin.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="w-8 h-8 rounded-lg bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-[0_0_12px_rgba(190,194,255,0.15)] hover:scale-110 transition-all duration-300 group"
-                aria-label="LinkedIn"
-              >
-                <i className="fa-brands fa-linkedin-in text-xs group-hover:scale-110 transition-transform"></i>
-              </a>
-              <a 
-                href="https://github.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="w-8 h-8 rounded-lg bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-[0_0_12px_rgba(190,194,255,0.15)] hover:scale-110 transition-all duration-300 group"
-                aria-label="GitHub"
-              >
-                <i className="fa-brands fa-github text-xs group-hover:scale-110 transition-transform"></i>
-              </a>
-              <a 
-                href="https://discord.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="w-8 h-8 rounded-lg bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-[0_0_12px_rgba(190,194,255,0.15)] hover:scale-110 transition-all duration-300 group"
-                aria-label="Discord"
-              >
-                <i className="fa-brands fa-discord text-xs group-hover:scale-110 transition-transform"></i>
-              </a>
-              <a 
-                href="https://x.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="w-8 h-8 rounded-lg bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-[0_0_12px_rgba(190,194,255,0.15)] hover:scale-110 transition-all duration-300 group"
-                aria-label="Twitter X"
-              >
-                <i className="fa-brands fa-x-twitter text-xs group-hover:scale-110 transition-transform"></i>
-              </a>
-            </div>
-          </div>
-
-          {/* Column 2: Navigation Links */}
-          <div className="md:col-span-3 flex flex-col gap-4">
-            <div className="flex items-center gap-1.5 select-none">
-              <span className="text-primary/75 font-semibold text-[9px]">&gt;</span>
-              <span className="font-sans font-semibold tracking-wider text-[11px] uppercase text-primary/80">
-                Navigation
-              </span>
-            </div>
-            <ul className="flex flex-col gap-2.5 font-sans font-medium text-xs text-on-surface-variant">
-              <li>
-                <Link to="/#home" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
-                  Accueil
-                </Link>
-              </li>
-              <li>
-                <Link to="/portfolio" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
-                  Portfolio
-                </Link>
-              </li>
-              <li>
-                <Link to="/#contact" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3: Legal Links */}
-          <div className="md:col-span-3 flex flex-col gap-4">
-            <div className="flex items-center gap-1.5 select-none">
-              <span className="text-primary/75 font-semibold text-[9px]">&gt;</span>
-              <span className="font-sans font-semibold tracking-wider text-[11px] uppercase text-primary/80">
-                Juridique
-              </span>
-            </div>
-            <ul className="flex flex-col gap-2.5 font-sans font-medium text-xs text-on-surface-variant">
-              <li>
-                <Link to="/mentions-legales" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
-                  Mentions Légales
-                </Link>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
-                  Politique de Confidentialité
+        {/* Part 1: Info, Links & Copyright (Left) - col-span-8 */}
+        <div className="lg:col-span-8 flex flex-col justify-between gap-8 pb-4">
+          
+          {/* Row 1: Columns */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            {/* Column 1: Identity & Socials */}
+            <div className="md:col-span-6 flex flex-col gap-4">
+              <div className="flex items-center gap-1.5">
+                <span className="text-primary font-bold text-xs select-none">&gt;</span>
+                <span className="font-sans font-extrabold tracking-[0.2em] text-sm text-primary uppercase select-none">
+                  Bkn Tech
+                </span>
+              </div>
+              <p className="text-xs font-sans font-normal text-on-surface-variant leading-relaxed max-w-sm">
+                Ingénierie de plateformes sur mesure & développement de jeux multijoueurs. Excellence technique & esthétique.
+              </p>
+              {/* Social Icons list */}
+              <div className="flex gap-4 mt-2">
+                <a 
+                  href="https://linkedin.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-8 h-8 rounded-lg bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-[0_0_12px_rgba(190,194,255,0.15)] hover:scale-110 transition-all duration-300 group"
+                  aria-label="LinkedIn"
+                >
+                  <i className="fa-brands fa-linkedin-in text-xs group-hover:scale-110 transition-transform"></i>
                 </a>
-              </li>
-            </ul>
+                <a 
+                  href="https://github.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-8 h-8 rounded-lg bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-[0_0_12px_rgba(190,194,255,0.15)] hover:scale-110 transition-all duration-300 group"
+                  aria-label="GitHub"
+                >
+                  <i className="fa-brands fa-github text-xs group-hover:scale-110 transition-transform"></i>
+                </a>
+                <a 
+                  href="https://discord.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-8 h-8 rounded-lg bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-[0_0_12px_rgba(190,194,255,0.15)] hover:scale-110 transition-all duration-300 group"
+                  aria-label="Discord"
+                >
+                  <i className="fa-brands fa-discord text-xs group-hover:scale-110 transition-transform"></i>
+                </a>
+                <a 
+                  href="https://x.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-8 h-8 rounded-lg bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-[0_0_12px_rgba(190,194,255,0.15)] hover:scale-110 transition-all duration-300 group"
+                  aria-label="Twitter X"
+                >
+                  <i className="fa-brands fa-x-twitter text-xs group-hover:scale-110 transition-transform"></i>
+                </a>
+              </div>
+            </div>
+
+            {/* Column 2: Navigation Links */}
+            <div className="md:col-span-3 flex flex-col gap-4">
+              <div className="flex items-center gap-1.5 select-none">
+                <span className="text-primary/75 font-semibold text-[9px]">&gt;</span>
+                <span className="font-sans font-semibold tracking-wider text-[11px] uppercase text-primary/80">
+                  Navigation
+                </span>
+              </div>
+              <ul className="flex flex-col gap-2.5 font-sans font-medium text-xs text-on-surface-variant">
+                <li>
+                  <Link to="/#home" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
+                    Accueil
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/portfolio" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
+                    Portfolio
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/#contact" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
+                    Contact
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 3: Legal Links */}
+            <div className="md:col-span-3 flex flex-col gap-4">
+              <div className="flex items-center gap-1.5 select-none">
+                <span className="text-primary/75 font-semibold text-[9px]">&gt;</span>
+                <span className="font-sans font-semibold tracking-wider text-[11px] uppercase text-primary/80">
+                  Juridique
+                </span>
+              </div>
+              <ul className="flex flex-col gap-2.5 font-sans font-medium text-xs text-on-surface-variant">
+                <li>
+                  <Link to="/mentions-legales" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
+                    Mentions Légales
+                  </Link>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
+                    Politique de Confidentialité
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
+
+          {/* Row 2: Bottom copyright / authors inside Part 1 */}
+          <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-on-surface-variant/40 text-[10px] uppercase tracking-wider font-sans font-medium">
+            <div>
+              BKN TECH &copy; {new Date().getFullYear()} &mdash; TOUS DROITS RÉSERVÉS.
+            </div>
+            <div className="flex items-center gap-1.5 text-on-surface-variant/60 font-sans font-semibold normal-case">
+              Enrique Puerto, Célestin Honvault
+            </div>
+          </div>
+
         </div>
 
         {/* Part 2: Interactive Cyberpunk Vector Node Canvas (Right) - col-span-4 */}
@@ -316,16 +322,6 @@ export default function Footer() {
           <InteractiveNetwork />
         </div>
 
-      </div>
-
-      {/* Bottom Row */}
-      <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-on-surface-variant/40 text-[10px] uppercase tracking-wider font-sans font-medium">
-        <div>
-          BKN TECH &copy; {new Date().getFullYear()} &mdash; TOUS DROITS RÉSERVÉS.
-        </div>
-        <div className="flex items-center gap-1.5 text-on-surface-variant/60 font-sans font-semibold normal-case">
-          Enrique Puerto, Célestin Honvault
-        </div>
       </div>
     </footer>
   );

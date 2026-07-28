@@ -150,27 +150,60 @@ function ProjectTerminalList({ tags = [], category = 'gaming' }) {
  */
 function CarouselList({ children }) {
   const containerRef = useRef(null);
+  const targetScrollRef = useRef(0);
+  const animationFrameRef = useRef(null);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
+    // Track scroll events from mouse or trackpad to keep target position synced
+    const handleScroll = () => {
+      // If the scroll was triggered by native touch or momentum, synchronize our target
+      if (!animationFrameRef.current) {
+        targetScrollRef.current = container.scrollLeft;
+      }
+    };
+    container.addEventListener('scroll', handleScroll, { passive: true });
+
+    targetScrollRef.current = container.scrollLeft;
+
+    const smoothScroll = () => {
+      const diff = targetScrollRef.current - container.scrollLeft;
+      if (Math.abs(diff) > 0.5) {
+        container.scrollLeft += diff * 0.12; // Easing speed factor
+        animationFrameRef.current = requestAnimationFrame(smoothScroll);
+      } else {
+        container.scrollLeft = targetScrollRef.current;
+        animationFrameRef.current = null;
+      }
+    };
+
     const handleWheel = (e) => {
       if (e.deltaY !== 0) {
         const canScrollLeft = container.scrollLeft > 0;
-        const canScrollRight = container.scrollLeft < container.scrollWidth - container.clientWidth - 5;
+        const maxScroll = container.scrollWidth - container.clientWidth;
+        const canScrollRight = container.scrollLeft < maxScroll - 10;
         
         // Intercept vertical scroll only if we can scroll the carousel in the desired direction
         if ((e.deltaY > 0 && canScrollRight) || (e.deltaY < 0 && canScrollLeft)) {
           e.preventDefault();
-          container.scrollLeft += e.deltaY * 0.9; // comfortable horizontal scroll factor
+          // Update target destination clamped within boundaries
+          targetScrollRef.current = Math.max(0, Math.min(targetScrollRef.current + e.deltaY * 0.85, maxScroll));
+
+          // Trigger smooth frame loop if not already running
+          if (!animationFrameRef.current) {
+            animationFrameRef.current = requestAnimationFrame(smoothScroll);
+          }
         }
       }
     };
 
     container.addEventListener('wheel', handleWheel, { passive: false });
     return () => {
+      container.removeEventListener('scroll', handleScroll);
       container.removeEventListener('wheel', handleWheel);
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
     };
   }, []);
 
