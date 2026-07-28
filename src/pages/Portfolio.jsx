@@ -207,79 +207,92 @@ export default function Portfolio() {
           {/* Projet à la une : Vacuum Protocol */}
           <motion.div 
             variants={sectionVariants}
-            className="w-full bg-surface-container-low/40 backdrop-blur-md border border-white/5 hover:border-primary/10 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-8 items-stretch relative overflow-hidden transition-all duration-300"
+            className="w-full bg-surface-container-low/40 backdrop-blur-md border border-white/5 hover:border-primary/10 rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 relative"
           >
             {/* Ambient background decorative glow */}
-            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-primary/5 rounded-full filter blur-[80px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full filter blur-[100px] pointer-events-none" />
 
-            {/* Left side: Cinematic Banner Image/Thumbnail */}
-            <div className="md:w-1/2 aspect-video overflow-hidden rounded-xl border border-white/5 relative bg-black/40 flex-shrink-0">
-              <img 
-                src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800" 
-                alt="Vacuum Protocol" 
-                className="w-full h-full object-cover hover:scale-102 transition-transform duration-700" 
+            {/* Terminal Header */}
+            <div className="w-full bg-black/60 border-b border-white/5 px-6 py-3 flex items-center justify-between font-mono text-[10px] text-green-400 select-none relative overflow-hidden">
+              {/* Passive Noise Texture background */}
+              <div 
+                className="absolute inset-0 opacity-15 pointer-events-none" 
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                  backgroundBlendMode: 'soft-light'
+                }}
               />
-              <div className="absolute top-3 left-3 bg-primary text-black font-sans font-bold text-[9px] uppercase tracking-wider px-2.5 py-1 rounded-lg">
-                Projet à la une
+              <div className="flex items-center gap-2 overflow-hidden relative z-10">
+                <span className="relative w-4 h-4 flex items-center justify-center text-primary mr-1.5 flex-shrink-0">
+                  <i className="fa-regular fa-folder absolute transition-all duration-200 group-hover:opacity-0 group-hover:scale-90"></i>
+                  <i className="fa-regular fa-folder-open absolute transition-all duration-200 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"></i>
+                </span>
+                <span className="text-[9px] uppercase tracking-wider text-on-surface-variant/40">bkn@tech:~/vacuum$ ./featured_project.log</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-[9px] font-sans font-bold uppercase tracking-wider text-primary group-hover:text-white transition-colors relative z-10">
+                <span>PROJET À LA UNE</span>
               </div>
             </div>
 
-            {/* Right side: Information and CTAs */}
-            <div className="md:w-1/2 flex flex-col justify-between gap-6 py-2">
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-primary">
-                    Unity Game Development
-                  </span>
-                  <span className="text-[10px] text-on-surface-variant/40">•</span>
-                  <span className="text-[10px] font-sans text-on-surface-variant/60">
-                    Production active
-                  </span>
-                </div>
+            {/* Body Split */}
+            <div className="flex flex-col md:flex-row items-stretch flex-grow">
+              {/* Left Column (flex-grow) - Image flush & Text details & CTAs */}
+              <div className="flex-1 flex flex-col justify-between overflow-hidden">
+                <div className="flex flex-col md:flex-row items-stretch gap-6 p-6">
+                  {/* Cinematic Banner Image/Thumbnail */}
+                  <div className="md:w-1/2 aspect-video overflow-hidden rounded-xl border border-white/5 relative bg-black/40 flex-shrink-0">
+                    <img 
+                      src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800" 
+                      alt="Vacuum Protocol" 
+                      className="w-full h-full object-cover hover:scale-102 transition-transform duration-700" 
+                    />
+                  </div>
 
-                <h2 className="font-sans font-extrabold text-2xl md:text-3xl uppercase tracking-tight text-on-surface">
-                  Vacuum Protocol
-                </h2>
+                  {/* Padded Text details & CTAs */}
+                  <div className="md:w-1/2 flex flex-col justify-between gap-6">
+                    <div className="flex flex-col gap-3">
+                      <span className="font-mono text-[9px] text-on-surface-variant/60 font-bold uppercase tracking-wider">
+                        Production active • Version 0.0.6
+                      </span>
 
-                <p className="text-xs md:text-sm font-sans font-normal text-on-surface-variant leading-relaxed">
-                  Un jeu de tir tactique multijoueur compétitif en 3D développé sous Unity HDRP. Explorez notre cycle de développement à long terme, nos optimisations netcode et nos avancées d'intégration de gameplay.
-                </p>
+                      <h2 className="font-sans font-extrabold text-2xl md:text-3xl uppercase tracking-tight text-on-surface group-hover:text-primary transition-colors">
+                        Vacuum Protocol
+                      </h2>
 
-                {/* Terminal line for tags */}
-                <div className="w-full max-w-md font-mono text-[9px] bg-black/40 border border-white/5 rounded-lg p-2.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-green-400 select-none mt-1">
-                  <span className="text-white/20">$</span>
-                  <span className="text-on-surface-variant/50">ls keywords:</span>
-                  <span className="text-white font-bold">unity</span>
-                  <span className="text-white/20">•</span>
-                  <span className="text-white font-bold">c#</span>
-                  <span className="text-white/20">•</span>
-                  <span className="text-white font-bold">mirror_netcode</span>
-                  <span className="text-white/20">•</span>
-                  <span className="text-white font-bold">3d_physics</span>
+                      <p className="text-xs md:text-sm font-sans font-normal text-on-surface-variant/90 leading-relaxed">
+                        Un jeu de tir tactique multijoueur compétitif en 3D développé sous Unity HDRP. Explorez notre cycle de développement à long terme, nos optimisations netcode et nos avancées d'intégration de gameplay.
+                      </p>
+                    </div>
+
+                    {/* CTA Buttons */}
+                    <div className="flex flex-wrap gap-4 mt-auto">
+                      <Button 
+                        variant="primary"
+                        onClick={() => navigate('/portfolio/section/gaming')}
+                      >
+                        <span>Visiter le Devlog</span>
+                        <svg className="w-3 h-3 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                      </Button>
+
+                      <Button 
+                        variant="black"
+                        href="https://discord.gg/bkntech"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <i className="fa-brands fa-discord text-[11px] text-[#5865F2]"></i>
+                        <span>Rejoindre le Discord</span>
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-wrap gap-4 mt-auto">
-                <Button 
-                  variant="primary"
-                  onClick={() => navigate('/portfolio/section/gaming')}
-                >
-                  <span>Visiter le Devlog</span>
-                  <svg className="w-3 h-3 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                  </svg>
-                </Button>
-
-                <Button 
-                  variant="black"
-                  href="https://discord.gg/bkntech"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <i className="fa-brands fa-discord text-[11px] text-[#5865F2]"></i>
-                  <span>Rejoindre le Discord</span>
-                </Button>
+              {/* Right Column (Fixed cmd column) */}
+              <div className="w-full md:w-[155px] flex-shrink-0 p-6 pt-5.5 flex flex-col justify-between bg-black/35 border-t md:border-t-0 md:border-l border-white/5">
+                <ProjectTerminalList tags={['unity', 'c#', 'mirror_netcode', '3d_physics']} />
               </div>
             </div>
           </motion.div>
@@ -325,15 +338,23 @@ export default function Portfolio() {
                           className="snap-start flex-shrink-0 w-[360px] sm:w-[440px] bg-surface-container-low/45 backdrop-blur-md border border-white/5 hover:border-primary/20 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer"
                         >
                           {/* Terminal Header */}
-                          <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none">
-                            <div className="flex items-center gap-1.5 overflow-hidden">
+                          <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none relative overflow-hidden">
+                            {/* Passive Noise Texture background */}
+                            <div 
+                              className="absolute inset-0 opacity-15 pointer-events-none" 
+                              style={{
+                                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                                backgroundBlendMode: 'soft-light'
+                              }}
+                            />
+                            <div className="flex items-center gap-1.5 overflow-hidden relative z-10">
                               <span className="relative w-3.5 h-3.5 flex items-center justify-center text-primary mr-1.5 flex-shrink-0">
                                 <i className="fa-regular fa-folder absolute transition-all duration-200 group-hover:opacity-0 group-hover:scale-90"></i>
                                 <i className="fa-regular fa-folder-open absolute transition-all duration-200 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"></i>
                               </span>
                               <span className="text-[8px] uppercase tracking-wider text-on-surface-variant/40">~/{post.category}</span>
                             </div>
-                            <div className="flex items-center gap-1 text-[8px] font-sans font-bold uppercase tracking-wider text-primary group-hover:text-white transition-colors">
+                            <div className="flex items-center gap-1 text-[8px] font-sans font-bold uppercase tracking-wider text-primary group-hover:text-white transition-colors relative z-10">
                               <span>Ouvrir</span>
                               <svg className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />

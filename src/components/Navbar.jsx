@@ -39,7 +39,15 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 glass-panel border-b border-white/5 py-4 px-6 md:px-12 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 w-full z-50 glass-panel border-b border-white/5 py-4 px-6 md:px-12 flex items-center justify-between relative overflow-hidden">
+      {/* Passive Noise Texture background */}
+      <div 
+        className="absolute inset-0 opacity-15 pointer-events-none" 
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          backgroundBlendMode: 'soft-light'
+        }}
+      />
       {/* Brand Identity / Logo */}
       <Link to="/" className="font-display font-black text-xs tracking-[0.2em] text-on-surface hover:text-primary transition-colors uppercase">
         BKN Tech

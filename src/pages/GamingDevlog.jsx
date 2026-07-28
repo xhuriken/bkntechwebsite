@@ -440,8 +440,16 @@ function DevlogPostCard({ post, currentLang }) {
       {/* Card Wrapper (maintains overflow-hidden and hover styling) */}
       <div className="w-full bg-surface-container-low/40 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col">
         {/* Terminal Header - Full Width, Flush, No Margins */}
-        <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none">
-          <div className="flex items-center gap-1.5">
+        <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none relative overflow-hidden">
+          {/* Passive Noise Texture background */}
+          <div 
+            className="absolute inset-0 opacity-15 pointer-events-none" 
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+              backgroundBlendMode: 'soft-light'
+            }}
+          />
+          <div className="flex items-center gap-1.5 relative z-10">
             {/* Sexy Folder Open/Close Icon with group-hover dynamic toggle */}
             <span className="relative w-3.5 h-3.5 flex items-center justify-center text-primary mr-1.5 flex-shrink-0">
               <i className="fa-regular fa-folder absolute transition-all duration-200 group-hover:opacity-0 group-hover:scale-90"></i>
@@ -456,7 +464,7 @@ function DevlogPostCard({ post, currentLang }) {
           </div>
           
           {/* Date on Right (Absolute & Relative) */}
-          <div className="flex items-center gap-2 text-on-surface-variant/70 font-semibold">
+          <div className="flex items-center gap-2 text-on-surface-variant/70 font-semibold relative z-10">
             <span className="md:hidden text-on-surface-variant/90 font-bold">{post.date}</span>
             <span className="hidden md:inline text-on-surface-variant/30">•</span>
             <span className="text-on-surface font-bold">{relativeDate}</span>
