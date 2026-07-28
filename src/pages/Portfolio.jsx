@@ -15,6 +15,37 @@ function getYouTubeId(url) {
 }
 
 /**
+ * A dynamic typing effect terminal list of technologies inside portfolio cards
+ */
+function ProjectTerminalList({ tags = [] }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (!tags || tags.length === 0) return;
+    const interval = setInterval(() => {
+      setIndex(prev => (prev + 1) % (tags.length + 3)); // +3 to pause at the end before loop reset
+    }, 900);
+    return () => clearInterval(interval);
+  }, [tags]);
+
+  if (!tags || tags.length === 0) return null;
+
+  return (
+    <div className="flex flex-col gap-1 font-mono text-[9px] text-green-400">
+      {tags.slice(0, index + 1).map((tag, idx) => (
+        <div key={idx} className="flex items-center gap-1.5">
+          <span className="text-white/20">&gt;</span>
+          <span className={idx === index ? "text-white font-bold" : ""}>
+            {tag}
+            {idx === index && <span className="animate-pulse">_</span>}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
  * Portfolio Main Page Component
  * Displays 4 interactive project carousels (Gaming, Website, Agent IA, Mobile)
  * dynamically loaded from the serverless posts API.
@@ -31,12 +62,14 @@ export default function Portfolio() {
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
-          setPosts(data);
+          // Exclude gaming category as it is featured separately on top
+          const rest = data.filter(p => p.category !== 'gaming');
+          setPosts(rest);
         }
         setLoading(false);
       })
       .catch(err => {
-        console.error("Failed to load portfolio posts:", err);
+        console.error(err);
         setLoading(false);
       });
   }, []);
@@ -217,54 +250,83 @@ export default function Portfolio() {
                         <Link 
                           to={`/portfolio/section/${post.category}`}
                           key={post.id}
-                          className="snap-start flex-shrink-0 w-[290px] sm:w-[350px] bg-surface-container-low/45 backdrop-blur-md border border-white/5 hover:border-primary/20 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer"
+                          className="snap-start flex-shrink-0 w-[310px] sm:w-[350px] bg-surface-container-low/45 backdrop-blur-md border border-white/5 hover:border-primary/20 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer"
                         >
-                          {/* Image/Video banner preview */}
-                          <div className="relative aspect-video overflow-hidden bg-black/40">
-                            <img 
-                              src={getMediaThumbnail(post)} 
-                              alt={post.title[currentLang] || post.title['fr']}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                              loading="lazy"
-                            />
-                            {/* Play icon overlay for videos */}
-                            {post.mediaType === 'video' && (
-                              <div className="absolute inset-0 flex items-center justify-center bg-black/25">
-                                <div className="w-12 h-12 rounded-full bg-primary/95 text-black flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110">
-                                  <svg className="w-5 h-5 fill-current ml-0.5" viewBox="0 0 24 24">
-                                    <path d="M8 5v14l11-7z" />
-                                  </svg>
-                                </div>
-                              </div>
-                            )}
+                          {/* Terminal Header */}
+                          <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none">
+                            <div className="flex items-center gap-1.5 overflow-hidden">
+                              <span className="text-[10px] text-primary flex items-center">
+                                <i className="fa-regular fa-folder group-hover:hidden"></i>
+                                <i className="fa-regular fa-folder-open hidden group-hover:inline"></i>
+                              </span>
+                              <span className="text-[8px] uppercase tracking-wider text-on-surface-variant/40">~/{post.category}</span>
+                            </div>
+                            <div className="flex items-center gap-1 text-[8px] font-sans font-bold uppercase tracking-wider text-primary group-hover:text-white transition-colors">
+                              <span>Ouvrir</span>
+                              <svg className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                              </svg>
+                            </div>
                           </div>
 
-                          {/* Content Body */}
-                          <div className="p-5 flex flex-col flex-grow gap-3">
-                            <div className="flex justify-between items-center text-[10px] font-sans font-semibold text-on-surface-variant/80 uppercase tracking-wider">
-                              <span>{post.date}</span>
+                          {/* Body Split */}
+                          <div className="flex flex-row items-stretch flex-grow">
+                            {/* Left Column (68%) */}
+                            <div className="w-[68%] p-4 flex flex-col gap-3">
+                              {/* Image/Video preview */}
+                              <div className="relative aspect-video overflow-hidden bg-black/40 rounded-lg border border-white/5">
+                                <img 
+                                  src={getMediaThumbnail(post)} 
+                                  alt={post.title[currentLang] || post.title['fr']}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                  loading="lazy"
+                                />
+                                {post.mediaType === 'video' && (
+                                  <div className="absolute inset-0 flex items-center justify-center bg-black/25">
+                                    <div className="w-8 h-8 rounded-full bg-primary/95 text-black flex items-center justify-center shadow-lg">
+                                      <svg className="w-3.5 h-3.5 fill-current ml-0.5" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z" />
+                                      </svg>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Divider line */}
+                              <div className="border-t border-white/5" />
+
+                              {/* Date */}
+                              <span className="font-mono text-[9px] text-on-surface-variant/50">
+                                {post.date}
+                              </span>
+
+                              {/* Text details */}
+                              <div className="flex flex-col gap-1.5">
+                                <h3 className="font-sans font-bold text-xs text-on-surface group-hover:text-primary transition-colors line-clamp-1">
+                                  {post.title[currentLang] || post.title['fr']}
+                                </h3>
+                                <p className="text-[10px] font-sans font-normal text-on-surface-variant leading-relaxed line-clamp-2">
+                                  {post.description[currentLang] || post.description['fr']}
+                                </p>
+                              </div>
                             </div>
-                            <h3 className="font-sans font-bold text-sm text-on-surface leading-snug group-hover:text-primary transition-colors">
-                              {post.title[currentLang] || post.title['fr']}
-                            </h3>
-                            <p className="text-xs font-sans font-normal text-on-surface-variant leading-relaxed line-clamp-3">
-                              {post.description[currentLang] || post.description['fr']}
-                            </p>
-                            {/* Tags list */}
-                            <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
-                              {post.tags.slice(0, 3).map((tag, idx) => (
-                                <span 
-                                  key={idx}
-                                  className="text-[9px] font-sans font-semibold px-2 py-0.5 bg-surface border border-white/5 rounded-full text-on-surface-variant/80 uppercase tracking-wide"
-                                >
-                                  {tag}
-                                </span>
-                              ))}
-                              {post.tags.length > 3 && (
-                                <span className="text-[9px] font-sans font-semibold px-2 py-0.5 text-primary uppercase tracking-wide">
-                                  +{post.tags.length - 3}
-                                </span>
-                              )}
+
+                            {/* Vertical divider */}
+                            <div className="w-px bg-gradient-to-b from-white/10 via-white/20 to-transparent" />
+
+                            {/* Right Column (32%) - Colonne CMD */}
+                            <div className="w-[32%] p-4 flex flex-col justify-between font-mono bg-black/35 text-[9px] text-green-400 select-none">
+                              <div className="flex flex-col gap-2">
+                                {/* Subheader */}
+                                <div className="text-[7px] text-on-surface-variant/40 border-b border-white/5 pb-1 mb-1 font-bold uppercase tracking-wider">
+                                  tags.log
+                                </div>
+                                <ProjectTerminalList tags={post.tags} />
+                              </div>
+                              <div className="flex items-center gap-1 text-white/30 text-[8px] mt-2">
+                                <span>$</span>
+                                <span className="w-1 h-2 bg-green-400 animate-pulse" />
+                              </div>
                             </div>
                           </div>
                         </Link>

@@ -146,12 +146,12 @@ export default function PortfolioSection() {
                 </div>
 
                 {/* Timeline Date (hidden on mobile, positioned left of vertical line on desktop) */}
-                <div className="hidden md:block absolute -left-[160px] top-6 w-[100px] text-right font-mono text-[10px] tracking-wide text-on-surface-variant/70">
+                <div className="hidden md:block absolute -left-[160px] top-6 w-[100px] text-right font-mono text-[10px] tracking-wide text-on-surface/90 font-bold">
                   {post.date}
                 </div>
 
                 {/* Mobile Date (visible only on mobile) */}
-                <div className="md:hidden font-mono text-[10px] text-primary">
+                <div className="md:hidden font-mono text-[10px] text-primary font-bold">
                   {post.date}
                 </div>
 
@@ -199,11 +199,12 @@ export default function PortfolioSection() {
                     <div className="flex-grow flex flex-col bg-black/50 border border-white/5 rounded-xl p-4 font-mono text-[10px] text-green-400 select-none shadow-inner justify-between h-full">
                       <div className="flex flex-col gap-2">
                         {/* Terminal Header */}
-                        <div className="flex items-center gap-1.5 text-on-surface-variant/40 border-b border-white/5 pb-2 mb-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-red-500/60" />
-                          <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/60" />
-                          <span className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
-                          <span className="text-[7px] uppercase tracking-wider ml-1 text-on-surface-variant/40">tags.cmd</span>
+                        <div className="flex items-center gap-1.5 text-on-surface-variant/40 border-b border-white/5 pb-2 mb-1.5">
+                          <span className="text-[10px] text-primary flex items-center">
+                            <i className="fa-regular fa-folder group-hover:hidden"></i>
+                            <i className="fa-regular fa-folder-open hidden group-hover:inline"></i>
+                          </span>
+                          <span className="text-[8px] uppercase tracking-wider font-mono">tags.log</span>
                         </div>
                         
                         {/* Dynamic Terminal Stack List */}

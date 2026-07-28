@@ -162,12 +162,6 @@ export default function GamingDevlog() {
       {/* Devlog Game Header */}
       <div className="bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div className="max-w-xl">
-          <div className="flex items-center gap-2 mb-2.5">
-            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-            <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-on-surface-variant/80">
-              Mise à jour régulière
-            </span>
-          </div>
           <h1 className="font-sans font-extrabold text-3xl md:text-4xl uppercase tracking-tight mb-3 text-on-surface">
             Vacuum Protocol
           </h1>
@@ -207,9 +201,10 @@ export default function GamingDevlog() {
             </svg>
           </a>
           <div className="border-t border-white/5 my-1" />
-          <span className="text-[10px] font-sans text-on-surface-variant/50">
-            Version de développement : v0.0.6
-          </span>
+          <div className="flex flex-col gap-1 text-[9px] font-mono text-on-surface-variant/60">
+            <div>Version : v0.0.6</div>
+            <div>Mises à jour : Fréquentes</div>
+          </div>
         </div>
       </div>
 
@@ -410,34 +405,31 @@ function DevlogPostCard({ post, currentLang }) {
       </div>
 
       {/* Timeline Date (Desktop only) */}
-      <div className="hidden md:block absolute -left-[150px] top-[24px] w-[100px] text-right font-mono text-[10px] tracking-wide text-on-surface-variant/65 z-10">
+      <div className="hidden md:block absolute -left-[150px] top-[24px] w-[100px] text-right font-mono text-[10px] tracking-wide text-on-surface/90 font-bold z-10">
         {post.date}
       </div>
 
       {/* Terminal Header - Full Width, Flush, No Margins */}
       <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none">
-        <div className="flex items-center gap-2">
-          {/* Terminal Dots */}
-          <div className="flex gap-1 mr-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-500/50" />
-            <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
-            <span className="w-1.5 h-1.5 rounded-full bg-green-500/50" />
-          </div>
+        <div className="flex items-center gap-1.5">
+          {/* Sexy Folder Open/Close Icon with group-hover dynamic toggle */}
+          <span className="text-[10px] text-primary flex items-center">
+            <i className="fa-regular fa-folder group-hover:hidden"></i>
+            <i className="fa-regular fa-folder-open hidden group-hover:inline"></i>
+          </span>
+          <span className="text-on-surface-variant/40">bkn@tech:~/vacuum$</span>
           {post.type && (
-            <span className="inline-flex items-center gap-1">
-              <span>&gt;</span>
-              <span className={`px-1.5 py-0.5 rounded border border-white/5 bg-white/[0.02] ${typeStyle} lowercase`}>
-                {post.type.replace(/\s+/g, '_')}.log
-              </span>
+            <span className={`px-1.5 py-0.5 rounded border border-white/5 bg-white/[0.02] ${typeStyle} lowercase font-bold`}>
+              ./{post.type.replace(/\s+/g, '_')}.log
             </span>
           )}
         </div>
         
         {/* Date on Right (Absolute & Relative) */}
-        <div className="flex items-center gap-2 text-on-surface-variant/40">
-          <span className="md:hidden text-on-surface-variant/50 font-mono">{post.date}</span>
+        <div className="flex items-center gap-2 text-on-surface-variant/70 font-semibold">
+          <span className="md:hidden text-on-surface-variant/90 font-bold">{post.date}</span>
           <span className="hidden md:inline text-on-surface-variant/30">•</span>
-          <span>{relativeDate}</span>
+          <span className="text-on-surface font-bold">{relativeDate}</span>
         </div>
       </div>
 
