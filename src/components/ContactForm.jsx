@@ -265,14 +265,14 @@ export default function ContactForm() {
               <motion.a 
                 href={`mailto:${emailText}`}
                 whileHover={{ x: 6 }}
-                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer"
               >
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-black transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-black/50 border border-white/5 flex items-center justify-center text-on-surface-variant/70 group-hover:scale-105 group-hover:bg-black/90 group-hover:border-white/20 group-hover:text-white shadow-[0_0_12px_rgba(0,0,0,0.4)] transition-all duration-300">
                   <i className="fa-solid fa-envelope text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">E-mail</div>
-                  <span className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors">
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">E-mail</div>
+                  <span className="text-sm font-semibold text-on-surface group-hover:text-white transition-colors">
                     {emailText || 'contact [at] bkntech.fr'}
                   </span>
                 </div>
@@ -282,14 +282,14 @@ export default function ContactForm() {
               <motion.a 
                 href={`tel:${phoneText.replace(/\s/g, '')}`}
                 whileHover={{ x: 6 }}
-                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer"
               >
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-black transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-black/50 border border-white/5 flex items-center justify-center text-on-surface-variant/70 group-hover:scale-105 group-hover:bg-black/90 group-hover:border-white/20 group-hover:text-white shadow-[0_0_12px_rgba(0,0,0,0.4)] transition-all duration-300">
                   <i className="fa-solid fa-phone text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">Téléphone</div>
-                  <span className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors">
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-secondary transition-colors">Téléphone</div>
+                  <span className="text-sm font-semibold text-on-surface group-hover:text-white transition-colors">
                     {phoneText || '+33 1 00 00 00 00'}
                   </span>
                 </div>
@@ -301,14 +301,14 @@ export default function ContactForm() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ x: 6 }}
-                className="flex items-start gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+                className="flex items-start gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer"
               >
-                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary mt-1 group-hover:scale-110 group-hover:bg-primary group-hover:text-black transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-black/50 border border-white/5 flex items-center justify-center text-on-surface-variant/70 group-hover:scale-105 group-hover:bg-black/90 group-hover:border-white/20 group-hover:text-white shadow-[0_0_12px_rgba(0,0,0,0.4)] mt-1 transition-all duration-300">
                   <i className="fa-solid fa-location-dot text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">Adresse</div>
-                  <div className="text-sm font-light text-on-surface-variant leading-relaxed group-hover:text-on-surface transition-colors">
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-tertiary transition-colors">Adresse</div>
+                  <div className="text-sm font-light text-on-surface-variant leading-relaxed group-hover:text-white transition-colors">
                     Bkn Tech<br />
                     47 rue Vivienne<br />
                     75002 Paris, France
