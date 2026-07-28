@@ -111,7 +111,8 @@ Création et intégration du formulaire de contact haut de gamme, sécurisé con
   - Intégration globale de la texture de bruit passive (noise texture) issue du bouton Discord : configurée comme surcouche de fond semi-opaque avec filtre de fusion soft-light sur la Navbar, le Footer et toutes les barres de titre de terminaux style Kali.
   - Implémentation du défilement horizontal intelligent via la molette de souris verticale (`wheel`) sur les carrousels de Portfolio ([Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx)), capturant l'input sans perturber le scroll global de la page ni les clics.
   - Dynamisation et customisation visuelle des terminaux de tags : variation de la couleur de validation et du curseur (vert, fuchsia/primary, vert/secondary, orange/tertiary) selon la catégorie de projet, et introduction d'un délai initial aléatoire pour désynchroniser l'écriture (staggered delay).
-  - Intégration du widget dynamique de temps réel `ParisClock` (heure locale de Paris en direct avec LED pulsante verte de statut opérationnel) dans le pied de page [Footer.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Footer.jsx) pour animer le bloc sombre.
+  - Remplacement du widget horloge par une grille interactive et réactive Canvas `InteractiveNetwork` (réseau de particules de 25 nodes subissant l'attraction gravitationnelle du curseur et dessinant des arcs thématiques au survol) dans [Footer.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Footer.jsx).
+  - Dynamisation visuelle des colonnes du footer : préfixes carets `>` de style CLI sur les titres de colonnes, animations de translation X progressive (`hover:translate-x-1.5`) sur les liens textuels et effet de lueur fluorescente (`shadow-[0_0_12px_rgba(190,194,255,0.15)]`) sur les icônes de réseaux sociaux.
   - Intégration des routes dynamiques correspondantes dans [App.jsx](file:///app.jsx).
 
 
