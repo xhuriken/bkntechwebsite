@@ -60,4 +60,12 @@ Chaque projet BKN Tech doit maintenir 4 fichiers clés à la racine :
 
 ---
 
+## 🚨 5. DIRECTIVE CRITIQUE ABSOLUE : ZERO FUITE DE SECRETS & SCRIPTS
+- **AUCUN SCRIPT TEMPORAIRE NI MOT DE PASSE EN DUR NE DOIT JAMAIS ÊTRE COMMITÉ DANS GIT**.
+- Avant tout `git add .`, vérifier impérativement l'état des fichiers untracked via `git status`.
+- Tous les scripts utilitaires, de changement de passe ou d'administration (`*.py`, `*.ps1`, `*.sh`) contenant des commandes d'accès doivent rester exclusivement dans le répertoire de travail temporaire scratch (`<appDataDir>/scratch/`) ou être explicitement déclarés dans `.gitignore`.
+- Tout mot de passe ou secret doit résider UNIQUEMENT dans `.env` ou être passé via des variables d'environnement masquées.
+
+---
+
 "L'IA ne répond pas à des commandes, elle livre des résultats vérifiés."
