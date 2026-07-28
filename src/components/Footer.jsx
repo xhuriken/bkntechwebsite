@@ -198,12 +198,12 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 pb-4 items-stretch">
         
         {/* Part 1: Info, Links & Copyright (Left) - col-span-8 */}
-        <div className="lg:col-span-8 flex flex-col justify-between gap-8 pb-4">
+        <div className="lg:col-span-8 flex flex-col justify-between gap-8 pb-4 border-l-2 border-secondary/30 pl-6 md:pl-8">
           
           {/* Row 1: Columns */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
             {/* Column 1: Identity & Socials */}
-            <div className="md:col-span-6 flex flex-col gap-4">
+            <div className="md:col-span-6 flex flex-col gap-4 md:border-r border-white/5 md:pr-8">
               <div className="flex items-center gap-1.5">
                 <span className="text-primary font-bold text-xs select-none">&gt;</span>
                 <span className="font-sans font-extrabold tracking-[0.2em] text-sm text-primary uppercase select-none">
@@ -255,7 +255,7 @@ export default function Footer() {
             </div>
 
             {/* Column 2: Navigation Links */}
-            <div className="md:col-span-3 flex flex-col gap-4">
+            <div className="md:col-span-3 flex flex-col gap-4 md:border-r border-white/5 md:pr-8">
               <div className="flex items-center gap-1.5 select-none">
                 <span className="text-primary/75 font-semibold text-[9px]">&gt;</span>
                 <span className="font-sans font-semibold tracking-wider text-[11px] uppercase text-primary/80">
@@ -282,7 +282,7 @@ export default function Footer() {
             </div>
 
             {/* Column 3: Legal Links */}
-            <div className="md:col-span-3 flex flex-col gap-4">
+            <div className="md:col-span-3 flex flex-col gap-4 md:pl-2">
               <div className="flex items-center gap-1.5 select-none">
                 <span className="text-primary/75 font-semibold text-[9px]">&gt;</span>
                 <span className="font-sans font-semibold tracking-wider text-[11px] uppercase text-primary/80">
@@ -317,7 +317,7 @@ export default function Footer() {
         </div>
 
         {/* Part 2: Interactive Cyberpunk Vector Node Canvas (Right) - col-span-4 */}
-        <div className="lg:col-span-4 flex lg:py-3">
+        <div className="lg:col-span-4 flex border-r-2 border-secondary/30 pr-6 md:pr-8">
           <InteractiveNetwork />
         </div>
 
