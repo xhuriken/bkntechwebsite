@@ -259,66 +259,62 @@ export default function ContactForm() {
               Vous avez un projet de développement web/mobile ou des questions sur notre projet Unity ? N'hésitez pas à nous écrire.
             </p>
 
-            {/* Double Panel Layout with vertical separation */}
-            <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 mt-6">
-              {/* Left Panel: Minimal details */}
-              <div className="sm:col-span-6 flex flex-col gap-4 justify-center pr-2">
-                <div className="group">
-                  <div className="text-[9px] font-sans font-bold uppercase tracking-wider text-primary/80 mb-0.5">E-mail</div>
-                  <a
-                    href={`mailto:${emailText}`}
-                    className="text-xs font-semibold text-on-surface hover:text-white transition-colors duration-200"
-                  >
+            {/* Obfuscated Contact Information Pins with Hover Actions */}
+            <div className="flex flex-col gap-3 items-start -mx-3 mt-6">
+              {/* E-mail Pin */}
+              <motion.a 
+                href={`mailto:${emailText}`}
+                whileHover={{ x: 6 }}
+                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+              >
+                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-black transition-all duration-300">
+                  <i className="fa-solid fa-envelope text-sm"></i>
+                </div>
+                <div>
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">E-mail</div>
+                  <span className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors">
                     {emailText || 'contact [at] bkntech.fr'}
-                  </a>
+                  </span>
                 </div>
+              </motion.a>
 
-                <div className="group">
-                  <div className="text-[9px] font-sans font-bold uppercase tracking-wider text-secondary/80 mb-0.5">Téléphone</div>
-                  <a
-                    href={`tel:${phoneText.replace(/\s/g, '')}`}
-                    className="text-xs font-semibold text-on-surface hover:text-white transition-colors duration-200"
-                  >
+              {/* Téléphone Pin */}
+              <motion.a 
+                href={`tel:${phoneText.replace(/\s/g, '')}`}
+                whileHover={{ x: 6 }}
+                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+              >
+                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-black transition-all duration-300">
+                  <i className="fa-solid fa-phone text-sm"></i>
+                </div>
+                <div>
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">Téléphone</div>
+                  <span className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors">
                     {phoneText || '+33 1 00 00 00 00'}
-                  </a>
+                  </span>
                 </div>
+              </motion.a>
 
-                <div className="group">
-                  <div className="text-[9px] font-sans font-bold uppercase tracking-wider text-tertiary/80 mb-0.5">Adresse</div>
-                  <a
-                    href="https://maps.google.com/?q=BKN+Tech+47+rue+Vivienne+75002+Paris"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs font-normal text-on-surface-variant leading-relaxed hover:text-white transition-colors duration-200 block"
-                  >
+              {/* Localisation Pin */}
+              <motion.a 
+                href="https://maps.google.com/?q=BKN+Tech+47+rue+Vivienne+75002+Paris"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ x: 6 }}
+                className="flex items-start gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+              >
+                <div className="w-10 h-10 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-primary mt-1 group-hover:scale-110 group-hover:bg-primary group-hover:text-black transition-all duration-300">
+                  <i className="fa-solid fa-location-dot text-sm"></i>
+                </div>
+                <div>
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary-container transition-colors">Adresse</div>
+                  <div className="text-sm font-light text-on-surface-variant leading-relaxed group-hover:text-on-surface transition-colors">
                     Bkn Tech<br />
                     47 rue Vivienne<br />
                     75002 Paris, France
-                  </a>
-                </div>
-              </div>
-
-              {/* Vertical Divider */}
-              <div className="hidden sm:block sm:col-span-1 justify-self-center w-px h-[160px] bg-gradient-to-b from-white/10 via-white/20 to-transparent" />
-
-              {/* Right Panel: Thin Mini-Terminal */}
-              <div className="sm:col-span-5 flex flex-col justify-stretch">
-                <div className="flex-grow flex flex-col bg-black/40 border border-white/5 rounded-xl p-3.5 font-mono text-[9px] text-green-400 select-none shadow-inner h-[160px] justify-between">
-                  <div className="flex flex-col gap-1.5">
-                    <div className="flex items-center gap-1.5 text-on-surface-variant/40 border-b border-white/5 pb-1 mb-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-red-500/60" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/60" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
-                      <span className="text-[7px] uppercase tracking-wider ml-1 text-on-surface-variant/40">stack.sh</span>
-                    </div>
-                    <TerminalList />
-                  </div>
-                  <div className="flex items-center gap-1 mt-1 text-white/40">
-                    <span>$</span>
-                    <span className="w-1 h-2.5 bg-green-400 animate-pulse" />
                   </div>
                 </div>
-              </div>
+              </motion.a>
             </div>
           </div>
 

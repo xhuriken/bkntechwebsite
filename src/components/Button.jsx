@@ -54,7 +54,7 @@ export default function Button({ children, className = '', variant = 'primary', 
   const baseClasses = `
     inline-flex items-center justify-center font-display font-black 
     transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none 
-    relative overflow-hidden group active:scale-95 border uppercase 
+    relative overflow-hidden group/btn active:scale-95 border uppercase 
     tracking-[0.15em] select-none rounded-[100px] hover:rounded-none 
     px-6 py-2.5 text-[10px] cursor-pointer z-10
   `;
@@ -79,7 +79,7 @@ export default function Button({ children, className = '', variant = 'primary', 
       />
       
       {/* Hover Grid Overlay */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-all duration-500 pointer-events-none overflow-hidden rounded-[inherit]">
+      <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-30 transition-all duration-500 pointer-events-none overflow-hidden rounded-[inherit]">
         <motion.div 
           className="absolute inset-[-100%]"
           style={{
