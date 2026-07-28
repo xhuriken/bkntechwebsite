@@ -162,11 +162,9 @@ export default function GamingDevlog() {
       {/* Devlog Game Header */}
       <div className="bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div className="max-w-xl">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="font-sans font-bold text-[10px] uppercase tracking-widest text-primary px-2.5 py-0.5 rounded-full border border-primary/20 bg-primary/5">
-              Unity Devlog
-            </span>
-            <span className="text-[10px] font-sans font-medium text-on-surface-variant/60">
+          <div className="flex items-center gap-2 mb-2.5">
+            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+            <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-on-surface-variant/80">
               Mise à jour régulière
             </span>
           </div>
@@ -210,7 +208,7 @@ export default function GamingDevlog() {
           </a>
           <div className="border-t border-white/5 my-1" />
           <span className="text-[10px] font-sans text-on-surface-variant/50">
-            Version Active : v0.4.2-alpha
+            Version de développement : v0.0.6
           </span>
         </div>
       </div>
@@ -404,94 +402,89 @@ function DevlogPostCard({ post, currentLang }) {
         hidden: { opacity: 0, y: 15 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
       }}
-      className="relative w-full bg-surface-container-low/40 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl p-5 md:p-6 transition-all duration-300 flex flex-col gap-4 group"
+      className="relative w-full bg-surface-container-low/40 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col group"
     >
-      {/* Timeline Dot */}
-      <div className={`absolute -left-[39px] md:-left-[57px] top-[24px] w-4 h-4 rounded-full bg-surface border-2 ${dotColors.border} flex items-center justify-center`}>
+      {/* Timeline Dot (Desktop only) */}
+      <div className={`absolute -left-[39px] md:-left-[57px] top-[24px] w-4 h-4 rounded-full bg-surface border-2 ${dotColors.border} flex items-center justify-center z-10`}>
         <div className={`w-1.5 h-1.5 rounded-full ${dotColors.bg}`} />
       </div>
 
       {/* Timeline Date (Desktop only) */}
-      <div className="hidden md:block absolute -left-[150px] top-[24px] w-[100px] text-right font-mono text-[10px] tracking-wide text-on-surface-variant/65">
+      <div className="hidden md:block absolute -left-[150px] top-[24px] w-[100px] text-right font-mono text-[10px] tracking-wide text-on-surface-variant/65 z-10">
         {post.date}
       </div>
 
-      {/* Card Header (Discord category look) */}
-      <div className="flex justify-between items-center border-b border-white/5 pb-2">
+      {/* Terminal Header - Full Width, Flush, No Margins */}
+      <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none">
         <div className="flex items-center gap-2">
+          {/* Terminal Dots */}
+          <div className="flex gap-1 mr-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500/50" />
+            <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500/50" />
+          </div>
           {post.type && (
-            <span className={`inline-flex items-center gap-1.5 text-[9px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded-md border ${typeStyle}`}>
-              <span className={`w-1.5 h-1.5 rounded-full ${dotColors.bg} animate-pulse`} />
-              {post.type}
+            <span className="inline-flex items-center gap-1">
+              <span>&gt;</span>
+              <span className={`px-1.5 py-0.5 rounded border border-white/5 bg-white/[0.02] ${typeStyle} lowercase`}>
+                {post.type.replace(/\s+/g, '_')}.log
+              </span>
             </span>
           )}
         </div>
         
-        {/* Date on Mobile */}
-        <span className="md:hidden font-mono text-[9px] text-on-surface-variant/50">
-          {post.date}
-        </span>
-      </div>
-
-      {/* Post Text Description */}
-      <div className="flex flex-col gap-2">
-        <h3 className="font-sans font-bold text-sm text-on-surface group-hover:text-primary transition-colors">
-          {post.title[currentLang] || post.title['fr']}
-        </h3>
-        {post.description && (
-          <p className="text-xs text-on-surface-variant leading-relaxed italic">
-            {post.description[currentLang] || post.description['fr']}
-          </p>
-        )}
-      </div>
-
-      {/* Media Embedding (if present) */}
-      {post.mediaUrl && (
-        <div className="w-full max-w-xl overflow-hidden rounded-xl bg-black/10 border border-white/5 mt-1">
-          {post.mediaType === 'video' && ytId ? (
-            <div className="aspect-video w-full">
-              <iframe 
-                src={`https://www.youtube.com/embed/${ytId}`} 
-                className="w-full h-full border-none bg-black"
-                title={post.title[currentLang] || post.title['fr']}
-                allowFullScreen
-              />
-            </div>
-          ) : (
-            <img 
-              src={post.mediaUrl} 
-              alt={post.title[currentLang] || post.title['fr']}
-              className="w-full max-h-[300px] object-cover group-hover:scale-[1.01] transition-transform duration-500"
-              loading="lazy"
-            />
-          )}
-        </div>
-      )}
-
-      {/* Long Detailed Content */}
-      {post.content && (
-        <div className="text-xs font-sans font-normal text-on-surface/90 leading-relaxed whitespace-pre-wrap mt-1">
-          {post.content[currentLang] || post.content['fr']}
-        </div>
-      )}
-
-      {/* Card Footer (Discord-like stats) */}
-      <div className="flex items-center gap-4 text-[11px] font-sans text-on-surface-variant/75 pt-2 border-t border-white/5">
-        {/* Comment count */}
-        <div className="flex items-center gap-1.5">
-          <svg className="w-3.5 h-3.5 fill-none stroke-current" viewBox="0 0 24 24" strokeWidth="2.5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-1.923 2.47 9 9 0 003.47-.78c.557-.14 1.137.09 1.58.53.513.509 1.11.83 1.763.83z" />
-          </svg>
-          <span className="font-bold">{post.commentsCount || 0}</span>
-        </div>
-        
-        {/* Relative time indicator */}
-        <div className="flex items-center gap-1">
-          <span className="text-[10px] text-on-surface-variant/40">•</span>
+        {/* Date on Right (Absolute & Relative) */}
+        <div className="flex items-center gap-2 text-on-surface-variant/40">
+          <span className="md:hidden text-on-surface-variant/50 font-mono">{post.date}</span>
+          <span className="hidden md:inline text-on-surface-variant/30">•</span>
           <span>{relativeDate}</span>
         </div>
       </div>
 
+      {/* Card Content - Inner Padding */}
+      <div className="p-5 md:p-6 flex flex-col gap-4">
+        {/* Post Text Description */}
+        <div className="flex flex-col gap-2">
+          <h3 className="font-sans font-bold text-sm text-on-surface group-hover:text-primary transition-colors">
+            {post.title[currentLang] || post.title['fr']}
+          </h3>
+          {post.description && (
+            <p className="text-xs text-on-surface-variant leading-relaxed italic">
+              {post.description[currentLang] || post.description['fr']}
+            </p>
+          )}
+        </div>
+
+        {/* Media Embedding (if present) */}
+        {post.mediaUrl && (
+          <div className="w-full max-w-xl overflow-hidden rounded-xl bg-black/10 border border-white/5 mt-1">
+            {post.mediaType === 'video' && ytId ? (
+              <div className="aspect-video w-full">
+                <iframe 
+                  src={`https://www.youtube.com/embed/${ytId}`} 
+                  className="w-full h-full border-none bg-black"
+                  title={post.title[currentLang] || post.title['fr']}
+                  allowFullScreen
+                />
+              </div>
+            ) : (
+              <img 
+                src={post.mediaUrl} 
+                alt={post.title[currentLang] || post.title['fr']}
+                className="w-full max-h-[300px] object-cover group-hover:scale-[1.01] transition-transform duration-500"
+                loading="lazy"
+              />
+            )}
+          </div>
+        )}
+
+        {/* Long Detailed Content */}
+        {post.content && (
+          <div className="text-xs font-sans font-normal text-on-surface/90 leading-relaxed whitespace-pre-wrap mt-1">
+            {post.content[currentLang] || post.content['fr']}
+          </div>
+        )}
+      </div>
     </motion.article>
   );
 }

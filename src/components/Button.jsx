@@ -5,7 +5,7 @@ import { motion, useSpring, useMotionValue } from 'framer-motion';
  * Button Component with premium magnetic attraction hover effect.
  * Can be rendered as a button or an anchor tag if href is provided.
  */
-export default function Button({ children, className = '', variant = 'primary', onClick, type = 'button', href }) {
+export default function Button({ children, className = '', variant = 'primary', onClick, type = 'button', href, ...props }) {
   const ref = useRef(null);
   
   // Motion values for magnetic coordinates
@@ -62,6 +62,7 @@ export default function Button({ children, className = '', variant = 'primary', 
   const variants = {
     primary: 'bg-primary text-black border-primary/25 hover:border-primary shadow-[0_0_20px_rgba(190,194,255,0.2)] hover:shadow-[0_0_40px_rgba(190,194,255,0.4)]',
     secondary: 'bg-transparent text-primary border-primary/25 hover:border-primary hover:bg-primary/5',
+    black: 'bg-black/90 text-white border-white/10 hover:border-white/30 hover:bg-black shadow-[0_0_20px_rgba(0,0,0,0.4)]',
   };
 
   const selectedVariantClass = variants[variant] || variants.primary;
@@ -107,6 +108,7 @@ export default function Button({ children, className = '', variant = 'primary', 
         onMouseLeave={handleMouseLeave}
         onClick={onClick}
         className={`${baseClasses} ${selectedVariantClass} ${className}`}
+        {...props}
       >
         {innerContent}
       </motion.a>
@@ -122,6 +124,7 @@ export default function Button({ children, className = '', variant = 'primary', 
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
       className={`${baseClasses} ${selectedVariantClass} ${className}`}
+      {...props}
     >
       {innerContent}
     </motion.button>

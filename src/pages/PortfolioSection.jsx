@@ -14,6 +14,37 @@ function getYouTubeId(url) {
 }
 
 /**
+ * A dynamic typing effect terminal list of technologies inside project cards
+ */
+function ProjectTerminalList({ tags = [] }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (!tags || tags.length === 0) return;
+    const interval = setInterval(() => {
+      setIndex(prev => (prev + 1) % (tags.length + 3)); // +3 to pause at the end before loop reset
+    }, 900);
+    return () => clearInterval(interval);
+  }, [tags]);
+
+  if (!tags || tags.length === 0) return null;
+
+  return (
+    <div className="flex flex-col gap-1 font-mono text-[9px] text-green-400">
+      {tags.slice(0, index + 1).map((tag, idx) => (
+        <div key={idx} className="flex items-center gap-1.5">
+          <span className="text-white/20">&gt;</span>
+          <span className={idx === index ? "text-white font-bold" : ""}>
+            {tag}
+            {idx === index && <span className="animate-pulse">_</span>}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
  * PortfolioSection Page Component
  * Renders all projects of a specific category in an elegant,
  * chronological chronological vertical feed with rich multimedia embedding.
@@ -39,20 +70,10 @@ export default function PortfolioSection() {
         setLoading(false);
       })
       .catch(err => {
-        console.error("Failed to load section posts:", err);
+        console.error(err);
         setLoading(false);
       });
   }, [category]);
-
-  const getCategoryTitle = () => {
-    switch (category) {
-      case 'gaming': return t('portfolio.categories.gaming');
-      case 'website': return t('portfolio.categories.website');
-      case 'ai-agent': return t('portfolio.categories.ai-agent');
-      case 'mobile': return t('portfolio.categories.mobile');
-      default: return category;
-    }
-  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -60,14 +81,14 @@ export default function PortfolioSection() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 35 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-10 z-10 relative">
+    <div className="w-full max-w-7xl mx-auto px-6 md:px-12 py-10 z-10 relative">
       
-      {/* Return link */}
+      {/* Navigation Header */}
       <div className="mb-8">
         <Link 
           to="/portfolio" 
@@ -80,18 +101,19 @@ export default function PortfolioSection() {
         </Link>
       </div>
 
-      {/* Header */}
-      <div className="border-b border-white/5 pb-6 mb-12">
-        <h1 className="font-sans font-extrabold text-3xl md:text-5xl uppercase tracking-tight mb-3">
-          Section <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{getCategoryTitle()}</span>
-        </h1>
-        <p className="text-on-surface/80 text-sm font-normal tracking-wide">
-          Tous nos projets de la catégorie {getCategoryTitle()} classés par ordre chronologique.
-        </p>
+      <div className="flex justify-between items-end border-b border-white/5 pb-6 mb-12">
+        <div>
+          <h1 className="font-sans font-extrabold text-3xl md:text-5xl uppercase tracking-tight mb-3">
+            {t(`portfolio.categories.${category}`)}
+          </h1>
+          <p className="text-on-surface/80 text-sm font-normal tracking-wide max-w-xl">
+            Découvrez nos réalisations en {t(`portfolio.categories.${category}`)}. Projets menés de bout en bout avec rigueur et souci du détail.
+          </p>
+        </div>
       </div>
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center min-h-[30vh] text-on-surface-variant/80 font-sans font-medium text-sm">
+        <div className="flex flex-col items-center justify-center min-h-[40vh] text-on-surface-variant/80 font-sans font-medium text-sm">
           <svg className="animate-spin -ml-1 mr-3 h-8 w-8 text-primary mb-4" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -116,65 +138,84 @@ export default function PortfolioSection() {
               <motion.article 
                 key={post.id} 
                 variants={itemVariants}
-                className="relative flex flex-col gap-6"
+                className="relative w-full bg-surface-container-low/25 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl p-6 md:p-8 transition-all duration-300 flex flex-col gap-6 group"
               >
                 {/* Timeline Dot */}
-                <div className="absolute -left-[39px] md:-left-[57px] top-1.5 w-4 h-4 rounded-full bg-surface border-2 border-primary flex items-center justify-center">
+                <div className="absolute -left-[39px] md:-left-[57px] top-7 w-4 h-4 rounded-full bg-surface border-2 border-primary flex items-center justify-center">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                 </div>
 
                 {/* Timeline Date (hidden on mobile, positioned left of vertical line on desktop) */}
-                <div className="hidden md:block absolute -left-[180px] top-1.5 w-[120px] text-right font-sans font-semibold text-[11px] uppercase tracking-wider text-on-surface-variant/80">
+                <div className="hidden md:block absolute -left-[160px] top-6 w-[100px] text-right font-mono text-[10px] tracking-wide text-on-surface-variant/70">
                   {post.date}
                 </div>
 
                 {/* Mobile Date (visible only on mobile) */}
-                <div className="md:hidden font-sans font-semibold text-[10px] uppercase tracking-wider text-primary">
+                <div className="md:hidden font-mono text-[10px] text-primary">
                   {post.date}
                 </div>
 
-                {/* Title */}
-                <h2 className="font-sans font-extrabold text-xl md:text-2xl text-on-surface leading-snug">
-                  {post.title[currentLang] || post.title['fr']}
-                </h2>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                  {/* Left Panel: Content & Media */}
+                  <div className="lg:col-span-9 flex flex-col gap-5">
+                    {/* Title */}
+                    <h2 className="font-sans font-extrabold text-xl md:text-2xl text-on-surface leading-snug">
+                      {post.title[currentLang] || post.title['fr']}
+                    </h2>
 
-                {/* Rich Media Container */}
-                <div className="w-full overflow-hidden bg-black/20 rounded-2xl border border-white/5">
-                  {post.mediaType === 'video' && ytId ? (
-                    <div className="aspect-video w-full">
-                      <iframe 
-                        src={`https://www.youtube.com/embed/${ytId}`} 
-                        className="w-full h-full border-none bg-black"
-                        title={post.title[currentLang] || post.title['fr']}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
+                    {/* Rich Media Container */}
+                    <div className="w-full overflow-hidden bg-black/20 rounded-2xl border border-white/5">
+                      {post.mediaType === 'video' && ytId ? (
+                        <div className="aspect-video w-full">
+                          <iframe 
+                            src={`https://www.youtube.com/embed/${ytId}`} 
+                            className="w-full h-full border-none bg-black"
+                            title={post.title[currentLang] || post.title['fr']}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          />
+                        </div>
+                      ) : (
+                        <img 
+                          src={post.mediaUrl || 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800'} 
+                          alt={post.title[currentLang] || post.title['fr']}
+                          className="w-full max-h-[480px] object-cover"
+                          loading="lazy"
+                        />
+                      )}
                     </div>
-                  ) : (
-                    <img 
-                      src={post.mediaUrl || 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800'} 
-                      alt={post.title[currentLang] || post.title['fr']}
-                      className="w-full max-h-[480px] object-cover"
-                      loading="lazy"
-                    />
-                  )}
-                </div>
 
-                {/* Content description */}
-                <div className="text-on-surface/90 text-sm font-normal leading-relaxed space-y-4 whitespace-pre-wrap max-w-3xl">
-                  {post.content[currentLang] || post.content['fr']}
-                </div>
+                    {/* Content description */}
+                    <div className="text-on-surface/90 text-sm font-normal leading-relaxed whitespace-pre-wrap max-w-3xl">
+                      {post.content[currentLang] || post.content['fr']}
+                    </div>
+                  </div>
 
-                {/* Tag chips */}
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {post.tags.map((tag, idx) => (
-                    <span 
-                      key={idx}
-                      className="text-[10px] font-sans font-semibold px-3 py-1 bg-surface-container-low border border-white/5 rounded-full text-on-surface-variant uppercase tracking-wide"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  {/* Vertical Divider Line */}
+                  <div className="hidden lg:block lg:col-span-1 justify-self-center w-px h-full bg-gradient-to-b from-white/10 via-white/20 to-transparent" />
+
+                  {/* Right Panel: Mini Terminal cmd long and thin */}
+                  <div className="lg:col-span-2 flex flex-col justify-stretch min-h-[160px]">
+                    <div className="flex-grow flex flex-col bg-black/50 border border-white/5 rounded-xl p-4 font-mono text-[10px] text-green-400 select-none shadow-inner justify-between h-full">
+                      <div className="flex flex-col gap-2">
+                        {/* Terminal Header */}
+                        <div className="flex items-center gap-1.5 text-on-surface-variant/40 border-b border-white/5 pb-2 mb-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-red-500/60" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/60" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
+                          <span className="text-[7px] uppercase tracking-wider ml-1 text-on-surface-variant/40">tags.cmd</span>
+                        </div>
+                        
+                        {/* Dynamic Terminal Stack List */}
+                        <ProjectTerminalList tags={post.tags} />
+                      </div>
+                      
+                      <div className="flex items-center gap-1 mt-2 text-white/40 text-[9px]">
+                        <span>$</span>
+                        <span className="w-1 h-2.5 bg-green-400 animate-pulse" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </motion.article>
             );
