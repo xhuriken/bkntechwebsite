@@ -108,11 +108,34 @@ async function main() {
   // 1. Update api/posts.json
   posts.unshift(newPost);
   fs.writeFileSync(postsJsonPath, JSON.stringify(posts, null, 2), 'utf8');
-  console.log('✅ Successfully updated api/posts.json!');
+  console.log('✅ Successfully updated local api/posts.json!');
+
+  // 1.5 Remote VPS API Sync (HTTPS + Authenticated Header)
+  const env = loadEnv();
+  const adminPassword = process.env.ADMIN_PASSWORD || env.ADMIN_PASSWORD || 'BknAdmin2026!';
+  const remoteApiUrl = process.env.REMOTE_API_URL || 'https://bkntech.fr/api/posts';
+  try {
+    console.log(`🌐 Sending secure HTTPS request to Remote VPS API (${remoteApiUrl})...`);
+    const apiRes = await fetch(remoteApiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-password': adminPassword
+      },
+      body: JSON.stringify(newPost)
+    });
+    if (apiRes.ok) {
+      console.log('🔒 ✅ Remote VPS API updated successfully over HTTPS!');
+    } else {
+      console.warn(`⚠️ Remote API returned status ${apiRes.status}`);
+    }
+  } catch (apiErr) {
+    console.warn('ℹ️ Remote VPS API direct call skipped/failed (will sync via Git push):', apiErr.message);
+  }
 
   // 2. Post to Discord Webhook if available
-  const env = loadEnv();
   const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL || env.DISCORD_WEBHOOK_URL;
+
 
   if (discordWebhookUrl && discordWebhookUrl.startsWith('http')) {
     const threadTitle = `[${newPost.type}] ${newPost.title.fr}`;
