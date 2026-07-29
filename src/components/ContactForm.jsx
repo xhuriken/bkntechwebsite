@@ -170,17 +170,17 @@ export default function ContactForm() {
 
   const validate = () => {
     const tempErrors = {};
-    if (!formData.name.trim()) tempErrors.name = "Le nom est requis.";
+    if (!formData.name.trim()) tempErrors.name = t('contact.validation.name');
     if (!formData.email.trim()) {
-      tempErrors.email = "L'adresse email est requise.";
+      tempErrors.email = t('contact.validation.email_req');
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.email)) {
-        tempErrors.email = "Format d'email invalide.";
+        tempErrors.email = t('contact.validation.email_invalid');
       }
     }
-    if (!formData.subject.trim()) tempErrors.subject = "Le sujet est requis.";
-    if (!formData.message.trim()) tempErrors.message = "Le message est requis.";
+    if (!formData.subject.trim()) tempErrors.subject = t('contact.validation.subject');
+    if (!formData.message.trim()) tempErrors.message = t('contact.validation.message');
 
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
@@ -191,14 +191,14 @@ export default function ContactForm() {
     if (!validate()) return;
 
     setStatus('checking');
-    setStatusMessage("Résolution du défi de sécurité local...");
+    setStatusMessage(t('contact.status.solving'));
 
     try {
       // 1. Generate local PoW challenge
       const salt = formData.email + Date.now();
       const powResult = await solveChallenge(salt);
 
-      setStatusMessage("Envoi du message...");
+      setStatusMessage(t('contact.status.sending'));
 
       // 2. Send request to endpoint
       const response = await fetch('/api/contact', {
@@ -226,12 +226,12 @@ export default function ContactForm() {
       } else {
         const errorData = await response.json();
         setStatus('error');
-        setStatusMessage(errorData.error || "Une erreur est survenue lors de l'envoi.");
+        setStatusMessage(errorData.error || t('contact.status.error_send'));
       }
     } catch (err) {
       console.error(err);
       setStatus('error');
-      setStatusMessage("Erreur de connexion avec le serveur.");
+      setStatusMessage(t('contact.status.error_conn'));
     }
   };
 
@@ -251,12 +251,12 @@ export default function ContactForm() {
             </div>
 
             <h2 className="font-sans font-extrabold text-3xl md:text-5xl uppercase tracking-tight mt-4 mb-6">
-              Travaillons <br />
-              <span className="bg-gradient-to-r from-primary via-secondary to-tertiary bg-clip-text text-transparent">Ensemble</span>
+              {t('contact.title_part1')} <br />
+              <span className="bg-gradient-to-r from-primary via-secondary to-tertiary bg-clip-text text-transparent">{t('contact.title_part2')}</span>
             </h2>
 
             <p className="text-on-surface text-sm font-normal leading-relaxed max-w-sm mb-6">
-              Vous avez un projet de développement web/mobile ou des questions sur notre projet Unity ? N'hésitez pas à nous écrire.
+              {t('contact.description')}
             </p>
 
             {/* Obfuscated Contact Information Pins with Hover Actions */}
@@ -271,7 +271,7 @@ export default function ContactForm() {
                   <i className="fa-solid fa-envelope text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">E-mail</div>
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">{t('contact.email_pin')}</div>
                   <span className="text-sm font-semibold text-on-surface group-hover:text-white transition-colors">
                     {emailText || 'contact [at] bkntech.fr'}
                   </span>
@@ -288,7 +288,7 @@ export default function ContactForm() {
                   <i className="fa-solid fa-phone text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-secondary transition-colors">Téléphone</div>
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-secondary transition-colors">{t('contact.phone_pin')}</div>
                   <span className="text-sm font-semibold text-on-surface group-hover:text-white transition-colors">
                     {phoneText || '+33 6 61 20 14 18'}
                   </span>
@@ -307,7 +307,7 @@ export default function ContactForm() {
                   <i className="fa-solid fa-location-dot text-sm"></i>
                 </div>
                 <div>
-                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-tertiary transition-colors">Adresse</div>
+                  <div className="text-[10px] font-display font-black uppercase tracking-widest text-on-surface-variant group-hover:text-tertiary transition-colors">{t('contact.address_pin')}</div>
                   <div className="text-sm font-light text-on-surface-variant leading-relaxed group-hover:text-white transition-colors">
                     Bkn Tech<br />
                     47 rue Vivienne<br />
@@ -373,13 +373,13 @@ export default function ContactForm() {
                     />
                   </svg>
                 </div>
-                <h3 className="font-display font-black text-2xl uppercase tracking-widest text-primary mb-3">Message Envoyé !</h3>
+                <h3 className="font-display font-black text-2xl uppercase tracking-widest text-primary mb-3">{t('contact.success_title')}</h3>
                 <p className="text-on-surface-variant text-sm font-light max-w-sm leading-relaxed">
-                  Merci pour votre message. Nous l'avons bien reçu et reviendrons vers vous dans les plus brefs délais.
+                  {t('contact.success_desc')}
                 </p>
                 <Button variant="secondary" onClick={() => setStatus('idle')} className="mt-8">
                   <i className="fa-solid fa-arrow-left text-[10px]"></i>
-                  Retour au formulaire
+                  {t('contact.back_btn')}
                 </Button>
               </motion.div>
             ) : (
@@ -392,7 +392,7 @@ export default function ContactForm() {
                 className="flex flex-col"
               >
                 <InputField
-                  label="Votre Nom"
+                  label={t('contact.fields.name')}
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
@@ -401,7 +401,7 @@ export default function ContactForm() {
                 />
 
                 <InputField
-                  label="Adresse E-mail"
+                  label={t('contact.fields.email')}
                   name="email"
                   type="email"
                   value={formData.email}
@@ -411,7 +411,7 @@ export default function ContactForm() {
                 />
 
                 <InputField
-                  label="Sujet"
+                  label={t('contact.fields.subject')}
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
@@ -420,7 +420,7 @@ export default function ContactForm() {
                 />
 
                 <InputField
-                  label="Votre Message"
+                  label={t('contact.fields.message')}
                   name="message"
                   type="textarea"
                   value={formData.message}
@@ -454,7 +454,7 @@ export default function ContactForm() {
                     disabled={status === 'checking' || status === 'sending'}
                   >
                     <i className="fa-solid fa-paper-plane text-[10px]"></i>
-                    Envoyer le Message
+                    {t('contact.send_btn')}
                   </Button>
                 </div>
               </motion.form>

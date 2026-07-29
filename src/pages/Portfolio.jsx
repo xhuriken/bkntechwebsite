@@ -300,7 +300,7 @@ export default function Portfolio() {
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          Chargement du portfolio...
+          {t('portfolio.loading')}
         </div>
       ) : (
         <motion.div 
@@ -335,7 +335,7 @@ export default function Portfolio() {
                 <span className="text-[9px] uppercase tracking-wider text-on-surface-variant/40">bkn@tech:~/vacuum$ ./featured_project.log</span>
               </div>
               <div className="flex items-center gap-1.5 text-[9px] font-sans font-bold uppercase tracking-wider text-primary group-hover:text-white transition-colors relative z-10">
-                <span>PROJET À LA UNE</span>
+                <span>{t('portfolio.featured_title')}</span>
               </div>
             </div>
 
@@ -357,7 +357,7 @@ export default function Portfolio() {
                   <div className="md:w-1/2 flex flex-col justify-between gap-6">
                     <div className="flex flex-col gap-3">
                       <span className="font-mono text-[9px] text-on-surface-variant/60 font-bold uppercase tracking-wider">
-                        Production active • Version 0.0.6
+                        {t('portfolio.production_active')}
                       </span>
 
                       <h2 className="font-sans font-extrabold text-2xl md:text-3xl uppercase tracking-tight text-on-surface group-hover:text-primary transition-colors">
@@ -365,7 +365,7 @@ export default function Portfolio() {
                       </h2>
 
                       <p className="text-xs md:text-sm font-sans font-normal text-on-surface-variant/90 leading-relaxed">
-                        Un jeu de tir tactique multijoueur compétitif en 3D développé sous Unity HDRP. Explorez notre cycle de développement à long terme, nos optimisations netcode et nos avancées d'intégration de gameplay.
+                        {t('portfolio.featured_desc')}
                       </p>
                     </div>
 
@@ -375,7 +375,7 @@ export default function Portfolio() {
                         variant="primary"
                         onClick={() => navigate('/portfolio/section/gaming')}
                       >
-                        <span>Visiter le Devlog</span>
+                        <span>{t('portfolio.featured_devlog_btn')}</span>
                         <svg className="w-3 h-3 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                         </svg>
@@ -388,7 +388,7 @@ export default function Portfolio() {
                         rel="noopener noreferrer"
                       >
                         <i className="fa-brands fa-discord text-[11px] text-[#5865F2]"></i>
-                        <span>Rejoindre le Discord</span>
+                        <span>{t('portfolio.featured_discord_btn')}</span>
                       </Button>
                     </div>
                   </div>
@@ -471,7 +471,7 @@ export default function Portfolio() {
                               <span className="text-[8px] uppercase tracking-wider text-on-surface-variant/40">~/{post.category}</span>
                             </div>
                             <div className="flex items-center gap-1 text-[8px] font-sans font-bold uppercase tracking-wider text-primary group-hover:text-white transition-colors relative z-10">
-                              <span>Ouvrir</span>
+                              <span>{t('portfolio.open')}</span>
                               <svg className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
                               </svg>

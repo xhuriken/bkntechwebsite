@@ -166,14 +166,14 @@ export default function GamingDevlog() {
             Vacuum Protocol
           </h1>
           <p className="text-on-surface/80 text-sm font-normal leading-relaxed">
-            Notre projet phare de jeu de tir tactique multijoueur en arène 3D. Ce devlog documente notre cycle de production à long terme, nos expérimentations physiques et nos optimisations netcode.
+            {t('devlog.description')}
           </p>
         </div>
 
         {/* Documentation Links Panel */}
         <div className="flex flex-col gap-2.5 w-full md:w-auto min-w-[200px] bg-black/20 border border-white/5 rounded-xl p-4">
           <span className="text-[9px] font-sans font-bold uppercase tracking-wider text-on-surface-variant/65">
-            Documentation & Liens
+            {t('devlog.docs_title')}
           </span>
           <a 
             href="https://unity.com/" 
@@ -181,7 +181,7 @@ export default function GamingDevlog() {
             rel="noopener noreferrer" 
             className="flex items-center justify-between text-xs font-sans font-medium text-on-surface hover:text-primary transition-colors py-1 group"
           >
-            <span>Documentation Unity</span>
+            <span>{t('devlog.doc_unity')}</span>
             <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
             </svg>
@@ -194,7 +194,7 @@ export default function GamingDevlog() {
           >
             <span className="flex items-center gap-1.5">
               <i className="fa-brands fa-discord text-primary text-xs"></i>
-              Rejoindre le Discord
+              {t('devlog.join_discord')}
             </span>
             <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
@@ -202,8 +202,8 @@ export default function GamingDevlog() {
           </a>
           <div className="border-t border-white/5 my-1" />
           <div className="flex flex-col gap-1 text-[9px] font-mono text-on-surface-variant/60">
-            <div>Version : v0.0.6</div>
-            <div>Mises à jour : Fréquentes</div>
+            <div>{t('devlog.version')} : v0.0.6</div>
+            <div>{t('devlog.updates')} : {t('devlog.frequent')}</div>
           </div>
         </div>
       </div>
@@ -212,26 +212,26 @@ export default function GamingDevlog() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div className="bg-surface-container-low/30 border border-white/5 rounded-xl p-5 hover:border-primary/10 transition-colors">
           <h3 className="font-sans font-bold text-sm text-primary uppercase tracking-wider mb-2">
-            Netcode Réseau
+            {t('devlog.features.netcode.title')}
           </h3>
           <p className="text-xs text-on-surface-variant leading-relaxed">
-            Utilisation d'une topologie serveur faisant autorité avec prédiction locale, réconciliation client et compensation du lag. Latence compensée jusqu'à 250ms de ping.
+            {t('devlog.features.netcode.desc')}
           </p>
         </div>
         <div className="bg-surface-container-low/30 border border-white/5 rounded-xl p-5 hover:border-secondary/10 transition-colors">
           <h3 className="font-sans font-bold text-sm text-secondary uppercase tracking-wider mb-2">
-            Physique & Mouvement
+            {t('devlog.features.physics.title')}
           </h3>
           <p className="text-xs text-on-surface-variant leading-relaxed">
-            Moteur de déplacement basé sur la physique rigide d'Unity (Rigidbody) avec contrôleur personnalisé à haute vélocité, gestion des pentes et friction dynamique.
+            {t('devlog.features.physics.desc')}
           </p>
         </div>
         <div className="bg-surface-container-low/30 border border-white/5 rounded-xl p-5 hover:border-tertiary/10 transition-colors">
           <h3 className="font-sans font-bold text-sm text-tertiary uppercase tracking-wider mb-2">
-            Rendu Graphique (HDRP)
+            {t('devlog.features.graphics.title')}
           </h3>
           <p className="text-xs text-on-surface-variant leading-relaxed">
-            Pipeline HDRP (High Definition Render Pipeline) pour un rendu visuel photoréaliste de type cyberpunk. Volumétrie de brouillard avancée et reflets ray-tracés.
+            {t('devlog.features.graphics.desc')}
           </p>
         </div>
       </div>
@@ -247,7 +247,7 @@ export default function GamingDevlog() {
           </span>
           <input 
             type="text"
-            placeholder={currentLang === 'fr' ? "Rechercher dans le devlog..." : "Search in devlog..."}
+            placeholder={t('devlog.search_placeholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-surface-container-low/60 border border-white/5 rounded-xl pl-10 pr-4 py-2 text-sm text-on-surface placeholder-on-surface-variant/40 focus:outline-none focus:border-primary/50 transition-colors"
@@ -259,7 +259,7 @@ export default function GamingDevlog() {
           {/* Trier et afficher */}
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-on-surface-variant/75">
-              Filtrer par :
+              {t('devlog.filter_category')} :
             </span>
             <div className="relative">
               <select
@@ -267,7 +267,7 @@ export default function GamingDevlog() {
                 onChange={(e) => setSelectedType(e.target.value)}
                 className="appearance-none bg-surface-container-low/60 border border-white/10 rounded-md pl-3 pr-8 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary/50 cursor-pointer transition-colors"
               >
-                <option value="all">{currentLang === 'fr' ? "Tous les types" : "All Types"}</option>
+                <option value="all">{t('devlog.types.all')}</option>
                 {uniqueTypes.filter(t => t !== 'all').map(t => (
                   <option key={t} value={t}>{t}</option>
                 ))}
@@ -282,7 +282,7 @@ export default function GamingDevlog() {
 
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-on-surface-variant/75">
-              Tri :
+              {t('devlog.sort_by')} :
             </span>
             <div className="relative">
               <select
@@ -290,8 +290,8 @@ export default function GamingDevlog() {
                 onChange={(e) => setSortBy(e.target.value)}
                 className="appearance-none bg-surface-container-low/60 border border-white/10 rounded-md pl-3 pr-8 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary/50 cursor-pointer transition-colors"
               >
-                <option value="newest">{currentLang === 'fr' ? "Plus récents" : "Newest"}</option>
-                <option value="oldest">{currentLang === 'fr' ? "Plus anciens" : "Oldest"}</option>
+                <option value="newest">{t('devlog.sort_newest')}</option>
+                <option value="oldest">{t('devlog.sort_oldest')}</option>
               </select>
               <div className="absolute inset-y-0 right-2.5 flex items-center pointer-events-none text-on-surface-variant/60">
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -309,22 +309,22 @@ export default function GamingDevlog() {
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          Chargement du devlog...
+          {t('devlog.loading')}
         </div>
       ) : filteredPosts.length === 0 ? (
         <div className="bg-surface-container-low/30 backdrop-blur-sm border border-white/5 rounded-2xl py-16 px-6 text-center text-xs font-sans font-semibold text-on-surface-variant/70 uppercase tracking-wide">
-          Aucun post de devlog trouvé.
+          {t('devlog.no_updates')}
         </div>
       ) : (
         <div className="flex flex-col gap-12">
           
-          {/* Recent Posts Section (if matching) */}
+           {/* Recent Posts Section (if matching) */}
           {recentPosts.length > 0 && (
             <div className="flex flex-col gap-8">
               <div className="flex items-center gap-3 border-b border-primary/20 pb-2.5">
                 <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
                 <h2 className="text-xs md:text-sm font-sans font-bold uppercase tracking-widest text-primary">
-                  Nouveaux posts de devlog
+                  {t('devlog.recent_title')}
                 </h2>
               </div>
 
@@ -355,7 +355,7 @@ export default function GamingDevlog() {
               <div className="flex items-center gap-3 border-b border-white/10 pb-2.5">
                 <span className="w-2 h-2 rounded-full bg-white/20" />
                 <h2 className="text-xs md:text-sm font-sans font-bold uppercase tracking-widest text-on-surface-variant/60">
-                  Anciens posts
+                  {t('devlog.older_title')}
                 </h2>
               </div>
 

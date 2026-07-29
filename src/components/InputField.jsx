@@ -14,7 +14,11 @@ export default function InputField({
   onChange, 
   required = false, 
   error,
-  rows = 4 
+  rows = 4,
+  placeholder,
+  min,
+  max,
+  children
 }) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -61,8 +65,27 @@ export default function InputField({
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             rows={rows}
+            placeholder={placeholder}
             className="block w-full bg-transparent text-sm text-on-surface font-sans focus:outline-none resize-none pt-0.5 leading-relaxed"
           />
+        ) : type === 'select' ? (
+          <div className="relative w-full">
+            <select
+              id={name}
+              name={name}
+              value={value}
+              onChange={onChange}
+              required={required}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              className="block w-full bg-transparent text-sm text-on-surface font-sans focus:outline-none pt-0.5 cursor-pointer appearance-none pr-8"
+            >
+              {children}
+            </select>
+            <div className="absolute right-0 bottom-1 pointer-events-none text-on-surface-variant/60 text-[10px]">
+              <i className="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
         ) : (
           <input
             id={name}
@@ -73,6 +96,9 @@ export default function InputField({
             required={required}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            placeholder={placeholder}
+            min={min}
+            max={max}
             className="block w-full bg-transparent text-sm text-on-surface font-sans focus:outline-none pt-0.5"
           />
         )}

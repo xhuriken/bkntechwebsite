@@ -23,6 +23,15 @@
     "explore": "Explorer la section",
     "back": "Retour au portfolio",
     "no_projects": "Aucun projet trouvé dans cette catégorie.",
+    "loading": "Chargement du portfolio...",
+    "featured_title": "PROJET À LA UNE",
+    "production_active": "Production active • Version 0.0.6",
+    "featured_desc": "Un jeu de tir tactique multijoueur compétitif en 3D développé sous Unity HDRP. Explorez notre cycle de développement à long terme, nos optimisations netcode et nos avancées d'intégration de gameplay.",
+    "featured_devlog_btn": "Visiter le Devlog",
+    "featured_discord_btn": "Rejoindre le Discord",
+    "open": "Ouvrir",
+    "section_desc": "Découvrez nos réalisations en {{cat}}. Projets menés de bout en bout avec rigueur et souci du détail.",
+    "section_loading": "Chargement de la section...",
     "categories": {
       "gaming": "Gaming",
       "website": "Sites Web",
@@ -33,6 +42,7 @@
       "title": "Gestion du Portfolio",
       "login_title": "Accès Administrateur",
       "password_placeholder": "Entrez le mot de passe admin",
+      "password": "Mot de passe",
       "login_btn": "Se connecter",
       "logout_btn": "Déconnexion",
       "create_btn": "Ajouter un projet",
@@ -58,7 +68,130 @@
       }
     }
   },
+  "contact": {
+    "title_part1": "Travaillons",
+    "title_part2": "Ensemble",
+    "description": "Vous avez un projet de développement web/mobile ou des questions sur notre projet Unity ? N'hésitez pas à nous écrire.",
+    "email_pin": "E-mail",
+    "phone_pin": "Téléphone",
+    "address_pin": "Adresse",
+    "success_title": "Message Envoyé !",
+    "success_desc": "Merci pour votre message. Nous l'avons bien reçu et reviendrons vers vous dans les plus brefs délais.",
+    "back_btn": "Retour au formulaire",
+    "send_btn": "Envoyer le Message",
+    "fields": {
+      "name": "Votre Nom",
+      "email": "Adresse E-mail",
+      "subject": "Sujet",
+      "message": "Votre Message"
+    },
+    "status": {
+      "solving": "Résolution du défi de sécurité local...",
+      "sending": "Envoi du message...",
+      "error_send": "Une erreur est survenue lors de l'envoi.",
+      "error_conn": "Erreur de connexion avec le serveur."
+    },
+    "validation": {
+      "name": "Le nom est requis.",
+      "email_req": "L'adresse email est requise.",
+      "email_invalid": "Format d'email invalide.",
+      "subject": "Le sujet est requis.",
+      "message": "Le message est requis."
+    }
+  },
   "footer": {
-    "copyright": "© 2026 BKN Tech. Tous droits réservés."
+    "copyright": "© 2026 BKN Tech. Tous droits réservés.",
+    "description": "Ingénierie de plateformes sur mesure & développement de jeux multijoueurs. Excellence technique & esthétique.",
+    "navigation": "Navigation",
+    "juridique": "Juridique",
+    "mentions_legales": "Mentions Légales",
+    "politique_confidentialite": "Politique de Confidentialité",
+    "rights": "TOUS DROITS RÉSERVÉS."
+  },
+  "devlog": {
+    "description": "Notre projet phare de jeu de tir tactique multijoueur en arène 3D. Ce devlog documente notre cycle de production à long terme, nos expérimentations physiques et nos optimisations netcode.",
+    "docs_title": "Documentation & Liens",
+    "doc_unity": "Documentation Unity",
+    "join_discord": "Rejoindre le Discord",
+    "version": "Version",
+    "updates": "Mises à jour",
+    "frequent": "Fréquentes",
+    "search_placeholder": "Rechercher dans le devlog...",
+    "filter_category": "Filtrer par",
+    "sort_by": "Tri",
+    "sort_newest": "Plus récents",
+    "sort_oldest": "Plus anciens",
+    "loading": "Chargement du devlog...",
+    "no_updates": "Aucun post de devlog trouvé.",
+    "recent_title": "Nouveaux posts de devlog",
+    "older_title": "Anciens posts",
+    "types": {
+      "all": "Tous les types"
+    },
+    "features": {
+      "netcode": {
+        "title": "Netcode Réseau",
+        "desc": "Utilisation d'une topologie serveur faisant autorité avec prédiction locale, réconciliation client et compensation du lag. Latence compensée jusqu'à 250ms de ping."
+      },
+      "physics": {
+        "title": "Physique & Mouvement",
+        "desc": "Moteur de déplacement basé sur la physique rigide d'Unity (Rigidbody) avec contrôleur personnalisé à haute vélocité, gestion des pentes et friction dynamique."
+      },
+      "graphics": {
+        "title": "Rendu Graphique (HDRP)",
+        "desc": "Pipeline HDRP (High Definition Render Pipeline) pour un rendu visuel photoréaliste de type cyberpunk. Volumétrie de brouillard avancée et reflets ray-tracés."
+      }
+    }
+  },
+  "legal": {
+    "back_home": "Retour à l'accueil",
+    "mentions": {
+      "title_part1": "Mentions",
+      "title_part2": "Légales",
+      "subtitle": "Informations réglementaires & juridiques",
+      "sec1_title": "1. Éditeur du site",
+      "sec1_body": "Société par Actions Simplifiée au capital de 2 020,00 €\nSiège social : 47 rue Vivienne, 75002 Paris, France\nDirecteur de la publication : Enrique Puerto (Président)\nE-mail de contact : ",
+      "sec2_title": "2. Immatriculation & Identifiants",
+      "sec2_body_vat": "(TVA non applicable, art. 293 B du CGI)",
+      "sec3_title": "3. Hébergement",
+      "sec3_body": "Ce site web est hébergé par :",
+      "sec4_title": "4. Propriété Intellectuelle",
+      "sec4_body": "L'ensemble des contenus (textes, graphismes, logos, animations) présents sur ce site est la propriété exclusive de Bkn Tech, sauf mentions contraires. Toute reproduction ou redistribution, totale ou partielle, est interdite sans autorisation écrite préalable."
+    },
+    "privacy": {
+      "title_part1": "Politique de",
+      "title_part2": "Confidentialité",
+      "subtitle": "Protection des données personnelles & Conformité RGPD — Dernière mise à jour : 28 juillet 2026",
+      "sec1_title": "1. Responsable du Traitement",
+      "sec1_body": "Le responsable du traitement des données à caractère personnel collectées sur ce site est :",
+      "sec1_contact": "Pour toute question relative à la protection de vos données, vous pouvez nous contacter par email :",
+      "sec2_title": "2. Données Collectées & Finalités",
+      "sec2_body": "Nous collectons uniquement les données transmises volontairement via notre formulaire de contact :",
+      "sec2_li1": "Identité : Nom, Prénom",
+      "sec2_li2": "Coordonnées : Adresse e-mail, Téléphone",
+      "sec2_li3": "Contenu de la demande : Sujet et Message",
+      "sec2_purpose": "Finalité & Base légale : Répondre à vos demandes de renseignements et établir des propositions commerciales (Intérêt légitime / Mesures précontractuelles - Art. 6.1 RGPD).",
+      "sec3_title": "3. Durée de Conservation",
+      "sec3_body": "Vos données personnelles sont conservées :",
+      "sec3_li1": "Demandes d'information : 3 ans maximum à compter du dernier contact émanant de votre part.",
+      "sec3_li2": "Relations commerciales : Pendant toute la durée de la relation contractuelle, puis 5 à 10 ans selon les obligations légales comptables et fiscales.",
+      "sec4_title": "4. Destinataires & Hébergement",
+      "sec4_body": "Vos données sont strictement destinées aux membres de l'équipe de Bkn Tech. Aucune revente ni cession à des tiers.",
+      "sec4_sub": "Nos infrastructures d'hébergement et de routage d'emails sont opérées par OVHcloud SAS sur des serveurs sécurisés situés exclusivement en France / Union Européenne.",
+      "sec5_title": "5. Cookies & Technologies de Stockage",
+      "sec5_body": "Ce site n'utilise aucun cookie de ciblage publicitaire ni aucun traceur tiers à des fins d'analyse comportementale (ex: Google Analytics, Facebook Pixel). Nous utilisons uniquement du stockage local technique strictement nécessaire au fonctionnement de l'interface (ex: mémorisation de votre langue de préférence FR/EN via i18nextLng). Conformément aux directives de la CNIL, ces éléments techniques sont dispensés de consentement préalable.",
+      "sec6_title": "6. Vos Droits (Conformité RGPD)",
+      "sec6_body": "Conformément à la réglementation européenne (RGPD UE 2016/679) et à la loi Informatique et Libertés, vous disposez des droits suivants concernant vos données personnelles :",
+      "sec6_card1_title": "Droit d'accès & Rectification",
+      "sec6_card1_desc": "Consulter ou faire corriger vos données personnelles à tout moment.",
+      "sec6_card2_title": "Droit à l'effacement (Oubli)",
+      "sec6_card2_desc": "Demander la suppression définitive de vos données personnelles.",
+      "sec6_card3_title": "Droit à la limitation & Opposition",
+      "sec6_card3_desc": "Restreindre ou vous opposer au traitement de vos données.",
+      "sec6_card4_title": "Portabilité des données",
+      "sec6_card4_desc": "Recevoir vos données dans un format structuré et lisible.",
+      "sec6_footer1": "Pour exercer l'un de ces droits, contactez-nous par email à :",
+      "sec6_footer2": "Si vous estimez après nous avoir contactés que vos droits ne sont pas respectés, vous pouvez adresser une réclamation auprès de la CNIL (Commission Nationale de l'Informatique et des Libertés) sur leur site"
+    }
   }
 }

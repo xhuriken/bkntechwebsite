@@ -168,3 +168,30 @@ Audit complet de la politique de confidentialité, mise en conformité stricte d
 
 
 
+
+---
+
+## [2026-07-29] Modularisation des Inputs, Internationalisation i18n Totale & Redirection de Showcase Jeu
+
+### Tâche
+Refactoriser les champs de saisie pour utiliser un composant modulaire unique `InputField` garantissant une cohérence d'animation et de styles hover. Traduire l'intégralité des chaînes de caractères françaises en dur du site à l'aide d'i18next (incluant les mentions légales, la politique de confidentialité, le footer, la section contact et la section devlog) et rediriger tous les boutons d'accès au jeu vers la page devlog de Vacuum Protocol.
+
+### Modifications
+- **Création du composant modulaire [InputField.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/InputField.jsx)** : encadre de façon uniforme l'affichage des labels, des messages d'erreur et des états de saisie (inputs, select, textarea et password) avec les animations de focus interactives et micro-transitions de Framer Motion.
+- **Modulations de formulaires** :
+  - Remplacement de tous les inputs, textareas et selects bruts dans [PortfolioAdmin.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioAdmin.jsx) et [ContactForm.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ContactForm.jsx) par le composant unifié `InputField`.
+- **Internationalisation Totale (i18n)** :
+  - Traduction de l'intégralité des pages du site avec le hook `useTranslation` de `react-i18next`.
+  - Intégration de dicos de traduction structurés et exhaustifs pour les rubriques `contact`, `footer`, `devlog` et `legal` (contenant mentions et privacy) dans [fr.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/fr.json) et [en.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/en.json).
+  - Traduction dynamique du descriptif de catégorie avec injection de paramètres dans [PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx).
+- **Redirection de la Page Jeu** :
+  - Mise à jour du bouton d'appel à l'action de la page d'accueil [Home.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Home.jsx) de `/game` à `/portfolio/section/gaming` (le devlog officiel de Vacuum Protocol).
+  - Remplacement de la route `/game` dans [App.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/App.jsx) par un composant `<Navigate to="/portfolio/section/gaming" replace />` pour intercepter et rediriger proprement tout accès historique direct.
+- **Nettoyage et Consolidation** :
+  - Suppression de plusieurs imports inutilisés (`Game` dans `App.jsx`, `useState` dans `Footer.jsx` et `motion` dans `PortfolioAdmin.jsx`) pour assainir le build.
+  - Validation de la réussite complète du build de production (`npm run build`) et du linter (`npm run lint`).
+
+### Justification Technique
+- **SSOT & Modularité** : La centralisation de la logique des champs de saisie dans `InputField` prévient la duplication de code et garantit que tout correctif de design de focus ou de gestion d'erreurs s'applique instantanément à l'ensemble des formulaires.
+- **i18n Exhaustive** : La traduction des pages réglementaires et des chaînes de pied de page respecte l'exigence d'une expérience bilingue immersive. L'utilisateur anglophone bénéficie désormais d'un site 100% traduit sans rupture de langue.
+- **Redirection Propre** : L'utilisation de `<Navigate replace />` redirige l'internaute côté client instantanément, évitant de charger un composant `Game` vide et préservant l'historique de navigation du navigateur.

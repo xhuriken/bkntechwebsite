@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import InputField from '../components/InputField';
 
 /**
  * PortfolioAdmin Page Component
@@ -274,19 +274,15 @@ export default function PortfolioAdmin() {
             {t('portfolio.admin.login_title')}
           </h2>
           <form onSubmit={handleLogin} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                {t('portfolio.admin.form.title_fr')}
-              </label>
-              <input 
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full bg-surface border border-white/10 rounded-xl px-4 py-2.5 text-sm text-on-surface focus:outline-none focus:border-primary/50 transition-colors"
-                required
-              />
-            </div>
+            <InputField
+              label={t('portfolio.admin.password')}
+              name="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+            />
             {authError && (
               <p className="text-xs text-red-400 font-sans font-semibold text-center">{authError}</p>
             )}
@@ -389,103 +385,75 @@ export default function PortfolioAdmin() {
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
               
               {/* Category */}
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                  {t('portfolio.admin.form.category')}
-                </label>
-                <select 
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50 cursor-pointer"
-                >
-                  <option value="gaming">Gaming</option>
-                  <option value="website">Sites Web</option>
-                  <option value="ai-agent">Agents IA</option>
-                  <option value="mobile">Applications Mobiles</option>
-                </select>
-              </div>
+              <InputField
+                label={t('portfolio.admin.form.category')}
+                name="category"
+                type="select"
+                value={formData.category}
+                onChange={handleChange}
+              >
+                <option value="gaming">Gaming</option>
+                <option value="website">Sites Web</option>
+                <option value="ai-agent">Agents IA</option>
+                <option value="mobile">Applications Mobiles</option>
+              </InputField>
 
               {/* Date */}
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                  Date
-                </label>
-                <input 
-                  type="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleChange}
-                  className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50"
-                  required
-                />
-              </div>
+              <InputField
+                label="Date"
+                name="date"
+                type="date"
+                value={formData.date}
+                onChange={handleChange}
+                required
+              />
 
               {/* Media Type */}
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                  {t('portfolio.admin.form.media_type')}
-                </label>
-                <select 
-                  name="mediaType"
-                  value={formData.mediaType}
-                  onChange={handleChange}
-                  className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50 cursor-pointer"
-                >
-                  <option value="image">Image (Unsplash, URL direct...)</option>
-                  <option value="video">Vidéo (YouTube URL)</option>
-                </select>
-              </div>
+              <InputField
+                label={t('portfolio.admin.form.media_type')}
+                name="mediaType"
+                type="select"
+                value={formData.mediaType}
+                onChange={handleChange}
+              >
+                <option value="image">Image (Unsplash, URL direct...)</option>
+                <option value="video">Vidéo (YouTube URL)</option>
+              </InputField>
 
               {/* Media URL */}
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                  URL du Média
-                </label>
-                <input 
-                  type="url"
-                  name="mediaUrl"
-                  value={formData.mediaUrl}
-                  onChange={handleChange}
-                  placeholder="https://example.com/image.jpg"
-                  className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50"
-                  required
-                />
-              </div>
+              <InputField
+                label="URL du Média"
+                name="mediaUrl"
+                type="url"
+                value={formData.mediaUrl}
+                onChange={handleChange}
+                placeholder="https://example.com/image.jpg"
+                required
+              />
 
               {/* Devlog Type (Gaming category specific) */}
               {formData.category === 'gaming' && (
-                <div className="flex flex-col gap-1">
-                  <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                    Type de Devlog (ex: UI, Multiplayer, Core, 3D modeling)
-                  </label>
-                  <input 
-                    type="text"
-                    name="type"
-                    value={formData.type}
-                    onChange={handleChange}
-                    placeholder="UI, Multiplayer, etc."
-                    className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50"
-                    required={formData.category === 'gaming'}
-                  />
-                </div>
+                <InputField
+                  label="Type de Devlog (ex: UI, Multiplayer, Core, 3D modeling)"
+                  name="type"
+                  type="text"
+                  value={formData.type}
+                  onChange={handleChange}
+                  placeholder="UI, Multiplayer, etc."
+                  required={formData.category === 'gaming'}
+                />
               )}
 
               {/* Comments Count Simulation */}
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                  Nombre de Commentaires
-                </label>
-                <input 
-                  type="number"
-                  name="commentsCount"
-                  value={formData.commentsCount}
-                  onChange={handleChange}
-                  min="0"
-                  className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50"
-                  required
-                />
-              </div>
+              <InputField
+                label="Nombre de Commentaires"
+                name="commentsCount"
+                type="number"
+                value={formData.commentsCount}
+                onChange={handleChange}
+                min="0"
+                required
+              />
 
               {/* Discord Webhook Option (Gaming specific) */}
               {formData.category === 'gaming' && (
@@ -504,106 +472,81 @@ export default function PortfolioAdmin() {
               )}
 
               {/* Tags */}
-              <div className="md:col-span-2 flex flex-col gap-1">
-                <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                  {t('portfolio.admin.form.tags')}
-                </label>
-                <input 
-                  type="text"
+              <div className="md:col-span-2">
+                <InputField
+                  label={t('portfolio.admin.form.tags')}
                   name="tagsText"
+                  type="text"
                   value={formData.tagsText}
                   onChange={handleChange}
                   placeholder="React, Unity, Web3, iOS"
-                  className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50"
                 />
               </div>
 
               {/* Title FR */}
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                  {t('portfolio.admin.form.title_fr')}
-                </label>
-                <input 
-                  type="text"
-                  name="titleFr"
-                  value={formData.titleFr}
-                  onChange={handleChange}
-                  className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50"
-                  required
-                />
-              </div>
+              <InputField
+                label={t('portfolio.admin.form.title_fr')}
+                name="titleFr"
+                type="text"
+                value={formData.titleFr}
+                onChange={handleChange}
+                required
+              />
 
               {/* Title EN */}
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                  {t('portfolio.admin.form.title_en')}
-                </label>
-                <input 
-                  type="text"
-                  name="titleEn"
-                  value={formData.titleEn}
-                  onChange={handleChange}
-                  className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50"
-                  required
-                />
-              </div>
+              <InputField
+                label={t('portfolio.admin.form.title_en')}
+                name="titleEn"
+                type="text"
+                value={formData.titleEn}
+                onChange={handleChange}
+                required
+              />
 
               {/* Resumé FR */}
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                  {t('portfolio.admin.form.desc_fr')}
-                </label>
-                <textarea 
-                  name="descFr"
-                  value={formData.descFr}
-                  onChange={handleChange}
-                  rows={2}
-                  className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50 resize-none"
-                  required
-                />
-              </div>
+              <InputField
+                label={t('portfolio.admin.form.desc_fr')}
+                name="descFr"
+                type="textarea"
+                value={formData.descFr}
+                onChange={handleChange}
+                rows={2}
+                required
+              />
 
               {/* Resumé EN */}
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                  {t('portfolio.admin.form.desc_en')}
-                </label>
-                <textarea 
-                  name="descEn"
-                  value={formData.descEn}
-                  onChange={handleChange}
-                  rows={2}
-                  className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50 resize-none"
-                  required
-                />
-              </div>
+              <InputField
+                label={t('portfolio.admin.form.desc_en')}
+                name="descEn"
+                type="textarea"
+                value={formData.descEn}
+                onChange={handleChange}
+                rows={2}
+                required
+              />
 
               {/* Content FR */}
-              <div className="md:col-span-2 flex flex-col gap-1">
-                <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                  {t('portfolio.admin.form.content_fr')}
-                </label>
-                <textarea 
+              <div className="md:col-span-2">
+                <InputField
+                  label={t('portfolio.admin.form.content_fr')}
                   name="contentFr"
+                  type="textarea"
                   value={formData.contentFr}
                   onChange={handleChange}
                   rows={5}
-                  className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50"
                   required
                 />
               </div>
 
               {/* Content EN */}
-              <div className="md:col-span-2 flex flex-col gap-1">
-                <label className="text-[10px] font-sans font-semibold uppercase tracking-wider text-on-surface-variant/80">
-                  {t('portfolio.admin.form.content_en')}
-                </label>
-                <textarea 
+              <div className="md:col-span-2">
+                <InputField
+                  label={t('portfolio.admin.form.content_en')}
                   name="contentEn"
+                  type="textarea"
                   value={formData.contentEn}
                   onChange={handleChange}
                   rows={5}
-                  className="bg-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary/50"
                   required
                 />
               </div>

@@ -29,7 +29,7 @@ export default function Home() {
             {t('hero.title_part2')}
           </span>
         </h1>
-        
+
         {/* Concise Pitch */}
         <p className="text-on-surface-variant max-w-2xl text-xs md:text-sm tracking-wide font-light leading-relaxed mb-10">
           {t('hero.description')}
@@ -42,9 +42,9 @@ export default function Home() {
             <i className="fa-solid fa-paper-plane text-xs"></i>
             {t('hero.cta_contact')}
           </Button>
-          
-          {/* Link to game */}
-          <Button variant="secondary" href="/game">
+
+          {/* Link to game devlog */}
+          <Button variant="secondary" href="/portfolio/section/gaming">
             <i className="fa-solid fa-gamepad text-xs"></i>
             {t('hero.cta_game')}
           </Button>

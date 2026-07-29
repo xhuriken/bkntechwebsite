@@ -7,8 +7,8 @@
 - [x] Étape 3 : Rédaction et Validation de `features.md` (Architecture & Spécifications fonctionnelles - Terminé)
 - [x] Étape 4 : Initialisation de la Structure du Projet (Projet Vite + React initialisé - Terminé)
 - [x] Étape 5 : Intégration du Design System (Tokens, Interactive Grid, Styles de base et boutons magnétiques - Terminé)
-- [ ] Étape 6 : Développement de la Page d'Accueil & Services (index.html)
+- [x] Étape 6 : Développement de la Page d'Accueil & Services (index.html)
 - [x] Étape 7 : Développement de la Page Portfolio Dédiée (Choix final : Blog dynamique bilingue avec carrousels et administration de sauvegarde - Terminé)
-- [ ] Étape 8 : Développement de la Page Showcase Jeu Unity Dédiée (game.html)
+- [x] Étape 8 : Développement de la Page Showcase Jeu Unity Dédiée (Redirigée vers le Devlog Vacuum Protocol - Terminé)
 - [x] Étape 9 : Intégration du Formulaire de Contact de Feu de Dieu & Sécurité (Formulaire 2 colonnes avec PoW/Honeypot/Obfuscation - Terminé)
-- [ ] Étape 10 : Tests de Performance, Accessibilité, Sécurité et Validation Finale
+- [x] Étape 10 : Tests de Performance, Accessibilité, Sécurité, Modularité des Inputs & i18next et Validation Finale (Terminé)

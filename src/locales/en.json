@@ -23,6 +23,15 @@
     "explore": "Explore section",
     "back": "Back to portfolio",
     "no_projects": "No projects found in this category.",
+    "loading": "Loading portfolio...",
+    "featured_title": "FEATURED PROJECT",
+    "production_active": "Active production • Version 0.0.6",
+    "featured_desc": "A competitive 3D multiplayer tactical shooter developed under Unity HDRP. Explore our long-term development cycle, our netcode optimizations and our gameplay integration breakthroughs.",
+    "featured_devlog_btn": "Visit Devlog",
+    "featured_discord_btn": "Join Discord",
+    "open": "Open",
+    "section_desc": "Discover our achievements in {{cat}}. Projects managed from end to end with rigor and attention to detail.",
+    "section_loading": "Loading section...",
     "categories": {
       "gaming": "Gaming",
       "website": "Websites",
@@ -33,6 +42,7 @@
       "title": "Portfolio Management",
       "login_title": "Administrator Access",
       "password_placeholder": "Enter admin password",
+      "password": "Password",
       "login_btn": "Log In",
       "logout_btn": "Log Out",
       "create_btn": "Add project",
@@ -58,7 +68,130 @@
       }
     }
   },
+  "contact": {
+    "title_part1": "Let's work",
+    "title_part2": "Together",
+    "description": "Do you have a web/mobile development project or questions about our Unity project? Do not hesitate to write to us.",
+    "email_pin": "Email",
+    "phone_pin": "Phone",
+    "address_pin": "Address",
+    "success_title": "Message Sent!",
+    "success_desc": "Thank you for your message. We have received it and will get back to you as soon as possible.",
+    "back_btn": "Back to the form",
+    "send_btn": "Send Message",
+    "fields": {
+      "name": "Your Name",
+      "email": "Email Address",
+      "subject": "Subject",
+      "message": "Your Message"
+    },
+    "status": {
+      "solving": "Solving local security challenge...",
+      "sending": "Sending message...",
+      "error_send": "An error occurred while sending.",
+      "error_conn": "Connection error with the server."
+    },
+    "validation": {
+      "name": "Name is required.",
+      "email_req": "Email address is required.",
+      "email_invalid": "Invalid email format.",
+      "subject": "Subject is required.",
+      "message": "Message is required."
+    }
+  },
   "footer": {
-    "copyright": "© 2026 BKN Tech. All rights reserved."
+    "copyright": "© 2026 BKN Tech. All rights reserved.",
+    "description": "Custom platform engineering & multiplayer game development. Technical and aesthetic excellence.",
+    "navigation": "Navigation",
+    "juridique": "Legal",
+    "mentions_legales": "Legal Notice",
+    "politique_confidentialite": "Privacy Policy",
+    "rights": "ALL RIGHTS RESERVED."
+  },
+  "devlog": {
+    "description": "Our flagship 3D arena multiplayer tactical shooter project. This devlog documents our long-term production cycle, physics experiments, and netcode optimizations.",
+    "docs_title": "Documentation & Links",
+    "doc_unity": "Unity Documentation",
+    "join_discord": "Join Discord",
+    "version": "Version",
+    "updates": "Updates",
+    "frequent": "Frequent",
+    "search_placeholder": "Search in devlog...",
+    "filter_category": "Filter by",
+    "sort_by": "Sort",
+    "sort_newest": "Newest",
+    "sort_oldest": "Oldest",
+    "loading": "Loading devlog...",
+    "no_updates": "No devlog posts found.",
+    "recent_title": "New devlog updates",
+    "older_title": "Older updates",
+    "types": {
+      "all": "All Types"
+    },
+    "features": {
+      "netcode": {
+        "title": "Network Netcode",
+        "desc": "Authoritative server topology with client-side prediction, client reconciliation and lag compensation. Latency compensated up to 250ms ping."
+      },
+      "physics": {
+        "title": "Physics & Movement",
+        "desc": "Movement engine based on Unity Rigidbody physics with custom high-velocity controller, slope management and dynamic friction."
+      },
+      "graphics": {
+        "title": "High Definition Rendering (HDRP)",
+        "desc": "High Definition Render Pipeline (HDRP) for a cyberpunk photorealistic visual style. Advanced fog volumetrics and ray-traced reflections."
+      }
+    }
+  },
+  "legal": {
+    "back_home": "Back to Home",
+    "mentions": {
+      "title_part1": "Legal",
+      "title_part2": "Notice",
+      "subtitle": "Regulatory & legal information",
+      "sec1_title": "1. Website Publisher",
+      "sec1_body": "Simplified Joint Stock Company with a capital of €2,020.00\nRegistered office: 47 rue Vivienne, 75002 Paris, France\nPublishing Director: Enrique Puerto (President)\nContact email: ",
+      "sec2_title": "2. Registration & Identifiers",
+      "sec2_body_vat": "(VAT not applicable, art. 293 B of the French General Tax Code)",
+      "sec3_title": "3. Hosting",
+      "sec3_body": "This website is hosted by:",
+      "sec4_title": "4. Intellectual Property",
+      "sec4_body": "All content (texts, graphics, logos, animations) present on this site is the exclusive property of Bkn Tech, unless stated otherwise. Any reproduction or redistribution, in whole or in part, is prohibited without prior written authorization."
+    },
+    "privacy": {
+      "title_part1": "Privacy",
+      "title_part2": "Policy",
+      "subtitle": "Personal data protection & GDPR compliance — Last updated: July 28, 2026",
+      "sec1_title": "1. Data Controller",
+      "sec1_body": "The person responsible for processing the personal data collected on this site is:",
+      "sec1_contact": "For any question relating to the protection of your data, you can contact us by email:",
+      "sec2_title": "2. Collected Data & Purposes",
+      "sec2_body": "We only collect data sent voluntarily via our contact form:",
+      "sec2_li1": "Identity: First name, Last name",
+      "sec2_li2": "Contact: Email address, Phone",
+      "sec2_li3": "Request content: Subject and Message",
+      "sec2_purpose": "Purpose & Legal basis: Respond to your inquiries and establish commercial proposals (Legitimate interest / Pre-contractual measures - Art. 6.1 GDPR).",
+      "sec3_title": "3. Retention Period",
+      "sec3_body": "Your personal data is kept:",
+      "sec3_li1": "Information requests: 3 years maximum from the last contact from you.",
+      "sec3_li2": "Business relationships: For the duration of the contractual relationship, then 5 to 10 years according to legal accounting and tax obligations.",
+      "sec4_title": "4. Recipients & Hosting",
+      "sec4_body": "Your data is strictly intended for Bkn Tech team members. No resale or transfer to third parties.",
+      "sec4_sub": "Our hosting and email routing infrastructures are operated by OVHcloud SAS on secure servers located exclusively in France / European Union.",
+      "sec5_title": "5. Cookies & Storage Technologies",
+      "sec5_body": "This site does not use any advertising targeting cookies or third-party trackers for behavioral analysis purposes (e.g. Google Analytics, Facebook Pixel). We only use technical local storage strictly necessary for the operation of the interface (e.g. remembering your preferred language FR/EN via i18nextLng). In accordance with CNIL guidelines, these technical elements are exempt from prior consent.",
+      "sec6_title": "6. Your Rights (GDPR Compliance)",
+      "sec6_body": "In accordance with European regulations (GDPR EU 2016/679) and the French Data Protection Act, you have the following rights regarding your personal data:",
+      "sec6_card1_title": "Right of Access & Rectification",
+      "sec6_card1_desc": "Consult or have your personal data corrected at any time.",
+      "sec6_card2_title": "Right to Erasure (Forgetfulness)",
+      "sec6_card2_desc": "Request the permanent deletion of your personal data.",
+      "sec6_card3_title": "Right to Restriction & Objection",
+      "sec6_card3_desc": "Restrict or oppose the processing of your data.",
+      "sec6_card4_title": "Data Portability",
+      "sec6_card4_desc": "Receive your data in a structured and readable format.",
+      "sec6_footer1": "To exercise any of these rights, contact us by email at:",
+      "sec6_footer2": "If you feel after contacting us that your rights are not respected, you can submit a complaint to the CNIL (Commission Nationale de l'Informatique et des Libertés) on their website"
+    }
   }
 }

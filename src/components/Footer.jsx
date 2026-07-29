@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -211,7 +211,7 @@ export default function Footer() {
                 </span>
               </div>
               <p className="text-xs font-sans font-normal text-on-surface-variant leading-relaxed max-w-sm">
-                Ingénierie de plateformes sur mesure & développement de jeux multijoueurs. Excellence technique & esthétique.
+                {t('footer.description')}
               </p>
               {/* Social Icons list */}
               <div className="flex gap-4 mt-2">
@@ -259,23 +259,23 @@ export default function Footer() {
               <div className="flex items-center gap-1.5 select-none">
                 <span className="text-primary/75 font-semibold text-[9px]">&gt;</span>
                 <span className="font-sans font-semibold tracking-wider text-[11px] uppercase text-primary/80">
-                  Navigation
+                  {t('footer.navigation')}
                 </span>
               </div>
               <ul className="flex flex-col gap-2.5 font-sans font-medium text-xs text-on-surface-variant">
                 <li>
                   <Link to="/#home" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
-                    Accueil
+                    {t('nav.home')}
                   </Link>
                 </li>
                 <li>
                   <Link to="/portfolio" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
-                    Portfolio
+                    {t('nav.portfolio')}
                   </Link>
                 </li>
                 <li>
                   <Link to="/#contact" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
-                    Contact
+                    {t('nav.contact')}
                   </Link>
                 </li>
               </ul>
@@ -286,18 +286,18 @@ export default function Footer() {
               <div className="flex items-center gap-1.5 select-none">
                 <span className="text-primary/75 font-semibold text-[9px]">&gt;</span>
                 <span className="font-sans font-semibold tracking-wider text-[11px] uppercase text-primary/80">
-                  Juridique
+                  {t('footer.juridique')}
                 </span>
               </div>
               <ul className="flex flex-col gap-2.5 font-sans font-medium text-xs text-on-surface-variant">
                 <li>
                   <Link to="/mentions-legales" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
-                    Mentions Légales
+                    {t('footer.mentions_legales')}
                   </Link>
                 </li>
                 <li>
                   <Link to="/politique-de-confidentialite" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
-                    Politique de Confidentialité
+                    {t('footer.politique_confidentialite')}
                   </Link>
                 </li>
               </ul>
@@ -307,7 +307,7 @@ export default function Footer() {
           {/* Row 2: Bottom copyright / authors inside Part 1 */}
           <div className="pt-6 pb-2 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-on-surface-variant/40 text-[10px] uppercase tracking-wider font-sans font-medium mb-1">
             <div>
-              BKN TECH &copy; {new Date().getFullYear()} &mdash; TOUS DROITS RÉSERVÉS.
+              BKN TECH &copy; {new Date().getFullYear()} &mdash; {t('footer.rights')}
             </div>
             <div className="flex items-center gap-1.5 text-on-surface-variant/60 font-sans font-semibold normal-case">
               Enrique Puerto, Célestin Honvault

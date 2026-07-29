@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import InteractiveGrid from './components/InteractiveGrid';
 import Home from './pages/Home';
 import Portfolio from './pages/Portfolio';
-import Game from './pages/Game';
 import MentionsLegales from './pages/MentionsLegales';
 import PolitiqueConfidentialite from './pages/PolitiqueConfidentialite';
 import PortfolioSection from './pages/PortfolioSection';
@@ -59,7 +58,7 @@ function App() {
             <Route path="/portfolio/section/gaming" element={<GamingDevlog />} />
             <Route path="/portfolio/section/:category" element={<PortfolioSection />} />
             <Route path="/portfolio/admin" element={<PortfolioAdmin />} />
-            <Route path="/game" element={<Game />} />
+            <Route path="/game" element={<Navigate to="/portfolio/section/gaming" replace />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
             <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
           </Routes>

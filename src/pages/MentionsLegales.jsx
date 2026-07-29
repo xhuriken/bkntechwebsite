@@ -1,12 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 /**
  * MentionsLegales Page Component
  * Contains regulatory legal notice for BKN Tech (SAS, SIRET, RCS, VAT, Publishing & Hosting details).
  */
 export default function MentionsLegales() {
+  const { t } = useTranslation();
+
   const containerVariants = {
     hidden: { opacity: 0, y: 15 },
     visible: {
@@ -40,17 +43,17 @@ export default function MentionsLegales() {
           <svg className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
-          Retour à l'accueil
+          {t('legal.back_home')}
         </Link>
       </motion.div>
 
       {/* Header */}
       <motion.div variants={itemVariants} className="border-b border-white/5 pb-6 mb-10">
         <h1 className="font-sans font-extrabold text-3xl md:text-5xl uppercase tracking-tight mb-4">
-          Mentions <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Légales</span>
+          {t('legal.mentions.title_part1')} <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('legal.mentions.title_part2')}</span>
         </h1>
         <p className="text-on-surface/80 text-sm font-normal tracking-wide uppercase">
-          Informations réglementaires & juridiques
+          {t('legal.mentions.subtitle')}
         </p>
       </motion.div>
 
@@ -59,14 +62,11 @@ export default function MentionsLegales() {
         {/* Section 1 */}
         <motion.section variants={itemVariants} className="flex flex-col gap-3">
           <h2 className="font-sans font-bold text-sm uppercase tracking-wider text-primary">
-            1. Éditeur du site
+            {t('legal.mentions.sec1_title')}
           </h2>
-          <div className="text-sm font-normal text-on-surface leading-relaxed">
+          <div className="text-sm font-normal text-on-surface leading-relaxed whitespace-pre-line">
             <strong className="text-on-surface font-semibold">Bkn Tech</strong> (SAS)<br />
-            Société par Actions Simplifiée au capital de 2 020,00 €<br />
-            Siège social : 47 rue Vivienne, 75002 Paris, France<br />
-            Directeur de la publication : Enrique Puerto (Président)<br />
-            E-mail de contact :{' '}
+            {t('legal.mentions.sec1_body')}
             <a href="mailto:contact@bkntech.fr" className="text-secondary hover:underline font-medium">
               contact@bkntech.fr
             </a>
@@ -76,24 +76,24 @@ export default function MentionsLegales() {
         {/* Section 2 */}
         <motion.section variants={itemVariants} className="flex flex-col gap-3">
           <h2 className="font-sans font-bold text-sm uppercase tracking-wider text-primary">
-            2. Immatriculation & Identifiants
+            {t('legal.mentions.sec2_title')}
           </h2>
           <div className="text-sm font-normal text-on-surface leading-relaxed">
             SIRET : <span className="text-on-surface font-medium">104 054 150 00016</span><br />
             SIREN : <span className="text-on-surface font-medium">104 054 150</span><br />
             RCS : Paris B 104 054 150<br />
             TVA intracommunautaire : FR69104054150<br />
-            <span className="text-[11px] italic opacity-85 text-on-surface-variant">(TVA non applicable, art. 293 B du CGI)</span>
+            <span className="text-[11px] italic opacity-85 text-on-surface-variant">{t('legal.mentions.sec2_body_vat')}</span>
           </div>
         </motion.section>
 
         {/* Section 3 */}
         <motion.section variants={itemVariants} className="flex flex-col gap-3">
           <h2 className="font-sans font-bold text-sm uppercase tracking-wider text-primary">
-            3. Hébergement
+            {t('legal.mentions.sec3_title')}
           </h2>
           <div className="text-sm font-normal text-on-surface leading-relaxed">
-            Ce site web est hébergé par :<br />
+            {t('legal.mentions.sec3_body')}<br />
             <strong className="text-on-surface font-semibold">OVH SAS</strong><br />
             2 rue Kellermann<br />
             59100 Roubaix, France<br />
@@ -106,11 +106,10 @@ export default function MentionsLegales() {
         {/* Section 4 */}
         <motion.section variants={itemVariants} className="flex flex-col gap-3">
           <h2 className="font-sans font-bold text-sm uppercase tracking-wider text-primary">
-            4. Propriété Intellectuelle
+            {t('legal.mentions.sec4_title')}
           </h2>
           <div className="text-sm font-normal text-on-surface leading-relaxed">
-            L'ensemble des contenus (textes, graphismes, logos, animations) présents sur ce site est la propriété exclusive de Bkn Tech, sauf mentions contraires.
-            Toute reproduction ou redistribution, totale ou partielle, est interdite sans autorisation écrite préalable.
+            {t('legal.mentions.sec4_body')}
           </div>
         </motion.section>
       </div>
