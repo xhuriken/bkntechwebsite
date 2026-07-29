@@ -445,7 +445,7 @@ export default function Portfolio() {
                               }`}
                             >
                               <Link 
-                                to={`/portfolio/section/${post.category}`}
+                                to={`/portfolio/section/${post.category}#post-${post.id}`}
                                 onClick={(e) => {
                                   // Prevent navigating if this wasn't the active card
                                   if (!isActive) {

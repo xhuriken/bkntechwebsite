@@ -32,6 +32,12 @@
     "open": "Open",
     "section_desc": "Discover our achievements in {{cat}}. Projects managed from end to end with rigor and attention to detail.",
     "section_loading": "Loading section...",
+    "tabs": {
+      "overview": "Overview",
+      "features": "Features",
+      "specs": "Specifications",
+      "gallery": "Gallery & Captures"
+    },
     "categories": {
       "gaming": "Gaming",
       "website": "Websites",

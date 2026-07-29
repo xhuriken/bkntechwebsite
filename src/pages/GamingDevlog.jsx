@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { formatLocaleDate } from '../utils/dateFormatter';
+import { detailedProjects } from '../utils/detailedProjects';
 
 /**
  * Helper to extract YouTube video ID
@@ -69,6 +70,7 @@ function getTypeStyles(type = '') {
 export default function GamingDevlog() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'fr';
+  const location = useLocation();
 
   // API posts loading
   const [posts, setPosts] = useState([]);
@@ -96,6 +98,20 @@ export default function GamingDevlog() {
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    if (loading || posts.length === 0) return;
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#post-')) {
+      const targetId = hash.slice(1);
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 350);
+    }
+  }, [posts, loading, location.hash]);
 
   // Extract unique devlog types for the filter dropdown
   const uniqueTypes = ['all', ...new Set(posts.map(p => p.type).filter(Boolean))];
@@ -394,6 +410,10 @@ function DevlogPostCard({ post, currentLang }) {
   const ytId = post.mediaType === 'video' ? getYouTubeId(post.mediaUrl) : null;
   const relativeDate = getRelativeDateString(post.date, currentLang);
   const typeStyle = getTypeStyles(post.type);
+  const { t } = useTranslation();
+
+  const [activeTab, setActiveTab] = useState('overview');
+  const [galleryActiveImg, setGalleryActiveImg] = useState(post.mediaUrl || '');
 
   // Determine dot border, bg, and text color based on category/type
   const getDotColors = (type = '') => {
@@ -407,36 +427,32 @@ function DevlogPostCard({ post, currentLang }) {
   };
 
   const dotColors = getDotColors(post.type);
+  const extra = detailedProjects[post.id];
+  const hasTabs = !!extra;
 
   return (
     <motion.article 
+      key={post.id}
+      id={`post-${post.id}`}
       variants={{
         hidden: { opacity: 0, y: 15 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
       }}
       className="relative w-full group flex flex-col"
     >
-      {/* Timeline Dot (Desktop & Mobile) - Spring pop on viewport entry */}
-      <motion.div 
-        initial={{ scale: 0, opacity: 0 }}
-        whileInView={{ scale: 1, opacity: 1 }}
-        viewport={{ once: true, margin: '-40px' }}
-        transition={{ type: 'spring', stiffness: 220, delay: 0.15 }}
-        className={`absolute -left-[39px] md:-left-[57px] top-[30px] w-4 h-4 rounded-full bg-surface border-2 ${dotColors.border} flex items-center justify-center z-10`}
-      >
-        <div className={`w-1.5 h-1.5 rounded-full ${dotColors.bg} animate-pulse`} />
-      </motion.div>
+      {/* Sticky Dot Wrapper (Desktop & Mobile) - Slides down its thread line */}
+      <div className="absolute left-0 top-0 bottom-0 -ml-[39px] md:-ml-[57px] w-4 pointer-events-none z-10">
+        <div className={`sticky top-[126px] w-4 h-4 rounded-full bg-surface border-2 ${dotColors.border} flex items-center justify-center`}>
+          <div className={`w-1.5 h-1.5 rounded-full ${dotColors.bg} animate-pulse`} />
+        </div>
+      </div>
 
-      {/* Timeline Date (Desktop only) - Fade and slide on viewport entry */}
-      <motion.div 
-        initial={{ opacity: 0, x: -10 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, margin: '-40px' }}
-        transition={{ duration: 0.5, delay: 0.05 }}
-        className={`hidden md:block absolute -left-[175px] top-[26px] w-[110px] text-right font-mono text-[10px] tracking-wide font-bold z-10 ${dotColors.text}`}
-      >
-        {formatLocaleDate(post.date, currentLang)}
-      </motion.div>
+      {/* Sticky Date Wrapper (Desktop only) - Slides along the card timeline */}
+      <div className="hidden md:block absolute left-0 top-0 bottom-0 -ml-[175px] w-[110px] pointer-events-none z-10">
+        <div className={`sticky top-[120px] w-full text-right font-mono text-[10px] tracking-wide font-bold transition-colors duration-150 ${dotColors.text}`}>
+          {formatLocaleDate(post.date, currentLang)}
+        </div>
+      </div>
 
       {/* Card Wrapper (maintains overflow-hidden and hover styling) */}
       <div className="w-full bg-surface-container-low/40 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col">
@@ -486,36 +502,157 @@ function DevlogPostCard({ post, currentLang }) {
             )}
           </div>
 
-          {/* Media Embedding (if present) */}
-          {post.mediaUrl && (
-            <div className="w-full max-w-xl overflow-hidden rounded-xl bg-black/10 border border-white/5 mt-1">
-              {post.mediaType === 'video' && ytId ? (
-                <div className="aspect-video w-full">
-                  <iframe 
-                    src={`https://www.youtube.com/embed/${ytId}`} 
-                    className="w-full h-full border-none bg-black"
-                    title={post.title[currentLang] || post.title['fr']}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-              ) : (
-                <img 
-                  src={post.mediaUrl} 
-                  alt={post.title[currentLang] || post.title['fr']}
-                  className="w-full max-h-[300px] object-cover group-hover:scale-[1.01] transition-transform duration-500"
-                  loading="lazy"
-                />
-              )}
+          {/* Tab buttons if detailed projects exists */}
+          {hasTabs && (
+            <div className="flex border-b border-white/5 pb-2 gap-4 overflow-x-auto select-none scrollbar-none">
+              {['overview', 'features', 'specs', 'gallery'].map((tabKey) => {
+                const isActive = activeTab === tabKey;
+                if (tabKey === 'gallery' && (!extra.gallery || extra.gallery.length === 0)) return null;
+                if (tabKey === 'specs' && (!extra.specs || extra.specs.length === 0)) return null;
+                if (tabKey === 'features' && (!extra.features || !extra.features[currentLang])) return null;
+
+                return (
+                  <button
+                    key={tabKey}
+                    onClick={() => {
+                      setActiveTab(tabKey);
+                      if (tabKey === 'gallery' && extra.gallery?.length > 0) {
+                        setGalleryActiveImg(post.mediaUrl || extra.gallery[0]);
+                      }
+                    }}
+                    className={`text-[10px] md:text-xs font-sans font-bold uppercase tracking-wider pb-1.5 transition-all duration-150 relative cursor-pointer focus:outline-none ${
+                      isActive ? 'text-primary font-black' : 'text-on-surface-variant/60 hover:text-on-surface'
+                    }`}
+                  >
+                    {t(`portfolio.tabs.${tabKey}`)}
+                    {isActive && (
+                      <motion.div 
+                        layoutId={`activeTabBorderDevlog-${post.id}`}
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                        transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
             </div>
           )}
 
-          {/* Long Detailed Content */}
-          {post.content && (
-            <div className="text-xs font-sans font-normal text-on-surface/90 leading-relaxed whitespace-pre-wrap mt-1">
-              {post.content[currentLang] || post.content['fr']}
-            </div>
-          )}
+          {/* Dynamic Tab Panel content */}
+          <div className="w-full min-h-[160px]">
+            {(!hasTabs || activeTab === 'overview') && (
+              <motion.div 
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25 }}
+                className="flex flex-col gap-4"
+              >
+                {/* Media Embedding */}
+                {post.mediaUrl && (
+                  <div className="w-full max-w-xl overflow-hidden rounded-xl bg-black/10 border border-white/5">
+                    {post.mediaType === 'video' && ytId ? (
+                      <div className="aspect-video w-full">
+                        <iframe 
+                          src={`https://www.youtube.com/embed/${ytId}`} 
+                          className="w-full h-full border-none bg-black"
+                          title={post.title[currentLang] || post.title['fr']}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                    ) : (
+                      <img 
+                        src={post.mediaUrl} 
+                        alt={post.title[currentLang] || post.title['fr']}
+                        className="w-full max-h-[300px] object-cover group-hover:scale-[1.01] transition-transform duration-500"
+                        loading="lazy"
+                      />
+                    )}
+                  </div>
+                )}
+
+                {/* Long Detailed Content */}
+                {post.content && (
+                  <div className="text-xs font-sans font-normal text-on-surface/90 leading-relaxed whitespace-pre-wrap">
+                    {post.content[currentLang] || post.content['fr']}
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {hasTabs && activeTab === 'features' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {(extra.features[currentLang] || []).map((feature, idx) => (
+                  <motion.div 
+                    key={idx}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: idx * 0.05 }}
+                    className="p-4 bg-surface-container-low/40 border border-white/5 rounded-xl hover:border-primary/20 transition-all duration-150 flex flex-col gap-1.5"
+                  >
+                    <span className="font-mono text-[10px] text-primary/80 font-bold uppercase tracking-wide">&gt; {feature.title}</span>
+                    <p className="text-xs sm:text-[13px] font-sans font-normal text-on-surface-variant/90 leading-relaxed">{feature.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+
+            {hasTabs && activeTab === 'specs' && (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.25 }}
+                className="bg-black/50 border border-white/5 rounded-xl p-5 font-mono text-[11px] text-on-surface-variant/90 max-w-2xl flex flex-col gap-3 shadow-inner"
+              >
+                <div className="text-[9px] text-white/30 border-b border-white/5 pb-2 uppercase tracking-widest font-sans font-bold">
+                  System Tech Stack Specifications
+                </div>
+                <div className="flex flex-col gap-2.5">
+                  {(extra.specs || []).map((spec, idx) => (
+                    <div key={idx} className="flex justify-between items-center gap-4 border-b border-white/[0.02] pb-1.5 last:border-b-0">
+                      <span className="text-[10px] uppercase text-white/40">{spec.label[currentLang] || spec.label['fr']}</span>
+                      <span className="text-secondary font-bold text-[11px] text-right">{spec.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {hasTabs && activeTab === 'gallery' && (() => {
+              const activeImg = galleryActiveImg || post.mediaUrl || extra.gallery[0];
+              return (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex flex-col gap-4"
+                >
+                  <div className="w-full aspect-video max-w-xl rounded-2xl overflow-hidden border border-white/10 bg-black/40 relative group/gal">
+                    <img 
+                      src={activeImg} 
+                      alt="Gallery preview" 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover/gal:scale-102"
+                    />
+                  </div>
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 max-w-xl">
+                    {[post.mediaUrl, ...extra.gallery].filter(Boolean).map((img, idx) => {
+                      const isSelected = activeImg === img;
+                      return (
+                        <button
+                          key={idx}
+                          onClick={() => setGalleryActiveImg(img)}
+                          className={`aspect-video rounded-lg overflow-hidden border cursor-pointer transition-all duration-150 hover:scale-105 active:scale-95 ${
+                            isSelected ? 'border-primary shadow-[0_0_10px_rgba(190,194,255,0.3)] scale-[1.02]' : 'border-white/5 opacity-60 hover:opacity-100'
+                          }`}
+                        >
+                          <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              );
+            })()}
+          </div>
         </div>
       </div>
     </motion.article>

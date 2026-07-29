@@ -32,6 +32,12 @@
     "open": "Ouvrir",
     "section_desc": "Découvrez nos réalisations en {{cat}}. Projets menés de bout en bout avec rigueur et souci du détail.",
     "section_loading": "Chargement de la section...",
+    "tabs": {
+      "overview": "Présentation",
+      "features": "Caractéristiques",
+      "specs": "Fiche Technique",
+      "gallery": "Galerie & Captures"
+    },
     "categories": {
       "gaming": "Gaming",
       "website": "Sites Web",

@@ -222,3 +222,33 @@ Formater toutes les dates du site selon la langue active (français/anglais), re
 - **Finition Premium** : Les voiles dégradés de contour masquent le débordement matériel de façon très naturelle, évitant de casser l'immersion visuelle.
 - **Réactivité Snappy** : Le passage de transitions de 300/500ms à 150/200ms donne une sensation immédiate de performance et de réactivité, éliminant tout sentiment de "lenteur" lors de la navigation ou du survol.
 
+---
+
+## [2026-07-29] Frises Chronologiques Collantes (Sticky), Onglets Interactifs Détaillés & Routage par Ancre (Hash-Linking)
+
+### Tâche
+Rendre les dates et les points de la frise chronologique collants (sticky) au scroll, et créer un panneau d'onglets de détails de projets interactifs (Présentation, Caractéristiques, Spécifications, Galerie) sur les sections détaillées. Intégrer également le routage par ancre `#post-id` pour scroller automatiquement et mettre en surbrillance pulsée le projet cliqué depuis la page principale du portfolio.
+
+### Modifications
+- **Routage et Scroll par Ancre (Hash-Linking)** :
+  - **[Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx)** : Redirection de la navigation de la carte active de `/portfolio/section/${category}` à `/portfolio/section/${category}#post-${post.id}` pour passer l'identifiant du projet ciblé.
+  - **[PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx)** & **[GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx)** :
+    - Importation et utilisation du hook `useLocation`.
+    - Association de l'identifiant unique `id={`post-${post.id}`}` à la balise d'article de chaque projet.
+    - Écoute du changement d'ancre via un hook `useEffect` pour déclencher un défilement fluide `scrollIntoView({ behavior: 'smooth', block: 'center' })` centrant automatiquement le projet.
+- **Effet Visuel de Surbrillance (Highlight)** :
+  - Comparaison dynamique du hash de l'URL avec l'ancre du post pour ajouter une bordure animée éclairée et une lueur de fond pulsée (`animate-pulse-slow` et lueurs thématiques) sur la carte sélectionnée.
+- **Frises Chronologiques Collantes (Sticky Timeline)** :
+  - Remplacement de l'ancien système de positionnement absolute statique par une enveloppe de hauteur totale (`absolute top-0 bottom-0`) englobant des éléments `sticky top-[120px]` (date) et `sticky top-[126px]` (point de frise).
+  - Les éléments coulissent de manière fluide avec le défilement vertical et se bloquent automatiquement avant la fin de leur carte parente sans déborder sur le projet suivant.
+- **Panneau d'Onglets Détaillés Interactifs** :
+  - Intégration de boutons d'onglets animés par Framer Motion (`Présentation`, `Caractéristiques`, `Fiche Technique`, `Galerie`) alimentés par le module de données de projets [detailedProjects.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/utils/detailedProjects.js).
+  - **Onglet Caractéristiques** : Affiche une grille de spécificités clés animées par des délais d'apparition progressifs.
+  - **Onglet Spécifications** : Affiche un tableau d'informations système de style terminal rétro-cyberpunk.
+  - **Onglet Galerie** : Rendu d'une visionneuse interactive de captures d'écran et de mockups avec miniatures cliquables.
+
+### Justification Technique
+- **CSS Pur pour la Fluidité** : L'utilisation de `position: sticky` contraint par les dimensions d'une boîte parente `absolute` permet d'obtenir un glissement matériel 100% performant (GPU) et évite le déclenchement continu d'écouteurs de scroll JavaScript lourds.
+- **UX Immersive & Partageable** : Le routage par ancre rend les projets directement référençables par URL. La lueur pulsée combinée au recentrage fluide guide le regard de l'utilisateur instantanément vers le projet sélectionné.
+
+
