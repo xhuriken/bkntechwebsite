@@ -27,6 +27,7 @@ export default function PortfolioAdmin() {
   const [formData, setFormData] = useState({
     category: 'gaming',
     type: '',
+    importance: 'normal',
     date: new Date().toISOString().split('T')[0],
     mediaType: 'image',
     mediaUrl: '',
@@ -95,6 +96,7 @@ export default function PortfolioAdmin() {
     setFormData({
       category: post.category,
       type: post.type || '',
+      importance: post.importance || 'normal',
       date: post.date,
       mediaType: post.mediaType || 'image',
       mediaUrl: post.mediaUrl || '',
@@ -120,6 +122,7 @@ export default function PortfolioAdmin() {
     setFormData({
       category: 'gaming',
       type: '',
+      importance: 'normal',
       date: new Date().toISOString().split('T')[0],
       mediaType: 'image',
       mediaUrl: '',
@@ -141,9 +144,10 @@ export default function PortfolioAdmin() {
     setStatusMsg({ text: '', type: '' });
 
     const payload = {
-      id: editingId, // Will create new if null, or edit if matches existing ID
+      id: editingId,
       category: formData.category,
       type: formData.type || (formData.category === 'gaming' ? 'General' : ''),
+      importance: formData.category === 'gaming' ? formData.importance : undefined,
       date: formData.date,
       mediaType: formData.mediaType,
       mediaUrl: formData.mediaUrl,
@@ -324,9 +328,17 @@ export default function PortfolioAdmin() {
                   }`}
                 >
                   <div className="flex flex-col gap-1 pr-4">
+                    <div className="flex items-center gap-1.5 flex-wrap">
                     <span className="text-[9px] font-sans font-bold uppercase tracking-wider text-primary">
                       {post.category}
                     </span>
+                    {post.importance === 'major' && (
+                      <span className="text-[8px] font-bold uppercase tracking-widest px-1 py-0.5 rounded border border-primary/40 bg-primary/10 text-primary">★ Major</span>
+                    )}
+                    {post.importance === 'minor' && (
+                      <span className="text-[8px] font-bold uppercase tracking-widest px-1 py-0.5 rounded border border-white/10 bg-white/[0.03] text-on-surface-variant/50">Minor</span>
+                    )}
+                  </div>
                     <h3 className="font-sans font-bold text-xs text-on-surface line-clamp-1">
                       {post.title.fr}
                     </h3>
@@ -444,6 +456,21 @@ export default function PortfolioAdmin() {
                   placeholder="UI, Multiplayer, etc."
                   required={formData.category === 'gaming'}
                 />
+              )}
+
+              {/* Importance (Gaming category specific) */}
+              {formData.category === 'gaming' && (
+                <InputField
+                  label="Importance du Post"
+                  name="importance"
+                  type="select"
+                  value={formData.importance}
+                  onChange={handleChange}
+                >
+                  <option value="normal">Normal — standard</option>
+                  <option value="minor">Minor — petit fix, compact par défaut</option>
+                  <option value="major">Major — grande mise à jour, mis en avant</option>
+                </InputField>
               )}
 
               {/* Comments Count Simulation */}

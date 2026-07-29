@@ -416,20 +416,25 @@ function DevlogPostCard({ post, currentLang }) {
   const [galleryActiveImg, setGalleryActiveImg] = useState(post.mediaUrl || '');
 
   // Determine dot border, bg, and text color based on category/type
+  // Keywords must match getTypeStyles() for consistent color theming
   const getDotColors = (type = '') => {
     const t = type.toLowerCase();
     if (t.includes('ui')) return { border: 'border-primary', bg: 'bg-primary', text: 'text-primary' };
-    if (t.includes('player') || t.includes('joueur') || t.includes('amélioration')) return { border: 'border-secondary', bg: 'bg-secondary', text: 'text-secondary' };
-    if (t.includes('multiplayer') || t.includes('netcode') || t.includes('reseau')) return { border: 'border-tertiary', bg: 'bg-tertiary', text: 'text-tertiary' };
-    if (t.includes('core')) return { border: 'border-orange-400', bg: 'bg-orange-400', text: 'text-orange-400' };
-    if (t.includes('modeling') || t.includes('3d')) return { border: 'border-pink-400', bg: 'bg-pink-400', text: 'text-pink-400' };
+    if (t.includes('player') || t.includes('joueur') || t.includes('amélioration') || t.includes('améliorations')) return { border: 'border-secondary', bg: 'bg-secondary', text: 'text-secondary' };
+    if (t.includes('multiplayer') || t.includes('multijoueur') || t.includes('netcode') || t.includes('reseau')) return { border: 'border-tertiary', bg: 'bg-tertiary', text: 'text-tertiary' };
+    if (t.includes('core') || t.includes('systeme') || t.includes('gameplay')) return { border: 'border-orange-400', bg: 'bg-orange-400', text: 'text-orange-400' };
+    if (t.includes('modeling') || t.includes('modelisation') || t.includes('3d')) return { border: 'border-pink-400', bg: 'bg-pink-400', text: 'text-pink-400' };
     return { border: 'border-white/20', bg: 'bg-white/40', text: 'text-on-surface-variant/70' };
   };
 
   const dotColors = getDotColors(post.type);
   const extra = detailedProjects[post.id];
   const hasTabs = !!extra;
-  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Minor posts are compact by default, Major posts are expanded by default
+  const isMajor = post.importance === 'major';
+  const isMinor = post.importance === 'minor';
+  const [isExpanded, setIsExpanded] = useState(isMajor);
 
   return (
     <motion.article 
@@ -439,7 +444,9 @@ function DevlogPostCard({ post, currentLang }) {
         hidden: { opacity: 0, y: 15 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
       }}
-      className="relative w-full group flex flex-col"
+      className={`relative w-full group flex flex-col ${
+        isMinor ? 'opacity-85' : ''
+      }`}
     >
       {/* Sticky Dot Wrapper (Desktop & Mobile) - Slides down its thread line */}
       <div className="absolute left-0 top-0 bottom-0 -ml-[39px] md:-ml-[57px] w-4 pointer-events-none z-10">
@@ -455,8 +462,14 @@ function DevlogPostCard({ post, currentLang }) {
         </div>
       </div>
 
-      {/* Card Wrapper (maintains overflow-hidden and hover styling) */}
-      <div className="w-full bg-surface-container-low/40 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col">
+      {/* Card Wrapper */}
+      <div className={`w-full backdrop-blur-md border rounded-2xl overflow-hidden transition-all duration-300 flex flex-col ${
+        isMajor
+          ? 'bg-surface-container-low/60 border-primary/20 shadow-[0_0_24px_rgba(190,194,255,0.08)]'
+          : isMinor
+            ? 'bg-surface-container-low/25 border-white/5 hover:border-white/10'
+            : 'bg-surface-container-low/40 border-white/5 hover:border-white/10'
+      }`}>
         {/* Terminal Header - Full Width, Flush, No Margins */}
         <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none relative overflow-hidden">
           {/* Passive Noise Texture background */}
@@ -481,8 +494,19 @@ function DevlogPostCard({ post, currentLang }) {
             )}
           </div>
           
-          {/* Date on Right (Absolute & Relative) */}
+          {/* Date + Importance badge on Right */}
           <div className="flex items-center gap-2 text-on-surface-variant/70 font-semibold relative z-10">
+            {/* Importance badge */}
+            {post.importance === 'major' && (
+              <span className="px-1.5 py-0.5 rounded border border-primary/40 bg-primary/10 text-primary text-[8px] font-bold uppercase tracking-widest">
+                ★ MAJOR
+              </span>
+            )}
+            {post.importance === 'minor' && (
+              <span className="px-1.5 py-0.5 rounded border border-white/10 bg-white/[0.03] text-on-surface-variant/40 text-[8px] font-bold uppercase tracking-widest">
+                MINOR
+              </span>
+            )}
             <span className="md:hidden text-on-surface-variant/90 font-bold">{formatLocaleDate(post.date, currentLang)}</span>
             <span className="hidden md:inline text-on-surface-variant/30">•</span>
             <span className="text-on-surface font-bold">{relativeDate}</span>
@@ -492,23 +516,33 @@ function DevlogPostCard({ post, currentLang }) {
       {/* Compact Header — always visible, click to expand */}
         <button
           onClick={() => setIsExpanded(p => !p)}
-          className="w-full text-left px-5 md:px-6 pt-3 md:pt-4 pb-3 flex items-center gap-3 cursor-pointer group/hdr"
+          className={`w-full text-left flex items-center gap-3 cursor-pointer group/hdr ${
+            isMajor
+              ? 'px-5 md:px-6 pt-4 md:pt-5 pb-4'
+              : 'px-5 md:px-6 pt-3 md:pt-4 pb-3'
+          }`}
         >
           <div className="flex flex-col gap-1.5 flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <span className="w-1 h-4 rounded-full bg-gradient-to-b from-primary to-transparent flex-shrink-0" />
-              <h3 className="font-sans font-bold text-sm text-on-surface group-hover/hdr:text-primary transition-colors truncate">
+              <span className={`w-1 rounded-full bg-gradient-to-b from-primary to-transparent flex-shrink-0 ${
+                isMajor ? 'h-6' : 'h-4'
+              }`} />
+              <h3 className={`font-sans font-bold text-on-surface group-hover/hdr:text-primary transition-colors truncate ${
+                isMajor ? 'text-base md:text-lg' : isMinor ? 'text-xs' : 'text-sm'
+              }`}>
                 {post.title[currentLang] || post.title['fr']}
               </h3>
             </div>
             {post.description && (
-              <p className="text-[11px] text-on-surface-variant/70 leading-relaxed italic line-clamp-1">
+              <p className={`text-on-surface-variant/70 leading-relaxed italic line-clamp-1 ${
+                isMajor ? 'text-xs' : 'text-[11px]'
+              }`}>
                 {post.description[currentLang] || post.description['fr']}
               </p>
             )}
             {post.tags && (
               <div className="flex flex-wrap gap-1">
-                {post.tags.slice(0, 4).map((tag, i) => (
+                {post.tags.slice(0, isMajor ? 6 : 4).map((tag, i) => (
                   <span key={i} className="text-[9px] font-mono font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded border border-white/10 bg-white/[0.04] text-on-surface-variant/70">{tag}</span>
                 ))}
               </div>
@@ -519,7 +553,7 @@ function DevlogPostCard({ post, currentLang }) {
             transition={{ duration: 0.2 }}
             className="text-on-surface-variant/40 group-hover/hdr:text-primary flex-shrink-0 transition-colors"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+            <svg className={isMajor ? 'w-5 h-5' : 'w-4 h-4'} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
           </motion.span>
