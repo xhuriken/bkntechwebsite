@@ -4,7 +4,7 @@
     "portfolio": "Portfolio",
     "game": "Unity Game",
     "contact": "Contact",
-    "cta": "Start a project"
+    "cta": "Get Started !"
   },
   "hero": {
     "title_part1": "Shaping the web,",
@@ -82,6 +82,28 @@
     "title_part1": "Let's work",
     "title_part2": "Together",
     "description": "Do you have a web/mobile development project or questions about our Unity project? Do not hesitate to write to us.",
+    "templates": {
+      "none": {
+        "label": "Empty",
+        "subject": "",
+        "message": ""
+      },
+      "web": {
+        "label": "Websites",
+        "subject": "Quote Request - Web / Mobile Project",
+        "message": "Hello BKN Tech team,\n\nI would like to consult with you for the development of a web / mobile project.\n\nBrief description of requirements:\n- Project nature: [e.g. Custom website / Mobile app]\n- Key features: [e.g. Auth, Dashboard...]\n- Target timeline: [e.g. Next few months]\n\nCould you get back to me to discuss feasibility?\n\nThanks in advance!"
+      },
+      "gaming": {
+        "label": "Unity Game",
+        "subject": "Question / Collaboration - Unity Vacuum Protocol Game",
+        "message": "Hello BKN Tech,\n\nI discovered your Vacuum Protocol project in Unity and would love to connect regarding:\n[Please specify: Playtest / Partnership / Netcode technical question...]\n\nLooking forward to hearing from you!"
+      },
+      "quick": {
+        "label": "Quick Message",
+        "subject": "Quick Outreach - Collaboration Opportunity",
+        "message": "Hello,\n\nI'd like to get in touch with the BKN Tech team to discuss a collaboration opportunity.\n\nAvailable time slots for a quick call:\n- [e.g. Monday afternoon / Tuesday morning]\n\nThanks and talk soon!"
+      }
+    },
     "email_pin": "Email",
     "phone_pin": "Phone",
     "address_pin": "Address",

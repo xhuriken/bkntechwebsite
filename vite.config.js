@@ -193,7 +193,61 @@ export default defineConfig({
               res.end(JSON.stringify({ error: err.message }));
             }
           }
-          // 4. Static files & assets pass-through
+          // 4. Settings API Interception (/api/settings)
+          else if (pathname.startsWith('/api/settings')) {
+            try {
+              let body = '';
+              req.on('data', chunk => {
+                body += chunk;
+              });
+              req.on('end', async () => {
+                try {
+                  const parsedBody = body ? JSON.parse(body) : {};
+                  
+                  const mockReq = {
+                    method: req.method,
+                    url: req.url,
+                    headers: req.headers,
+                    query: Object.fromEntries(parsedUrl.searchParams),
+                    body: parsedBody
+                  };
+                  
+                  const mockRes = {
+                    status(code) {
+                      res.statusCode = code;
+                      return this;
+                    },
+                    json(data) {
+                      res.setHeader('Content-Type', 'application/json');
+                      res.end(JSON.stringify(data));
+                      return this;
+                    },
+                    setHeader(name, value) {
+                      res.setHeader(name, value);
+                      return this;
+                    },
+                    end(data) {
+                      res.end(data);
+                      return this;
+                    }
+                  };
+
+                  const { default: handler } = await import('./api/settings.js');
+                  await handler(mockReq, mockRes);
+                } catch (err) {
+                  console.error("Erreur d'exécution de l'API locale settings :", err);
+                  res.statusCode = 500;
+                  res.setHeader('Content-Type', 'application/json');
+                  res.end(JSON.stringify({ error: err.message }));
+                }
+              });
+            } catch (err) {
+              res.statusCode = 500;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ error: err.message }));
+            }
+          }
+          // 5. Static files & assets pass-through
           else {
             next();
           }

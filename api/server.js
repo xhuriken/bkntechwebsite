@@ -7,6 +7,7 @@ import path from 'path';
 import contactHandler from './contact.js';
 import postsHandler from './posts.js';
 import uploadHandler from './upload.js';
+import settingsHandler from './settings.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -30,6 +31,11 @@ app.all('/posts', (req, res) => {
 // Route : /upload (POST, OPTIONS, etc.)
 app.all('/upload', (req, res) => {
   uploadHandler(req, res);
+});
+
+// Route : /settings (GET, PATCH, OPTIONS, etc.)
+app.all('/settings', (req, res) => {
+  settingsHandler(req, res);
 });
 
 // Health check pour Docker

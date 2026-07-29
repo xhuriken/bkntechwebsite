@@ -132,15 +132,15 @@
     "type": "UI",
     "importance": "minor",
     "date": "2026-07-22",
-    "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800",
+    "mediaType": "video",
+    "mediaUrl": "https://cdn.discordapp.com/attachments/1484276937844326571/1509597560338251948/2026-05-28_18-40-02.mp4?ex=6a6ad609&is=6a698489&hm=fc1a786380fa013d0b9b2f45c853069a54bbd82e85f4e2e448e1677574cceccb&",
     "gallery": [],
     "slots": [
       {
         "id": "slot-1",
-        "type": "image",
+        "type": "video",
         "sourceType": "url",
-        "url": "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800"
+        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1509597560338251948/2026-05-28_18-40-02.mp4?ex=6a6ad609&is=6a698489&hm=fc1a786380fa013d0b9b2f45c853069a54bbd82e85f4e2e448e1677574cceccb&"
       }
     ],
     "title": {
@@ -197,15 +197,15 @@
     "type": "Shader",
     "importance": "minor",
     "date": "2026-07-10",
-    "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800",
+    "mediaType": "video",
+    "mediaUrl": "https://cdn.discordapp.com/attachments/1484276937844326571/1509555581222912081/2026-05-28_15-54-21.mp4?ex=6a6b57b0&is=6a6a0630&hm=35bd4261d8395023e5cab97a8cc18f3a7c569a168e763ef024776508fba67a87&",
     "gallery": [],
     "slots": [
       {
         "id": "slot-1",
-        "type": "image",
+        "type": "video",
         "sourceType": "url",
-        "url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800"
+        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1509555581222912081/2026-05-28_15-54-21.mp4?ex=6a6b57b0&is=6a6a0630&hm=35bd4261d8395023e5cab97a8cc18f3a7c569a168e763ef024776508fba67a87&"
       }
     ],
     "title": {
@@ -262,15 +262,15 @@
     "type": "UI",
     "importance": "minor",
     "date": "2026-07-05",
-    "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800",
+    "mediaType": "video",
+    "mediaUrl": "https://cdn.discordapp.com/attachments/1484276937844326571/1509492909135630416/2026-05-28_11-45-28.mp4?ex=6a6b1d52&is=6a69cbd2&hm=d73d5c0a8d2bb065e0b9a1d7ef22df861c37f3d439fc1e8e9f3984ebebed41c9&",
     "gallery": [],
     "slots": [
       {
         "id": "slot-1",
-        "type": "image",
+        "type": "video",
         "sourceType": "url",
-        "url": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800"
+        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1509492909135630416/2026-05-28_11-45-28.mp4?ex=6a6b1d52&is=6a69cbd2&hm=d73d5c0a8d2bb065e0b9a1d7ef22df861c37f3d439fc1e8e9f3984ebebed41c9&"
       }
     ],
     "title": {

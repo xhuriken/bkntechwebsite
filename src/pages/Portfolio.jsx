@@ -160,6 +160,7 @@ export default function Portfolio() {
   const [selectedIndices, setSelectedIndices] = useState({ website: 0, 'ai-agent': 0, mobile: 0 });
   const currentLang = i18n.language || 'fr';
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+  const [featuredBannerUrl, setFeaturedBannerUrl] = useState('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800');
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
@@ -195,6 +196,16 @@ export default function Portfolio() {
         console.error(err);
         setLoading(false);
       });
+
+    // Fetch site settings for featured banner URL
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(settings => {
+        if (settings.featuredBannerUrl) {
+          setFeaturedBannerUrl(settings.featuredBannerUrl);
+        }
+      })
+      .catch(err => console.error('Failed to load settings:', err));
   }, []);
 
   const categories = [
@@ -298,9 +309,13 @@ export default function Portfolio() {
                   {/* Cinematic Banner Image/Thumbnail */}
                   <div className="md:w-1/2 aspect-video overflow-hidden rounded-xl border border-white/5 relative bg-black/40 flex-shrink-0">
                     <img 
-                      src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800" 
+                      src={featuredBannerUrl} 
                       alt="Vacuum Protocol" 
                       className="w-full h-full object-cover hover:scale-102 transition-transform duration-700" 
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800';
+                      }}
                     />
                   </div>
 

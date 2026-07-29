@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 /**
@@ -21,6 +21,14 @@ export default function InputField({
   children
 }) {
   const [isFocused, setIsFocused] = useState(false);
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if (type === 'textarea' && textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [value, type]);
 
   return (
     <div className="relative w-full flex flex-col mb-5">
@@ -41,7 +49,13 @@ export default function InputField({
             : 'border-white/5 hover:border-primary/20 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/10'
           }
         `}
-        onClick={() => document.getElementById(name)?.focus()}
+        onClick={() => {
+          if (type === 'textarea') {
+            textareaRef.current?.focus();
+          } else {
+            document.getElementById(name)?.focus();
+          }
+        }}
       >
         {/* Small Fixed Label */}
         <label 
@@ -57,6 +71,7 @@ export default function InputField({
         {/* Input Control */}
         {type === 'textarea' ? (
           <textarea
+            ref={textareaRef}
             id={name}
             name={name}
             value={value}
@@ -66,7 +81,7 @@ export default function InputField({
             onBlur={() => setIsFocused(false)}
             rows={rows}
             placeholder={placeholder}
-            className="block w-full bg-transparent text-sm text-on-surface font-sans focus:outline-none resize-none pt-0.5 leading-relaxed"
+            className="block w-full bg-transparent text-sm text-on-surface font-sans focus:outline-none resize-none pt-0.5 leading-relaxed overflow-hidden"
           />
         ) : type === 'select' ? (
           <div className="relative w-full">

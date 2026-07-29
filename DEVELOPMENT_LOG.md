@@ -331,5 +331,131 @@ Moderniser la page d'administration (`PortfolioAdmin.jsx`), intégrer un systèm
 - **Rendu HTML5 Performant** : La prise en charge native des balises `<video>` garantit une lecture fluide, silencieuse et en boucle des démos de gameplay Unity directement au cœur des devlogs sans altérer les performances.
 - **Cohérence SSOT & Animations Fluides** : L'utilisation de la barre dégradée verticale exacte, du portail de connexion cyber-glassmorphism, la présence des badges d'importance et la suppression des champs obsolètes unifient l'interface d'administration avec les vues de devlog Vacuum Protocol.
 
+---
+
+## [2026-07-29] Amélioration du Formulaire de Contact avec Modèles Pré-Rédigés 1-Clic, Dynamisme Visuel & Réactivité
+
+### Tâche
+Dynamiser le formulaire de contact, ajouter des trames / modèles pré-générés 1-clic (Quick Starter Chips) facilement activables et réinitialisables pour accompagner les utilisateurs tout en préservant une expérience de saisie libre et non-intrusive.
+
+### Modifications
+- **Modèles de Contact Pré-rédigés (Quick Starter Chips dans [ContactForm.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ContactForm.jsx))** :
+  - Intégration d'une barre d'inspiration `⚡ Need inspiration?` au-dessus du formulaire avec 3 puces thématiques cliquables :
+    1. 🚀 **Projet Web / Mobile** : pré-remplit le sujet et la structure de message pour des demandes de devis / projets applicatifs.
+    2. 🎮 **Projet Unity / Devlog** : pré-remplit le sujet et le message orientés Vacuum Protocol (questions netcode, playtests, partenariats).
+    3. ⚡ **Prise de contact rapide** : pré-remplit un modèle concis avec créneaux de disponibilité pour un appel direct.
+  - Ajout d'une notification discrète ("Modèle appliqué ✨") avec animation de fondu/échelle via Framer Motion.
+  - Intégration d'un bouton d'effacement rapide ("Effacer / Réinitialiser") qui réinitialise le sujet, le message et la puce active à tout moment.
+- **Dynamic Energy & "Vie" du Formulaire** :
+  - Ajout d'une barre d'en-tête avec indicateur d'état réactif (`🟢 Équipe réactive • Réponse sous 24h`) dotée d'une animation d'onde verte pulsée.
+  - Rendu du composant interactif `TerminalList` dans la colonne d'informations de gauche (sous les coordonnées), apportant une animation de frappe rétro en temps réel des compétences techniques (React, Unity, Laravel, Docker...).
+  - Ajout d'un compteur de caractères dynamique et d'une estimation du temps de lecture sous la zone de texte du message.
+- **Internationalisation i18n ([fr.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/fr.json) & [en.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/en.json))** :
+  - Traduction bilingue intégrale des intitulés de puces, des trames de sujet/message, du badge de réactivité et des notifications.
+
+### Justification Technique
+- **UX Libre & Non-Intrusive** : Les puces de modèles constituent des suggestions visuelles élégantes en 1-clic. L'utilisateur souhaitant rédiger son propre texte n'est pas bloqué ni importuné, tandis que celui en manque d'inspiration peut démarrer instantanément avec une trame structurée.
+- **Dynamisme & Esthétique** : L'activation du `TerminalList` et de l'indicateur d'équipe en ligne donne un sentiment d'interactivité et de réactivité immédiate ("donne de la vie"), transformant un formulaire statique en un point de contact vivant.
+
+---
+
+## [2026-07-29] Refonte Minimaliste du Formulaire de Contact & Alignement SSOT avec le Composant d'Onglets Admin
+
+### Tâche
+Éliminer les fioritures et éléments superflus (bannière d'équipe réactive, emojis, compteurs), intégrer le composant d'onglets de navigation identique à la page d'administration avec une option "VIDE" (clear) native et épurée.
+
+### Modifications
+- **Intégration du Composant d'Onglets SSOT ([ContactForm.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ContactForm.jsx))** :
+  - Remplacement des puces/boutons d'inspiration par la barre d'onglets unifiée avec trait de surbrillance actif glissant (`motion.div layoutId="contactTemplateActiveLine"` de couleur `bg-secondary`).
+  - Ajout de l'onglet **"VIDE"** (option `#0`) permettant de vider instantanément les champs sujet et message.
+  - Onglets réorganisés et épurés : `VIDE`, `SITES WEB`, `JEU UNITY`, `MESSAGE RAPIDE`.
+- **Éradication des Emojis & Éléments Inutiles** :
+  - Retrait intégral de la barre d'état d'en-tête "Équipe réactive".
+  - Retrait du compteur de caractères et du temps de lecture estimé.
+  - Nettoyage de l'ensemble des emojis dans [`fr.json`](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/fr.json) et [`en.json`](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/en.json).
+- **Design Minimaliste** :
+  - Encapuchonnement de la barre d'onglets dans une boîte discrète `bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-xl px-5 pt-3.5 pb-2.5`.
+
+### Justification Technique
+- **Respect des Standards Visuels SSOT** : La réutilisation du composant d'onglets avec la ligne verte active `bg-secondary` garantit une continuité visuelle parfaite avec la page admin et le devlog.
+- **Sobriété et Lisibilité** : Le retrait des emojis et des éléments de statut parasites offre un rendu épuré, professionnel et haut de gamme.
+
+---
+
+## [2026-07-29] Intégration Textures de Fond (Bruit/Grille) & Textarea Auto-Growing
+
+### Tâche
+Intégrer le menu d'onglets d'aide au sommet de la même carte de formulaire (qui devient parent), centrer la navigation d'onglets, ajouter la texture de fond (bruit + grille radiale) identique à celle des boutons et du pied de page, et implémenter le redimensionnement automatique de hauteur (auto-growing) du textarea de message pour éliminer les barres de défilement internes.
+
+### Modifications
+- **Textarea Auto-Growing ([InputField.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/InputField.jsx))** :
+  - Ajout d'un effet `useEffect` et d'une référence `useRef` pour recalculer dynamiquement la hauteur de l'élément de texte (`style.height = scrollHeight + 'px'`) à chaque changement de valeur ou saisie.
+  - Ajout de la classe `overflow-hidden` et retrait de toute contrainte de scrollbar interne pour une interface propre et adaptative.
+- **Formulaire Parent & Textures ([ContactForm.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ContactForm.jsx))** :
+  - Fusion du bloc d'aide et du formulaire dans le même conteneur parent (la carte de droite).
+  - Centrage de la liste d'onglets au sommet de la carte (`justify-center` et `w-full`).
+  - Ajout de la texture de bruit fractale SVG (`filter="url(#noiseFilter)"` et opacité `0.15`) ainsi que de la grille de points radiaux (`radial-gradient` et opacité `0.03`) identique aux autres composants premium du site (boutons/pied de page).
+
+### Justification Technique
+- **Ergonomie et Fluidité** : L'auto-growing du textarea supprime la frustration liée au défilement dans un espace confiné. L'utilisateur voit l'intégralité de son message au fur et à mesure de sa saisie ou du pré-remplissage.
+- **Harmonie et Sobriété** : Le retrait de la boîte auxiliaire d'aide au profit d'une structure parent unique rend le formulaire plus direct. L'application des textures globales (bruit + grille) renforce l'identité visuelle de la page sans introduire d'éléments graphiques divergents.
+
+---
+
+## [2026-07-29] Alignement du Design Formulaire (Boîte Intérieure Unie, Bruit Affiné et Bouton Centré)
+
+### Tâche
+Ajouter une boîte intérieure de couleur unie sans bruit pour les champs de saisie, affiner le grain de bruit externe de la carte, centrer le bouton d'envoi et réduire les marges intérieures du conteneur parent (droite, gauche et bas).
+
+### Modifications
+- **Boîte Intérieure Uniforme ([ContactForm.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ContactForm.jsx))** :
+  - Encapsulation des 4 champs `<InputField>` dans un conteneur `div` avec un arrière-plan opaque uni sans bruit (`bg-surface-container-lowest` soit `#0d0e16`) et une bordure discrète (`border-white/5 rounded-2xl`). Cette boîte bloque et masque le bruit de fond pour un confort visuel optimal de lecture et d'écriture.
+- **Affinement du Bruit & Marges du Conteneur** :
+  - Augmentation de la fréquence du bruit (`baseFrequency='0.95'` au lieu de `0.65`) pour obtenir des pixels de grain extrêmement fins.
+  - Réduction de l'opacité du bruit à `opacity-[0.07]` (au lieu de `0.15`) pour le rendre subtil et fondu.
+  - Réduction des marges intérieures du conteneur parent en appliquant `pt-8 pb-5 px-5 md:px-6 md:pt-8 md:pb-6` (paddings réduits sur la gauche, la droite et le bas).
+- **Centrage du Bouton d'Envoi** :
+  - Modification de l'enveloppe du bouton d'envoi en `flex justify-center mt-4` pour aligner parfaitement le bouton au centre horizontal du formulaire.
+
+### Justification Technique
+- **Contrastes de Lecture** : La boîte intérieure de couleur unie détache proprement les formulaires et supprime le grain derrière les labels et textes saisis, rendant le tout infiniment plus propre.
+- **Continuité Artistique** : L'affinement du bruit et la réduction de son opacité préviennent l'effet de surcharge sur la grande carte de contact tout en préservant la texture cybernétique premium.
+
+---
+
+## [2026-07-29] Bannière Vacuum Protocol Modifiable depuis l'Admin
+
+### Tâche
+Rendre la photo de bannière du projet à la une (Vacuum Protocol) sur la page Portfolio modifiable depuis la page d'administration, au lieu d'être hardcodée en URL Unsplash.
+
+### Modifications
+- **Nouveau Fichier [settings.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/settings.json)** :
+  - Fichier JSON de configuration persistante côté serveur contenant `featuredBannerUrl`.
+- **Nouveau Fichier [settings.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/settings.js)** :
+  - Handler API minimaliste : GET public (lecture des settings), PATCH authentifié (mise à jour partielle avec merge).
+  - Même pattern d'authentification que `posts.js`.
+- **Modification [server.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/server.js)** :
+  - Import du handler `settingsHandler` et ajout de la route `app.all('/settings', ...)`.
+- **Modification [vite.config.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/vite.config.js)** :
+  - Ajout du middleware d'interception `/api/settings` pour le serveur de développement Vite, même pattern que les autres routes API.
+- **Modification [Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx)** :
+  - Ajout d'un state `featuredBannerUrl` initialisé avec le placeholder Unsplash.
+  - Chargement dynamique via `fetch('/api/settings')` au montage du composant.
+  - Remplacement de l'URL hardcodée de l'image par le state dynamique avec fallback `onError`.
+- **Modification [PortfolioAdmin.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioAdmin.jsx)** :
+  - Ajout des states : `featuredBannerUrl`, `bannerInputUrl`, `bannerSaving`, `bannerMsg`.
+  - Chargement des settings au login (`verifyPassword`).
+  - Carte d'édition de bannière compacte insérée au-dessus de la grille principale du dashboard, contenant : aperçu de l'image actuelle, champ URL, bouton d'upload local (réutilisant `/api/upload`), bouton de sauvegarde vers `PATCH /api/settings`.
+
+### Justification Technique
+- **KISS & SSOT** : Un seul fichier `settings.json` persiste la configuration. Le handler reprend exactement les conventions d'authentification et de structure de `posts.js`.
+- **Réutilisation** : L'upload d'image passe par le même endpoint `/api/upload` existant, zéro duplication de logique.
+- **Fallback Robuste** : Si le fichier settings est vide ou l'image inaccessible, le placeholder Unsplash est utilisé en fallback automatique.
+
+
+
+
+
+
 
 

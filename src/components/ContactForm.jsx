@@ -147,6 +147,7 @@ export default function ContactForm() {
     bkn_website_bot_trap: '' // Honeypot field
   });
 
+  const [activeTemplate, setActiveTemplate] = useState('none');
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle, checking, sending, success, error
   const [statusMessage, setStatusMessage] = useState('');
@@ -166,6 +167,26 @@ export default function ContactForm() {
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
+  };
+
+  const selectTemplate = (key) => {
+    setActiveTemplate(key);
+    if (key === 'none') {
+      setFormData(prev => ({
+        ...prev,
+        subject: '',
+        message: ''
+      }));
+    } else {
+      const subject = t(`contact.templates.${key}.subject`);
+      const message = t(`contact.templates.${key}.message`);
+      setFormData(prev => ({
+        ...prev,
+        subject,
+        message
+      }));
+    }
+    setErrors(prev => ({ ...prev, subject: '', message: '' }));
   };
 
   const validate = () => {
@@ -223,6 +244,7 @@ export default function ContactForm() {
           message: '',
           bkn_website_bot_trap: ''
         });
+        setActiveTemplate('none');
       } else {
         const errorData = await response.json();
         setStatus('error');
@@ -260,12 +282,12 @@ export default function ContactForm() {
             </p>
 
             {/* Obfuscated Contact Information Pins with Hover Actions */}
-            <div className="flex flex-col gap-3 items-start -mx-3 mt-6">
+            <div className="flex flex-col gap-3 items-start -mx-3 mt-6 mb-8">
               {/* E-mail Pin */}
               <motion.a 
                 href={`mailto:${emailText}`}
                 whileHover={{ x: 6 }}
-                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer w-full"
               >
                 <div className="w-10 h-10 rounded-xl bg-black/50 border border-white/5 flex items-center justify-center text-on-surface-variant/70 group-hover:scale-105 group-hover:bg-black/90 group-hover:border-white/20 group-hover:text-white shadow-[0_0_12px_rgba(0,0,0,0.4)] transition-all duration-300">
                   <i className="fa-solid fa-envelope text-sm"></i>
@@ -282,7 +304,7 @@ export default function ContactForm() {
               <motion.a 
                 href={`tel:${phoneText.replace(/\s/g, '')}`}
                 whileHover={{ x: 6 }}
-                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+                className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer w-full"
               >
                 <div className="w-10 h-10 rounded-xl bg-black/50 border border-white/5 flex items-center justify-center text-on-surface-variant/70 group-hover:scale-105 group-hover:bg-black/90 group-hover:border-white/20 group-hover:text-white shadow-[0_0_12px_rgba(0,0,0,0.4)] transition-all duration-300">
                   <i className="fa-solid fa-phone text-sm"></i>
@@ -301,7 +323,7 @@ export default function ContactForm() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ x: 6 }}
-                className="flex items-start gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer"
+                className="flex items-start gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer w-full"
               >
                 <div className="w-10 h-10 rounded-xl bg-black/50 border border-white/5 flex items-center justify-center text-on-surface-variant/70 group-hover:scale-105 group-hover:bg-black/90 group-hover:border-white/20 group-hover:text-white shadow-[0_0_12px_rgba(0,0,0,0.4)] mt-1 transition-all duration-300">
                   <i className="fa-solid fa-location-dot text-sm"></i>
@@ -316,150 +338,209 @@ export default function ContactForm() {
                 </div>
               </motion.a>
             </div>
+
+            {/* Interactive Terminal List Component */}
+            <div className="p-4 rounded-2xl bg-black/40 border border-white/5 shadow-inner">
+              <TerminalList />
+            </div>
           </div>
 
           {/* Minimal Aesthetic Separator */}
-          <div className="mt-12 border-t border-white/20" />
+          <div className="mt-8 border-t border-white/10" />
         </div>
 
         {/* Form Column (Right) */}
-        <div className="lg:col-span-7 glass-panel p-8 md:p-10 rounded-2xl relative overflow-hidden">
-
-          {/* Honeypot Spam Trap (Hidden) */}
-          <input
-            type="text"
-            name="bkn_website_bot_trap"
-            value={formData.bkn_website_bot_trap}
-            onChange={handleChange}
-            style={{ display: 'none' }}
-            tabIndex="-1"
-            autoComplete="off"
-            aria-hidden="true"
+        <div className="lg:col-span-7 bg-surface-container-low/45 backdrop-blur-md border border-white/5 pt-8 pb-5 px-5 md:px-6 md:pt-8 md:pb-6 rounded-2xl relative overflow-hidden flex flex-col">
+          {/* Noise Texture Background */}
+          <div 
+            className="absolute inset-0 opacity-[0.07] pointer-events-none z-0" 
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+              backgroundBlendMode: 'soft-light'
+            }}
           />
 
-          <AnimatePresence mode="wait">
-            {status === 'success' ? (
-              <motion.div
-                key="success"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                className="flex flex-col items-center justify-center py-12 text-center"
-              >
-                <div className="relative flex items-center justify-center w-20 h-20 mb-6">
-                  {/* Subtle primary brand glowing halo */}
-                  <div className="absolute inset-0 bg-primary/10 rounded-full blur-md animate-pulse" />
+          {/* Subtle Radial Grid backdrop pattern */}
+          <div 
+            className="absolute inset-0 opacity-[0.03] pointer-events-none z-0"
+            style={{
+              backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.15) 1px, transparent 0)',
+              backgroundSize: '16px 16px'
+            }}
+          />
 
-                  <svg className="w-10 h-10 text-primary relative z-10" viewBox="0 0 52 52" fill="none">
-                    <motion.circle
-                      cx="26"
-                      cy="26"
-                      r="24"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      initial={{ pathLength: 0, opacity: 0.1 }}
-                      animate={{ pathLength: 1, opacity: 1 }}
-                      transition={{ duration: 0.6, ease: "easeOut" }}
-                    />
-                    <motion.path
-                      d="M14 27l8 8 16-16"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ delay: 0.4, duration: 0.4, ease: "easeOut" }}
-                    />
-                  </svg>
-                </div>
-                <h3 className="font-display font-black text-2xl uppercase tracking-widest text-primary mb-3">{t('contact.success_title')}</h3>
-                <p className="text-on-surface-variant text-sm font-light max-w-sm leading-relaxed">
-                  {t('contact.success_desc')}
-                </p>
-                <Button variant="secondary" onClick={() => setStatus('idle')} className="mt-8">
-                  <i className="fa-solid fa-arrow-left text-[10px]"></i>
-                  {t('contact.back_btn')}
-                </Button>
-              </motion.div>
-            ) : (
-              <motion.form
-                key="form"
-                onSubmit={handleSubmit}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex flex-col"
-              >
-                <InputField
-                  label={t('contact.fields.name')}
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  error={errors.name}
-                  required
-                />
+          <div className="relative z-10 flex flex-col h-full w-full">
+            {/* Centered SSOT Template Tab Navigation matching Admin category tabs */}
+            <div className="flex justify-center border-b border-white/5 pb-3 mb-8 w-full">
+              <div className="flex items-center gap-6 overflow-x-auto scrollbar-none justify-center">
+                {['none', 'web', 'gaming', 'quick'].map((key) => {
+                  const isActive = activeTemplate === key;
+                  const label = t(`contact.templates.${key}.label`);
 
-                <InputField
-                  label={t('contact.fields.email')}
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  error={errors.email}
-                  required
-                />
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => selectTemplate(key)}
+                      className={`text-xs font-sans uppercase tracking-wider pb-2 transition-all duration-200 relative cursor-pointer whitespace-nowrap focus:outline-none ${
+                        isActive
+                          ? 'text-secondary font-extrabold'
+                          : 'text-on-surface-variant/60 font-semibold hover:text-on-surface'
+                      }`}
+                    >
+                      <span>{label}</span>
+                      {isActive && (
+                        <motion.div
+                          layoutId="contactTemplateActiveLine"
+                          className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(78,222,163,0.6)]"
+                          transition={{ type: 'spring', stiffness: 380, damping: 28 }}
+                        />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-                <InputField
-                  label={t('contact.fields.subject')}
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  error={errors.subject}
-                  required
-                />
+            {/* Honeypot Spam Trap (Hidden) */}
+            <input
+              type="text"
+              name="bkn_website_bot_trap"
+              value={formData.bkn_website_bot_trap}
+              onChange={handleChange}
+              style={{ display: 'none' }}
+              tabIndex="-1"
+              autoComplete="off"
+              aria-hidden="true"
+            />
 
-                <InputField
-                  label={t('contact.fields.message')}
-                  name="message"
-                  type="textarea"
-                  value={formData.message}
-                  onChange={handleChange}
-                  error={errors.message}
-                  rows={5}
-                  required
-                />
+            <AnimatePresence mode="wait">
+              {status === 'success' ? (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  className="flex flex-col items-center justify-center py-12 text-center"
+                >
+                  <div className="relative flex items-center justify-center w-20 h-20 mb-6">
+                    {/* Subtle primary brand glowing halo */}
+                    <div className="absolute inset-0 bg-primary/10 rounded-full blur-md animate-pulse" />
 
-                {/* Submitting Feedback State */}
-                {(status === 'checking' || status === 'sending') && (
-                  <div className="flex items-center gap-3 mb-6 p-4 rounded-xl bg-primary/5 border border-primary/10 text-primary text-sm font-display font-semibold uppercase tracking-wider">
-                    <i className="fa-solid fa-spinner animate-spin text-sm"></i>
-                    {statusMessage}
+                    <svg className="w-10 h-10 text-primary relative z-10" viewBox="0 0 52 52" fill="none">
+                      <motion.circle
+                        cx="26"
+                        cy="26"
+                        r="24"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        initial={{ pathLength: 0, opacity: 0.1 }}
+                        animate={{ pathLength: 1, opacity: 1 }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                      />
+                      <motion.path
+                        d="M14 27l8 8 16-16"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ delay: 0.4, duration: 0.4, ease: "easeOut" }}
+                      />
+                    </svg>
                   </div>
-                )}
-
-                {/* Error Feedback State */}
-                {status === 'error' && (
-                  <div className="flex items-center gap-3 mb-6 p-4 rounded-xl bg-red-500/5 border border-red-500/10 text-red-400 text-sm font-display font-semibold uppercase tracking-wider">
-                    <i className="fa-solid fa-circle-exclamation text-sm"></i>
-                    {statusMessage}
-                  </div>
-                )}
-
-                <div className="flex justify-end mt-4">
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    className="w-full md:w-auto"
-                    disabled={status === 'checking' || status === 'sending'}
-                  >
-                    <i className="fa-solid fa-paper-plane text-[10px]"></i>
-                    {t('contact.send_btn')}
+                  <h3 className="font-display font-black text-2xl uppercase tracking-widest text-primary mb-3">{t('contact.success_title')}</h3>
+                  <p className="text-on-surface-variant text-sm font-light max-w-sm leading-relaxed">
+                    {t('contact.success_desc')}
+                  </p>
+                  <Button variant="secondary" onClick={() => setStatus('idle')} className="mt-8">
+                    <i className="fa-solid fa-arrow-left text-[10px]"></i>
+                    {t('contact.back_btn')}
                   </Button>
-                </div>
-              </motion.form>
-            )}
-          </AnimatePresence>
+                </motion.div>
+              ) : (
+                <motion.form
+                  key="form"
+                  onSubmit={handleSubmit}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex flex-col"
+                >
+                  {/* Flat background inner container wrapping all fields (no noise) */}
+                  <div className="bg-surface-container-lowest border border-white/5 rounded-2xl p-5 md:p-6 mb-6 flex flex-col gap-1 relative z-10">
+                    <InputField
+                      label={t('contact.fields.name')}
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      error={errors.name}
+                      required
+                    />
+
+                    <InputField
+                      label={t('contact.fields.email')}
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      error={errors.email}
+                      required
+                    />
+
+                    <InputField
+                      label={t('contact.fields.subject')}
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      error={errors.subject}
+                      required
+                    />
+
+                    <InputField
+                      label={t('contact.fields.message')}
+                      name="message"
+                      type="textarea"
+                      value={formData.message}
+                      onChange={handleChange}
+                      error={errors.message}
+                      rows={5}
+                      required
+                    />
+                  </div>
+
+                  {/* Submitting Feedback State */}
+                  {(status === 'checking' || status === 'sending') && (
+                    <div className="flex items-center gap-3 mb-6 p-4 rounded-xl bg-primary/5 border border-primary/10 text-primary text-sm font-display font-semibold uppercase tracking-wider">
+                      <i className="fa-solid fa-spinner animate-spin text-sm"></i>
+                      {statusMessage}
+                    </div>
+                  )}
+
+                  {/* Error Feedback State */}
+                  {status === 'error' && (
+                    <div className="flex items-center gap-3 mb-6 p-4 rounded-xl bg-red-500/5 border border-red-500/10 text-red-400 text-sm font-display font-semibold uppercase tracking-wider">
+                      <i className="fa-solid fa-circle-exclamation text-sm"></i>
+                      {statusMessage}
+                    </div>
+                  )}
+
+                  <div className="flex justify-center mt-4">
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      className="w-full md:w-auto"
+                      disabled={status === 'checking' || status === 'sending'}
+                    >
+                      <i className="fa-solid fa-paper-plane text-[10px]"></i>
+                      {t('contact.send_btn')}
+                    </Button>
+                  </div>
+                </motion.form>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </section>
