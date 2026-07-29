@@ -171,8 +171,14 @@ export default function PortfolioSection() {
   const [loading, setLoading] = useState(true);
   const [activeTabs, setActiveTabs] = useState({});
   const [galleryActiveImages, setGalleryActiveImages] = useState({});
+  const [expandedPosts, setExpandedPosts] = useState({});
   const location = useLocation();
   const currentLang = i18n.language || 'fr';
+
+  // Toggle the expanded state of a post card
+  const toggleExpanded = (postId) => {
+    setExpandedPosts(prev => ({ ...prev, [postId]: !prev[postId] }));
+  };
 
   useEffect(() => {
     fetch('/api/posts')
@@ -198,12 +204,16 @@ export default function PortfolioSection() {
     const hash = window.location.hash;
     if (hash && hash.startsWith('#post-')) {
       const targetId = hash.slice(1);
+      // Extract post ID from element ID (e.g., "post-42" -> "42")
+      const postId = targetId.replace('post-', '');
+      // Auto-expand the targeted card so content is visible
+      setExpandedPosts(prev => ({ ...prev, [postId]: true }));
       setTimeout(() => {
         const element = document.getElementById(targetId);
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-      }, 350);
+      }, 400);
     }
   }, [posts, loading, location.hash]);
 
@@ -274,13 +284,17 @@ export default function PortfolioSection() {
           {posts.map((post) => {
             const ytId = post.mediaType === 'video' ? getYouTubeId(post.mediaUrl) : null;
             const dotColors = getDotColors(post.type, post.category);
+            const isExpanded = !!expandedPosts[post.id];
 
             return (
               <motion.article 
                 key={post.id} 
                 id={`post-${post.id}`}
                 variants={itemVariants}
-                className="relative w-full bg-surface-container-low/25 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl pt-4 md:pt-5 pb-6 md:pb-8 px-6 md:px-8 transition-all duration-300 flex flex-col gap-6 group"
+                layout
+                className={`relative w-full bg-surface-container-low/25 backdrop-blur-md border rounded-2xl overflow-hidden transition-all duration-300 flex flex-col group ${
+                  isExpanded ? 'border-white/10' : 'border-white/5 hover:border-white/10'
+                }`}
               >
                 {/* Sticky Dot Wrapper (Desktop & Mobile) - Slides down its thread line */}
                 <div className="absolute left-0 top-0 bottom-0 -ml-[39px] md:-ml-[57px] w-4 pointer-events-none">
@@ -296,108 +310,69 @@ export default function PortfolioSection() {
                   </div>
                 </div>
 
-                {/* Mobile Date (visible only on mobile) */}
-                <div className={`md:hidden font-mono text-[10px] font-bold ${dotColors.text}`}>
-                  {formatLocaleDate(post.date, currentLang)}
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-                  {/* Left Panel: Content & Media */}
-                  <div className="lg:col-span-10 flex flex-col gap-4">
-                    {/* Title & Type header */}
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-center gap-2.5">
-                        {/* Animated vertical brand-colored gradient pill */}
-                        <span className={`w-1 h-5 rounded-full bg-gradient-to-b ${
-                          category === 'website' ? 'from-secondary to-transparent' :
-                          category === 'ai-agent' ? 'from-tertiary to-transparent' :
-                          'from-primary to-transparent'
-                        }`} />
-                        <h2 className="font-sans font-extrabold text-xl md:text-2xl text-on-surface leading-snug">
-                          {post.title[currentLang] || post.title['fr']}
-                        </h2>
-                      </div>
+                {/* Compact Header Row – always visible, click to expand */}
+                <button
+                  onClick={() => toggleExpanded(post.id)}
+                  className="w-full text-left pt-4 md:pt-5 px-6 md:px-8 pb-4 flex items-center justify-between gap-4 group/header cursor-pointer"
+                >
+                  <div className="flex flex-col gap-1.5 flex-1 min-w-0">
+                    {/* Mobile Date */}
+                    <span className={`md:hidden font-mono text-[10px] font-bold ${dotColors.text}`}>
+                      {formatLocaleDate(post.date, currentLang)}
+                    </span>
+                    <div className="flex items-center gap-2.5">
+                      <span className={`w-1 h-5 rounded-full bg-gradient-to-b ${
+                        category === 'website' ? 'from-secondary to-transparent' :
+                        category === 'ai-agent' ? 'from-tertiary to-transparent' :
+                        'from-primary to-transparent'
+                      } flex-shrink-0`} />
+                      <h2 className="font-sans font-extrabold text-lg md:text-xl text-on-surface leading-snug truncate group-hover/header:text-primary transition-colors duration-150">
+                        {post.title[currentLang] || post.title['fr']}
+                      </h2>
                     </div>
+                    {/* Tags row */}
+                    {post.tags && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {post.tags.slice(0, 4).map((tag, i) => (
+                          <span key={i} className="text-[9px] font-mono font-semibold uppercase tracking-wide px-2 py-0.5 rounded border border-white/10 bg-white/[0.04] text-on-surface-variant/70">{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  {/* Expand / Collapse Arrow */}
+                  <motion.span
+                    animate={{ rotate: isExpanded ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    className={`text-on-surface-variant/40 group-hover/header:text-primary flex-shrink-0 transition-colors`}
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </motion.span>
+                </button>
 
-                    {/* Detailed Tab Navigation */}
-                    {(() => {
-                      const extra = detailedProjects[post.id];
-                      const currentTab = activeTabs[post.id] || 'overview';
-                      const hasTabs = !!extra;
+                {/* Expandable Body */}
+                {isExpanded && (
+                  <motion.div
+                    key="body"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-6 md:px-8 pb-6 md:pb-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                      {/* Left Panel: Content & Media */}
+                      <div className="lg:col-span-10 flex flex-col gap-4">
+                        {/* Detailed Tab Navigation */}
+                        {(() => {
+                          const extra = detailedProjects[post.id];
+                          const currentTab = activeTabs[post.id] || 'overview';
+                          const hasTabs = !!extra;
 
-                      if (!hasTabs) {
-                        return (
-                          <>
-                            {/* Rich Media Container */}
-                            <div className="w-full overflow-hidden bg-black/20 rounded-2xl border border-white/5">
-                              {post.mediaType === 'video' && ytId ? (
-                                <div className="aspect-video w-full">
-                                  <iframe 
-                                    src={`https://www.youtube.com/embed/${ytId}`} 
-                                    className="w-full h-full border-none bg-black"
-                                    title={post.title[currentLang] || post.title['fr']}
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                  />
-                                </div>
-                              ) : (
-                                <img 
-                                  src={post.mediaUrl || 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800'} 
-                                  alt={post.title[currentLang] || post.title['fr']}
-                                  className="w-full max-h-[480px] object-cover"
-                                  loading="lazy"
-                                />
-                              )}
-                            </div>
-
-                            {/* Content description */}
-                            <div className="text-on-surface/90 text-sm sm:text-base font-normal leading-relaxed whitespace-pre-wrap max-w-3xl">
-                              {post.content[currentLang] || post.content['fr']}
-                            </div>
-                          </>
-                        );
-                      }
-
-                      return (
-                        <div className="flex flex-col gap-5">
-                          {/* Tab buttons */}
-                          <div className="flex border-b border-white/5 pb-2 gap-4 overflow-x-auto select-none scrollbar-none">
-                            {['overview', 'features', 'specs', 'gallery'].map((tabKey) => {
-                              const isActive = currentTab === tabKey;
-                              if (tabKey === 'gallery' && (!extra.gallery || extra.gallery.length === 0)) return null;
-                              if (tabKey === 'specs' && (!extra.specs || extra.specs.length === 0)) return null;
-                              if (tabKey === 'features' && (!extra.features || !extra.features[currentLang])) return null;
-
-                              return (
-                                <button
-                                  key={tabKey}
-                                  onClick={() => setActiveTabs(prev => ({ ...prev, [post.id]: tabKey }))}
-                                  className={`text-[10px] md:text-xs font-sans font-bold uppercase tracking-wider pb-1.5 transition-all duration-150 relative cursor-pointer focus:outline-none ${
-                                    isActive ? 'text-primary font-black' : 'text-on-surface-variant/60 hover:text-on-surface'
-                                  }`}
-                                >
-                                  {t(`portfolio.tabs.${tabKey}`)}
-                                  {isActive && (
-                                    <motion.div 
-                                      layoutId={`activeTabBorder-${post.id}`}
-                                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
-                                      transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                                    />
-                                  )}
-                                </button>
-                              );
-                            })}
-                          </div>
-
-                          {/* Tab Content Display */}
-                          <div className="w-full min-h-[220px]">
-                            {currentTab === 'overview' && (
-                              <motion.div 
-                                initial={{ opacity: 0, y: 8 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.25 }}
-                                className="flex flex-col gap-4"
-                              >
+                          if (!hasTabs) {
+                            return (
+                              <>
                                 <div className="w-full overflow-hidden bg-black/20 rounded-2xl border border-white/5">
                                   {post.mediaType === 'video' && ytId ? (
                                     <div className="aspect-video w-full">
@@ -418,97 +393,171 @@ export default function PortfolioSection() {
                                     />
                                   )}
                                 </div>
-                                <div className="text-on-surface/90 text-sm sm:text-base font-normal leading-relaxed whitespace-pre-wrap max-w-3xl">
+                                <div className="text-on-surface/90 text-sm font-normal leading-relaxed whitespace-pre-wrap max-w-3xl">
                                   {post.content[currentLang] || post.content['fr']}
                                 </div>
-                              </motion.div>
-                            )}
+                              </>
+                            );
+                          }
 
-                            {currentTab === 'features' && (
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {(extra.features[currentLang] || []).map((feature, idx) => (
-                                  <motion.div 
-                                    key={idx}
-                                    initial={{ opacity: 0, y: 15 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.3, delay: idx * 0.05 }}
-                                    className="p-4 bg-surface-container-low/40 border border-white/5 rounded-xl hover:border-primary/20 transition-all duration-150 flex flex-col gap-1.5"
-                                  >
-                                    <span className="font-mono text-[10px] text-primary/80 font-bold uppercase tracking-wide">&gt; {feature.title}</span>
-                                    <p className="text-xs sm:text-[13px] font-sans font-normal text-on-surface-variant/90 leading-relaxed">{feature.desc}</p>
-                                  </motion.div>
-                                ))}
+                          return (
+                            <div className="flex flex-col gap-5">
+                              {/* Tab buttons */}
+                              <div className="flex border-b border-white/5 pb-2 gap-4 overflow-x-auto select-none scrollbar-none">
+                                {['overview', 'features', 'specs', 'gallery'].map((tabKey) => {
+                                  const isActive = currentTab === tabKey;
+                                  if (tabKey === 'gallery' && (!extra.gallery || extra.gallery.length === 0)) return null;
+                                  if (tabKey === 'specs' && (!extra.specs || extra.specs.length === 0)) return null;
+                                  if (tabKey === 'features' && (!extra.features || !extra.features[currentLang])) return null;
+
+                                  return (
+                                    <button
+                                      key={tabKey}
+                                      onClick={() => setActiveTabs(prev => ({ ...prev, [post.id]: tabKey }))}
+                                      className={`text-[10px] md:text-xs font-sans font-bold uppercase tracking-wider pb-1.5 transition-all duration-150 relative cursor-pointer focus:outline-none ${
+                                        isActive ? 'text-primary font-black' : 'text-on-surface-variant/60 hover:text-on-surface'
+                                      }`}
+                                    >
+                                      {t(`portfolio.tabs.${tabKey}`)}
+                                      {isActive && (
+                                        <motion.div 
+                                          layoutId={`activeTabBorder-${post.id}`}
+                                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                                          transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                                        />
+                                      )}
+                                    </button>
+                                  );
+                                })}
                               </div>
-                            )}
 
-                            {currentTab === 'specs' && (
-                              <motion.div 
-                                initial={{ opacity: 0, scale: 0.98 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.25 }}
-                                className="bg-black/50 border border-white/5 rounded-xl p-5 font-mono text-[11px] text-on-surface-variant/90 max-w-2xl flex flex-col gap-3 shadow-inner"
-                              >
-                                <div className="text-[9px] text-white/30 border-b border-white/5 pb-2 uppercase tracking-widest font-sans font-bold">
-                                  System Tech Stack Specifications
-                                </div>
-                                <div className="flex flex-col gap-2.5">
-                                  {(extra.specs || []).map((spec, idx) => (
-                                    <div key={idx} className="flex justify-between items-center gap-4 border-b border-white/[0.02] pb-1.5 last:border-b-0">
-                                      <span className="text-[10px] uppercase text-white/40">{spec.label[currentLang] || spec.label['fr']}</span>
-                                      <span className="text-secondary font-bold text-[11px] text-right">{spec.value}</span>
+                              {/* Tab Content */}
+                              <div className="w-full min-h-[220px]">
+                                {currentTab === 'overview' && (
+                                  <motion.div 
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.25 }}
+                                    className="flex flex-col gap-4"
+                                  >
+                                    <div className="w-full overflow-hidden bg-black/20 rounded-2xl border border-white/5">
+                                      {post.mediaType === 'video' && ytId ? (
+                                        <div className="aspect-video w-full">
+                                          <iframe 
+                                            src={`https://www.youtube.com/embed/${ytId}`} 
+                                            className="w-full h-full border-none bg-black"
+                                            title={post.title[currentLang] || post.title['fr']}
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowFullScreen
+                                          />
+                                        </div>
+                                      ) : (
+                                        <img 
+                                          src={post.mediaUrl || 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800'} 
+                                          alt={post.title[currentLang] || post.title['fr']}
+                                          className="w-full max-h-[480px] object-cover"
+                                          loading="lazy"
+                                        />
+                                      )}
                                     </div>
-                                  ))}
-                                </div>
-                              </motion.div>
-                            )}
+                                    <div className="text-on-surface/90 text-sm font-normal leading-relaxed whitespace-pre-wrap max-w-3xl">
+                                      {post.content[currentLang] || post.content['fr']}
+                                    </div>
+                                  </motion.div>
+                                )}
 
-                            {currentTab === 'gallery' && (() => {
-                              const activeImg = galleryActiveImages[post.id] || post.mediaUrl || extra.gallery[0];
-                              return (
-                                <motion.div 
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: 1 }}
-                                  className="flex flex-col gap-4"
-                                >
-                                  <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-black/40 relative group/gal">
-                                    <img 
-                                      src={activeImg} 
-                                      alt="Gallery preview" 
-                                      className="w-full h-full object-cover transition-transform duration-500 group-hover/gal:scale-102"
-                                    />
+                                {currentTab === 'features' && (
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {(extra.features[currentLang] || []).map((feature, idx) => (
+                                      <motion.div 
+                                        key={idx}
+                                        initial={{ opacity: 0, y: 15 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.3, delay: idx * 0.05 }}
+                                        className="p-4 bg-surface-container-low/40 border border-white/5 rounded-xl hover:border-primary/20 transition-all duration-150 flex flex-col gap-1.5"
+                                      >
+                                        <span className="font-mono text-[10px] text-primary/80 font-bold uppercase tracking-wide">&gt; {feature.title}</span>
+                                        <p className="text-xs font-sans font-normal text-on-surface-variant/90 leading-relaxed">{feature.desc}</p>
+                                      </motion.div>
+                                    ))}
                                   </div>
-                                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-                                    {[post.mediaUrl, ...extra.gallery].filter(Boolean).map((img, idx) => {
-                                      const isSelected = activeImg === img;
-                                      return (
-                                        <button
-                                          key={idx}
-                                          onClick={() => setGalleryActiveImages(prev => ({ ...prev, [post.id]: img }))}
-                                          className={`aspect-video rounded-lg overflow-hidden border cursor-pointer transition-all duration-150 hover:scale-105 active:scale-95 ${
-                                            isSelected ? 'border-primary shadow-[0_0_10px_rgba(190,194,255,0.3)] scale-[1.02]' : 'border-white/5 opacity-60 hover:opacity-100'
-                                          }`}
-                                        >
-                                          <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
-                                        </button>
-                                      );
-                                    })}
-                                  </div>
-                                </motion.div>
-                              );
-                            })()}
-                          </div>
+                                )}
+
+                                {currentTab === 'specs' && (
+                                  <motion.div 
+                                    initial={{ opacity: 0, scale: 0.98 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.25 }}
+                                    className="bg-black/50 border border-white/5 rounded-xl p-5 font-mono text-[11px] text-on-surface-variant/90 max-w-2xl flex flex-col gap-3 shadow-inner"
+                                  >
+                                    <div className="text-[9px] text-white/30 border-b border-white/5 pb-2 uppercase tracking-widest font-sans font-bold">
+                                      System Tech Stack Specifications
+                                    </div>
+                                    <div className="flex flex-col gap-2.5">
+                                      {(extra.specs || []).map((spec, idx) => (
+                                        <div key={idx} className="flex justify-between items-center gap-4 border-b border-white/[0.02] pb-1.5 last:border-b-0">
+                                          <span className="text-[10px] uppercase text-white/40">{spec.label[currentLang] || spec.label['fr']}</span>
+                                          <span className="text-secondary font-bold text-[11px] text-right">{spec.value}</span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </motion.div>
+                                )}
+
+                                {currentTab === 'gallery' && (() => {
+                                  // Deduplicate gallery images by base path
+                                  const seen = new Set();
+                                  const galleryImgs = [post.mediaUrl, ...extra.gallery].filter(img => {
+                                    if (!img) return false;
+                                    const base = img.split('?')[0];
+                                    if (seen.has(base)) return false;
+                                    seen.add(base);
+                                    return true;
+                                  });
+                                  const activeImg = galleryActiveImages[post.id] || galleryImgs[0];
+                                  return (
+                                    <motion.div 
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: 1 }}
+                                      className="flex flex-col gap-4"
+                                    >
+                                      <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-black/40">
+                                        <img src={activeImg} alt="Gallery preview" className="w-full h-full object-cover transition-transform duration-500" />
+                                      </div>
+                                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                                        {galleryImgs.map((img, idx) => {
+                                          const isSelected = activeImg === img;
+                                          return (
+                                            <button
+                                              key={idx}
+                                              onClick={() => setGalleryActiveImages(prev => ({ ...prev, [post.id]: img }))}
+                                              className={`aspect-video rounded-lg overflow-hidden border cursor-pointer transition-all duration-150 hover:scale-105 active:scale-95 ${
+                                                isSelected ? 'border-primary shadow-[0_0_10px_rgba(190,194,255,0.3)] scale-[1.02]' : 'border-white/5 opacity-60 hover:opacity-100'
+                                              }`}
+                                            >
+                                              <img src={img} alt={`Thumb ${idx + 1}`} className="w-full h-full object-cover" />
+                                            </button>
+                                          );
+                                        })}
+                                      </div>
+                                    </motion.div>
+                                  );
+                                })()}
+                              </div>
+                            </div>
+                          );
+                        })()}
+                      </div>
+
+                      {/* Right Panel: Mini Terminal */}
+                      <div className="lg:col-span-2 flex flex-col justify-stretch min-h-[160px] lg:border-l lg:border-white/10 lg:pl-6">
+                        <div className="flex-grow flex flex-col bg-black/50 border border-white/5 rounded-xl p-4 font-mono text-[10px] text-green-400 select-none shadow-inner justify-between h-full">
+                          <ProjectTerminalList tags={post.tags} category={post.category} />
                         </div>
-                      );
-                    })()}
-                  </div>
-
-                  {/* Right Panel: Mini Terminal (with left border acting as the divider) */}
-                  <div className="lg:col-span-2 flex flex-col justify-stretch min-h-[160px] lg:border-l lg:border-white/10 lg:pl-6">
-                    <div className="flex-grow flex flex-col bg-black/50 border border-white/5 rounded-xl p-4 font-mono text-[10px] text-green-400 select-none shadow-inner justify-between h-full">
-                      <ProjectTerminalList tags={post.tags} category={post.category} />
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </motion.div>
+                )}
               </motion.article>
             );
           })}

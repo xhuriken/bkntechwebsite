@@ -250,5 +250,7 @@ Rendre les dates et les points de la frise chronologique collants (sticky) au sc
 ### Justification Technique
 - **CSS Pur pour la Fluidité** : L'utilisation de `position: sticky` contraint par les dimensions d'une boîte parente `absolute` permet d'obtenir un glissement matériel 100% performant (GPU) et évite le déclenchement continu d'écouteurs de scroll JavaScript lourds.
 - **UX Immersive & Partageable** : Le routage par ancre rend les projets directement référençables par URL. La lueur pulsée combinée au recentrage fluide guide le regard de l'utilisateur instantanément vers le projet sélectionné.
+- **Ajustement Visuel Cohérent** : L'ajustement du padding supérieur (`pt-4`/`pt-3`) rend les cartes plus compactes et équilibrées en éliminant les espaces vides. La capsule thématique de titre recrée une cohérence visuelle immédiate avec les en-têtes de catégorie du site.
+
 
 

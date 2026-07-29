@@ -7,21 +7,21 @@ export const detailedProjects = {
   "1": {
     features: {
       fr: [
-        { title: "Indicateurs Dynamiques", desc: "Barres de vie et de bouclier animées par shaders de distorsion chromatique." },
-        { title: "Invite de Commandes Intégrée", desc: "Terminal interactif Kali Linux affiché en direct pour l'immersion système." },
-        { title: "Rétroaction Haptique & Visuelle", desc: "Secousse d'écran directionnelle et flash d'ATH lors des impacts reçus." }
+        { title: "Indicateurs d'Aberration", desc: "Shader d'ATH de distorsion chromatique s'activant en présence d'anomalies ectoplasmiques." },
+        { title: "Console CLI Intégrée", desc: "Terminal rétro-éclairé affichant le statut de confinement du Site-7 en temps réel." },
+        { title: "Diagnostic de Surcharge", desc: "Code C# alertant le processeur central d'une surtension de batterie Singularity." }
       ],
       en: [
-        { title: "Dynamic Indicators", desc: "Shield and health bars animated using custom chromatic aberration shaders." },
-        { title: "Integrated CLI Prompt", desc: "Interactive live Kali Linux terminal console for deep cyberpunk atmosphere." },
-        { title: "Visual & Haptic Feedback", desc: "Directional screen shakes and HUD chromatic flashes upon receiving damage." }
+        { title: "Aberration Indicators", desc: "Chromatic HUD distortion shader triggering near spectral energy anomalies." },
+        { title: "Built-in CLI Panel", desc: "Retro terminal displaying real-time Site-7 confinement logs." },
+        { title: "Overload Diagnostics", desc: "C# script signaling Singularity battery core power spikes to the CPU." }
       ]
     },
     specs: [
       { label: { fr: "Moteur", en: "Engine" }, value: "Unity 2022.3 LTS" },
-      { label: { fr: "Pipeline de Rendu", en: "Render Pipeline" }, value: "HDRP (High Definition)" },
-      { label: { fr: "Système d'UI", en: "UI System" }, value: "Unity UI Toolkit & UI Builder" },
-      { label: { fr: "FPS d'Exécution UI", en: "UI Execution FPS" }, value: "144 Hz cap locked" }
+      { label: { fr: "Architecture UI", en: "UI Architecture" }, value: "UI Toolkit / XML Templates" },
+      { label: { fr: "Shaders", en: "Shaders" }, value: "Custom HLSL / SRP Shader Graph" },
+      { label: { fr: "FPS d'Exécution", en: "Grid Render FPS" }, value: "120 Hz thread lock" }
     ],
     gallery: [
       "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=600",
@@ -33,21 +33,21 @@ export const detailedProjects = {
   "2": {
     features: {
       fr: [
-        { title: "Physique du Dash", desc: "Impulsion vectorielle horizontale avec atténuation par courbe exponentielle." },
-        { title: "Double Saut Inertiel", desc: "Conservation du moment angulaire et de l'accélération latérale lors du second saut." },
-        { title: "Caméra Oscillante", desc: "Oscillation de tête (head bobbing) calée sur la vitesse de déplacement du joueur." }
+        { title: "Suction directionnelle", desc: "Force vectorielle physique calculant l'aspiration des maillages non-corporels." },
+        { title: "Déformation Soft-Body", desc: "Simulation de contraction géométrique des fantômes proportionnelle à la puissance d'aspiration." },
+        { title: "Écoulement Spectral", desc: "Shader de fluide simulant l'absorption de matière ectoplasmique dans le tube SVU." }
       ],
       en: [
-        { title: "Dash Physics", desc: "Horizontal vector impulse dampened using customizable exponential curves." },
-        { title: "Inertial Double Jump", desc: "Conservation of angular momentum and lateral acceleration on the second jump." },
-        { title: "Head Bobbing Cam", desc: "Dynamic head bobbing frequency synchronized to the player's movement speed." }
+        { title: "Directional Suction", desc: "Physical vector force pulling intangible ghost objects toward the vacuum canister." },
+        { title: "Soft-Body Distortion", desc: "Vertex deformation shrinking ghost meshes proportionally to suction speed." },
+        { title: "Spectral Fluid Shader", desc: "Custom vertex liquid shader simulating ectoplasm sliding inside the SVU hose." }
       ]
     },
     specs: [
-      { label: { fr: "Type de Controller", en: "Controller Type" }, value: "Custom Rigidbody Controller" },
-      { label: { fr: "Gestionnaire Anim", en: "Anim Manager" }, value: "Playables API & Animator States" },
-      { label: { fr: "Physique", en: "Physics" }, value: "Discrete Continuous Collision Detection" },
-      { label: { fr: "Fréquence Tick", en: "Fixed Update Tick" }, value: "60 Hz / 16.6ms" }
+      { label: { fr: "Algorithme d'Aspiration", en: "Suction Algorithm" }, value: "Centripetal force vector field" },
+      { label: { fr: "Déformateur de Maillage", en: "Deformer Component" }, value: "Dynamic vertex offset shader" },
+      { label: { fr: "Itérations Physiques", en: "Max Physics Iterations" }, value: "8 substeps per frame" },
+      { label: { fr: "Gestion des Collisions", en: "Collision Mode" }, value: "Continuous mesh collision" }
     ],
     gallery: [
       "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=600",
@@ -59,21 +59,21 @@ export const detailedProjects = {
   "3": {
     features: {
       fr: [
-        { title: "Prédiction Client", desc: "Calcul immédiat des actions en local avec correction en arrière-plan par l'état serveur." },
-        { title: "Compensation du Lag", desc: "Rembobinage de la boîte de collision (Rewind) pour évaluer les tirs dans le passé." },
-        { title: "Réconciliation d'État", desc: "Correction fluide de la position client en cas d'écart réseau supérieur à 5cm." }
+        { title: "Arbres de Comportement", desc: "Prise de décision IA poussée : embuscade dans l'ombre et fuite face aux rayons UV." },
+        { title: "Absorption d'Électricité", desc: "Les Poltergeists absorbent le courant des relais électriques pour doubler leur taille." },
+        { title: "Discrétion Sensorielle", desc: "Calcul acoustique et visuel pour détecter les bruits de chenilles du robot." }
       ],
       en: [
-        { title: "Client Prediction", desc: "Immediate execution of local actions with backend validation by the server authority." },
-        { title: "Lag Compensation", desc: "Server hit-box rewinding mechanism to evaluate projectile hits in the past." },
-        { title: "State Reconciliation", desc: "Smooth client translation correction in case of network drift above 5cm." }
+        { title: "Behavior Trees", desc: "Complex decision algorithms: stealth hiding in vents and running away from UV beams." },
+        { title: "Power Siphoning", desc: "Poltergeist entities siphoning live generators to increase physical size and damage." },
+        { title: "Sensory Detection", desc: "Raycasted acoustic and optical detection fields reacting to robot tread noise." }
       ]
     },
     specs: [
-      { label: { fr: "Framework Réseau", en: "Network Framework" }, value: "Mirror Netcode" },
-      { label: { fr: "Protocole", en: "Protocol" }, value: "UDP with custom reliable channels" },
-      { label: { fr: "Taux d'Envoi", en: "Server Send Rate" }, value: "30 ticks/sec" },
-      { label: { fr: "Interpolation", en: "Interpolation Buffer" }, value: "100ms standard offset" }
+      { label: { fr: "Architecture de l'IA", en: "AI Architecture" }, value: "Behavior Designer / Node Trees" },
+      { label: { fr: "Système de Pathfinding", en: "Pathfinding System" }, value: "Unity NavMesh / Local Avoidance" },
+      { label: { fr: "Fréquence de Mise à Jour", en: "Detection Update Rate" }, value: "5 ticks per second" },
+      { label: { fr: "États d'Alerte", en: "Threat States" }, value: "Idle, Patrol, Investigate, Ambush, Escape" }
     ],
     gallery: [
       "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600",
@@ -85,21 +85,21 @@ export const detailedProjects = {
   "4": {
     features: {
       fr: [
-        { title: "Machine à États Finis", desc: "Cycle de jeu unifié : En attente, Échauffement, En cours, Mort subite, Fin de round." },
-        { title: "Spawn Intelligent", desc: "Algorithme d'évaluation de distance pour éviter le spawn de joueurs en ligne de mire." },
-        { title: "Statistiques en Direct", desc: "Calcul en temps réel du Ratio K/D et classement ordonné des joueurs." }
+        { title: "Adhérence Réaliste", desc: "Courbes de friction dépendant de la rugosité du sol d'Extraction du Site-7." },
+        { title: "Trous Noirs d'Énergie", desc: "Puits d'attraction gravitationnelle générés par les piles Singularity défaillantes." },
+        { title: "Dash Régulé", desc: "Esquive rapide consommant 15% d'accumulateurs pour forcer la gestion de ressources." }
       ],
       en: [
-        { title: "Finite State Machine", desc: "Decoupled game stages flow: Waiting, Warmup, Active, Sudden Death, Round End." },
-        { title: "Smart Spawner", desc: "Raycasted distance evaluation algorithm avoiding spawning players in direct sight." },
-        { title: "Live Leaderboard", desc: "Real-time computation of K/D ratio and ordered player scoreboards." }
+        { title: "Authentic Friction", desc: "Locomotion curves reacting to Site-7 floor material roughness coefficients." },
+        { title: "Gravitational Wells", desc: "Radial micro-attractors spawning upon ghost containment collapse." },
+        { title: "Cell-Dampened Dash", desc: "Dash maneuver consuming 15% of battery storage, balancing speed and utility." }
       ]
     },
     specs: [
-      { label: { fr: "Architecture", en: "Architecture" }, value: "Event-Driven State Machine" },
-      { label: { fr: "Type de match", en: "Match Type" }, value: "Free For All / Deathmatch" },
-      { label: { fr: "Persistance", en: "Persistence" }, value: "Local SQLite / JSON backup" },
-      { label: { fr: "Max Joueurs", en: "Max Players" }, value: "16 players per lobby" }
+      { label: { fr: "Modèle de Traction", en: "Traction Model" }, value: "Custom Rigidbody Friction" },
+      { label: { fr: "Coefficients de Traînée", en: "Drag Type" }, value: "Exponential drag coefficient" },
+      { label: { fr: "Attraction Gravitationnelle", en: "Gravitational Falloff" }, value: "Inverse-square distance law" },
+      { label: { fr: "Temps de Recharge Dash", en: "Dash Cooldown" }, value: "1.2s strict lock" }
     ],
     gallery: [
       "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=600",
@@ -111,21 +111,21 @@ export const detailedProjects = {
   "5": {
     features: {
       fr: [
-        { title: "Optimisation de Topologie", desc: "Retopologie manuelle sous Blender pour conserver moins de 15 000 polygones par robot." },
-        { title: "Texturage PBR Réaliste", desc: "Cartes d'usure, de rouille et de peinture cuite au four exportées en 4K." },
-        { title: "Shaders de Rayures", desc: "Shader Unity HDRP de dommages procéduraux dépendant des collisions réelles subies." }
+        { title: "Extraction de Batterie", desc: "Compression de l'énergie des entités capturées sous forme de bloc solide." },
+        { title: "Port d'Objets", desc: "Transport physique des piles Singularity avec gestion du poids sur l'accélération." },
+        { title: "Bornes d'Alimentation", desc: "Activation de circuits logiques pour ouvrir les portes blindées du campus." }
       ],
       en: [
-        { title: "Topology Optimization", desc: "Manual retopology in Blender maintaining less than 15,000 polygons per robot." },
-        { title: "Realistic PBR Texturing", desc: "4K baked normal, roughness, metallic, and rusted edge wear maps." },
-        { title: "Dynamic Scratch Shader", desc: "Custom Unity HDRP shader generating procedural paint scratches from physical impacts." }
+        { title: "Core Extraction", desc: "Compacting captured entities inside terminals to create solid Singularity blocks." },
+        { title: "Physical Carrying", desc: "Battery weight impacting robot maximum speed and tread turn rate." },
+        { title: "Power Distributors", desc: "Logic grid sockets requiring batteries to restore power to Site-7 security gates." }
       ]
     },
     specs: [
-      { label: { fr: "Logiciel de Modélisation", en: "Modeling Tool" }, value: "Blender 3.6 LTS" },
-      { label: { fr: "Logiciel de Textures", en: "Texturing Tool" }, value: "Substance Painter 3D" },
-      { label: { fr: "Résolution Textures", en: "Texture Resolution" }, value: "4096 x 4096 px" },
-      { label: { fr: "Système de Squelette", en: "Rigging Framework" }, value: "Custom IK Rig with Rigify" }
+      { label: { fr: "Cycle Principal", en: "Gameplay Loop" }, value: "Capture -> Extract -> Slot -> Unlock" },
+      { label: { fr: "Système de Déclencheurs", en: "Logic System" }, value: "Event-driven boolean trigger network" },
+      { label: { fr: "Capacité Batterie", en: "Battery Capacity" }, value: "1 block per socket" },
+      { label: { fr: "Terminaux d'Outrepassement", en: "Override Terminals" }, value: "4 per sector" }
     ],
     gallery: [
       "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600",

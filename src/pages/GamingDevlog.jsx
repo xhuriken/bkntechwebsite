@@ -429,6 +429,7 @@ function DevlogPostCard({ post, currentLang }) {
   const dotColors = getDotColors(post.type);
   const extra = detailedProjects[post.id];
   const hasTabs = !!extra;
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <motion.article 
@@ -488,176 +489,209 @@ function DevlogPostCard({ post, currentLang }) {
           </div>
         </div>
 
-        {/* Card Content - Inner Padding */}
-        <div className="pt-3 md:pt-4 pb-5 md:pb-6 px-5 md:px-6 flex flex-col gap-4">
-          {/* Post Text Description */}
-          <div className="flex flex-col gap-2">
+      {/* Compact Header — always visible, click to expand */}
+        <button
+          onClick={() => setIsExpanded(p => !p)}
+          className="w-full text-left px-5 md:px-6 pt-3 md:pt-4 pb-3 flex items-center gap-3 cursor-pointer group/hdr"
+        >
+          <div className="flex flex-col gap-1.5 flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              {/* Animated vertical brand-colored gradient pill */}
               <span className="w-1 h-4 rounded-full bg-gradient-to-b from-primary to-transparent flex-shrink-0" />
-              <h3 className="font-sans font-bold text-sm text-on-surface group-hover:text-primary transition-colors">
+              <h3 className="font-sans font-bold text-sm text-on-surface group-hover/hdr:text-primary transition-colors truncate">
                 {post.title[currentLang] || post.title['fr']}
               </h3>
             </div>
             {post.description && (
-              <p className="text-xs text-on-surface-variant leading-relaxed italic">
+              <p className="text-[11px] text-on-surface-variant/70 leading-relaxed italic line-clamp-1">
                 {post.description[currentLang] || post.description['fr']}
               </p>
             )}
-          </div>
-
-          {/* Tab buttons if detailed projects exists */}
-          {hasTabs && (
-            <div className="flex border-b border-white/5 pb-2 gap-4 overflow-x-auto select-none scrollbar-none">
-              {['overview', 'features', 'specs', 'gallery'].map((tabKey) => {
-                const isActive = activeTab === tabKey;
-                if (tabKey === 'gallery' && (!extra.gallery || extra.gallery.length === 0)) return null;
-                if (tabKey === 'specs' && (!extra.specs || extra.specs.length === 0)) return null;
-                if (tabKey === 'features' && (!extra.features || !extra.features[currentLang])) return null;
-
-                return (
-                  <button
-                    key={tabKey}
-                    onClick={() => {
-                      setActiveTab(tabKey);
-                      if (tabKey === 'gallery' && extra.gallery?.length > 0) {
-                        setGalleryActiveImg(post.mediaUrl || extra.gallery[0]);
-                      }
-                    }}
-                    className={`text-[10px] md:text-xs font-sans font-bold uppercase tracking-wider pb-1.5 transition-all duration-150 relative cursor-pointer focus:outline-none ${
-                      isActive ? 'text-primary font-black' : 'text-on-surface-variant/60 hover:text-on-surface'
-                    }`}
-                  >
-                    {t(`portfolio.tabs.${tabKey}`)}
-                    {isActive && (
-                      <motion.div 
-                        layoutId={`activeTabBorderDevlog-${post.id}`}
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
-                        transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                      />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Dynamic Tab Panel content */}
-          <div className="w-full min-h-[160px]">
-            {(!hasTabs || activeTab === 'overview') && (
-              <motion.div 
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.25 }}
-                className="flex flex-col gap-4"
-              >
-                {/* Media Embedding */}
-                {post.mediaUrl && (
-                  <div className="w-full max-w-xl overflow-hidden rounded-xl bg-black/10 border border-white/5">
-                    {post.mediaType === 'video' && ytId ? (
-                      <div className="aspect-video w-full">
-                        <iframe 
-                          src={`https://www.youtube.com/embed/${ytId}`} 
-                          className="w-full h-full border-none bg-black"
-                          title={post.title[currentLang] || post.title['fr']}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                      </div>
-                    ) : (
-                      <img 
-                        src={post.mediaUrl} 
-                        alt={post.title[currentLang] || post.title['fr']}
-                        className="w-full max-h-[300px] object-cover group-hover:scale-[1.01] transition-transform duration-500"
-                        loading="lazy"
-                      />
-                    )}
-                  </div>
-                )}
-
-                {/* Long Detailed Content */}
-                {post.content && (
-                  <div className="text-xs font-sans font-normal text-on-surface/90 leading-relaxed whitespace-pre-wrap">
-                    {post.content[currentLang] || post.content['fr']}
-                  </div>
-                )}
-              </motion.div>
-            )}
-
-            {hasTabs && activeTab === 'features' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {(extra.features[currentLang] || []).map((feature, idx) => (
-                  <motion.div 
-                    key={idx}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: idx * 0.05 }}
-                    className="p-4 bg-surface-container-low/40 border border-white/5 rounded-xl hover:border-primary/20 transition-all duration-150 flex flex-col gap-1.5"
-                  >
-                    <span className="font-mono text-[10px] text-primary/80 font-bold uppercase tracking-wide">&gt; {feature.title}</span>
-                    <p className="text-xs sm:text-[13px] font-sans font-normal text-on-surface-variant/90 leading-relaxed">{feature.desc}</p>
-                  </motion.div>
+            {post.tags && (
+              <div className="flex flex-wrap gap-1">
+                {post.tags.slice(0, 4).map((tag, i) => (
+                  <span key={i} className="text-[9px] font-mono font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded border border-white/10 bg-white/[0.04] text-on-surface-variant/70">{tag}</span>
                 ))}
               </div>
             )}
-
-            {hasTabs && activeTab === 'specs' && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.25 }}
-                className="bg-black/50 border border-white/5 rounded-xl p-5 font-mono text-[11px] text-on-surface-variant/90 max-w-2xl flex flex-col gap-3 shadow-inner"
-              >
-                <div className="text-[9px] text-white/30 border-b border-white/5 pb-2 uppercase tracking-widest font-sans font-bold">
-                  System Tech Stack Specifications
-                </div>
-                <div className="flex flex-col gap-2.5">
-                  {(extra.specs || []).map((spec, idx) => (
-                    <div key={idx} className="flex justify-between items-center gap-4 border-b border-white/[0.02] pb-1.5 last:border-b-0">
-                      <span className="text-[10px] uppercase text-white/40">{spec.label[currentLang] || spec.label['fr']}</span>
-                      <span className="text-secondary font-bold text-[11px] text-right">{spec.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-
-            {hasTabs && activeTab === 'gallery' && (() => {
-              const activeImg = galleryActiveImg || post.mediaUrl || extra.gallery[0];
-              return (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex flex-col gap-4"
-                >
-                  <div className="w-full aspect-video max-w-xl rounded-2xl overflow-hidden border border-white/10 bg-black/40 relative group/gal">
-                    <img 
-                      src={activeImg} 
-                      alt="Gallery preview" 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover/gal:scale-102"
-                    />
-                  </div>
-                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 max-w-xl">
-                    {[post.mediaUrl, ...extra.gallery].filter(Boolean).map((img, idx) => {
-                      const isSelected = activeImg === img;
-                      return (
-                        <button
-                          key={idx}
-                          onClick={() => setGalleryActiveImg(img)}
-                          className={`aspect-video rounded-lg overflow-hidden border cursor-pointer transition-all duration-150 hover:scale-105 active:scale-95 ${
-                            isSelected ? 'border-primary shadow-[0_0_10px_rgba(190,194,255,0.3)] scale-[1.02]' : 'border-white/5 opacity-60 hover:opacity-100'
-                          }`}
-                        >
-                          <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
-                        </button>
-                      );
-                    })}
-                  </div>
-                </motion.div>
-              );
-            })()}
           </div>
-        </div>
+          <motion.span
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            transition={{ duration: 0.2 }}
+            className="text-on-surface-variant/40 group-hover/hdr:text-primary flex-shrink-0 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </motion.span>
+        </button>
+
+        {/* Expandable Body */}
+        {isExpanded && (
+          <motion.div
+            key="body"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            <div className="px-5 md:px-6 pb-5 md:pb-6 flex flex-col gap-4">
+              {/* Tab buttons if detailed projects exists */}
+              {hasTabs && (
+                <div className="flex border-b border-white/5 pb-2 gap-4 overflow-x-auto select-none scrollbar-none">
+                  {['overview', 'features', 'specs', 'gallery'].map((tabKey) => {
+                    const isActive = activeTab === tabKey;
+                    if (tabKey === 'gallery' && (!extra.gallery || extra.gallery.length === 0)) return null;
+                    if (tabKey === 'specs' && (!extra.specs || extra.specs.length === 0)) return null;
+                    if (tabKey === 'features' && (!extra.features || !extra.features[currentLang])) return null;
+
+                    return (
+                      <button
+                        key={tabKey}
+                        onClick={() => {
+                          setActiveTab(tabKey);
+                          if (tabKey === 'gallery' && extra.gallery?.length > 0) {
+                            setGalleryActiveImg(extra.gallery[0]);
+                          }
+                        }}
+                        className={`text-[10px] md:text-xs font-sans font-bold uppercase tracking-wider pb-1.5 transition-all duration-150 relative cursor-pointer focus:outline-none ${
+                          isActive ? 'text-primary font-black' : 'text-on-surface-variant/60 hover:text-on-surface'
+                        }`}
+                      >
+                        {t(`portfolio.tabs.${tabKey}`)}
+                        {isActive && (
+                          <motion.div 
+                            layoutId={`activeTabBorderDevlog-${post.id}`}
+                            className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                            transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                          />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Dynamic Tab Panel content */}
+              <div className="w-full">
+                {(!hasTabs || activeTab === 'overview') && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="flex flex-col gap-4"
+                  >
+                    {post.mediaUrl && (
+                      <div className="w-full max-w-xl overflow-hidden rounded-xl bg-black/10 border border-white/5">
+                        {post.mediaType === 'video' && ytId ? (
+                          <div className="aspect-video w-full">
+                            <iframe 
+                              src={`https://www.youtube.com/embed/${ytId}`} 
+                              className="w-full h-full border-none bg-black"
+                              title={post.title[currentLang] || post.title['fr']}
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          </div>
+                        ) : (
+                          <img 
+                            src={post.mediaUrl} 
+                            alt={post.title[currentLang] || post.title['fr']}
+                            className="w-full max-h-[300px] object-cover"
+                            loading="lazy"
+                          />
+                        )}
+                      </div>
+                    )}
+                    {post.content && (
+                      <div className="text-xs font-sans font-normal text-on-surface/90 leading-relaxed whitespace-pre-wrap">
+                        {post.content[currentLang] || post.content['fr']}
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+
+                {hasTabs && activeTab === 'features' && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {(extra.features[currentLang] || []).map((feature, idx) => (
+                      <motion.div 
+                        key={idx}
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: idx * 0.05 }}
+                        className="p-4 bg-surface-container-low/40 border border-white/5 rounded-xl hover:border-primary/20 transition-all duration-150 flex flex-col gap-1.5"
+                      >
+                        <span className="font-mono text-[10px] text-primary/80 font-bold uppercase tracking-wide">&gt; {feature.title}</span>
+                        <p className="text-xs font-sans font-normal text-on-surface-variant/90 leading-relaxed">{feature.desc}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+
+                {hasTabs && activeTab === 'specs' && (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.25 }}
+                    className="bg-black/50 border border-white/5 rounded-xl p-5 font-mono text-[11px] text-on-surface-variant/90 max-w-2xl flex flex-col gap-3 shadow-inner"
+                  >
+                    <div className="text-[9px] text-white/30 border-b border-white/5 pb-2 uppercase tracking-widest font-sans font-bold">
+                      System Tech Stack Specifications
+                    </div>
+                    <div className="flex flex-col gap-2.5">
+                      {(extra.specs || []).map((spec, idx) => (
+                        <div key={idx} className="flex justify-between items-center gap-4 border-b border-white/[0.02] pb-1.5 last:border-b-0">
+                          <span className="text-[10px] uppercase text-white/40">{spec.label[currentLang] || spec.label['fr']}</span>
+                          <span className="text-secondary font-bold text-[11px] text-right">{spec.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+
+                {hasTabs && activeTab === 'gallery' && (() => {
+                  // Deduplicate gallery images by base URL path
+                  const seen = new Set();
+                  const galleryImgs = [post.mediaUrl, ...extra.gallery].filter(img => {
+                    if (!img) return false;
+                    const base = img.split('?')[0];
+                    if (seen.has(base)) return false;
+                    seen.add(base);
+                    return true;
+                  });
+                  const activeImg = galleryActiveImg || galleryImgs[0];
+                  return (
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex flex-col gap-4"
+                    >
+                      <div className="w-full aspect-video max-w-xl rounded-2xl overflow-hidden border border-white/10 bg-black/40">
+                        <img src={activeImg} alt="Gallery preview" className="w-full h-full object-cover transition-transform duration-500" />
+                      </div>
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 max-w-xl">
+                        {galleryImgs.map((img, idx) => {
+                          const isSelected = activeImg === img;
+                          return (
+                            <button
+                              key={idx}
+                              onClick={() => setGalleryActiveImg(img)}
+                              className={`aspect-video rounded-lg overflow-hidden border cursor-pointer transition-all duration-150 hover:scale-105 active:scale-95 ${
+                                isSelected ? 'border-primary shadow-[0_0_10px_rgba(190,194,255,0.3)] scale-[1.02]' : 'border-white/5 opacity-60 hover:opacity-100'
+                              }`}
+                            >
+                              <img src={img} alt={`Thumb ${idx + 1}`} className="w-full h-full object-cover" />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  );
+                })()}
+              </div>
+            </div>
+          </motion.div>
+        )}
       </div>
     </motion.article>
   );

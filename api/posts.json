@@ -7,106 +7,106 @@
     "mediaType": "image",
     "mediaUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800",
     "title": {
-      "fr": "Vacuum Protocol HUD",
-      "en": "Vacuum Protocol HUD"
+      "fr": "Console de Diagnostic & ATH Holographique",
+      "en": "Holographic HUD & Diagnostic CLI"
     },
     "description": {
-      "fr": "A game without UI ? not for Vacuum Protocol",
-      "en": "A game without UI ? not for Vacuum Protocol"
+      "fr": "Conception de l'interface utilisateur des robots de la Spectral Vacuum Unit (SVU).",
+      "en": "User interface design for the Spectral Vacuum Unit (SVU) cleaners."
     },
     "content": {
-      "fr": "Nous avons finalisé l'implémentation de la première version de notre ATH (Affichage Tête Haute) sous Unity. Le but est d'avoir quelque chose d'immersif, avec un style cyberpunk épuré et des micro-interactions de rechargement.",
-      "en": "We finalized the implementation of the first version of our HUD (Heads-Up Display) in Unity. The goal is to keep it immersive, with a sleek cyberpunk style and reloading micro-interactions."
+      "fr": "Nous avons conçu l'afficheur tête haute (ATH) holographique de l'unité SVU. L'interface intègre une console de diagnostic en ligne de commande (CLI) de la corporation Singularity. En cas de proximité avec une fuite d'énergie de fantôme de classe Spectre, l'ATH subit des distorsions chromatiques dynamiques alertant le joueur de la saturation de ses cellules d'accumulation.",
+      "en": "We designed the holographic Heads-Up Display (HUD) for the SVU unit. The interface integrates a command line diagnostic console (CLI) from Singularity Corp. When near a leak from a Spectre-class ghost, the HUD undergoes dynamic chromatic aberration flashes warning the player of cell storage saturation."
     },
-    "tags": ["Unity", "UI", "Cyberpunk", "HUD"],
+    "tags": ["Unity UI", "HUD", "Hologram Shader", "Cyberpunk CLI"],
     "commentsCount": 34
   },
   {
     "id": "2",
     "category": "gaming",
-    "type": "Player Improvements",
+    "type": "Physics",
     "date": "2026-07-17",
     "mediaType": "image",
     "mediaUrl": "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=800",
     "title": {
-      "fr": "Améliorations du Joueur",
-      "en": "Player Improvements"
+      "fr": "Aspirateur Vektor-S1 & Physique Soft-Body",
+      "en": "Vektor-S1 Suction & Soft-Body Physics"
     },
     "description": {
-      "fr": "Le message original a été supprimé",
-      "en": "The original message was deleted"
+      "fr": "Simulation physique de la capture d'entités énergétiques gazeuses.",
+      "en": "Physical simulation of sucking non-corporeal energy entities."
     },
     "content": {
-      "fr": "Mise à jour des contrôles du joueur pour un gameplay plus dynamique. Ajout du double saut, de l'esquive rapide (dash) et amélioration de la transition des animations à la première personne.",
-      "en": "Updated player controls for more dynamic gameplay. Added double jump, dash, and improved first-person animation transitions."
+      "fr": "Implémentation d'une physique d'aspiration directionnelle par force centripète. Pour simuler la succion de fantômes intangibles, nous utilisons des shaders de déformation de maillage (Soft-Body Mesh). Les entités se déforment et s'étirent le long du flux d'aspiration du canon Vektor-S1 avant de se condenser dans le réservoir de confinement du robot.",
+      "en": "Implementation of a centripetal suction physics model. To simulate the vacuuming of intangible ghosts, we utilize soft-body mesh deformation shaders. Entities stretch and warp dynamically along the Vektor-S1 suction flow before condensing inside the robot's containment canister."
     },
-    "tags": ["Unity", "C#", "Gameplay", "Animation"],
+    "tags": ["Unity Physics", "Soft-Body Mesh", "Suction Fluid", "C# Math"],
     "commentsCount": 41
   },
   {
     "id": "3",
     "category": "gaming",
-    "type": "Multiplayer",
+    "type": "AI",
     "date": "2026-06-15",
     "mediaType": "image",
     "mediaUrl": "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800",
     "title": {
-      "fr": "Multiplayer",
-      "en": "Multiplayer"
+      "fr": "Comportement IA & Arbres de Décision",
+      "en": "Ghost AI & Decision Trees"
     },
     "description": {
-      "fr": "Waw this is really a cool things imo",
-      "en": "Waw this is really a cool things imo"
+      "fr": "Écriture des routines d'infiltration des fantômes libérés du Site-7.",
+      "en": "Infiltration routine programming for the escaped ghosts at Site-7."
     },
     "content": {
-      "fr": "Mise en place de la synchronisation des mouvements en réseau via Mirror. La compensation de lag et la prédiction locale sont fonctionnelles à 90%, rendant le gameplay extrêmement fluide même à haut ping.",
-      "en": "Set up network movement synchronization using Mirror. Lag compensation and local prediction are 90% functional, making the gameplay extremely fluid even at high ping."
+      "fr": "Programmation de l'IA des fantômes. Les Spectres possèdent des arbres de décision complexes : ils fuient les projecteurs UV du robot et se cachent dans les conduits d'aération du Site-7 pour tendre des pièges. Les Poltergeists, eux, sont agressifs et chargent les générateurs d'électricité pour absorber le courant électrique et augmenter leur puissance de décharge.",
+      "en": "Programming the ghost AI behavior. Spectres possess complex decision trees: they avoid the robot's UV spotlights and hide in Site-7's ventilation ducts to set up ambushes. Poltergeists, on the other hand, actively target electricity generators to absorb current and multiply their shock damage."
     },
-    "tags": ["Netcode", "Mirror", "Multiplayer", "C#"],
+    "tags": ["Behavior Trees", "Pathfinding", "FSM", "Sensory Stealth"],
     "commentsCount": 3
   },
   {
     "id": "4",
     "category": "gaming",
-    "type": "Core",
+    "type": "Movement",
     "date": "2026-05-20",
     "mediaType": "image",
     "mediaUrl": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=800",
     "title": {
-      "fr": "Core Loop",
-      "en": "Core Loop"
+      "fr": "Inertie des Chenilles & Singularités Gravitationnelles",
+      "en": "Tread Inertia & Gravitational Singularities"
     },
     "description": {
-      "fr": "Without we can't really play",
-      "en": "Without we can't really play"
+      "fr": "Optimisation des contrôles physiques du robot face aux perturbations spectrales.",
+      "en": "Optimizing physical robot controls against spectral grid perturbations."
     },
     "content": {
-      "fr": "Implémentation de la boucle de jeu principale, du système de round, du spawn dynamique des joueurs et des conditions de victoire.",
-      "en": "Implementation of the core game loop, round system, dynamic player spawning, and win conditions."
+      "fr": "Mise au point de la friction et de l'accélération des chenilles du robot. Le déplacement doit être ultra-précis car les fantômes créent en mourant des singularités gravitationnelles temporaires qui attirent le robot vers des trous noirs d'énergie. Nous avons calibré le Dash rapide pour qu'il consomme 15% de la batterie, obligeant à gérer son énergie.",
+      "en": "Refining tread friction and acceleration curves for the cleaner robot. Controls must remain extremely precise as dying ghosts collapse into micro-gravitational singularities that pull the player in. We balanced the quick Dash maneuver to consume 15% of stored battery capacity, adding resource management."
     },
-    "tags": ["Game Design", "Unity", "Architecture"],
+    "tags": ["Rigidbody Physics", "Locomotion", "Tread Friction", "Acceleration Curves"],
     "commentsCount": 0
   },
   {
     "id": "5",
     "category": "gaming",
-    "type": "3D modeling",
+    "type": "Gameplay",
     "date": "2026-05-01",
     "mediaType": "image",
     "mediaUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800",
     "title": {
-      "fr": "3D modeling",
-      "en": "3D modeling"
+      "fr": "Boucle d'Extraction & Piles Singularity",
+      "en": "Extraction Loop & Singularity Batteries"
     },
     "description": {
-      "fr": "Mesh mesh mesh mesh",
-      "en": "Mesh mesh mesh mesh"
+      "fr": "Intégration du cycle de jeu : Capturer, Extraire, Charger, Déverrouiller.",
+      "en": "Integrating core cycle: Capture, Extract, Charge, Unlock."
     },
     "content": {
-      "fr": "Premiers rendus 3D des modèles de robots sous Blender, et tests d'intégration dans Unity HDRP avec shaders d'usure personnalisés.",
-      "en": "First 3D renders of the robot models in Blender, and integration tests in Unity HDRP with custom wear shaders."
+      "fr": "Finalisation de la boucle de jeu principale du Site-7. Le joueur doit aspirer les fantômes errants, les amener à un terminal d'Extraction pour compresser leur énergie infinie sous forme de batterie solide Singularity, puis porter physiquement cette batterie pour alimenter les terminaux de contrôle et déverrouiller les portes blindées.",
+      "en": "Finalizing the core gameplay loop of Site-7. The player must capture roaming ghosts, carry them to an Extraction terminal to compress their infinite energy into solid Singularity battery blocks, and carry them to slot into control boards, unlocking security gates."
     },
-    "tags": ["3D Modeling", "Blender", "HDRP", "Shaders"],
+    "tags": ["Gameplay Loop", "Battery Extraction", "Object Interaction", "Door Security System"],
     "commentsCount": 0
   },
   {
