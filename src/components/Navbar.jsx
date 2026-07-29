@@ -49,8 +49,9 @@ export default function Navbar() {
         }}
       />
       {/* Brand Identity / Logo */}
-      <Link to="/" className="font-display font-black text-3xl tracking-[0.2em] text-on-surface hover:text-primary transition-colors uppercase">
-        BKN Tech
+      <Link to="/" className="flex items-center gap-0.5 font-display font-black text-3xl tracking-[0.2em] text-on-surface hover:text-primary transition-colors uppercase">
+        <img src="/BknLogo.svg" alt="Next.js" className="w-12 h-12" />
+        <span>KN Tech</span>
       </Link>
 
       {/* Desktop Links (Hidden on mobile) */}
