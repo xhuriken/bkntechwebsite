@@ -178,27 +178,43 @@ export default function GamingDevlog() {
 
       {/* Devlog Game Header */}
       <div className="bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-        <div className="max-w-xl">
-          <h1 className="font-sans font-extrabold text-3xl md:text-4xl uppercase tracking-tight mb-3 text-on-surface">
+        <div className="max-w-xl flex flex-col gap-3">
+          <h1 className="font-sans font-extrabold text-3xl md:text-4xl uppercase tracking-tight text-on-surface">
             Vacuum Protocol
           </h1>
           <p className="text-on-surface/80 text-sm font-normal leading-relaxed">
             {t('devlog.description')}
           </p>
+          {/* Discord CTA callout */}
+          <a
+            href="https://discord.gg/bkntech"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1 inline-flex items-center gap-2 text-xs font-sans font-semibold text-primary hover:text-primary/80 transition-colors group"
+          >
+            <i className="fa-brands fa-discord text-sm" />
+            <span>{t('devlog.discord_cta')}</span>
+            <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+            </svg>
+          </a>
         </div>
 
-        {/* Documentation Links Panel */}
+        {/* Quick Info Panel */}
         <div className="flex flex-col gap-2.5 w-full md:w-auto min-w-[200px] bg-black/20 border border-white/5 rounded-xl p-4">
           <span className="text-[9px] font-sans font-bold uppercase tracking-wider text-on-surface-variant/65">
             {t('devlog.docs_title')}
           </span>
           <a 
-            href="https://unity.com/" 
+            href="https://store.steampowered.com/" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="flex items-center justify-between text-xs font-sans font-medium text-on-surface hover:text-primary transition-colors py-1 group"
           >
-            <span>{t('devlog.doc_unity')}</span>
+            <span className="flex items-center gap-1.5">
+              <i className="fa-brands fa-steam text-on-surface-variant/60 text-xs" />
+              Steam — Early Access
+            </span>
             <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
             </svg>
@@ -210,7 +226,7 @@ export default function GamingDevlog() {
             className="flex items-center justify-between text-xs font-sans font-medium text-on-surface hover:text-primary transition-colors py-1 group"
           >
             <span className="flex items-center gap-1.5">
-              <i className="fa-brands fa-discord text-primary text-xs"></i>
+              <i className="fa-brands fa-discord text-primary text-xs" />
               {t('devlog.join_discord')}
             </span>
             <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
@@ -220,6 +236,7 @@ export default function GamingDevlog() {
           <div className="border-t border-white/5 my-1" />
           <div className="flex flex-col gap-1 text-[9px] font-mono text-on-surface-variant/60">
             <div>{t('devlog.version')} : v0.0.6</div>
+            <div>Engine : Unity URP + Mirror</div>
             <div>{t('devlog.updates')} : {t('devlog.frequent')}</div>
           </div>
         </div>

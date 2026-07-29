@@ -115,8 +115,9 @@
     "rights": "ALL RIGHTS RESERVED."
   },
   "devlog": {
-    "description": "Our flagship 3D arena multiplayer tactical shooter project. This devlog documents our long-term production cycle, physics experiments, and netcode optimizations.",
-    "docs_title": "Documentation & Links",
+    "description": "An indie game developed solo. Vacuum Protocol is a 4-player online co-op game where you pilot ghost-cleaning robots. Blending humor, PSX cartoon aesthetics and team cohesion — a one-of-a-kind experience coming to Steam Early Access.",
+    "discord_cta": "Join the Discord to take part in upcoming playtests and try future demos!",
+    "docs_title": "Links & Info",
     "doc_unity": "Unity Documentation",
     "join_discord": "Join Discord",
     "version": "Version",
@@ -136,16 +137,16 @@
     },
     "features": {
       "netcode": {
-        "title": "Network Netcode",
-        "desc": "Authoritative server topology with client-side prediction, client reconciliation and lag compensation. Latency compensated up to 250ms ping."
+        "title": "Online Multiplayer",
+        "desc": "Up to 4 players in co-op via Mirror Networking on Unity URP. Authoritative server architecture with real-time synchronization of positions, player actions and ghost states."
       },
       "physics": {
-        "title": "Physics & Movement",
-        "desc": "Movement engine based on Unity Rigidbody physics with custom high-velocity controller, slope management and dynamic friction."
+        "title": "PSX Cartoon Aesthetic",
+        "desc": "Intentionally retro art direction: PSX vertex snapping, low-resolution textures, saturated color palette. A quirky cartoon style that reinforces the humor and the absurd universe of the game."
       },
       "graphics": {
-        "title": "High Definition Rendering (HDRP)",
-        "desc": "High Definition Render Pipeline (HDRP) for a cyberpunk photorealistic visual style. Advanced fog volumetrics and ray-traced reflections."
+        "title": "Steam — Early Access",
+        "desc": "Vacuum Protocol will launch in Early Access on Steam within the next year. Join the Discord now to get in on private playtests and help shape the game with us."
       }
     }
   },

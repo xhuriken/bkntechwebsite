@@ -115,8 +115,9 @@
     "rights": "TOUS DROITS RÉSERVÉS."
   },
   "devlog": {
-    "description": "Notre projet phare de jeu de tir tactique multijoueur en arène 3D. Ce devlog documente notre cycle de production à long terme, nos expérimentations physiques et nos optimisations netcode.",
-    "docs_title": "Documentation & Liens",
+    "description": "Projet indépendant développé en solo. Vacuum Protocol est un jeu coopératif en ligne pour 4 joueurs dans lequel vous pilotez des robots nettoyeurs de fantômes. Entre humour, esthétique PSX cartoon et cohésion d'équipe : une expérience unique qui débarque sur Steam en accès anticipé.",
+    "discord_cta": "Rejoins le Discord pour participer aux prochains playtests et tester les démos à venir !",
+    "docs_title": "Liens & Infos",
     "doc_unity": "Documentation Unity",
     "join_discord": "Rejoindre le Discord",
     "version": "Version",
@@ -136,16 +137,16 @@
     },
     "features": {
       "netcode": {
-        "title": "Netcode Réseau",
-        "desc": "Utilisation d'une topologie serveur faisant autorité avec prédiction locale, réconciliation client et compensation du lag. Latence compensée jusqu'à 250ms de ping."
+        "title": "Multijoueur en ligne",
+        "desc": "Jusqu'à 4 joueurs en coopération via Mirror Networking sur Unity URP. Architecture serveur-autoritaire avec synchronisation des positions, actions et états des fantômes en temps réel."
       },
       "physics": {
-        "title": "Physique & Mouvement",
-        "desc": "Moteur de déplacement basé sur la physique rigide d'Unity (Rigidbody) avec contrôleur personnalisé à haute vélocité, gestion des pentes et friction dynamique."
+        "title": "Esthétique PSX Cartoon",
+        "desc": "Direction artistique volontairement rétro : vertex snapping PSX, textures basse résolution, palette de couleurs saturées. Un style cartoon décalé qui appuie l'humour et l'univers absurde du jeu."
       },
       "graphics": {
-        "title": "Rendu Graphique (HDRP)",
-        "desc": "Pipeline HDRP (High Definition Render Pipeline) pour un rendu visuel photoréaliste de type cyberpunk. Volumétrie de brouillard avancée et reflets ray-tracés."
+        "title": "Steam — Accès Anticipé",
+        "desc": "Vacuum Protocol sera disponible en accès anticipé sur Steam d'ici l'année prochaine. Rejoins le Discord dès maintenant pour participer aux playtests privés et façonner le jeu avec nous."
       }
     }
   },
