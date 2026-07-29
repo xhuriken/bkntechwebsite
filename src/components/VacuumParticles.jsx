@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 /**
  * VacuumParticles
@@ -21,7 +21,7 @@ export default function VacuumParticles({ targetRef }) {
 
     // ─── Resize ────────────────────────────────────────────────────────────
     const resize = () => {
-      canvas.width  = window.innerWidth;
+      canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
     resize();
@@ -32,8 +32,8 @@ export default function VacuumParticles({ targetRef }) {
       if (targetRef && targetRef.current) {
         const rect = targetRef.current.getBoundingClientRect();
         return {
-          x: rect.left + rect.width  / 2,
-          y: rect.top  + rect.height / 2,
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2,
         };
       }
       return { x: canvas.width / 2, y: canvas.height * 0.25 };
@@ -62,14 +62,14 @@ export default function VacuumParticles({ targetRef }) {
 
     const spawnParticle = () => {
       const { x, y } = randomEdge();
-      const size        = Math.random() * 1.8 + 0.4;
+      const size = Math.random() * 4 + 0.4;
       const baseOpacity = Math.random() * 0.35 + 0.08;
 
       const rng = Math.random();
       let colorBase;
-      if      (rng < 0.55) colorBase = "240, 240, 255";
+      if (rng < 0.55) colorBase = "240, 240, 255";
       else if (rng < 0.82) colorBase = "190, 194, 255";
-      else                 colorBase = "78,  222, 163";
+      else colorBase = "78,  222, 163";
 
       return {
         x, y,
@@ -84,14 +84,14 @@ export default function VacuumParticles({ targetRef }) {
     };
 
     // ─── Animation constants ───────────────────────────────────────────────
-    const MAX_PARTICLES   = 80;
-    const SPAWN_EVERY     = 18;
-    const ATTRACT_BASE    = 0.012;
-    const ATTRACT_NEAR    = 0.032;
-    const NOISE_STRENGTH  = 0.055;
-    const DAMPING         = 0.975;
-    const VANISH_RADIUS   = 18;
-    const FADE_START_DIST = 120;
+    const MAX_PARTICLES = 300; // Plus de particules pour un effet plus dense
+    const SPAWN_EVERY = 4; // Spawn plus rapide pour maintenir un flux continu
+    const ATTRACT_BASE = 0.005;
+    const ATTRACT_NEAR = 0.5;
+    const NOISE_STRENGTH = 0.02;
+    const DAMPING = 0.98;
+    const VANISH_RADIUS = 4; // Disparition ultra-proche du centre
+    const FADE_START_DIST = 25; // Commence à s'estomper uniquement à l'impact
 
     // ─── Main loop ────────────────────────────────────────────────────────
     const animate = () => {
@@ -111,12 +111,13 @@ export default function VacuumParticles({ targetRef }) {
         p.vy += Math.sin(p.noiseAngle) * NOISE_STRENGTH;
 
         // Attraction toward target
-        const dx   = target.x - p.x;
-        const dy   = target.y - p.y;
+        const dx = target.x - p.x;
+        const dy = target.y - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy) || 0.001;
 
-        const proximity    = Math.max(0, 1 - dist / 900);
-        const attractForce = ATTRACT_BASE + proximity * ATTRACT_NEAR;
+        // Force d'aspiration exponentielle : plus la particule est proche, plus elle accélère
+        const proximity = Math.max(0, 1 - dist / 800);
+        const attractForce = ATTRACT_BASE + (proximity * ATTRACT_NEAR) + (10 / (dist + 5));
         p.vx += (dx / dist) * attractForce;
         p.vy += (dy / dist) * attractForce;
 
@@ -131,19 +132,19 @@ export default function VacuumParticles({ targetRef }) {
         // Remove if absorbed
         if (dist < VANISH_RADIUS) return false;
 
-        // Opacity fade-out approaching target
+        // Opacity fade-out approaching target (uniquement très proche)
         const fadeFactor = Math.min(dist / FADE_START_DIST, 1);
-        const opacity    = p.baseOpacity * fadeFactor;
-        if (opacity < 0.005) return false;
+        const opacity = p.baseOpacity * fadeFactor;
+        if (opacity < 0.002) return false;
 
         // Draw
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle  = `rgba(${p.colorBase}, ${opacity})`;
+        ctx.fillStyle = `rgba(${p.colorBase}, ${opacity})`;
         ctx.shadowColor = `rgba(${p.colorBase}, ${opacity * 0.6})`;
-        ctx.shadowBlur  = p.size * 4;
+        ctx.shadowBlur = p.size * 4;
         ctx.fill();
-        ctx.shadowBlur  = 0;
+        ctx.shadowBlur = 0;
 
         return true;
       });
@@ -164,11 +165,11 @@ export default function VacuumParticles({ targetRef }) {
       ref={canvasRef}
       aria-hidden="true"
       style={{
-        position     : "fixed",
-        inset        : 0,
-        width        : "100%",
-        height       : "100%",
-        zIndex       : 0,
+        position: "fixed",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        zIndex: 0,
         pointerEvents: "none",
       }}
     />

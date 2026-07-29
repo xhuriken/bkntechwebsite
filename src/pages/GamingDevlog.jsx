@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { formatLocaleDate } from '../utils/dateFormatter';
 import { detailedProjects } from '../utils/detailedProjects';
+import VacuumParticles from '../components/VacuumParticles';
 
 /**
  * Helper to extract YouTube video ID
@@ -50,7 +51,7 @@ function getRelativeDateString(dateStr, currentLang) {
 function getTypeStyles(type = '') {
   const t = type.toLowerCase();
   if (t.includes('ui')) {
-    return 'text-primary border-primary/35 bg-primary/[0.08] shadow-[0_0_8px_rgba(190,194,255,0.05)]';
+    return 'text-secondary border-secondary/35 bg-secondary/[0.08] shadow-[0_0_8px_rgba(78,222,163,0.05)]';
   }
   if (t.includes('player') || t.includes('joueur') || t.includes('améliorations')) {
     return 'text-secondary border-secondary/35 bg-secondary/[0.08] shadow-[0_0_8px_rgba(78,222,163,0.05)]';
@@ -141,12 +142,14 @@ export default function GamingDevlog() {
     });
 
   // Split filtered posts into "Nouveaux" (< 30 days) and "Anciens" (>= 30 days)
+  const letterARef = useRef(null);
+
   const isRecent = (dateStr) => {
     const date = new Date(dateStr);
     const now = new Date();
-    const diffTime = now - date;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays < 30;
+    const diffTime = Math.abs(now - date);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays <= 30;
   };
 
   const recentPosts = filteredPosts.filter(p => isRecent(p.date));
@@ -165,7 +168,9 @@ export default function GamingDevlog() {
 
   return (
     <div className="w-full max-w-5xl mx-auto px-6 md:px-12 py-10 z-10 relative">
-      
+      {/* Vacuum suction particles backdrop */}
+      <VacuumParticles targetRef={letterARef} />
+
       {/* Return button */}
       <div className="mb-8">
         <Link 
@@ -183,7 +188,7 @@ export default function GamingDevlog() {
       <div className="bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div className="max-w-xl flex flex-col gap-3">
           <h1 className="font-sans font-extrabold text-3xl md:text-4xl uppercase tracking-tight text-on-surface">
-            Vacuum Protocol
+            V<span ref={letterARef} className="relative inline-block text-primary">a</span>cuum Protocol
           </h1>
           <p className="text-on-surface/80 text-sm font-normal leading-relaxed">
             {t('devlog.description')}
@@ -439,7 +444,7 @@ function DevlogPostCard({ post, currentLang }) {
   // Keywords must match getTypeStyles() for consistent color theming
   const getDotColors = (type = '') => {
     const t = type.toLowerCase();
-    if (t.includes('ui')) return { border: 'border-primary', bg: 'bg-primary', text: 'text-primary' };
+    if (t.includes('ui')) return { border: 'border-secondary', bg: 'bg-secondary', text: 'text-secondary' };
     if (t.includes('player') || t.includes('joueur') || t.includes('amélioration') || t.includes('améliorations')) return { border: 'border-secondary', bg: 'bg-secondary', text: 'text-secondary' };
     if (t.includes('multiplayer') || t.includes('multijoueur') || t.includes('netcode') || t.includes('reseau')) return { border: 'border-tertiary', bg: 'bg-tertiary', text: 'text-tertiary' };
     if (t.includes('core') || t.includes('systeme') || t.includes('gameplay')) return { border: 'border-orange-400', bg: 'bg-orange-400', text: 'text-orange-400' };

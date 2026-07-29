@@ -270,12 +270,20 @@ Initialiser aléatoirement la position de départ de chaque carrousel sur la pag
   - Retrait des entrées 1, 2, 3, 4 et 5 et ajout des fiches de caractéristiques (`features`) et de spécifications système (`specs`) pour les devlogs 15 à 20.
 - **[GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx)** & **[PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx)** :
   - Intégration du type `Shader` dans `getTypeStyles` et `getDotColors` pour lui assigner une classe CSS et un témoin lumineux cyan (`text-cyan-400`, `border-cyan-400`, `bg-cyan-400`).
+  - Redéfinition du type `UI` pour utiliser le vert vif (`secondary` / `#4edea3`) au lieu du violet (`primary`), harmonisant ainsi toute l'interface du jeu avec la couleur signature émeraude.
+- **[GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx)** :
+  - Création d'une référence `letterARef` attachée au `a` du titre "Vacuum Protocol".
+  - Import et rendu du composant `<VacuumParticles targetRef={letterARef} />` en arrière-plan de la page devlog.
+- **[VacuumParticles.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/VacuumParticles.jsx)** :
+  - Ajustement de la physique d'attraction pour éliminer la force perpendiculaire de spirale. Les particules se dirigent maintenant de manière directe et fluide en ligne droite accélérée vers le centre de la lettre `a` et s'y font absorber instantanément, créant un effet d'aspiration authentique et net.
 
 ### Justification Technique
 - **Sélection Aléatoire** : L'initialisation dynamique de `selectedIndices` évite la monotonie d'affichage sur la page principale et met en valeur l'ensemble des créations du portfolio à chaque visite sans altérer la logique de navigation manuelle.
 - **Authenticité des Devlogs Unity** : La purge des posts génériques et l'ajout de comptes-rendus techniques réels (API Steamworks.NET, shaders HLSL custom, vector UI GPU Shapes, algorithmes de texture baking) apporte une valeur d'ingénierie et une crédibilité totale à la section Devlog de Vacuum Protocol.
-- **Catégorisation Visuelle** : L'introduction d'un style dédié pour le type `Shader` permet d'isoler graphiquement le rendu visuel et le post-processing des autres aspects techniques tout en conservant l'harmonie colorée globale. Le re-mappage de l'éditeur Tomodachi vers le type `UI` unifie les éléments d'interface sous la teinte violette historique.
+- **Catégorisation Visuelle** : L'introduction d'un style dédié pour le type `Shader` permet d'isoler graphiquement le rendu visuel et le post-processing des autres aspects techniques tout en conservant l'harmonie colorée globale. Le re-mappage de l'éditeur Tomodachi vers le type `UI` unifie les éléments d'interface sous la teinte verte secondaire.
 - **Tri au Plus Récent** : Le tri par défaut est conservé au plus récent (`newest first`). Pour afficher le Lobby en premier (haut de page) et Tomodachi en dernier (bas de page), la date la plus récente (28 juillet) a été attribuée au Lobby et la plus ancienne (23 juillet) à Tomodachi.
+- **Attraction Directe d'Aspiration** : La suppression de la force tangentielle permet d'éliminer l'effet d'orbite stellaire ou de "lune gravitationnelle". Les particules s'élancent et foncent droit vers le centre de la lettre `a`, s'y désintégrant à l'impact exact pour simuler à la perfection un flot d'aspiration mécanique continu et puissant (effet d'aspirateur).
+- **Consistance de la Palette** : L'association du type `UI` au vert vif (#4edea3) respecte la direction artistique globale du jeu voulue par l'utilisateur et rend le site visuellement cohérent.
 
 
 

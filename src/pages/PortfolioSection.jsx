@@ -20,7 +20,7 @@ function getYouTubeId(url) {
  */
 const getDotColors = (type = '', category = '') => {
   const t = type ? type.toLowerCase() : '';
-  if (t.includes('ui')) return { border: 'border-primary', bg: 'bg-primary', text: 'text-primary' };
+  if (t.includes('ui')) return { border: 'border-secondary', bg: 'bg-secondary', text: 'text-secondary' };
   if (t.includes('player') || t.includes('joueur') || t.includes('amélioration')) return { border: 'border-secondary', bg: 'bg-secondary', text: 'text-secondary' };
   if (t.includes('multiplayer') || t.includes('netcode') || t.includes('reseau')) return { border: 'border-tertiary', bg: 'bg-tertiary', text: 'text-tertiary' };
   if (t.includes('core')) return { border: 'border-orange-400', bg: 'bg-orange-400', text: 'text-orange-400' };
