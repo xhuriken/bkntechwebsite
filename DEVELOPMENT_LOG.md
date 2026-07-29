@@ -252,5 +252,30 @@ Rendre les dates et les points de la frise chronologique collants (sticky) au sc
 - **UX Immersive & Partageable** : Le routage par ancre rend les projets directement référençables par URL. La lueur pulsée combinée au recentrage fluide guide le regard de l'utilisateur instantanément vers le projet sélectionné.
 - **Ajustement Visuel Cohérent** : L'ajustement du padding supérieur (`pt-4`/`pt-3`) rend les cartes plus compactes et équilibrées en éliminant les espaces vides. La capsule thématique de titre recrée une cohérence visuelle immédiate avec les en-têtes de catégorie du site.
 
+---
+
+## [2026-07-29] Randomisation de l'Index Initial du Portfolio & Devlogs Techniques Vacuum Protocol (Unity C#)
+
+### Tâche
+Initialiser aléatoirement la position de départ de chaque carrousel sur la page Portfolio, éliminer tous les anciens devlogs de démonstration inventés pour le jeu Vacuum Protocol, et intégrer 6 nouveaux devlogs axés sur le développement C#/Unity (Steamworks Lobby, HUD Color Picker, Shader CRT Post-Processing, Boutons Ticket Vert Émeraude, Settings Vectoriels Shapes par Freya Holmér, et Éditeur de Textures Tomodachi Life).
+
+### Modifications
+- **[Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx)** :
+  - Modification du hook `useEffect` de chargement des posts : calcul d'un index de départ aléatoire (`Math.floor(Math.random() * catPosts.length)`) pour chaque catégorie (`website`, `ai-agent`, `mobile`).
+  - À chaque rechargement de la page Portfolio, un projet distinct est sélectionné au centre du carrousel pour dynamiser la présentation.
+- **[posts.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/posts.json)** :
+  - Suppression de l'intégralité des anciens posts obsolètes de la catégorie gaming (IDs 1, 2, 3, 4 et 5).
+  - Ajout des 6 devlogs réels avec les types adaptés et les dates calibrées pour que le tri par défaut affiche le salon Lobby en premier (2026-07-28, le plus récent) et Tomodachi en dernier (2026-07-23, le plus ancien).
+- **[detailedProjects.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/utils/detailedProjects.js)** :
+  - Retrait des entrées 1, 2, 3, 4 et 5 et ajout des fiches de caractéristiques (`features`) et de spécifications système (`specs`) pour les devlogs 15 à 20.
+- **[GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx)** & **[PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx)** :
+  - Intégration du type `Shader` dans `getTypeStyles` et `getDotColors` pour lui assigner une classe CSS et un témoin lumineux cyan (`text-cyan-400`, `border-cyan-400`, `bg-cyan-400`).
+
+### Justification Technique
+- **Sélection Aléatoire** : L'initialisation dynamique de `selectedIndices` évite la monotonie d'affichage sur la page principale et met en valeur l'ensemble des créations du portfolio à chaque visite sans altérer la logique de navigation manuelle.
+- **Authenticité des Devlogs Unity** : La purge des posts génériques et l'ajout de comptes-rendus techniques réels (API Steamworks.NET, shaders HLSL custom, vector UI GPU Shapes, algorithmes de texture baking) apporte une valeur d'ingénierie et une crédibilité totale à la section Devlog de Vacuum Protocol.
+- **Catégorisation Visuelle** : L'introduction d'un style dédié pour le type `Shader` permet d'isoler graphiquement le rendu visuel et le post-processing des autres aspects techniques tout en conservant l'harmonie colorée globale. Le re-mappage de l'éditeur Tomodachi vers le type `UI` unifie les éléments d'interface sous la teinte violette historique.
+- **Tri au Plus Récent** : Le tri par défaut est conservé au plus récent (`newest first`). Pour afficher le Lobby en premier (haut de page) et Tomodachi en dernier (bas de page), la date la plus récente (28 juillet) a été attribuée au Lobby et la plus ancienne (23 juillet) à Tomodachi.
+
 
 

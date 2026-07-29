@@ -64,6 +64,9 @@ function getTypeStyles(type = '') {
   if (t.includes('modeling') || t.includes('modelisation') || t.includes('3d')) {
     return 'text-pink-400 border-pink-400/35 bg-pink-400/[0.08] shadow-[0_0_8px_rgba(244,114,182,0.05)]';
   }
+  if (t.includes('shader')) {
+    return 'text-cyan-400 border-cyan-400/35 bg-cyan-400/[0.08] shadow-[0_0_8px_rgba(34,211,238,0.05)]';
+  }
   return 'text-on-surface-variant/80 border-white/10 bg-white/[0.04]';
 }
 
@@ -441,6 +444,7 @@ function DevlogPostCard({ post, currentLang }) {
     if (t.includes('multiplayer') || t.includes('multijoueur') || t.includes('netcode') || t.includes('reseau')) return { border: 'border-tertiary', bg: 'bg-tertiary', text: 'text-tertiary' };
     if (t.includes('core') || t.includes('systeme') || t.includes('gameplay')) return { border: 'border-orange-400', bg: 'bg-orange-400', text: 'text-orange-400' };
     if (t.includes('modeling') || t.includes('modelisation') || t.includes('3d')) return { border: 'border-pink-400', bg: 'bg-pink-400', text: 'text-pink-400' };
+    if (t.includes('shader')) return { border: 'border-cyan-400', bg: 'bg-cyan-400', text: 'text-cyan-400' };
     return { border: 'border-white/20', bg: 'bg-white/40', text: 'text-on-surface-variant/70' };
   };
 

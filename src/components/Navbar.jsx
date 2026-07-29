@@ -41,15 +41,15 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 w-full z-50 glass-panel border-b border-white/5 py-4 px-6 md:px-12 flex items-center justify-between relative overflow-hidden">
       {/* Passive Noise Texture background */}
-      <div 
-        className="absolute inset-0 opacity-15 pointer-events-none" 
+      <div
+        className="absolute inset-0 opacity-15 pointer-events-none"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
           backgroundBlendMode: 'soft-light'
         }}
       />
       {/* Brand Identity / Logo */}
-      <Link to="/" className="font-display font-black text-xs tracking-[0.2em] text-on-surface hover:text-primary transition-colors uppercase">
+      <Link to="/" className="font-display font-black text-3xl tracking-[0.2em] text-on-surface hover:text-primary transition-colors uppercase">
         BKN Tech
       </Link>
 
@@ -62,16 +62,14 @@ export default function Navbar() {
               key={link.path}
               to={link.path}
               onClick={(e) => handleLinkClick(e, link)}
-              className={`relative py-1 font-sans font-semibold text-[11px] uppercase tracking-[0.15em] transition-all duration-150 ${
-                isActive ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
-              } group/link`}
+              className={`relative py-1 font-sans font-semibold text-[11px] uppercase tracking-[0.15em] transition-all duration-150 ${isActive ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
+                } group/link`}
             >
               {link.name}
               {/* Responsive underline hover/active effect */}
-              <div 
-                className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-150 ${
-                  isActive ? 'w-full' : 'w-0 group-hover/link:w-full'
-                }`}
+              <div
+                className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-150 ${isActive ? 'w-full' : 'w-0 group-hover/link:w-full'
+                  }`}
               />
             </Link>
           );
@@ -118,18 +116,17 @@ export default function Navbar() {
                     key={link.path}
                     to={link.path}
                     onClick={(e) => handleLinkClick(e, link)}
-                    className={`py-2 font-sans font-semibold text-xs uppercase tracking-[0.15em] transition-all duration-300 ${
-                      isActive ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
-                    }`}
+                    className={`py-2 font-sans font-semibold text-xs uppercase tracking-[0.15em] transition-all duration-300 ${isActive ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
+                      }`}
                   >
                     {link.name}
                   </Link>
                 );
               })}
             </div>
-            
+
             <div className="h-px w-full bg-white/5" />
-            
+
             <div className="flex flex-col items-center gap-4 w-full">
               <LanguageSwitcher />
               <Button variant="primary" onClick={(e) => handleLinkClick(e, { isAnchor: true, targetId: 'contact' })} className="w-full max-w-[200px]">

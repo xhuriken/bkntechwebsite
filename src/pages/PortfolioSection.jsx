@@ -25,6 +25,7 @@ const getDotColors = (type = '', category = '') => {
   if (t.includes('multiplayer') || t.includes('netcode') || t.includes('reseau')) return { border: 'border-tertiary', bg: 'bg-tertiary', text: 'text-tertiary' };
   if (t.includes('core')) return { border: 'border-orange-400', bg: 'bg-orange-400', text: 'text-orange-400' };
   if (t.includes('modeling') || t.includes('3d')) return { border: 'border-pink-400', bg: 'bg-pink-400', text: 'text-pink-400' };
+  if (t.includes('shader')) return { border: 'border-cyan-400', bg: 'bg-cyan-400', text: 'text-cyan-400' };
   
   // Fallback based on category
   if (category === 'website') return { border: 'border-secondary', bg: 'bg-secondary', text: 'text-secondary' };

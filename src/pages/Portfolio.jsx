@@ -175,6 +175,19 @@ export default function Portfolio() {
           // Exclude gaming category as it is featured separately on top
           const rest = data.filter(p => p.category !== 'gaming');
           setPosts(rest);
+
+          // Calculate random starting index for each category
+          const initialIndices = {};
+          const catKeys = ['website', 'ai-agent', 'mobile'];
+          catKeys.forEach(catKey => {
+            const catPosts = rest.filter(p => p.category === catKey);
+            if (catPosts.length > 0) {
+              initialIndices[catKey] = Math.floor(Math.random() * catPosts.length);
+            } else {
+              initialIndices[catKey] = 0;
+            }
+          });
+          setSelectedIndices(initialIndices);
         }
         setLoading(false);
       })

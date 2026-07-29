@@ -12,3 +12,4 @@
 - [x] Étape 8 : Développement de la Page Showcase Jeu Unity Dédiée (Redirigée vers le Devlog Vacuum Protocol - Terminé)
 - [x] Étape 9 : Intégration du Formulaire de Contact de Feu de Dieu & Sécurité (Formulaire 2 colonnes avec PoW/Honeypot/Obfuscation - Terminé)
 - [x] Étape 10 : Tests de Performance, Accessibilité, Sécurité, Modularité des Inputs & i18next et Validation Finale (Terminé)
+- [x] Étape 11 : Sélection Aléatoire des Carrousels Portfolio & Intégration des Devlogs Techniques Vacuum Protocol (Steam Lobby, HUD Color Picker, Post-Processing CRT, Boutons Ticket Vert, Settings Vectoriels Shapes, Éditeur Tomodachi Life) (Terminé)

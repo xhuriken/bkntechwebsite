@@ -7,7 +7,7 @@ export const detailedProjects = {
   "1": {
     features: {
       fr: [
-        { title: "Indicateurs d'Aberration", desc: "Shader d'ATH de distorsion chromatique s'activant en présence d'anomalies ectoplasmiques." },
+        { title: "Palette de couleurs", desc: "Pour la customisation de notre joueur, nous devons être capable de séléctionner notre couleur !" },
         { title: "Console CLI Intégrée", desc: "Terminal rétro-éclairé affichant le statut de confinement du Site-7 en temps réel." },
         { title: "Diagnostic de Surcharge", desc: "Code C# alertant le processeur central d'une surtension de batterie Singularity." }
       ],
@@ -33,8 +33,8 @@ export const detailedProjects = {
   "2": {
     features: {
       fr: [
-        { title: "Suction directionnelle", desc: "Force vectorielle physique calculant l'aspiration des maillages non-corporels." },
-        { title: "Déformation Soft-Body", desc: "Simulation de contraction géométrique des fantômes proportionnelle à la puissance d'aspiration." },
+        { title: "Suction directionnelle", desc: "Force vectorielle physique calculant l'aspiration des entity vers la buse du bras fait en softbody" },
+        { title: "Déformation Soft-Body", desc: "Simulation des bras en jeu, collisions contre les joueur et les murs." },
         { title: "Écoulement Spectral", desc: "Shader de fluide simulant l'absorption de matière ectoplasmique dans le tube SVU." }
       ],
       en: [
