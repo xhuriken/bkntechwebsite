@@ -27,7 +27,7 @@ jobs:
         run: |
           VPS_HOST="${VPS_HOST:-151.80.147.208}"
           VPS_PORT="${VPS_PORT:-22}"
-          VPS_USER="${VPS_USER:-ubuntu}"
+          VPS_USER="${VPS_USER:-root}"
           REMOTE_PATH="/var/www/bkntech"
 
           sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "mkdir -p $REMOTE_PATH"
@@ -50,25 +50,27 @@ jobs:
           VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           VPS_HOST="${VPS_HOST:-151.80.147.208}"
           VPS_PORT="${VPS_PORT:-22}"
-          VPS_USER="${VPS_USER:-ubuntu}"
+          VPS_USER="${VPS_USER:-root}"
           REMOTE_PATH="/var/www/bkntech"
 
           sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "
             set -e
             cd $REMOTE_PATH
 
-            cat > .env.production << 'ENVEOF'
-          SMTP_HOST=ssl0.ovh.net
-          SMTP_PORT=465
-          SMTP_SECURE=true
-          SMTP_USER=contact@bkntech.fr
-          SMTP_PASS=${SMTP_PASS}
-          SMTP_TO=contact@bkntech.fr
-          ADMIN_PASSWORD=${ADMIN_PASSWORD}
-          ENVEOF
+            cat > .env << 'ENVEOF'
+SMTP_HOST=ssl0.ovh.net
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=contact@bkntech.fr
+SMTP_PASS=${SMTP_PASS}
+SMTP_TO=contact@bkntech.fr
+ADMIN_PASSWORD=${ADMIN_PASSWORD}
+DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+ENVEOF
 
             echo 'Rebuilding Docker containers...'
             docker compose build --no-cache
