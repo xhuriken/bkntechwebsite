@@ -47,6 +47,8 @@
     "admin": {
       "title": "Gestion du Portfolio",
       "login_title": "Accès Administrateur",
+      "create_title": "Créer un Nouveau Projet",
+      "edit_title": "Modifier le Projet",
       "password_placeholder": "Entrez le mot de passe admin",
       "password": "Mot de passe",
       "login_btn": "Se connecter",
@@ -58,6 +60,8 @@
       "save_btn": "Enregistrer le projet",
       "export_btn": "Télécharger la base JSON",
       "confirm_delete": "Voulez-vous vraiment supprimer ce projet ?",
+      "submit_create": "Créer le projet",
+      "submit_edit": "Enregistrer les modifications",
       "success_save": "Projet enregistré avec succès !",
       "success_delete": "Projet supprimé !",
       "form": {

@@ -63,6 +63,12 @@ export default function Button({ children, className = '', variant = 'primary', 
     primary: 'bg-primary text-black border-primary/25 hover:border-primary shadow-[0_0_20px_rgba(190,194,255,0.2)] hover:shadow-[0_0_40px_rgba(190,194,255,0.4)]',
     secondary: 'bg-transparent text-primary border-primary/25 hover:border-primary hover:bg-primary/5',
     black: 'bg-black/90 text-white border-white/10 hover:border-white/30 hover:bg-black shadow-[0_0_20px_rgba(0,0,0,0.4)]',
+    green: 'bg-secondary text-black border-secondary/25 hover:border-secondary shadow-[0_0_20px_rgba(78,222,163,0.25)] hover:shadow-[0_0_40px_rgba(78,222,163,0.5)]',
+    'green-outline': 'bg-transparent text-secondary border-secondary/30 hover:border-secondary hover:bg-secondary/10',
+    red: 'bg-red-500 text-white border-red-500/30 hover:border-red-400 shadow-[0_0_20px_rgba(239,68,68,0.25)] hover:shadow-[0_0_40px_rgba(239,68,68,0.5)]',
+    'red-outline': 'bg-transparent text-red-400 border-red-500/30 hover:border-red-400 hover:bg-red-500/10',
+    danger: 'bg-red-500 text-white border-red-500/30 hover:border-red-400 shadow-[0_0_20px_rgba(239,68,68,0.25)] hover:shadow-[0_0_40px_rgba(239,68,68,0.5)]',
+    amber: 'bg-tertiary text-black border-tertiary/25 hover:border-tertiary shadow-[0_0_20px_rgba(255,185,95,0.25)] hover:shadow-[0_0_40px_rgba(255,185,95,0.5)]',
   };
 
   const selectedVariantClass = variants[variant] || variants.primary;

@@ -47,6 +47,8 @@
     "admin": {
       "title": "Portfolio Management",
       "login_title": "Administrator Access",
+      "create_title": "Create a New Project",
+      "edit_title": "Edit Project",
       "password_placeholder": "Enter admin password",
       "password": "Password",
       "login_btn": "Log In",
@@ -58,6 +60,8 @@
       "save_btn": "Save project",
       "export_btn": "Download JSON Database",
       "confirm_delete": "Are you sure you want to delete this project?",
+      "submit_create": "Create Project",
+      "submit_edit": "Save Changes",
       "success_save": "Project saved successfully!",
       "success_delete": "Project deleted!",
       "form": {

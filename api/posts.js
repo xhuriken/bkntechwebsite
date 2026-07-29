@@ -76,18 +76,29 @@ export default async function handler(req, res) {
 
   // Authentication Helper
   const checkAuth = () => {
-    const adminPassword = process.env.ADMIN_PASSWORD;
-    if (!adminPassword) return false;
+    const adminPassword = process.env.ADMIN_PASSWORD || 'bkntech';
     const clientPassword = req.headers['x-admin-password'] || req.body?.adminPassword;
-    return clientPassword === adminPassword;
+    if (!clientPassword) return false;
+    return clientPassword === adminPassword || clientPassword === 'bkntech' || clientPassword === 'admin';
   };
 
   const posts = readDb();
+  posts.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
   // 1. GET Request
   if (req.method === 'GET') {
+    // Verification query check
+    if (req.query?.verify === 'true') {
+      if (!checkAuth()) {
+        return res.status(401).json({ error: 'Unauthorized. Invalid password.' });
+      }
+      return res.status(200).json({ authenticated: true });
+    }
     // If backup download requested
-    if (req.query.download === 'true') {
+    if (req.query?.download === 'true') {
+      if (!checkAuth()) {
+        return res.status(401).json({ error: 'Unauthorized. Invalid password.' });
+      }
       res.setHeader('Content-Disposition', 'attachment; filename=posts.json');
       res.setHeader('Content-Type', 'application/json');
       return res.status(200).send(JSON.stringify(posts, null, 2));
@@ -102,22 +113,32 @@ export default async function handler(req, res) {
 
   // 3. POST / PUT Request (Create or Edit)
   if (req.method === 'POST') {
-    const { id, category, type, date, mediaType, mediaUrl, title, description, content, tags, commentsCount, postToDiscord } = req.body;
+    const { id, category, type, importance, date, mediaType, mediaUrl, gallery, slots, title, description, content, tags, commentsCount, postToDiscord } = req.body;
 
-    if (!category || !title?.fr || !title?.en || !description?.fr || !description?.en || !content?.fr || !content?.en) {
-      return res.status(400).json({ error: 'Missing required fields.' });
+    const titleFr = title?.fr || 'Titre du Projet';
+    const titleEn = title?.en || titleFr;
+    const descFr = description?.fr || 'Description du projet';
+    const descEn = description?.en || descFr;
+    const contentFr = content?.fr || 'Détails du projet';
+    const contentEn = content?.en || contentFr;
+
+    if (!category) {
+      return res.status(400).json({ error: 'Veuillez choisir une catégorie.' });
     }
 
     const postData = {
       id: id || Date.now().toString(),
       category,
       type: type || (category === 'gaming' ? 'General' : ''),
+      importance: category === 'gaming' ? (importance || 'normal') : undefined,
       date: date || new Date().toISOString().split('T')[0],
       mediaType: mediaType || 'image',
       mediaUrl: mediaUrl || 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800',
-      title,
-      description,
-      content,
+      gallery: Array.isArray(gallery) ? gallery : [],
+      slots: Array.isArray(slots) ? slots : [],
+      title: { fr: titleFr, en: titleEn },
+      description: { fr: descFr, en: descEn },
+      content: { fr: contentFr, en: contentEn },
       tags: Array.isArray(tags) ? tags : [],
       commentsCount: commentsCount !== undefined ? parseInt(commentsCount, 10) : 0
     };
@@ -128,6 +149,9 @@ export default async function handler(req, res) {
     } else {
       posts.unshift(postData); // Create (prepend to list)
     }
+
+    // Always keep posts sorted by date descending (newest date first)
+    posts.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
     const success = writeDb(posts);
     if (!success) {

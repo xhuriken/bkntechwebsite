@@ -140,7 +140,60 @@ export default defineConfig({
               res.end(JSON.stringify({ error: err.message }));
             }
           } 
-          // 3. Static files & assets pass-through
+          // 3. Media Upload API Interception (/api/upload)
+          else if (pathname.startsWith('/api/upload')) {
+            try {
+              let body = '';
+              req.on('data', chunk => {
+                body += chunk;
+              });
+              req.on('end', async () => {
+                try {
+                  const parsedBody = body ? JSON.parse(body) : {};
+                  
+                  const mockReq = {
+                    method: req.method,
+                    url: req.url,
+                    headers: req.headers,
+                    body: parsedBody
+                  };
+                  
+                  const mockRes = {
+                    status(code) {
+                      res.statusCode = code;
+                      return this;
+                    },
+                    json(data) {
+                      res.setHeader('Content-Type', 'application/json');
+                      res.end(JSON.stringify(data));
+                      return this;
+                    },
+                    setHeader(name, value) {
+                      res.setHeader(name, value);
+                      return this;
+                    },
+                    end(data) {
+                      res.end(data);
+                      return this;
+                    }
+                  };
+
+                  const { default: handler } = await import('./api/upload.js');
+                  await handler(mockReq, mockRes);
+                } catch (err) {
+                  console.error("Erreur d'exécution de l'API locale upload :", err);
+                  res.statusCode = 500;
+                  res.setHeader('Content-Type', 'application/json');
+                  res.end(JSON.stringify({ error: err.message }));
+                }
+              });
+            } catch (err) {
+              res.statusCode = 500;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ error: err.message }));
+            }
+          }
+          // 4. Static files & assets pass-through
           else {
             next();
           }

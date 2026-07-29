@@ -17,6 +17,15 @@ function getYouTubeId(url) {
 }
 
 /**
+ * Helper to check if a URL is a native video (.mp4, .webm, data:video)
+ */
+function isNativeVideoUrl(url = '') {
+  if (!url) return false;
+  const lower = url.toLowerCase();
+  return lower.startsWith('data:video') || lower.endsWith('.mp4') || lower.endsWith('.webm') || lower.includes('.mp4?') || lower.includes('.webm?');
+}
+
+/**
  * Helper to compute relative date string
  */
 function getRelativeDateString(dateStr, currentLang) {
@@ -642,8 +651,8 @@ function DevlogPostCard({ post, currentLang }) {
                     className="flex flex-col gap-4"
                   >
                     {post.mediaUrl && (
-                      <div className="w-full max-w-xl overflow-hidden rounded-xl bg-black/10 border border-white/5">
-                        {post.mediaType === 'video' && ytId ? (
+                      <div className="w-full max-w-xl overflow-hidden rounded-xl bg-black/20 border border-white/5">
+                        {ytId ? (
                           <div className="aspect-video w-full">
                             <iframe 
                               src={`https://www.youtube.com/embed/${ytId}`} 
@@ -651,6 +660,18 @@ function DevlogPostCard({ post, currentLang }) {
                               title={post.title[currentLang] || post.title['fr']}
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                               allowFullScreen
+                            />
+                          </div>
+                        ) : (post.mediaType === 'video' || isNativeVideoUrl(post.mediaUrl)) ? (
+                          <div className="w-full bg-black flex justify-center">
+                            <video
+                              src={post.mediaUrl}
+                              controls
+                              playsInline
+                              autoPlay
+                              loop
+                              muted
+                              className="w-full max-h-[360px] object-contain"
                             />
                           </div>
                         ) : (

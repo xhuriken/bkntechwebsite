@@ -16,6 +16,15 @@ function getYouTubeId(url) {
 }
 
 /**
+ * Helper to check if a URL is a native video (.mp4, .webm, data:video)
+ */
+function isNativeVideoUrl(url = '') {
+  if (!url) return false;
+  const lower = url.toLowerCase();
+  return lower.startsWith('data:video') || lower.endsWith('.mp4') || lower.endsWith('.webm') || lower.includes('.mp4?') || lower.includes('.webm?');
+}
+
+/**
  * Helper to get themed dot & date colors based on post type or category
  */
 const getDotColors = (type = '', category = '') => {
@@ -442,7 +451,7 @@ export default function PortfolioSection() {
                                     className="flex flex-col gap-4"
                                   >
                                     <div className="w-full overflow-hidden bg-black/20 rounded-2xl border border-white/5">
-                                      {post.mediaType === 'video' && ytId ? (
+                                      {ytId ? (
                                         <div className="aspect-video w-full">
                                           <iframe 
                                             src={`https://www.youtube.com/embed/${ytId}`} 
@@ -450,6 +459,18 @@ export default function PortfolioSection() {
                                             title={post.title[currentLang] || post.title['fr']}
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                             allowFullScreen
+                                          />
+                                        </div>
+                                      ) : (post.mediaType === 'video' || isNativeVideoUrl(post.mediaUrl)) ? (
+                                        <div className="w-full bg-black flex justify-center">
+                                          <video
+                                            src={post.mediaUrl}
+                                            controls
+                                            playsInline
+                                            autoPlay
+                                            loop
+                                            muted
+                                            className="w-full max-h-[480px] object-contain"
                                           />
                                         </div>
                                       ) : (

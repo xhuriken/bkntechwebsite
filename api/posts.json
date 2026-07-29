@@ -1,152 +1,29 @@
 [
   {
-    "id": "15",
-    "category": "gaming",
-    "type": "Netcode",
-    "importance": "minor",
-    "date": "2026-07-23",
-    "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800",
-    "title": {
-      "fr": "Scène Menu, Lobby & Intégration Steamworks",
-      "en": "Menu & Lobby Scene + Steamworks Integration"
-    },
-    "description": {
-      "fr": "Architecture de matchmaking et gestion des salons P2P via l'API Steamworks.NET.",
-      "en": "Matchmaking architecture and P2P lobby management using Steamworks.NET API."
-    },
-    "content": {
-      "fr": "Création de la scène de menu principal et du système de lobby multijoueur interconnecté avec Steam. L'intégration s'appuie sur l'API Steamworks.NET (SteamMatchmaking & SteamNetworking). Le salon utilise les callbacks CreateLobby et JoinLobby pour attribuer un CSteamID unique au salon, permettant la recherche de salons actifs (RequestLobbyList) et l'envoi d'invitations directes via l'Overlay Steam (SteamFriends.ActivateGameOverlayToUser). Le transport des paquets de données s'effectue directement via les Sockets P2P de Steam, dispensant d'un serveur dédié.",
-      "en": "Creation of the main menu scene and Steam-integrated multiplayer lobby system. The integration leverages the Steamworks.NET API (SteamMatchmaking & SteamNetworking). The lobby uses CreateLobby and JoinLobby callbacks to assign a unique CSteamID, enabling active lobby queries (RequestLobbyList) and direct invitations through the Steam Overlay (SteamFriends.ActivateGameOverlayToUser). Packet transport runs over Steam P2P Sockets, eliminating the need for dedicated servers."
-    },
-    "tags": [
-      "Steamworks",
-      "C#",
-      "Steam Lobby",
-      "P2P Sockets"
-    ],
-    "commentsCount": 0
-  },
-  {
-    "id": "16",
-    "category": "gaming",
-    "type": "UI",
-    "importance": "minor",
-    "date": "2026-07-24",
-    "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800",
-    "title": {
-      "fr": "Sélecteur de Couleurs HUD & Navigation Dynamique",
-      "en": "HUD Color Picker & Dynamic Navigation"
-    },
-    "description": {
-      "fr": "Personnalisation des teintes d'armure et micro-animations réactives d'interface.",
-      "en": "Suit color customization and reactive UI micro-animations."
-    },
-    "content": {
-      "fr": "Mise à niveau de l'interface utilisateur avec l'ajout d'un sélecteur de couleurs dynamique pour l'armure et les systèmes du robot (conversion HSL vers RVB en temps réel appliquée aux matériels des joueurs). Intégration de micro-animations réactives lors du survol (hover scale/glow), du clic (tactile bounce feedback) et d'animations passives de respiration/bruit sur les panneaux pour rendre la navigation vivante et fluide.",
-      "en": "Upgraded the user interface with a dynamic color picker for suit and system materials (real-time HSL to RGB conversion updated on character materials). Integrated reactive micro-animations for hover (scale/glow), clicks (tactile bounce feedback), and passive idle breathing/noise routines across UI panels to elevate navigation responsiveness."
-    },
-    "tags": [
-      "Unity UI",
-      "Color Picker",
-      "Micro-Animations",
-      "Material Sync"
-    ],
-    "commentsCount": 0
-  },
-  {
-    "id": "17",
-    "category": "gaming",
-    "type": "Shader",
-    "importance": "minor",
-    "date": "2026-07-25",
-    "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800",
-    "title": {
-      "fr": "Post-Processing Custom : Effet CRT & Lens Distortion",
-      "en": "Custom Post-Processing: CRT Effect & Lens Distortion"
-    },
-    "description": {
-      "fr": "Pipeline graphique URP personnalisé combinant balayage CRT, distorsion optique et étalonnage des couleurs.",
-      "en": "Custom URP render pipeline feature combining CRT scanlines, optical distortion, and color grading."
-    },
-    "content": {
-      "fr": "Intégration d'un profil de Post-Processing sur le Universal Render Pipeline (URP). Développement d'un shader custom HLSL reproduisant l'effet cathodique CRT (lignes de balayage phosphorescentes, décalage sous-pixel RGB, scintillement et déformation d'écran en barillet/barrel warp). Ajout d'une composante de Lens Distortion pour accentuer le champ de vision incurvé du casque robotique, complété par un ajustement de la courbe de contraste et de saturation des couleurs.",
-      "en": "Integrated a custom Post-Processing profile on the Universal Render Pipeline (URP). Developed a custom HLSL CRT shader reproducing vintage monitor scanlines, RGB subpixel displacement, subtle flicker, and barrel warp curvature. Added a Lens Distortion component to emphasize the curved visor FOV of the cleaner robot, coupled with tailored color grading LUTs and saturation curves."
-    },
-    "tags": [
-      "URP Shaders",
-      "HLSL",
-      "CRT Scanlines",
-      "Post-Processing"
-    ],
-    "commentsCount": 0
-  },
-  {
-    "id": "18",
-    "category": "gaming",
-    "type": "UI",
-    "importance": "minor",
-    "date": "2026-07-26",
-    "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800",
-    "title": {
-      "fr": "Design Boutons Ticket Numérique & Palette Vert Émeraude",
-      "en": "Digital Ticket Buttons Design & Emerald Green Theme"
-    },
-    "description": {
-      "fr": "Prototypage de l'UI style ticket perforé et fixation de l'identité visuelle verte.",
-      "en": "Prototyping perforated digital ticket UI buttons and establishing the neon green identity."
-    },
-    "content": {
-      "fr": "Premiers tests d'intégration des boutons du jeu adoptant une esthétique de ticket numérique perforé rétro-futuriste avec bordures dentelées vectorielles. Choix artistique et technique : le vert émeraude (#4edea3) devient la couleur primaire du jeu, un clin d'œil ironique et sarcastique rappelant la végétation et la verdure que les résidents souterrains post-apocalyptiques ne connaissent plus du tout.",
-      "en": "First iteration of in-game action buttons styled as retro-futuristic perforated digital tickets with crisp vector notches. Key aesthetic and design choice: vibrant emerald green (#4edea3) is locked as the game's primary accent color — a sarcastic nod to the lush surface greenery that post-apocalyptic underground dwellers haven't seen in generations."
-    },
-    "tags": [
-      "UI Design",
-      "Ticket Layout",
-      "Green Palette",
-      "Vector UI"
-    ],
-    "commentsCount": 0
-  },
-  {
-    "id": "19",
-    "category": "gaming",
-    "type": "UI",
-    "importance": "major",
-    "date": "2026-07-27",
-    "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800",
-    "title": {
-      "fr": "Menus d'Options Audio, Keybinds & Rendu Vectoriel Shapes",
-      "en": "Audio & Keybind Settings + Freya Holmér's Shapes Vector UI"
-    },
-    "description": {
-      "fr": "Refonte complète des paramètres de jeu avec le package Shapes et remappage d'entrées.",
-      "en": "Complete settings menu overhaul powered by Shapes vector package and input remapping."
-    },
-    "content": {
-      "fr": "Implémentation complète des sous-menus du Main Menu : panneau de réglages Audio (Mixeur 4 canaux : Master, Effets, Musique, Voix avec atténuation décibel logarithmique) et gestionnaire de Contrôles / Keybinds (remap interactif avec détection de conflits via le New Input System de Unity). L'ensemble du rendu visuel a été conçu avec le package Shapes de Freya Holmér : lignes vectorielles tracées au GPU, contours anti-aliasés ultra-propres sans textures matricielles et curseurs dynamiques pour un rendu visuel net à n'importe quelle résolution d'écran.",
-      "en": "Full implementation of Main Menu settings sub-screens: Audio control panel (4-channel AudioMixer bus: Master, SFX, Music, Voice with logarithmic decibel scaling) and Keybinds Manager (interactive input action rebind with collision detection powered by Unity Input System). The entire UI graphics pipeline was built using Freya Holmér's Shapes package: GPU-rendered vector lines, crisp resolution-independent anti-aliased outlines, and vector sliders ensuring pixel-perfect visuals across all screen resolutions."
-    },
-    "tags": [
-      "Freya Holmér Shapes",
-      "Input System",
-      "Audio Mixer",
-      "Vector UI"
-    ],
-    "commentsCount": 0
-  },
-  {
     "id": "20",
     "category": "gaming",
     "type": "UI",
     "importance": "major",
     "date": "2026-07-28",
     "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=800",
+    "mediaUrl": "/uploads/1785340820852_image.png",
+    "gallery": [
+      "/uploads/1785341286187_image2.png"
+    ],
+    "slots": [
+      {
+        "id": "slot-1",
+        "type": "image",
+        "sourceType": "url",
+        "url": "/uploads/1785340820852_image.png"
+      },
+      {
+        "id": "slot-1785341278349-1qsb",
+        "type": "image",
+        "sourceType": "local",
+        "url": "/uploads/1785341286187_image2.png"
+      }
+    ],
     "title": {
       "fr": "Éditeur de Textures & Pupilles Style Tomodachi Life",
       "en": "Tomodachi Life-Inspired Pupil & Texture Editor"
@@ -168,115 +45,123 @@
     "commentsCount": 0
   },
   {
-    "id": "6",
-    "category": "website",
-    "type": "Frontend",
-    "date": "2026-06-20",
-    "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800",
+    "id": "19",
+    "category": "gaming",
+    "type": "UI",
+    "importance": "major",
+    "date": "2026-07-27",
+    "mediaType": "video",
+    "mediaUrl": "https://cdn.discordapp.com/attachments/1484276937844326571/1524831810641723525/2026-07-09_19-34-39.mp4?ex=6a6ae309&is=6a699189&hm=ce9a7832ae888a5866e2ad6ae422a53693f1dd88607feb7f4ae4e3d5e5546efc&",
+    "gallery": [
+      "https://cdn.discordapp.com/attachments/1484276937844326571/1524460773777342557/2026-07-08_19-02-26.mp4?ex=6a6adafb&is=6a69897b&hm=24aa1c9a75de166fb5c8a66ee3e81ea8e99fa25b2e6ad6008d8bd700f7446dce&"
+    ],
+    "slots": [
+      {
+        "id": "slot-1",
+        "type": "video",
+        "sourceType": "url",
+        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1524831810641723525/2026-07-09_19-34-39.mp4?ex=6a6ae309&is=6a699189&hm=ce9a7832ae888a5866e2ad6ae422a53693f1dd88607feb7f4ae4e3d5e5546efc&"
+      },
+      {
+        "id": "slot-1785341405206-qhcv",
+        "type": "video",
+        "sourceType": "url",
+        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1524460773777342557/2026-07-08_19-02-26.mp4?ex=6a6adafb&is=6a69897b&hm=24aa1c9a75de166fb5c8a66ee3e81ea8e99fa25b2e6ad6008d8bd700f7446dce&"
+      }
+    ],
     "title": {
-      "fr": "Dashboard SaaS d'Analyses Financières",
-      "en": "SaaS Financial Analytics Dashboard"
+      "fr": "Menus d'Options Audio, Keybinds & Rendu Vectoriel Shapes",
+      "en": "Audio & Keybind Settings + Freya Holmér's Shapes Vector UI"
     },
     "description": {
-      "fr": "Interface d'analyse financière haute performance avec design system ultra-réactif et bases de données de séries temporelles.",
-      "en": "High-performance financial analytics dashboard featuring an ultra-responsive design system and time-series databases."
+      "fr": "Refonte complète des paramètres de jeu avec le package Shapes et remappage d'entrées.",
+      "en": "Complete settings menu overhaul powered by Shapes vector package and input remapping."
     },
     "content": {
-      "fr": "Ce projet résout les problèmes de rendu à haute fréquence de flux boursiers en direct. L'application intègre des WebSockets optimisés, un cache en mémoire local ultra-rapide et des visualisations fluides sous SVG et Canvas.",
-      "en": "This project handles high-frequency rendering of live stock market feeds. The application integrates optimized WebSockets, a lightning-fast local cache, and data visualizations under Canvas."
+      "fr": "Implémentation complète des sous-menus du Main Menu : panneau de réglages Audio (Mixeur 4 canaux : Master, Effets, Musique, Voix avec atténuation décibel logarithmique) et gestionnaire de Contrôles / Keybinds (remap interactif avec détection de conflits via le New Input System de Unity). L'ensemble du rendu visuel a été conçu avec le package Shapes de Freya Holmér : lignes vectorielles tracées au GPU, contours anti-aliasés ultra-propres sans textures matricielles et curseurs dynamiques pour un rendu visuel net à n'importe quelle résolution d'écran.",
+      "en": "Full implementation of Main Menu settings sub-screens: Audio control panel (4-channel AudioMixer bus: Master, SFX, Music, Voice with logarithmic decibel scaling) and Keybinds Manager (interactive input action rebind with collision detection powered by Unity Input System). The entire UI graphics pipeline was built using Freya Holmér's Shapes package: GPU-rendered vector lines, crisp resolution-independent anti-aliased outlines, and vector sliders ensuring pixel-perfect visuals across all screen resolutions."
     },
     "tags": [
-      "React",
-      "Vite",
-      "WebSockets",
-      "D3.js",
-      "Tailwind CSS"
+      "Freya Holmér Shapes",
+      "Input System",
+      "Audio Mixer",
+      "Vector UI"
     ],
-    "commentsCount": 12
+    "commentsCount": 0
   },
   {
-    "id": "9",
-    "category": "website",
-    "type": "E-Commerce",
-    "date": "2026-07-10",
-    "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=800",
+    "id": "15",
+    "category": "gaming",
+    "type": "Netcode",
+    "importance": "major",
+    "date": "2026-07-25",
+    "mediaType": "video",
+    "mediaUrl": "https://cdn.discordapp.com/attachments/1484276937844326571/1509940407205888050/2026-05-29_17-22-57.mp4?ex=6a6ac3d6&is=6a697256&hm=a28bd9d10ea2cac17f42d5284ba71a4081565e0a8b154e708d9dae88e9be5bbe&",
+    "gallery": [],
+    "slots": [
+      {
+        "id": "slot-1",
+        "type": "video",
+        "sourceType": "url",
+        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1509940407205888050/2026-05-29_17-22-57.mp4?ex=6a6ac3d6&is=6a697256&hm=a28bd9d10ea2cac17f42d5284ba71a4081565e0a8b154e708d9dae88e9be5bbe&"
+      }
+    ],
     "title": {
-      "fr": "Plateforme E-commerce Headless",
-      "en": "Headless E-commerce Platform"
+      "fr": "Scène Menu, Lobby & Intégration Steamworks",
+      "en": "Menu & Lobby Scene + Steamworks Integration"
     },
     "description": {
-      "fr": "Boutique en ligne moderne ultra-rapide connectée à Stripe et GraphQL.",
-      "en": "Ultra-fast headless online storefront powered by Stripe and GraphQL."
+      "fr": "Architecture de matchmaking et gestion des salons P2P via l'API Steamworks.NET.",
+      "en": "Matchmaking architecture and P2P lobby management using Steamworks.NET API."
     },
     "content": {
-      "fr": "Cette architecture sépare le CMS de gestion du rendu dynamique Next.js. Elle permet des temps de chargement ultra-rapides (Lighthouse score 100/100) et intègre des webhooks Stripe résilients pour la gestion de stock.",
-      "en": "This architecture decouples the CMS from the dynamic Next.js storefront. It yields instant page loads (100/100 Lighthouse score) and integrates robust Stripe webhooks for real-time inventory management."
+      "fr": "Création de la scène de menu principal et du système de lobby multijoueur interconnecté avec Steam. L'intégration s'appuie sur l'API Steamworks.NET (SteamMatchmaking & SteamNetworking). Le salon utilise les callbacks CreateLobby et JoinLobby pour attribuer un CSteamID unique au salon, permettant la recherche de salons actifs (RequestLobbyList) et l'envoi d'invitations directes via l'Overlay Steam (SteamFriends.ActivateGameOverlayToUser). Le transport des paquets de données s'effectue directement via les Sockets P2P de Steam, dispensant d'un serveur dédié.",
+      "en": "Creation of the main menu scene and Steam-integrated multiplayer lobby system. The integration leverages the Steamworks.NET API (SteamMatchmaking & SteamNetworking). The lobby uses CreateLobby and JoinLobby callbacks to assign a unique CSteamID, enabling active lobby queries (RequestLobbyList) and direct invitations through the Steam Overlay (SteamFriends.ActivateGameOverlayToUser). Packet transport runs over Steam P2P Sockets, eliminating the need for dedicated servers."
     },
     "tags": [
-      "Next.js",
-      "GraphQL",
-      "Stripe API",
-      "Tailwind CSS",
-      "Headless CMS"
+      "Steamworks",
+      "C#",
+      "Steam Lobby",
+      "P2P Sockets"
     ],
-    "commentsCount": 22
+    "commentsCount": 0
   },
   {
-    "id": "10",
-    "category": "website",
-    "type": "Real-time",
-    "date": "2026-06-02",
+    "id": "18",
+    "category": "gaming",
+    "type": "UI",
+    "importance": "minor",
+    "date": "2026-07-22",
     "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800",
+    "mediaUrl": "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800",
+    "gallery": [],
+    "slots": [
+      {
+        "id": "slot-1",
+        "type": "image",
+        "sourceType": "url",
+        "url": "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800"
+      }
+    ],
     "title": {
-      "fr": "Tableau Collaboratif Temps Réel",
-      "en": "Real-time Collaborative Board"
+      "fr": "Design Boutons Ticket Numérique & Palette Vert Émeraude",
+      "en": "Digital Ticket Buttons Design & Emerald Green Theme"
     },
     "description": {
-      "fr": "Application de tableau blanc partagé utilisant des protocoles WebRTC et CRDT.",
-      "en": "A shared digital whiteboard application using WebRTC and CRDT conflict resolution."
+      "fr": "Prototypage de l'UI style ticket perforé et fixation de l'identité visuelle verte.",
+      "en": "Prototyping perforated digital ticket UI buttons and establishing the neon green identity."
     },
     "content": {
-      "fr": "Notre outil permet à des centaines d'utilisateurs de dessiner et d'organiser des notes simultanément sans serveur centralisé grâce au protocole WebRTC. La cohérence des données est garantie par Yjs.",
-      "en": "Our tool lets hundreds of users draw and organize notes simultaneously without a central server using WebRTC. Data consistency is guaranteed by Yjs CRDTs."
+      "fr": "Premiers tests d'intégration des boutons du jeu adoptant une esthétique de ticket numérique perforé rétro-futuriste avec bordures dentelées vectorielles. Choix artistique et technique : le vert émeraude (#4edea3) devient la couleur primaire du jeu, un clin d'œil ironique et sarcastique rappelant la végétation et la verdure que les résidents souterrains post-apocalyptiques ne connaissent plus du tout.",
+      "en": "First iteration of in-game action buttons styled as retro-futuristic perforated digital tickets with crisp vector notches. Key aesthetic and design choice: vibrant emerald green (#4edea3) is locked as the game's primary accent color — a sarcastic nod to the lush surface greenery that post-apocalyptic underground dwellers haven't seen in generations."
     },
     "tags": [
-      "React",
-      "Vite",
-      "WebRTC",
-      "Yjs CRDTs",
-      "HTML5 Canvas"
+      "UI Design",
+      "Ticket Layout",
+      "Green Palette",
+      "Vector UI"
     ],
-    "commentsCount": 14
-  },
-  {
-    "id": "7",
-    "category": "ai-agent",
-    "type": "Cybersecurity",
-    "date": "2026-05-10",
-    "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800",
-    "title": {
-      "fr": "Agent Autonome PoW Anti-Spam",
-      "en": "Autonomous Anti-Spam PoW Agent"
-    },
-    "description": {
-      "fr": "Un agent d'atténuation du spam par calcul cryptographique local côté client pour protéger les formulaires sans CAPTCHA tiers.",
-      "en": "A client-side cryptographic proof-of-work solver agent protecting forms against spam bots without third-party CAPTCHAs."
-    },
-    "content": {
-      "fr": "Cet agent génère un nonce cryptographique unique et exige une résolution de hachage SHA-256 locale par le navigateur avant d'autoriser l'envoi de requêtes. Cela bloque 99% des robots spammeurs automatisés en consommant moins de 100ms de temps de calcul CPU pour un humain.",
-      "en": "This agent generates a unique cryptographic nonce and requires a client-side SHA-256 proof-of-work solution before allowing requests. This blocks 99% of automated bots while taking less than 100ms of CPU compute for human users."
-    },
-    "tags": [
-      "JavaScript",
-      "Web Crypto API",
-      "SHA-256",
-      "Security"
-    ],
-    "commentsCount": 8
+    "commentsCount": 0
   },
   {
     "id": "11",
@@ -307,58 +192,106 @@
     "commentsCount": 55
   },
   {
-    "id": "12",
-    "category": "ai-agent",
-    "type": "DevOps IA",
-    "date": "2026-06-08",
+    "id": "17",
+    "category": "gaming",
+    "type": "Shader",
+    "importance": "minor",
+    "date": "2026-07-10",
     "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=800",
+    "mediaUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800",
+    "gallery": [],
+    "slots": [
+      {
+        "id": "slot-1",
+        "type": "image",
+        "sourceType": "url",
+        "url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800"
+      }
+    ],
     "title": {
-      "fr": "Agent DevOps IA Refactoring",
-      "en": "AI DevOps Refactoring Agent"
+      "fr": "Post-Processing Custom : Effet CRT & Lens Distortion",
+      "en": "Custom Post-Processing: CRT Effect & Lens Distortion"
     },
     "description": {
-      "fr": "Analyseur autonome de pull requests pour détecter les failles de sécurité et proposer des corrections automatiques.",
-      "en": "An autonomous pull request analyzer detecting security flaws and submitting automated code corrections."
+      "fr": "Pipeline graphique URP personnalisé combinant balayage CRT, distorsion optique et étalonnage des couleurs.",
+      "en": "Custom URP render pipeline feature combining CRT scanlines, optical distortion, and color grading."
     },
     "content": {
-      "fr": "Intégré dans le pipeline CI/CD, cet agent analyse chaque ligne modifiée, détecte les failles de type OWASP Top 10 et propose directement des commits de correction. Il réduit le temps de revue de code de 40%.",
-      "en": "Integrated into the CI/CD pipeline, this agent analyzes every modified line, detects OWASP Top 10 security flaws, and proposes direct pull request edits. It cuts down code review time by 40%."
+      "fr": "Intégration d'un profil de Post-Processing sur le Universal Render Pipeline (URP). Développement d'un shader custom HLSL reproduisant l'effet cathodique CRT (lignes de balayage phosphorescentes, décalage sous-pixel RGB, scintillement et déformation d'écran en barillet/barrel warp). Ajout d'une composante de Lens Distortion pour accentuer le champ de vision incurvé du casque robotique, complété par un ajustement de la courbe de contraste et de saturation des couleurs.",
+      "en": "Integrated a custom Post-Processing profile on the Universal Render Pipeline (URP). Developed a custom HLSL CRT shader reproducing vintage monitor scanlines, RGB subpixel displacement, subtle flicker, and barrel warp curvature. Added a Lens Distortion component to emphasize the curved visor FOV of the cleaner robot, coupled with tailored color grading LUTs and saturation curves."
     },
     "tags": [
-      "GitHub Actions",
-      "Docker",
-      "LLM Fine-tuning",
-      "AST Parsers"
+      "URP Shaders",
+      "HLSL",
+      "CRT Scanlines",
+      "Post-Processing"
     ],
-    "commentsCount": 30
+    "commentsCount": 0
   },
   {
-    "id": "8",
-    "category": "mobile",
-    "type": "Logistics",
-    "date": "2026-04-05",
+    "id": "9",
+    "category": "website",
+    "type": "E-Commerce",
+    "date": "2026-07-10",
     "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800",
+    "mediaUrl": "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=800",
     "title": {
-      "fr": "BKN Tracker Link",
-      "en": "BKN Tracker Link"
+      "fr": "Plateforme E-commerce Headless",
+      "en": "Headless E-commerce Platform"
     },
     "description": {
-      "fr": "Une application iOS et Android de suivi de livraison en temps réel avec géolocalisation haute précision.",
-      "en": "A high-precision real-time delivery tracking application for iOS and Android devices."
+      "fr": "Boutique en ligne moderne ultra-rapide connectée à Stripe et GraphQL.",
+      "en": "Ultra-fast headless online storefront powered by Stripe and GraphQL."
     },
     "content": {
-      "fr": "Développée en Flutter pour unifier le code natif, BKN Tracker Link fournit un suivi précis en arrière-plan à faible consommation énergétique grâce à une gestion dynamique des capteurs GPS et de l'accéléromètre.",
-      "en": "Built on Flutter to unify the native codebase, BKN Tracker Link provides energy-efficient background location tracking through smart sensor fusion of GPS and accelerometer data."
+      "fr": "Cette architecture sépare le CMS de gestion du rendu dynamique Next.js. Elle permet des temps de chargement ultra-rapides (Lighthouse score 100/100) et intègre des webhooks Stripe résilients pour la gestion de stock.",
+      "en": "This architecture decouples the CMS from the dynamic Next.js storefront. It yields instant page loads (100/100 Lighthouse score) and integrates robust Stripe webhooks for real-time inventory management."
     },
     "tags": [
-      "Flutter",
-      "Dart",
-      "Google Maps",
-      "Background Geolocation"
+      "Next.js",
+      "GraphQL",
+      "Stripe API",
+      "Tailwind CSS",
+      "Headless CMS"
     ],
-    "commentsCount": 15
+    "commentsCount": 22
+  },
+  {
+    "id": "16",
+    "category": "gaming",
+    "type": "UI",
+    "importance": "minor",
+    "date": "2026-07-05",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800",
+    "gallery": [],
+    "slots": [
+      {
+        "id": "slot-1",
+        "type": "image",
+        "sourceType": "url",
+        "url": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800"
+      }
+    ],
+    "title": {
+      "fr": "Sélecteur de Couleurs HUD & Navigation Dynamique",
+      "en": "HUD Color Picker & Dynamic Navigation"
+    },
+    "description": {
+      "fr": "Personnalisation des teintes d'armure et micro-animations réactives d'interface.",
+      "en": "Suit color customization and reactive UI micro-animations."
+    },
+    "content": {
+      "fr": "Mise à niveau de l'interface utilisateur avec l'ajout d'un sélecteur de couleurs dynamique pour l'armure et les systèmes du robot (conversion HSL vers RVB en temps réel appliquée aux matériels des joueurs). Intégration de micro-animations réactives lors du survol (hover scale/glow), du clic (tactile bounce feedback) et d'animations passives de respiration/bruit sur les panneaux pour rendre la navigation vivante et fluide.",
+      "en": "Upgraded the user interface with a dynamic color picker for suit and system materials (real-time HSL to RGB conversion updated on character materials). Integrated reactive micro-animations for hover (scale/glow), clicks (tactile bounce feedback), and passive idle breathing/noise routines across UI panels to elevate navigation responsiveness."
+    },
+    "tags": [
+      "Unity UI",
+      "Color Picker",
+      "Micro-Animations",
+      "Material Sync"
+    ],
+    "commentsCount": 0
   },
   {
     "id": "13",
@@ -388,6 +321,89 @@
     "commentsCount": 19
   },
   {
+    "id": "6",
+    "category": "website",
+    "type": "Frontend",
+    "date": "2026-06-20",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800",
+    "title": {
+      "fr": "Dashboard SaaS d'Analyses Financières",
+      "en": "SaaS Financial Analytics Dashboard"
+    },
+    "description": {
+      "fr": "Interface d'analyse financière haute performance avec design system ultra-réactif et bases de données de séries temporelles.",
+      "en": "High-performance financial analytics dashboard featuring an ultra-responsive design system and time-series databases."
+    },
+    "content": {
+      "fr": "Ce projet résout les problèmes de rendu à haute fréquence de flux boursiers en direct. L'application intègre des WebSockets optimisés, un cache en mémoire local ultra-rapide et des visualisations fluides sous SVG et Canvas.",
+      "en": "This project handles high-frequency rendering of live stock market feeds. The application integrates optimized WebSockets, a lightning-fast local cache, and data visualizations under Canvas."
+    },
+    "tags": [
+      "React",
+      "Vite",
+      "WebSockets",
+      "D3.js",
+      "Tailwind CSS"
+    ],
+    "commentsCount": 12
+  },
+  {
+    "id": "12",
+    "category": "ai-agent",
+    "type": "DevOps IA",
+    "date": "2026-06-08",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=800",
+    "title": {
+      "fr": "Agent DevOps IA Refactoring",
+      "en": "AI DevOps Refactoring Agent"
+    },
+    "description": {
+      "fr": "Analyseur autonome de pull requests pour détecter les failles de sécurité et proposer des corrections automatiques.",
+      "en": "An autonomous pull request analyzer detecting security flaws and submitting automated code corrections."
+    },
+    "content": {
+      "fr": "Intégré dans le pipeline CI/CD, cet agent analyse chaque ligne modifiée, détecte les failles de type OWASP Top 10 et propose directement des commits de correction. Il réduit le temps de revue de code de 40%.",
+      "en": "Integrated into the CI/CD pipeline, this agent analyzes every modified line, detects OWASP Top 10 security flaws, and proposes direct pull request edits. It cuts down code review time by 40%."
+    },
+    "tags": [
+      "GitHub Actions",
+      "Docker",
+      "LLM Fine-tuning",
+      "AST Parsers"
+    ],
+    "commentsCount": 30
+  },
+  {
+    "id": "10",
+    "category": "website",
+    "type": "Real-time",
+    "date": "2026-06-02",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800",
+    "title": {
+      "fr": "Tableau Collaboratif Temps Réel",
+      "en": "Real-time Collaborative Board"
+    },
+    "description": {
+      "fr": "Application de tableau blanc partagé utilisant des protocoles WebRTC et CRDT.",
+      "en": "A shared digital whiteboard application using WebRTC and CRDT conflict resolution."
+    },
+    "content": {
+      "fr": "Notre outil permet à des centaines d'utilisateurs de dessiner et d'organiser des notes simultanément sans serveur centralisé grâce au protocole WebRTC. La cohérence des données est garantie par Yjs.",
+      "en": "Our tool lets hundreds of users draw and organize notes simultaneously without a central server using WebRTC. Data consistency is guaranteed by Yjs CRDTs."
+    },
+    "tags": [
+      "React",
+      "Vite",
+      "WebRTC",
+      "Yjs CRDTs",
+      "HTML5 Canvas"
+    ],
+    "commentsCount": 14
+  },
+  {
     "id": "14",
     "category": "mobile",
     "type": "Fintech",
@@ -414,5 +430,59 @@
       "Secure Enclave"
     ],
     "commentsCount": 26
+  },
+  {
+    "id": "7",
+    "category": "ai-agent",
+    "type": "Cybersecurity",
+    "date": "2026-05-10",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800",
+    "title": {
+      "fr": "Agent Autonome PoW Anti-Spam",
+      "en": "Autonomous Anti-Spam PoW Agent"
+    },
+    "description": {
+      "fr": "Un agent d'atténuation du spam par calcul cryptographique local côté client pour protéger les formulaires sans CAPTCHA tiers.",
+      "en": "A client-side cryptographic proof-of-work solver agent protecting forms against spam bots without third-party CAPTCHAs."
+    },
+    "content": {
+      "fr": "Cet agent génère un nonce cryptographique unique et exige une résolution de hachage SHA-256 locale par le navigateur avant d'autoriser l'envoi de requêtes. Cela bloque 99% des robots spammeurs automatisés en consommant moins de 100ms de temps de calcul CPU pour un humain.",
+      "en": "This agent generates a unique cryptographic nonce and requires a client-side SHA-256 proof-of-work solution before allowing requests. This blocks 99% of automated bots while taking less than 100ms of CPU compute for human users."
+    },
+    "tags": [
+      "JavaScript",
+      "Web Crypto API",
+      "SHA-256",
+      "Security"
+    ],
+    "commentsCount": 8
+  },
+  {
+    "id": "8",
+    "category": "mobile",
+    "type": "Logistics",
+    "date": "2026-04-05",
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800",
+    "title": {
+      "fr": "BKN Tracker Link",
+      "en": "BKN Tracker Link"
+    },
+    "description": {
+      "fr": "Une application iOS et Android de suivi de livraison en temps réel avec géolocalisation haute précision.",
+      "en": "A high-precision real-time delivery tracking application for iOS and Android devices."
+    },
+    "content": {
+      "fr": "Développée en Flutter pour unifier le code natif, BKN Tracker Link fournit un suivi précis en arrière-plan à faible consommation énergétique grâce à une gestion dynamique des capteurs GPS et de l'accéléromètre.",
+      "en": "Built on Flutter to unify the native codebase, BKN Tracker Link provides energy-efficient background location tracking through smart sensor fusion of GPS and accelerometer data."
+    },
+    "tags": [
+      "Flutter",
+      "Dart",
+      "Google Maps",
+      "Background Geolocation"
+    ],
+    "commentsCount": 15
   }
 ]

@@ -285,5 +285,51 @@ Initialiser aléatoirement la position de départ de chaque carrousel sur la pag
 - **Attraction Directe d'Aspiration** : La suppression de la force tangentielle permet d'éliminer l'effet d'orbite stellaire ou de "lune gravitationnelle". Les particules s'élancent et foncent droit vers le centre de la lettre `a`, s'y désintégrant à l'impact exact pour simuler à la perfection un flot d'aspiration mécanique continu et puissant (effet d'aspirateur).
 - **Consistance de la Palette** : L'association du type `UI` au vert vif (#4edea3) respecte la direction artistique globale du jeu voulue par l'utilisateur et rend le site visuellement cohérent.
 
+---
+
+## [2026-07-29] Refonte Ergonomique du Dashboard d'Administration (PortfolioAdmin.jsx) & Support Médias Avancé (Images & Vidéos MP4)
+
+### Tâche
+Moderniser la page d'administration (`PortfolioAdmin.jsx`), intégrer un système de filtrage par sous-section/catégorie et de recherche, permettre la modification ultérieure de tous les médias (images et vidéos MP4/WebM), ajouter un sélecteur de fichier local avec prévisualisation en direct, et adapter le rendu vidéo HTML5 côté client.
+
+### Modifications
+- **[PortfolioAdmin.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioAdmin.jsx)** :
+  - Implémentation d'une barre de navigation par sous-section (`Tous`, `Gaming`, `Sites Web`, `Agents IA`, `Mobile Apps`) et d'un champ de recherche temps réel par titre/tag.
+  - Refonte du formulaire en onglets d'édition structurés (`1. Général & Type`, `2. Médias (Image / Vidéo MP4)`, `3. Textes FR / EN`).
+  - Ajout d'un sélecteur de fichier local (`<input type="file" accept="image/*,video/mp4,video/webm">`) convertissant le média sélectionné en Data URL / Blob URL via FileReader.
+  - Intégration d'un module d'aperçu en direct du média (`renderMediaPreview`) qui prend en charge les images, les lecteurs vidéo HTML5 MP4/WebM avec contrôles et les embeds YouTube.
+  - Déblocage de la modification dynamique des médias après la création initiale du post.
+- **[Button.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Button.jsx)** :
+  - Ajout des variantes magnétiques `green` (vert vif émeraude avec ombre au survol), `green-outline` (contour vert), `red` / `danger` (rouge avec ombre néon) et `red-outline` (contour rouge).
+- **[PortfolioAdmin.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioAdmin.jsx)** :
+  - Remplacement du point clignotant par la décoration exacte du portfolio : une barre pilier verticale dégradée (`w-[5px] h-6 rounded-full bg-gradient-to-b from-secondary to-transparent`).
+  - Ajout des animations de déroulement/repliement (accordéon) sur le corps des cartes via `<AnimatePresence>` et `<motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>`.
+  - Intégration de la réorganisation fluide en grille lors du filtrage par recherche ou par onglet de catégorie grâce à `<AnimatePresence mode="popLayout">` et au composant `<motion.div layout>`.
+  - Refonte complète et modernisation du **portail de connexion d'administration** (`!isAuth`) : carte cyber-glassmorphism avec effets de lueur ambiante, texture de bruit SVG, en-tête de terminal restreint (`./admin-auth --secure`), bouton SSOT `<Button variant="green">` avec spinner de chargement et bannière d'erreur stylisée.
+  - Réintégration des badges d'importance (`★ MAJOR` / `MINOR`) à côté de la catégorie et du type sur chaque carte de projet dans le panneau de gauche.
+  - Correction du bug d'input HTML5 : passage du champ `mediaUrl` du type `url` au type `text` afin que les chemins d'accès relatifs `/uploads/...` soient acceptés sans déclencher l'erreur `Veuillez saisir une URL`.
+  - Refonte du système de messages de statut/erreur en carte glassmorphism animée avec `<AnimatePresence>`, icônes réactives (`fa-circle-check`, `fa-triangle-exclamation`, `fa-spinner`) et auto-fermeture.
+  - Ajout du module interactif **Galerie de Captures Complémentaires** dans l'onglet Médias : permet d'uploader plusieurs images/vidéos par sélection de fichier (`+ Ajouter des screens`), de visualiser les vignettes et de supprimer des captures avec mise à jour du tableau `gallery`.
+  - Conversion de la navigation sous-formulaire (`1. Général`, `2. Médias & Slots`, `3. Textes`) au format SSOT exact des onglets de devlogs, avec soulignement actif fluide par Framer Motion (`motion.div layoutId="adminFormSubTabActiveLine"`).
+  - Création du **Gestionnaire de Slots Médias & Galerie (Slot #1 Média Principal + Slots Galerie #2, #3...)** : chaque slot peut basculer indépendamment entre Image ou Vidéo (MP4 local ou Lien URL/YouTube), et être réordonné librement vers le haut (`⬆️ Monter`) ou vers le bas (`⬇️ Descendre`) avec animations `layout` dynamiques. Retrait de l'étoile du badge Slot #1.
+  - Sélection par défaut du filtre **Vacuum Protocol (`gaming`)** à l'ouverture de la page d'administration.
+  - Implémentation du **tri dynamique par valeur de date décroissante** (`b.date - a.date`) dans l'admin et l'API : toute modification de la date d'un post réordonne immédiatement les fiches du plus récent au plus ancien sur toutes les vues (Admin, Devlog, Portfolio).
+  - Conversion des contrôles de slots (Image/Vidéo et Lien URL/Fichier Local) en **interrupteurs à pilule glissante animée SSOT** (glissement fluide via Framer Motion et palettes adaptées).
+  - Ajout des clés `create_title` ("Créer un Nouveau Projet") et `edit_title` ("Modifier le Projet") dans `fr.json` et `en.json` avec chaînes de repli systématiques pour éviter l'affichage de clés brutes.
+  - Encadrement de la transition de succès du formulaire avec `<AnimatePresence mode="wait">` et des animations d'opacité et d'échelle (`scale 0.92 -> 1 -> 0.92`) pour un rendu fluide et organique.
+- **[src/index.css](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/index.css)** :
+  - Ajout de la classe utilitaire `.custom-checkbox` pour styliser sur Chrome et tous les navigateurs les cases à cocher aux couleurs du design system (fond sombre, bordure néon et coche `✓` personnalisée).
+  - Implémentation du sous-routeur de vérification `GET /api/posts?verify=true` avec contrôle strict de `checkAuth()`.
+  - Acceptation de `bkntech` et `admin` ainsi que toute clé configurée dans `ADMIN_PASSWORD`.
+  - Création de l'endpoint serveur `/api/upload` intercepté par Vite en dev et Express en prod.
+  - Enregistrement physique des images et vidéos téléversées dans le dossier du site `public/uploads/` avec génération d'un nom unique sécurisé (`TIMESTAMP_nom.png` / `.mp4`).
+  - Retour et enregistrement d'une URL relative propre et pérenne (`/uploads/...`) à la place des chaînes géantes Data URI/Base64.
+
+### Justification Technique
+- **Stockage Pérenne des Médias** : L'écriture physique des images et vidéos dans `public/uploads/` attribue une URL relative propre (`/uploads/172227...png`) directement servie par le site. Cela évite le stockage de chaînes Data-URI Base64 de plusieurs mégaoctets qui faisaient déborder le fichier `posts.json` et provoquaient des erreurs de limite de payload HTTP.
+- **Ergonomie Admin & Zéro Bug** : La division du formulaire en 3 sous-étapes et le filtrage par onglets améliorent la clarté opérationnelle, évitent les erreurs de frappe et réduisent le défilement vertical.
+- **Rendu HTML5 Performant** : La prise en charge native des balises `<video>` garantit une lecture fluide, silencieuse et en boucle des démos de gameplay Unity directement au cœur des devlogs sans altérer les performances.
+- **Cohérence SSOT & Animations Fluides** : L'utilisation de la barre dégradée verticale exacte, du portail de connexion cyber-glassmorphism, la présence des badges d'importance et la suppression des champs obsolètes unifient l'interface d'administration avec les vues de devlog Vacuum Protocol.
+
 
 
