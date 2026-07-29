@@ -115,29 +115,30 @@ async function main() {
   const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL || env.DISCORD_WEBHOOK_URL;
 
   if (discordWebhookUrl && discordWebhookUrl.startsWith('http')) {
-    console.log('📡 Sending Discord Webhook notification...');
+    const threadTitle = `[${newPost.type}] ${newPost.title.fr}`;
     const discordPayload = {
       username: 'Vacuum Devlog Bot',
       avatar_url: 'https://bkntech.fr/favicon.ico',
+      thread_name: threadTitle.length > 100 ? threadTitle.slice(0, 97) + '...' : threadTitle,
       embeds: [
         {
           title: `🎮 VACUUM DEVLOG | ${newPost.title.fr}`,
-          description: newPost.description.fr || newPost.content.fr.slice(0, 200) + '...',
+          description: newPost.description.fr || (newPost.content.fr ? newPost.content.fr.slice(0, 200) + '...' : ''),
           url: 'https://bkntech.fr/#/devlog',
           color: 0x00f2fe, // Cyan gradient color for Vacuum
           fields: [
             {
-              name: '🌍 Category & Type',
-              value: `\`${newPost.category.toUpperCase()}\` • \`${newPost.type}\``,
+              name: '📌 Type',
+              value: `\`${newPost.type}\``,
               inline: true
             },
             {
               name: '🏷️ Tags',
-              value: newPost.tags.map(t => `\`${t}\``).join(' '),
+              value: newPost.tags && newPost.tags.length > 0 ? newPost.tags.map(t => `\`${t}\``).join(' ') : '`Devlog`',
               inline: true
             },
             {
-              name: '📖 Read Full Update',
+              name: '📖 Devlog Complet',
               value: '[Voir sur le site BknTech](https://bkntech.fr/#/devlog)',
               inline: false
             }
@@ -145,12 +146,13 @@ async function main() {
           image: newPost.mediaUrl ? { url: newPost.mediaUrl.startsWith('http') ? newPost.mediaUrl : `https://bkntech.fr${newPost.mediaUrl}` } : undefined,
           timestamp: new Date().toISOString(),
           footer: {
-            text: 'Bkn Tech Portfolio • Vacuum Game Dev',
+            text: 'Bkn Tech Portfolio • Vacuum Protocol Devlog',
             icon_url: 'https://bkntech.fr/favicon.ico'
           }
         }
       ]
     };
+
 
     try {
       const response = await fetch(discordWebhookUrl, {

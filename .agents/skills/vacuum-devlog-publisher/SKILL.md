@@ -23,9 +23,16 @@ Lors de la commande `/devlog`, l'agent exécute impérativement les actions d'an
    - Inspecter `git status` pour voir les fichiers modifiés ou untracked.
    - Vérifier les ajouts dans `DEVELOPMENT_LOG.md` s'il a été mis à jour.
 
-2. **Synthèse des Features & Modifs** :
-   - Regrouper les modifications par type : `VFX/Shader`, `Gameplay`, `UI`, `3D/Modelisation`, `Core Engine`, `Multiplayer`.
-   - Extraire les concepts clés (ex: particules Niagara, shader d'aspiration, éditeur de textures, réorganisation UI).
+2. **Synthèse & Catégorisation des Types** :
+   - Sélectionner le `type` le plus précis parmi les catégories du salon Discord Vacuum :
+     - `UI` (Éditeur de textures, HUD, menus, interfaces, boutons)
+     - `Player Improvements` (Mouvements, animations, contrôles joueur, caméra)
+     - `Multiplayer` (Netcode, synchronisation, lobby, sessions co-op)
+     - `Core` (Moteur, sauvegardes, systèmes fondamentaux, optimisations)
+     - `3D modeling` (Maillages, décors, props, personnages 3D)
+     - `Shaders` (Effets visuels, post-process, matériaux, particules Niagara)
+     - `Gameplay` (Mécaniques de jeu, aspiration débris, physique, règles)
+
 
 ---
 
