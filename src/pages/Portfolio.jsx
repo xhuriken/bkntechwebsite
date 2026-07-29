@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/Button';
 import { formatLocaleDate } from '../utils/dateFormatter';
+import VacuumParticles from '../components/VacuumParticles';
+
 
 /**
  * Helper to extract YouTube video ID
@@ -47,7 +49,7 @@ function ProjectTerminalList({ tags = [], category = 'gaming' }) {
     if (!isVisible || !tags || tags.length === 0) return;
 
     let timeoutId;
-    
+
     const typeCommand = (charIndex) => {
       if (charIndex <= commandText.length) {
         setTypedCommand(commandText.slice(0, charIndex));
@@ -133,7 +135,7 @@ function ProjectTerminalList({ tags = [], category = 'gaming' }) {
           })}
         </div>
       </div>
-      
+
       {/* Bottom prompt indicator */}
       <div className="flex items-center gap-1 text-white/30 text-[8px] mt-2">
         <span>$</span>
@@ -161,7 +163,7 @@ export default function Portfolio() {
   const currentLang = i18n.language || 'fr';
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
   const [featuredBannerUrl, setFeaturedBannerUrl] = useState('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800');
-
+  const letterORef = useRef(null);
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
     window.addEventListener('resize', handleResize);
@@ -234,19 +236,20 @@ export default function Portfolio() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-6 md:px-12 py-10 z-10 relative">
-      
+      <VacuumParticles targetRef={letterORef} />
+
       {/* Portfolio Header with Admin portal link */}
       <div className="flex justify-between items-end border-b border-white/5 pb-6 mb-12">
         <div>
           <h1 className="font-sans font-extrabold text-3xl md:text-5xl uppercase tracking-tight mb-3">
-            {t('portfolio.title')}
+            PORTF<span ref={letterORef} className="relative inline-block text-primary">O</span>LIO
           </h1>
           <p className="text-on-surface/85 text-sm font-normal tracking-wide max-w-xl">
             {t('portfolio.subtitle')}
           </p>
         </div>
-        <Link 
-          to="/portfolio/admin" 
+        <Link
+          to="/portfolio/admin"
           className="w-10 h-10 rounded-xl bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all duration-300 group"
           title={t('portfolio.admin.title')}
         >
@@ -265,14 +268,14 @@ export default function Portfolio() {
           {t('portfolio.loading')}
         </div>
       ) : (
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           className="flex flex-col gap-10 md:gap-12"
         >
           {/* Projet à la une : Vacuum Protocol */}
-          <motion.div 
+          <motion.div
             variants={sectionVariants}
             className="w-full bg-surface-container-low/40 backdrop-blur-md border border-white/5 hover:border-primary/10 rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 relative"
           >
@@ -282,8 +285,8 @@ export default function Portfolio() {
             {/* Terminal Header */}
             <div className="w-full bg-black/60 border-b border-white/5 px-6 py-3 flex items-center justify-between font-mono text-[10px] text-green-400 select-none relative overflow-hidden">
               {/* Passive Noise Texture background */}
-              <div 
-                className="absolute inset-0 opacity-15 pointer-events-none" 
+              <div
+                className="absolute inset-0 opacity-15 pointer-events-none"
                 style={{
                   backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
                   backgroundBlendMode: 'soft-light'
@@ -308,10 +311,10 @@ export default function Portfolio() {
                 <div className="flex flex-col md:flex-row items-stretch gap-6 p-6">
                   {/* Cinematic Banner Image/Thumbnail */}
                   <div className="md:w-1/2 aspect-video overflow-hidden rounded-xl border border-white/5 relative bg-black/40 flex-shrink-0">
-                    <img 
-                      src={featuredBannerUrl} 
-                      alt="Vacuum Protocol" 
-                      className="w-full h-full object-cover hover:scale-102 transition-transform duration-700" 
+                    <img
+                      src={featuredBannerUrl}
+                      alt="Vacuum Protocol"
+                      className="w-full h-full object-cover hover:scale-102 transition-transform duration-700"
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800';
@@ -337,7 +340,7 @@ export default function Portfolio() {
 
                     {/* CTA Buttons */}
                     <div className="flex flex-wrap gap-4 mt-auto">
-                      <Button 
+                      <Button
                         variant="primary"
                         onClick={() => navigate('/portfolio/section/gaming')}
                       >
@@ -347,7 +350,7 @@ export default function Portfolio() {
                         </svg>
                       </Button>
 
-                      <Button 
+                      <Button
                         variant="black"
                         href="https://discord.gg/bkntech"
                         target="_blank"
@@ -370,7 +373,7 @@ export default function Portfolio() {
 
           {categories.map((cat) => {
             const catPosts = posts.filter(p => p.category === cat.key);
-            
+
             // Map category key to its specific brand color gradient
             const getCategoryGradient = (catKey) => {
               if (catKey === 'website') return 'from-secondary to-transparent';
@@ -379,8 +382,8 @@ export default function Portfolio() {
             };
 
             return (
-              <motion.section 
-                key={cat.key} 
+              <motion.section
+                key={cat.key}
                 variants={sectionVariants}
                 className="flex flex-col gap-5"
               >
@@ -393,7 +396,7 @@ export default function Portfolio() {
                       {cat.title}
                     </h2>
                   </div>
-                  <Link 
+                  <Link
                     to={`/portfolio/section/${cat.key}`}
                     className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold uppercase tracking-wider text-on-surface hover:text-primary transition-colors group"
                   >
@@ -409,16 +412,16 @@ export default function Portfolio() {
                   <div className="bg-surface-container-low/30 backdrop-blur-sm border border-white/5 rounded-2xl py-12 px-6 text-center text-xs font-sans font-medium text-on-surface-variant/70 uppercase tracking-wide">
                     {t('portfolio.no_projects')}
                   </div>
-                                ) : (() => {
+                ) : (() => {
                   const selectedIndex = selectedIndices[cat.key] || 0;
                   const N = catPosts.length;
-                  const offsetIndex = isMobile 
-                    ? selectedIndex 
-                    : (N <= 3 
-                        ? (selectedIndex === 2 ? 1 : 0) 
-                        : Math.min(Math.max(0, selectedIndex - 2), N - 3)
-                      );
-                  
+                  const offsetIndex = isMobile
+                    ? selectedIndex
+                    : (N <= 3
+                      ? (selectedIndex === 2 ? 1 : 0)
+                      : Math.min(Math.max(0, selectedIndex - 2), N - 3)
+                    );
+
                   const getCategoryTheme = (catKey) => {
                     if (catKey === 'website') return { bg: 'bg-secondary', text: 'text-secondary', shadow: 'rgba(78, 222, 163, 0.15)', shadowHover: 'rgba(78, 222, 163, 0.4)', activeBorder: 'border-secondary/40' };
                     if (catKey === 'ai-agent') return { bg: 'bg-tertiary', text: 'text-tertiary', shadow: 'rgba(255, 185, 95, 0.15)', shadowHover: 'rgba(255, 185, 95, 0.4)', activeBorder: 'border-tertiary/40' };
@@ -430,17 +433,17 @@ export default function Portfolio() {
                     <div className="relative overflow-hidden w-full px-1 py-4 -mx-1">
                       {/* Gradient overlay fades for soft overflow masking */}
                       <div className={`absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#12131b] to-transparent pointer-events-none z-20 transition-opacity duration-300 ${offsetIndex > 0 ? 'opacity-100' : 'opacity-0'}`} />
-                      <div className={`absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#12131b] to-transparent pointer-events-none z-20 transition-opacity duration-300 ${
-                        isMobile 
-                          ? (offsetIndex < N - 1 ? 'opacity-100' : 'opacity-0')
-                          : (N <= 3 
-                              ? (offsetIndex < 1 ? 'opacity-100' : 'opacity-0')
-                              : (offsetIndex < N - 3 ? 'opacity-100' : 'opacity-0')
-                            )
-                      }`} />
+                      <div className={`absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#12131b] to-transparent pointer-events-none z-20 transition-opacity duration-300 ${isMobile
+                        ? (offsetIndex < N - 1 ? 'opacity-100' : 'opacity-0')
+                        : (N <= 3
+                          ? (offsetIndex < 1 ? 'opacity-100' : 'opacity-0')
+                          : (offsetIndex < N - 3 ? 'opacity-100' : 'opacity-0')
+                        )
+                        }`} />
 
                       {/* Style block for responsive variable support in our CSS transitions */}
-                      <style dangerouslySetInnerHTML={{__html: `
+                      <style dangerouslySetInnerHTML={{
+                        __html: `
                         .carousel-track-${cat.key} {
                           --card-width: 360px;
                           --gap: 24px;
@@ -453,26 +456,25 @@ export default function Portfolio() {
                           }
                         }
                       `}} />
-                      
+
                       {/* Carousel Track Container */}
-                      <div 
+                      <div
                         className={`flex gap-6 carousel-track-${cat.key}`}
                         style={{ '--offset-index': offsetIndex }}
                       >
                         {catPosts.map((post, idx) => {
                           const isActive = idx === selectedIndex;
-                          
+
                           return (
                             <div
                               key={post.id}
                               onClick={() => setSelectedIndices(prev => ({ ...prev, [cat.key]: idx }))}
-                              className={`flex-shrink-0 w-[360px] sm:w-[440px] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-200 flex flex-col group cursor-pointer border ${
-                                isActive 
-                                  ? `opacity-100 scale-100 ${theme.activeBorder} bg-surface-container-low/60 shadow-[0_0_25px_${theme.shadow}]`
-                                  : 'opacity-70 hover:opacity-90 scale-[0.98] border-white/5 bg-surface-container-low/20'
-                              }`}
+                              className={`flex-shrink-0 w-[360px] sm:w-[440px] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-200 flex flex-col group cursor-pointer border ${isActive
+                                ? `opacity-100 scale-100 ${theme.activeBorder} bg-surface-container-low/60 shadow-[0_0_25px_${theme.shadow}]`
+                                : 'opacity-70 hover:opacity-90 scale-[0.98] border-white/5 bg-surface-container-low/20'
+                                }`}
                             >
-                              <Link 
+                              <Link
                                 to={`/portfolio/section/${post.category}#post-${post.id}`}
                                 onClick={(e) => {
                                   // Prevent navigating if this wasn't the active card
@@ -485,8 +487,8 @@ export default function Portfolio() {
                                 {/* Terminal Header */}
                                 <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none relative overflow-hidden">
                                   {/* Passive Noise Texture background */}
-                                  <div 
-                                    className="absolute inset-0 opacity-15 pointer-events-none" 
+                                  <div
+                                    className="absolute inset-0 opacity-15 pointer-events-none"
                                     style={{
                                       backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
                                       backgroundBlendMode: 'soft-light'
@@ -513,8 +515,8 @@ export default function Portfolio() {
                                   <div className="flex-1 flex flex-col justify-between overflow-hidden">
                                     {/* Image/Video preview (flush to borders) */}
                                     <div className="relative aspect-video overflow-hidden bg-black/40 border-b border-white/5 w-full flex-shrink-0">
-                                      <img 
-                                        src={getMediaThumbnail(post)} 
+                                      <img
+                                        src={getMediaThumbnail(post)}
                                         alt={post.title[currentLang] || post.title['fr']}
                                         className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
                                         loading="lazy"
@@ -564,16 +566,15 @@ export default function Portfolio() {
                       <div className="flex items-center justify-center gap-2 mt-6">
                         {catPosts.map((_, idx) => {
                           const isActive = idx === selectedIndex;
-                          
+
                           return (
                             <button
                               key={idx}
                               onClick={() => setSelectedIndices(prev => ({ ...prev, [cat.key]: idx }))}
-                              className={`h-1.5 rounded-full transition-all duration-200 cursor-pointer ${
-                                isActive 
-                                  ? `w-6 ${theme.bg}` 
-                                  : 'w-1.5 bg-white/20 hover:bg-white/40'
-                              }`}
+                              className={`h-1.5 rounded-full transition-all duration-200 cursor-pointer ${isActive
+                                ? `w-6 ${theme.bg}`
+                                : 'w-1.5 bg-white/20 hover:bg-white/40'
+                                }`}
                               style={isActive ? { boxShadow: `0 0 8px ${theme.shadowHover}` } : {}}
                               aria-label={`Go to slide ${idx + 1}`}
                             />

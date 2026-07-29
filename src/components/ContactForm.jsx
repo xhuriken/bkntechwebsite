@@ -40,8 +40,8 @@ function TerminalList() {
   const [typedCommand, setTypedCommand] = useState("");
   const [showTagsCount, setShowTagsCount] = useState(0);
   const [coloredTagsCount, setColoredTagsCount] = useState(0);
-  
-  const stack = ['laravel', 'react', 'unity', 'flutter', 'docker', 'tailwind', 'mirror'];
+
+  const stack = ['laravel', 'react', 'javascript', 'flutter', 'docker', 'tailwind', 'unity'];
   const commandText = "ls keywords";
 
   useEffect(() => {
@@ -59,7 +59,7 @@ function TerminalList() {
     if (!isVisible || !stack || stack.length === 0) return;
 
     let timeoutId;
-    
+
     const typeCommand = (charIndex) => {
       if (charIndex <= commandText.length) {
         setTypedCommand(commandText.slice(0, charIndex));
@@ -119,7 +119,7 @@ function TerminalList() {
           })}
         </div>
       </div>
-      
+
       {/* Bottom prompt indicator */}
       <div className="flex items-center gap-1 text-white/30 text-[8px] mt-2">
         <span>$</span>
@@ -284,7 +284,7 @@ export default function ContactForm() {
             {/* Obfuscated Contact Information Pins with Hover Actions */}
             <div className="flex flex-col gap-3 items-start -mx-3 mt-6 mb-8">
               {/* E-mail Pin */}
-              <motion.a 
+              <motion.a
                 href={`mailto:${emailText}`}
                 whileHover={{ x: 6 }}
                 className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer w-full"
@@ -301,7 +301,7 @@ export default function ContactForm() {
               </motion.a>
 
               {/* Téléphone Pin */}
-              <motion.a 
+              <motion.a
                 href={`tel:${phoneText.replace(/\s/g, '')}`}
                 whileHover={{ x: 6 }}
                 className="flex items-center gap-4 p-3 rounded-2xl bg-transparent border border-transparent hover:bg-white/[0.02] hover:border-white/5 transition-all duration-300 group cursor-pointer w-full"
@@ -318,7 +318,7 @@ export default function ContactForm() {
               </motion.a>
 
               {/* Localisation Pin */}
-              <motion.a 
+              <motion.a
                 href="https://maps.google.com/?q=BKN+Tech+47+rue+Vivienne+75002+Paris"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -352,8 +352,8 @@ export default function ContactForm() {
         {/* Form Column (Right) */}
         <div className="lg:col-span-7 bg-surface-container-low/45 backdrop-blur-md border border-white/5 pt-8 pb-5 px-5 md:px-6 md:pt-8 md:pb-6 rounded-2xl relative overflow-hidden flex flex-col">
           {/* Noise Texture Background */}
-          <div 
-            className="absolute inset-0 opacity-[0.07] pointer-events-none z-0" 
+          <div
+            className="absolute inset-0 opacity-[0.07] pointer-events-none z-0"
             style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
               backgroundBlendMode: 'soft-light'
@@ -361,7 +361,7 @@ export default function ContactForm() {
           />
 
           {/* Subtle Radial Grid backdrop pattern */}
-          <div 
+          <div
             className="absolute inset-0 opacity-[0.03] pointer-events-none z-0"
             style={{
               backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.15) 1px, transparent 0)',
@@ -382,11 +382,10 @@ export default function ContactForm() {
                       key={key}
                       type="button"
                       onClick={() => selectTemplate(key)}
-                      className={`text-xs font-sans uppercase tracking-wider pb-2 transition-all duration-200 relative cursor-pointer whitespace-nowrap focus:outline-none ${
-                        isActive
-                          ? 'text-secondary font-extrabold'
-                          : 'text-on-surface-variant/60 font-semibold hover:text-on-surface'
-                      }`}
+                      className={`text-xs font-sans uppercase tracking-wider pb-2 transition-all duration-200 relative cursor-pointer whitespace-nowrap focus:outline-none ${isActive
+                        ? 'text-secondary font-extrabold'
+                        : 'text-on-surface-variant/60 font-semibold hover:text-on-surface'
+                        }`}
                     >
                       <span>{label}</span>
                       {isActive && (
