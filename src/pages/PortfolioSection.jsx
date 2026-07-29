@@ -280,7 +280,7 @@ export default function PortfolioSection() {
                 key={post.id} 
                 id={`post-${post.id}`}
                 variants={itemVariants}
-                className="relative w-full bg-surface-container-low/25 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl p-6 md:p-8 transition-all duration-300 flex flex-col gap-6 group"
+                className="relative w-full bg-surface-container-low/25 backdrop-blur-md border border-white/5 hover:border-white/10 rounded-2xl pt-4 md:pt-5 pb-6 md:pb-8 px-6 md:px-8 transition-all duration-300 flex flex-col gap-6 group"
               >
                 {/* Sticky Dot Wrapper (Desktop & Mobile) - Slides down its thread line */}
                 <div className="absolute left-0 top-0 bottom-0 -ml-[39px] md:-ml-[57px] w-4 pointer-events-none">
@@ -306,9 +306,17 @@ export default function PortfolioSection() {
                   <div className="lg:col-span-10 flex flex-col gap-4">
                     {/* Title & Type header */}
                     <div className="flex flex-col gap-1">
-                      <h2 className="font-sans font-extrabold text-xl md:text-2xl text-on-surface leading-snug">
-                        {post.title[currentLang] || post.title['fr']}
-                      </h2>
+                      <div className="flex items-center gap-2.5">
+                        {/* Animated vertical brand-colored gradient pill */}
+                        <span className={`w-1 h-5 rounded-full bg-gradient-to-b ${
+                          category === 'website' ? 'from-secondary to-transparent' :
+                          category === 'ai-agent' ? 'from-tertiary to-transparent' :
+                          'from-primary to-transparent'
+                        }`} />
+                        <h2 className="font-sans font-extrabold text-xl md:text-2xl text-on-surface leading-snug">
+                          {post.title[currentLang] || post.title['fr']}
+                        </h2>
+                      </div>
                     </div>
 
                     {/* Detailed Tab Navigation */}

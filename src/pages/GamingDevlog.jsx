@@ -489,12 +489,16 @@ function DevlogPostCard({ post, currentLang }) {
         </div>
 
         {/* Card Content - Inner Padding */}
-        <div className="p-5 md:p-6 flex flex-col gap-4">
+        <div className="pt-3 md:pt-4 pb-5 md:pb-6 px-5 md:px-6 flex flex-col gap-4">
           {/* Post Text Description */}
           <div className="flex flex-col gap-2">
-            <h3 className="font-sans font-bold text-sm text-on-surface group-hover:text-primary transition-colors">
-              {post.title[currentLang] || post.title['fr']}
-            </h3>
+            <div className="flex items-center gap-2">
+              {/* Animated vertical brand-colored gradient pill */}
+              <span className="w-1 h-4 rounded-full bg-gradient-to-b from-primary to-transparent flex-shrink-0" />
+              <h3 className="font-sans font-bold text-sm text-on-surface group-hover:text-primary transition-colors">
+                {post.title[currentLang] || post.title['fr']}
+              </h3>
+            </div>
             {post.description && (
               <p className="text-xs text-on-surface-variant leading-relaxed italic">
                 {post.description[currentLang] || post.description['fr']}
