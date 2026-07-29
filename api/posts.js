@@ -159,32 +159,43 @@ export default async function handler(req, res) {
     }
 
     // Trigger Discord Webhook Notification if configured and category is gaming
-    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
-    if (postToDiscord && webhookUrl && category === 'gaming') {
+    const webhookUrl = process.env.DISCORD_WEBHOOK_URL || 'https://discord.com/api/webhooks/1532066598444339330/c1sv3Pk93YQQdrNi417x3qYicTjoYHF0hrsEPmAUfrf0d-3EBybswVzjPv76dAjwdFup';
+    if ((postToDiscord || postToDiscord === undefined) && webhookUrl && category === 'gaming') {
       try {
+        const threadTitle = `[${postData.type}] ${titleFr}`;
         fetch(webhookUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            username: 'Vacuum Devlog Bot',
+            avatar_url: 'https://bkntech.fr/favicon.ico',
+            thread_name: threadTitle.length > 100 ? threadTitle.slice(0, 97) + '...' : threadTitle,
             embeds: [{
-              title: `🛠️ BKN Tech Devlog : ${title.fr}`,
-              description: `**${description.fr}**\n\n${content.fr.slice(0, 400)}`,
+              title: `🎮 VACUUM DEVLOG | ${titleFr}`,
+              description: descFr || (contentFr ? contentFr.slice(0, 250) + '...' : ''),
+              url: 'https://bkntech.fr/#/devlog',
+              color: 0x00f2fe,
               fields: [
-                { name: 'Catégorie / Type', value: postData.type, inline: true },
-                { name: 'Date', value: postData.date, inline: true }
+                { name: '📌 Type', value: `\`${postData.type}\``, inline: true },
+                { name: '🏷️ Tags', value: postData.tags && postData.tags.length > 0 ? postData.tags.map(t => `\`${t}\``).join(' ') : '`Devlog`', inline: true },
+                { name: '📖 Devlog Complet', value: '[Voir sur le site BknTech](https://bkntech.fr/#/devlog)', inline: false }
               ],
-              image: postData.mediaType === 'image' ? { url: postData.mediaUrl } : undefined,
-              color: 0xbec2ff
+              image: postData.mediaType === 'image' && postData.mediaUrl ? { url: postData.mediaUrl.startsWith('http') ? postData.mediaUrl : `https://bkntech.fr${postData.mediaUrl}` } : undefined,
+              timestamp: new Date().toISOString(),
+              footer: { text: 'Bkn Tech Portfolio • Vacuum Protocol Devlog', icon_url: 'https://bkntech.fr/favicon.ico' }
             }]
           })
         }).catch(err => console.error("Error executing discord webhook promise:", err));
-      } catch (webhookErr) {
-        console.error("Failed to invoke Discord Webhook:", webhookErr);
+
+      } catch (err) {
+        console.error("Discord notification error:", err);
       }
     }
 
+
     return res.status(200).json(posts);
   }
+
 
   // 4. DELETE Request
   if (req.method === 'DELETE') {
