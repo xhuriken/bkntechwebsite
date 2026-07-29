@@ -62,14 +62,14 @@ export default function Navbar() {
               key={link.path}
               to={link.path}
               onClick={(e) => handleLinkClick(e, link)}
-              className={`relative py-1 font-sans font-semibold text-[11px] uppercase tracking-[0.15em] transition-all duration-300 ${
+              className={`relative py-1 font-sans font-semibold text-[11px] uppercase tracking-[0.15em] transition-all duration-150 ${
                 isActive ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
               } group/link`}
             >
               {link.name}
               {/* Responsive underline hover/active effect */}
               <div 
-                className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300 ${
+                className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-150 ${
                   isActive ? 'w-full' : 'w-0 group-hover/link:w-full'
                 }`}
               />
@@ -95,9 +95,9 @@ export default function Navbar() {
         className="md:hidden flex flex-col justify-center items-center w-6 h-6 gap-1.5 z-50 relative cursor-pointer focus:outline-none"
         aria-label="Menu principal"
       >
-        <span className={`w-6 h-0.5 bg-on-surface transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-[6px]' : ''}`} />
-        <span className={`w-6 h-0.5 bg-on-surface transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`} />
-        <span className={`w-6 h-0.5 bg-on-surface transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-[6px]' : ''}`} />
+        <span className={`w-6 h-0.5 bg-on-surface transition-all duration-150 ${isOpen ? 'rotate-45 translate-y-[6px]' : ''}`} />
+        <span className={`w-6 h-0.5 bg-on-surface transition-all duration-150 ${isOpen ? 'opacity-0' : ''}`} />
+        <span className={`w-6 h-0.5 bg-on-surface transition-all duration-150 ${isOpen ? '-rotate-45 -translate-y-[6px]' : ''}`} />
       </button>
 
       {/* Mobile Navigation Drawer */}

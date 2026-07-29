@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import InputField from '../components/InputField';
+import { formatLocaleDate } from '../utils/dateFormatter';
 
 /**
  * PortfolioAdmin Page Component
@@ -9,7 +10,8 @@ import InputField from '../components/InputField';
  * and export the active posts.json database.
  */
 export default function PortfolioAdmin() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language || 'fr';
   const [password, setPassword] = useState(localStorage.getItem('bkn_admin_pass') || '');
   const [isAuth, setIsAuth] = useState(false);
   const [authError, setAuthError] = useState('');
@@ -328,7 +330,7 @@ export default function PortfolioAdmin() {
                     <h3 className="font-sans font-bold text-xs text-on-surface line-clamp-1">
                       {post.title.fr}
                     </h3>
-                    <span className="text-[9px] font-sans text-on-surface-variant/60">{post.date}</span>
+                    <span className="text-[9px] font-sans text-on-surface-variant/60">{formatLocaleDate(post.date, currentLang)}</span>
                   </div>
                   <div className="flex gap-2 flex-shrink-0">
                     <button 

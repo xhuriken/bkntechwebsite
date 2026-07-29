@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { formatLocaleDate } from '../utils/dateFormatter';
 
 /**
  * Helper to extract YouTube video ID
@@ -281,12 +282,12 @@ export default function PortfolioSection() {
                   transition={{ duration: 0.5, delay: 0.05 }}
                   className={`hidden md:block absolute -left-[175px] top-[26px] w-[110px] text-right font-mono text-[10px] tracking-wide font-bold ${dotColors.text}`}
                 >
-                  {post.date}
+                  {formatLocaleDate(post.date, currentLang)}
                 </motion.div>
 
                 {/* Mobile Date (visible only on mobile) */}
                 <div className={`md:hidden font-mono text-[10px] font-bold ${dotColors.text}`}>
-                  {post.date}
+                  {formatLocaleDate(post.date, currentLang)}
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">

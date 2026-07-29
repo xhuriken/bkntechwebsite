@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { formatLocaleDate } from '../utils/dateFormatter';
 
 /**
  * Helper to extract YouTube video ID
@@ -434,7 +435,7 @@ function DevlogPostCard({ post, currentLang }) {
         transition={{ duration: 0.5, delay: 0.05 }}
         className={`hidden md:block absolute -left-[175px] top-[26px] w-[110px] text-right font-mono text-[10px] tracking-wide font-bold z-10 ${dotColors.text}`}
       >
-        {post.date}
+        {formatLocaleDate(post.date, currentLang)}
       </motion.div>
 
       {/* Card Wrapper (maintains overflow-hidden and hover styling) */}
@@ -465,7 +466,7 @@ function DevlogPostCard({ post, currentLang }) {
           
           {/* Date on Right (Absolute & Relative) */}
           <div className="flex items-center gap-2 text-on-surface-variant/70 font-semibold relative z-10">
-            <span className="md:hidden text-on-surface-variant/90 font-bold">{post.date}</span>
+            <span className="md:hidden text-on-surface-variant/90 font-bold">{formatLocaleDate(post.date, currentLang)}</span>
             <span className="hidden md:inline text-on-surface-variant/30">•</span>
             <span className="text-on-surface font-bold">{relativeDate}</span>
           </div>

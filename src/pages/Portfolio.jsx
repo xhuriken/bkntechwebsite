@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/Button';
+import { formatLocaleDate } from '../utils/dateFormatter';
 
 /**
  * Helper to extract YouTube video ID
@@ -144,78 +145,7 @@ function ProjectTerminalList({ tags = [], category = 'gaming' }) {
   );
 }
 
-/**
- * A horizontal scroll wrapper that redirects vertical mouse wheel input 
- * into smooth horizontal scroll, without blocking native layout click/scrolling.
- */
-function CarouselList({ children }) {
-  const containerRef = useRef(null);
-  const targetScrollRef = useRef(0);
-  const animationFrameRef = useRef(null);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    // Track scroll events from mouse or trackpad to keep target position synced
-    const handleScroll = () => {
-      // If the scroll was triggered by native touch or momentum, synchronize our target
-      if (!animationFrameRef.current) {
-        targetScrollRef.current = container.scrollLeft;
-      }
-    };
-    container.addEventListener('scroll', handleScroll, { passive: true });
-
-    targetScrollRef.current = container.scrollLeft;
-
-    const smoothScroll = () => {
-      const diff = targetScrollRef.current - container.scrollLeft;
-      if (Math.abs(diff) > 0.5) {
-        container.scrollLeft += diff * 0.12; // Easing speed factor
-        animationFrameRef.current = requestAnimationFrame(smoothScroll);
-      } else {
-        container.scrollLeft = targetScrollRef.current;
-        animationFrameRef.current = null;
-      }
-    };
-
-    const handleWheel = (e) => {
-      if (e.deltaY !== 0) {
-        const canScrollLeft = container.scrollLeft > 0;
-        const maxScroll = container.scrollWidth - container.clientWidth;
-        const canScrollRight = container.scrollLeft < maxScroll - 10;
-        
-        // Intercept vertical scroll only if we can scroll the carousel in the desired direction
-        if ((e.deltaY > 0 && canScrollRight) || (e.deltaY < 0 && canScrollLeft)) {
-          e.preventDefault();
-          // Update target destination clamped within boundaries
-          targetScrollRef.current = Math.max(0, Math.min(targetScrollRef.current + e.deltaY * 0.85, maxScroll));
-
-          // Trigger smooth frame loop if not already running
-          if (!animationFrameRef.current) {
-            animationFrameRef.current = requestAnimationFrame(smoothScroll);
-          }
-        }
-      }
-    };
-
-    container.addEventListener('wheel', handleWheel, { passive: false });
-    return () => {
-      container.removeEventListener('scroll', handleScroll);
-      container.removeEventListener('wheel', handleWheel);
-      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-    };
-  }, []);
-
-  return (
-    <div 
-      ref={containerRef} 
-      className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent -mx-6 px-6 md:mx-0 md:px-0"
-    >
-      {children}
-    </div>
-  );
-}
 
 /**
  * Portfolio Main Page Component
@@ -227,7 +157,15 @@ export default function Portfolio() {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedIndices, setSelectedIndices] = useState({ website: 0, 'ai-agent': 0, mobile: 0 });
   const currentLang = i18n.language || 'fr';
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     fetch('/api/posts')
@@ -443,93 +381,180 @@ export default function Portfolio() {
                   <div className="bg-surface-container-low/30 backdrop-blur-sm border border-white/5 rounded-2xl py-12 px-6 text-center text-xs font-sans font-medium text-on-surface-variant/70 uppercase tracking-wide">
                     {t('portfolio.no_projects')}
                   </div>
-                ) : (
-                  <div className="relative">
-                    {/* Carousel Scroll Wrapper */}
-                    <CarouselList>
-                      {catPosts.map((post) => (
-                        <Link 
-                          to={`/portfolio/section/${post.category}`}
-                          key={post.id}
-                          className="flex-shrink-0 w-[360px] sm:w-[440px] bg-surface-container-low/45 backdrop-blur-md border border-white/5 hover:border-primary/20 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer"
-                        >
-                          {/* Terminal Header */}
-                          <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none relative overflow-hidden">
-                            {/* Passive Noise Texture background */}
-                            <div 
-                              className="absolute inset-0 opacity-15 pointer-events-none" 
-                              style={{
-                                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-                                backgroundBlendMode: 'soft-light'
-                              }}
-                            />
-                            <div className="flex items-center gap-1.5 overflow-hidden relative z-10">
-                              <span className="relative w-3.5 h-3.5 flex items-center justify-center text-primary mr-1.5 flex-shrink-0">
-                                <i className="fa-regular fa-folder absolute transition-all duration-200 group-hover:opacity-0 group-hover:scale-90"></i>
-                                <i className="fa-regular fa-folder-open absolute transition-all duration-200 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"></i>
-                              </span>
-                              <span className="text-[8px] uppercase tracking-wider text-on-surface-variant/40">~/{post.category}</span>
-                            </div>
-                            <div className="flex items-center gap-1 text-[8px] font-sans font-bold uppercase tracking-wider text-primary group-hover:text-white transition-colors relative z-10">
-                              <span>{t('portfolio.open')}</span>
-                              <svg className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                              </svg>
-                            </div>
-                          </div>
+                                ) : (() => {
+                  const selectedIndex = selectedIndices[cat.key] || 0;
+                  const N = catPosts.length;
+                  const offsetIndex = isMobile 
+                    ? selectedIndex 
+                    : (N <= 3 
+                        ? (selectedIndex === 2 ? 1 : 0) 
+                        : Math.min(Math.max(0, selectedIndex - 2), N - 3)
+                      );
+                  
+                  const getCategoryTheme = (catKey) => {
+                    if (catKey === 'website') return { bg: 'bg-secondary', text: 'text-secondary', shadow: 'rgba(78, 222, 163, 0.15)', shadowHover: 'rgba(78, 222, 163, 0.4)', activeBorder: 'border-secondary/40' };
+                    if (catKey === 'ai-agent') return { bg: 'bg-tertiary', text: 'text-tertiary', shadow: 'rgba(255, 185, 95, 0.15)', shadowHover: 'rgba(255, 185, 95, 0.4)', activeBorder: 'border-tertiary/40' };
+                    return { bg: 'bg-primary', text: 'text-primary', shadow: 'rgba(190, 194, 255, 0.15)', shadowHover: 'rgba(190, 194, 255, 0.4)', activeBorder: 'border-primary/40' };
+                  };
+                  const theme = getCategoryTheme(cat.key);
 
-                          {/* Body Split */}
-                          <div className="flex flex-row items-stretch flex-grow">
-                            {/* Left Column (flex-grow) - Image flush & Text details */}
-                            <div className="flex-1 flex flex-col justify-between overflow-hidden">
-                              {/* Image/Video preview (flush to borders) */}
-                              <div className="relative aspect-video overflow-hidden bg-black/40 border-b border-white/5 w-full flex-shrink-0">
-                                <img 
-                                  src={getMediaThumbnail(post)} 
-                                  alt={post.title[currentLang] || post.title['fr']}
-                                  className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
-                                  loading="lazy"
-                                />
-                                {post.mediaType === 'video' && (
-                                  <div className="absolute inset-0 flex items-center justify-center bg-black/25">
-                                    <div className="w-8 h-8 rounded-full bg-primary/95 text-black flex items-center justify-center shadow-lg">
-                                      <svg className="w-3.5 h-3.5 fill-current ml-0.5" viewBox="0 0 24 24">
-                                        <path d="M8 5v14l11-7z" />
-                                      </svg>
+                  return (
+                    <div className="relative overflow-hidden w-full px-1 py-4 -mx-1">
+                      {/* Gradient overlay fades for soft overflow masking */}
+                      <div className={`absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#12131b] to-transparent pointer-events-none z-20 transition-opacity duration-300 ${offsetIndex > 0 ? 'opacity-100' : 'opacity-0'}`} />
+                      <div className={`absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#12131b] to-transparent pointer-events-none z-20 transition-opacity duration-300 ${
+                        isMobile 
+                          ? (offsetIndex < N - 1 ? 'opacity-100' : 'opacity-0')
+                          : (N <= 3 
+                              ? (offsetIndex < 1 ? 'opacity-100' : 'opacity-0')
+                              : (offsetIndex < N - 3 ? 'opacity-100' : 'opacity-0')
+                            )
+                      }`} />
+
+                      {/* Style block for responsive variable support in our CSS transitions */}
+                      <style dangerouslySetInnerHTML={{__html: `
+                        .carousel-track-${cat.key} {
+                          --card-width: 360px;
+                          --gap: 24px;
+                          transform: translateX(calc(-1 * var(--offset-index, 0) * (var(--card-width) + var(--gap))));
+                          transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+                        }
+                        @media (min-width: 640px) {
+                          .carousel-track-${cat.key} {
+                            --card-width: 440px;
+                          }
+                        }
+                      `}} />
+                      
+                      {/* Carousel Track Container */}
+                      <div 
+                        className={`flex gap-6 carousel-track-${cat.key}`}
+                        style={{ '--offset-index': offsetIndex }}
+                      >
+                        {catPosts.map((post, idx) => {
+                          const isActive = idx === selectedIndex;
+                          
+                          return (
+                            <div
+                              key={post.id}
+                              onClick={() => setSelectedIndices(prev => ({ ...prev, [cat.key]: idx }))}
+                              className={`flex-shrink-0 w-[360px] sm:w-[440px] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-200 flex flex-col group cursor-pointer border ${
+                                isActive 
+                                  ? `opacity-100 scale-100 ${theme.activeBorder} bg-surface-container-low/60 shadow-[0_0_25px_${theme.shadow}]`
+                                  : 'opacity-70 hover:opacity-90 scale-[0.98] border-white/5 bg-surface-container-low/20'
+                              }`}
+                            >
+                              <Link 
+                                to={`/portfolio/section/${post.category}`}
+                                onClick={(e) => {
+                                  // Prevent navigating if this wasn't the active card
+                                  if (!isActive) {
+                                    e.preventDefault();
+                                  }
+                                }}
+                                className="flex flex-col h-full w-full"
+                              >
+                                {/* Terminal Header */}
+                                <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none relative overflow-hidden">
+                                  {/* Passive Noise Texture background */}
+                                  <div 
+                                    className="absolute inset-0 opacity-15 pointer-events-none" 
+                                    style={{
+                                      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                                      backgroundBlendMode: 'soft-light'
+                                    }}
+                                  />
+                                  <div className="flex items-center gap-1.5 overflow-hidden relative z-10">
+                                    <span className="relative w-3.5 h-3.5 flex items-center justify-center text-primary mr-1.5 flex-shrink-0">
+                                      <i className="fa-regular fa-folder absolute transition-all duration-200 group-hover:opacity-0 group-hover:scale-90"></i>
+                                      <i className="fa-regular fa-folder-open absolute transition-all duration-200 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"></i>
+                                    </span>
+                                    <span className="text-[8px] uppercase tracking-wider text-on-surface-variant/40">~/{post.category}</span>
+                                  </div>
+                                  <div className="flex items-center gap-1 text-[8px] font-sans font-bold uppercase tracking-wider text-primary group-hover:text-white transition-colors relative z-10">
+                                    <span>{t('portfolio.open')}</span>
+                                    <svg className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                                    </svg>
+                                  </div>
+                                </div>
+
+                                {/* Body Split */}
+                                <div className="flex flex-row items-stretch flex-grow">
+                                  {/* Left Column (flex-grow) - Image flush & Text details */}
+                                  <div className="flex-1 flex flex-col justify-between overflow-hidden">
+                                    {/* Image/Video preview (flush to borders) */}
+                                    <div className="relative aspect-video overflow-hidden bg-black/40 border-b border-white/5 w-full flex-shrink-0">
+                                      <img 
+                                        src={getMediaThumbnail(post)} 
+                                        alt={post.title[currentLang] || post.title['fr']}
+                                        className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
+                                        loading="lazy"
+                                      />
+                                      {post.mediaType === 'video' && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black/25">
+                                          <div className="w-8 h-8 rounded-full bg-primary/95 text-black flex items-center justify-center shadow-lg">
+                                            <svg className="w-3.5 h-3.5 fill-current ml-0.5" viewBox="0 0 24 24">
+                                              <path d="M8 5v14l11-7z" />
+                                            </svg>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    {/* Padded Text details */}
+                                    <div className="p-4 flex flex-col gap-2 flex-grow justify-start">
+                                      {/* Date */}
+                                      <span className="font-mono text-[9px] text-on-surface-variant/60 font-bold">
+                                        {formatLocaleDate(post.date, currentLang)}
+                                      </span>
+
+                                      {/* Text details */}
+                                      <div className="flex flex-col gap-1.5">
+                                        <h3 className="font-sans font-extrabold text-sm sm:text-base uppercase tracking-tight text-on-surface group-hover:text-primary transition-colors line-clamp-1">
+                                          {post.title[currentLang] || post.title['fr']}
+                                        </h3>
+                                        <p className="text-xs sm:text-[13px] font-sans font-normal text-on-surface-variant/90 leading-relaxed line-clamp-3">
+                                          {post.description[currentLang] || post.description['fr']}
+                                        </p>
+                                      </div>
                                     </div>
                                   </div>
-                                )}
-                              </div>
 
-                              {/* Padded Text details */}
-                              <div className="p-4 flex flex-col gap-2 flex-grow justify-start">
-                                {/* Date */}
-                                <span className="font-mono text-[9px] text-on-surface-variant/60 font-bold">
-                                  {post.date}
-                                </span>
-
-                                {/* Text details */}
-                                <div className="flex flex-col gap-1.5">
-                                  <h3 className="font-sans font-extrabold text-sm sm:text-base uppercase tracking-tight text-on-surface group-hover:text-primary transition-colors line-clamp-1">
-                                    {post.title[currentLang] || post.title['fr']}
-                                  </h3>
-                                  <p className="text-xs sm:text-[13px] font-sans font-normal text-on-surface-variant/90 leading-relaxed line-clamp-3">
-                                    {post.description[currentLang] || post.description['fr']}
-                                  </p>
+                                  {/* Right Column (Fixed cmd column: 130px on mobile, 145px on small and up) */}
+                                  <div className="w-[130px] sm:w-[145px] flex-shrink-0 p-4 pt-3.5 flex flex-col justify-between bg-black/35 border-l border-white/5">
+                                    <ProjectTerminalList tags={post.tags} category={post.category} />
+                                  </div>
                                 </div>
-                              </div>
+                              </Link>
                             </div>
+                          );
+                        })}
+                      </div>
 
-                            {/* Right Column (Fixed cmd column: 130px on mobile, 145px on small and up) */}
-                            <div className="w-[130px] sm:w-[145px] flex-shrink-0 p-4 pt-3.5 flex flex-col justify-between bg-black/35 border-l border-white/5">
-                              <ProjectTerminalList tags={post.tags} category={post.category} />
-                            </div>
-                          </div>
-                        </Link>
-                      ))}
-                    </CarouselList>
-                  </div>
-                )}
+                      {/* Pagination indicators at bottom */}
+                      <div className="flex items-center justify-center gap-2 mt-6">
+                        {catPosts.map((_, idx) => {
+                          const isActive = idx === selectedIndex;
+                          
+                          return (
+                            <button
+                              key={idx}
+                              onClick={() => setSelectedIndices(prev => ({ ...prev, [cat.key]: idx }))}
+                              className={`h-1.5 rounded-full transition-all duration-200 cursor-pointer ${
+                                isActive 
+                                  ? `w-6 ${theme.bg}` 
+                                  : 'w-1.5 bg-white/20 hover:bg-white/40'
+                              }`}
+                              style={isActive ? { boxShadow: `0 0 8px ${theme.shadowHover}` } : {}}
+                              aria-label={`Go to slide ${idx + 1}`}
+                            />
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })()}
               </motion.section>
             );
           })}

@@ -26,7 +26,7 @@ export default function InputField({
     <div className="relative w-full flex flex-col mb-5">
       {/* Background glowing halo centered behind the input */}
       <div 
-        className={`absolute inset-0 bg-primary/5 rounded-xl blur-md transition-opacity duration-500 pointer-events-none ${
+        className={`absolute inset-0 bg-primary/5 rounded-xl blur-md transition-opacity duration-200 pointer-events-none ${
           isFocused ? 'opacity-100' : 'opacity-0'
         }`}
       />
@@ -35,7 +35,7 @@ export default function InputField({
       <div 
         className={`
           relative w-full bg-surface-container-low/45 backdrop-blur-md border rounded-xl px-4 py-2.5 
-          transition-all duration-300 flex flex-col gap-1 cursor-text
+          transition-all duration-150 flex flex-col gap-1 cursor-text
           ${error 
             ? 'border-red-500/40 focus-within:border-red-500/70 focus-within:ring-1 focus-within:ring-red-500/20' 
             : 'border-white/5 hover:border-primary/20 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/10'
@@ -47,7 +47,7 @@ export default function InputField({
         <label 
           htmlFor={name}
           className={`
-            font-sans font-semibold text-[10px] uppercase tracking-wider select-none transition-colors duration-300
+            font-sans font-semibold text-[10px] uppercase tracking-wider select-none transition-colors duration-150
             ${error ? 'text-red-400' : isFocused ? 'text-primary' : 'text-on-surface-variant/80'}
           `}
         >

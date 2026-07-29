@@ -264,17 +264,17 @@ export default function Footer() {
               </div>
               <ul className="flex flex-col gap-2.5 font-sans font-medium text-xs text-on-surface-variant">
                 <li>
-                  <Link to="/#home" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
+                  <Link to="/#home" className="hover:text-primary hover:translate-x-1.5 transition-all duration-150 flex items-center gap-1">
                     {t('nav.home')}
                   </Link>
                 </li>
                 <li>
-                  <Link to="/portfolio" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
+                  <Link to="/portfolio" className="hover:text-primary hover:translate-x-1.5 transition-all duration-150 flex items-center gap-1">
                     {t('nav.portfolio')}
                   </Link>
                 </li>
                 <li>
-                  <Link to="/#contact" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
+                  <Link to="/#contact" className="hover:text-primary hover:translate-x-1.5 transition-all duration-150 flex items-center gap-1">
                     {t('nav.contact')}
                   </Link>
                 </li>
@@ -291,12 +291,12 @@ export default function Footer() {
               </div>
               <ul className="flex flex-col gap-2.5 font-sans font-medium text-xs text-on-surface-variant">
                 <li>
-                  <Link to="/mentions-legales" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
+                  <Link to="/mentions-legales" className="hover:text-primary hover:translate-x-1.5 transition-all duration-150 flex items-center gap-1">
                     {t('footer.mentions_legales')}
                   </Link>
                 </li>
                 <li>
-                  <Link to="/politique-de-confidentialite" className="hover:text-primary hover:translate-x-1.5 transition-all duration-300 flex items-center gap-1">
+                  <Link to="/politique-de-confidentialite" className="hover:text-primary hover:translate-x-1.5 transition-all duration-150 flex items-center gap-1">
                     {t('footer.politique_confidentialite')}
                   </Link>
                 </li>

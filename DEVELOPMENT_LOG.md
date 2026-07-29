@@ -195,3 +195,30 @@ Refactoriser les champs de saisie pour utiliser un composant modulaire unique `I
 - **SSOT & Modularité** : La centralisation de la logique des champs de saisie dans `InputField` prévient la duplication de code et garantit que tout correctif de design de focus ou de gestion d'erreurs s'applique instantanément à l'ensemble des formulaires.
 - **i18n Exhaustive** : La traduction des pages réglementaires et des chaînes de pied de page respecte l'exigence d'une expérience bilingue immersive. L'utilisateur anglophone bénéficie désormais d'un site 100% traduit sans rupture de langue.
 - **Redirection Propre** : L'utilisation de `<Navigate replace />` redirige l'internaute côté client instantanément, évitant de charger un composant `Game` vide et préservant l'historique de navigation du navigateur.
+
+---
+
+## [2026-07-29] Localisation des Dates, Refonte Responsive du Carrousel & Animations Snappy ("PAF")
+
+### Tâche
+Formater toutes les dates du site selon la langue active (français/anglais), restructurer le carrousel horizontal pour résoudre le problème de débordement géométrique des 3 items (en ajoutant un décalage responsive dynamique et des voiles dégradés de contour), et raccourcir les délais de transition au survol pour donner un effet plus pétillant ("PAF") à l'expérience utilisateur globale.
+
+### Modifications
+- **Module de date unifié [dateFormatter.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/utils/dateFormatter.js)** : créé pour transformer les chaînes de dates ISO en formats verbaux courts et localisés (ex: `"28 juil. 2026"` en français, `"Jul 28, 2026"` en anglais). Intégration sur toutes les pages affichant des dates : Portfolio, PortfolioSection, GamingDevlog, et PortfolioAdmin.
+- **Nouveau Carrousel Intelligent ([Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx))** :
+  - Introduction de l'état `isMobile` via resize listener pour adapter les décalages de translation du track.
+  - Calcul dynamique de `offsetIndex` : sur mobile, chaque carte se centre individuellement ; sur desktop, l'offset s'adapte dynamiquement même avec 3 cartes pour amener le 3ème élément dans le viewport.
+  - Réduction de la transparence des cartes inactives à `opacity-70` et suppression de leur filtre flou pour garantir une parfaite lisibilité.
+  - Intégration de deux voiles de dégradés noirs (`from-[#12131b] to-transparent`) absolus sur les bords gauche et droit du carrousel pour masquer les découpes abruptes.
+- **Optimisation des Transitions ("Snappy/PAF")** :
+  - **Bouton magnétique ([Button.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Button.jsx))** : réduction du délai de transition global à `150ms` et de l'overlay de grille à `200ms`.
+  - **Barre de Navigation ([Navbar.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Navbar.jsx))** : raccourcissement du survol et du soulignement des liens à `150ms`.
+  - **Champs de Saisie ([InputField.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/InputField.jsx))** : transition du halo lumineux à `200ms` et du contour de focus à `150ms`.
+  - **Pied de Page ([Footer.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Footer.jsx))** : translation X et coloration des liens de navigation ramenées à `150ms`.
+  - **Carrousel ([Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx))** : glissement de track accéléré à `450ms` avec un easing plus vif, et transition de survol de carte à `200ms`.
+
+### Justification Technique
+- **UX Adaptative** : La gestion d'offset basée sur la taille d'écran résout les coupures matérielles sur les viewports étroits en adaptant la taille logique de la fenêtre de glisse.
+- **Finition Premium** : Les voiles dégradés de contour masquent le débordement matériel de façon très naturelle, évitant de casser l'immersion visuelle.
+- **Réactivité Snappy** : Le passage de transitions de 300/500ms à 150/200ms donne une sensation immédiate de performance et de réactivité, éliminant tout sentiment de "lenteur" lors de la navigation ou du survol.
+
