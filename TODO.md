@@ -37,6 +37,7 @@
 - [x] Étape 33 : Extraction Modulaire 'InteractiveNetwork' & Audit Traductions FR/EN - Création du composant autonome InteractiveNetwork.jsx réutilisable universellement, simplification de Footer.jsx et vérification de la couverture de traduction 100% bilingue (Terminé)
 - [x] Étape 34 : Refactorisation Architecturale Avancée (SSOT & Découpage Admin) - Création de MediaViewer.jsx (unification médias), PatchNoteList.jsx (unification changelogs), et découpage de PortfolioAdmin.jsx en 3 sous-composants autonomes (BannerSettingsCard, MediaSlotEditor, PatchNoteEditor) (Terminé)
 - [x] Étape 35 : Restauration des 2 Cartes Indépendantes de Bannières Vacuum - Rétablissement de la grille à 2 cartes distinctes (Bannière Portfolio & Bannière Devlog Jeu), avec boutons de sauvegarde et d'upload individuels et synchronisation useEffect des valeurs existantes (Terminé)
+- [x] Étape 36 : Restauration des Sliding Toggles & Aperçus Live du Gestionnaire de Slots - Rétablissement complet des sélecteurs interactifs coulissants (Pill Toggles Image/Vidéo & URL/Fichier Local) avec Framer Motion et du lecteur d'aperçu en direct vidéo/image pour chaque slot média (Terminé)
 
 
 
