@@ -39,6 +39,7 @@
 - [x] Étape 35 : Restauration des 2 Cartes Indépendantes de Bannières Vacuum - Rétablissement de la grille à 2 cartes distinctes (Bannière Portfolio & Bannière Devlog Jeu), avec boutons de sauvegarde et d'upload individuels et synchronisation useEffect des valeurs existantes (Terminé)
 - [x] Étape 36 : Restauration des Sliding Toggles & Aperçus Live du Gestionnaire de Slots - Rétablissement complet des sélecteurs interactifs coulissants (Pill Toggles Image/Vidéo & URL/Fichier Local) avec Framer Motion et du lecteur d'aperçu en direct vidéo/image pour chaque slot média (Terminé)
 - [x] Étape 37 : Fix Débordement du Nom de Fichier Upload - Ajout de la troncation CSS (truncate max-w-full min-w-0) et extraction propre du nom de fichier (ex: 09_19-34-39.mp4) dans le bouton de téléversement pointillé (Terminé)
+- [x] Étape 38 : Remplacement de l'Image Fallback par notfound.gif - Remplacement systématique de /BknLogo.svg par /notfound.gif en cas d'erreur de chargement d'image (onError) dans l'administration, le portfolio et le devlog (Terminé)
 
 
 

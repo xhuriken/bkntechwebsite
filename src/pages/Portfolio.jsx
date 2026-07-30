@@ -320,7 +320,7 @@ export default function Portfolio() {
                       onClick={() => openLightbox(featuredBannerUrl, "Vacuum Protocol")}
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = '/BknLogo.svg';
+                        e.target.src = '/notfound.gif';
                       }}
                     />
                   </div>

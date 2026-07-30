@@ -631,7 +631,7 @@ export default function PortfolioAdmin() {
           className="w-full max-h-56 object-cover"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = '/BknLogo.svg';
+            e.target.src = '/notfound.gif';
           }}
         />
       </div>
@@ -1010,7 +1010,7 @@ export default function PortfolioAdmin() {
                                           className="w-full max-h-48 object-cover"
                                           onError={(e) => {
                                             e.target.onerror = null;
-                                            e.target.src = '/BknLogo.svg';
+                                            e.target.src = '/notfound.gif';
                                           }}
                                         />
                                       )}

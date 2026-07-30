@@ -106,6 +106,10 @@ export default function MediaViewer({
         src={src}
         alt={alt}
         onClick={handleImageClick}
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = '/notfound.gif';
+        }}
         className={`w-full h-full object-cover block ${enableLightbox ? 'cursor-zoom-in hover:scale-[1.02] transition-transform duration-300' : ''}`}
         loading="lazy"
       />

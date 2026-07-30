@@ -287,7 +287,7 @@ export default function MediaSlotEditor({
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             e.target.onerror = null;
-                            e.target.src = '/BknLogo.svg';
+                            e.target.src = '/notfound.gif';
                           }}
                         />
                       )}

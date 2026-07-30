@@ -217,7 +217,7 @@ export default function GamingDevlog() {
               className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = '/BknLogo.svg';
+                e.target.src = '/notfound.gif';
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-surface-container-low/90 via-transparent to-transparent pointer-events-none" />
