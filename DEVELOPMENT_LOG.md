@@ -19,6 +19,7 @@ Ce journal retrace toutes les décisions techniques, les modifications de code e
   - Transfert d'archive et extraction dans `/var/www/bkntech`.
   - Écriture de la configuration de production `.env`.
   - Reconstruction et relancement des conteneurs Docker (`bkntech-api`, `bkntech-frontend`, `traefik`).
+- Validation des identifiants SSH (`ubuntu` + mot de passe VPS) et mise à jour des secrets GitHub pour l'exécution automatique des workflows CI/CD.
 
 ### Justification Technique
 L'erreur de syntaxe YAML capturée par GitHub Actions venait d'une désindentation complète des lignes de variables `SMTP_*` sous la directive `run: |`. En encapsulant la création du fichier `.env` dans un bloc de commandes `echo` indenté, la syntaxe YAML reste 100% valide et lisible.
