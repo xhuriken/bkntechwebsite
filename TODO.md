@@ -40,6 +40,7 @@
 - [x] Étape 36 : Restauration des Sliding Toggles & Aperçus Live du Gestionnaire de Slots - Rétablissement complet des sélecteurs interactifs coulissants (Pill Toggles Image/Vidéo & URL/Fichier Local) avec Framer Motion et du lecteur d'aperçu en direct vidéo/image pour chaque slot média (Terminé)
 - [x] Étape 37 : Fix Débordement du Nom de Fichier Upload - Ajout de la troncation CSS (truncate max-w-full min-w-0) et extraction propre du nom de fichier (ex: 09_19-34-39.mp4) dans le bouton de téléversement pointillé (Terminé)
 - [x] Étape 38 : Remplacement de l'Image Fallback par notfound.gif - Remplacement systématique de /BknLogo.svg par /notfound.gif en cas d'erreur de chargement d'image (onError) dans l'administration, le portfolio et le devlog (Terminé)
+- [x] Étape 39 : Easter Egg Flashbang Ampoule dans le Footer - Ajout d'une icône d'ampoule discrète blanche dans le footer avec survol lumineux jaune, déclenchant un Flashbang blanc plein écran où l'ampoule devient noire (z-index 100000) et s'éteint au re-clic (Terminé)
 
 
 

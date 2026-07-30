@@ -49,38 +49,7 @@
       "Steamworks",
       "UI Fixes"
     ],
-    "commentsCount": 0,
-    "hasChangelog": true,
-    "changelog": [
-      {
-        "type": "content",
-        "text": "Ajout du compteur de FPS et de perte de paquets (packet loss) au coin supérieur droit du HUD."
-      },
-      {
-        "type": "content",
-        "text": "Intégration d'un feedback sonore d'avertissement lorsque la jauge d'aspiration surchauffe."
-      },
-      {
-        "type": "system",
-        "text": "Nouveau système de gestion des connexions Steamworks et reconnexion automatique en cas de micro-coupure."
-      },
-      {
-        "type": "balance",
-        "text": "Ajustement de la capacité des réservoirs d'énergie des robots et de la vitesse de surchauffe."
-      },
-      {
-        "type": "improvement",
-        "text": "Amélioration des effets lumineux du scanner d'aspiration et optimisation du rendu du brouillard."
-      },
-      {
-        "type": "fix",
-        "text": "Correction du bug d'aspiration fantôme qui provoquait une désynchronisation de position à 120ms de latence."
-      },
-      {
-        "type": "fix",
-        "text": "Résolution de la fuite de mémoire lors de la bascule répétée entre l'inventaire et les options."
-      }
-    ]
+    "commentsCount": 0
   },
   {
     "id": "21",
