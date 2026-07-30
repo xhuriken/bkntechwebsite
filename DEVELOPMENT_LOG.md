@@ -557,6 +557,207 @@ Rendre la photo de bannière du projet à la une (Vacuum Protocol) sur la page P
 - **Harmonie Visuelle** : Le resserrement du padding haut/gauche/droite du premier conteneur procure un encadrement beaucoup plus élégant et compact autour de la bannière panoramique.
 - **Cohérence des Contenus (SSOT)** : La mise à jour des traductions i18n de la carte "Projet à la une" sur `/portfolio` supprime les anciens placeholders de test et harmonise la présentation du jeu avec la page devlog dédiée `/game`.
 
+---
+
+## [2026-07-30] Mises à Jour Multi-Médias Devlog, Galerie Vidéo/Photo & Système de Bugfixes/Changelog
+
+### Tâche
+1. Implémenter les règles d'affichage conditionnel des médias sur la page devlog `/game` (`GamingDevlog.jsx`) :
+   - 1 seule photo/vidéo : affichage classique (Présentation).
+   - Plusieurs médias & post `major` : 1er média en haut de la Présentation, suivi du texte, puis des autres médias sous le texte.
+   - Plusieurs médias & post `minor` : apparition de l'onglet `Galerie` avec le 2ème média sélectionné par défaut à l'ouverture.
+2. Unifier la gestion des vidéos (YouTube et vidéos natifs) et images dans l'onglet `Galerie` et la liste des vignettes.
+3. Créer un système complet de Bugfixes / Changelog avec un onglet dédié style terminal cyber (compteurs statistiques et badges `[ADD]`, `[FIX]`, `[REM]`, `[WIP]`).
+4. Mettre à jour l'interface d'administration (`PortfolioAdmin.jsx`) pour créer/éditer les lignes de log/bugfixes.
+5. Ajouter un post devlog de démonstration daté d'aujourd'hui (`2026-07-30`) dans `api/posts.json`.
+
+### Modifications
+- **[posts.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/posts.json)** :
+  - Ajout du post `id: "22"` daté du `2026-07-30` (*"Mise à Jour v0.0.7 — Correctifs Critiques Netcode & HUD"*), contenant plusieurs vidéos YouTube, des images, et un tableau complet de bugfixes `hasChangelog: true`.
+- **[fr.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/fr.json)** & **[en.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/en.json)** :
+  - Ajout de la clé `"changelog": "Bugfixes & Logs"` dans `portfolio.tabs`.
+- **[GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx)** :
+  - Extraction unifiée de tous les médias (`slots`, `mediaUrl`, `gallery`) avec détection automatique d'images vs vidéos.
+  - Implémentation de la règle de sélection par défaut du 2ème média (`uniqueSlots[1]`) lors de l'accès à l'onglet Galerie pour les devlogs `minor`.
+  - Intégration de la galerie d'images & vidéos sous le texte pour les devlogs `major`.
+  - Création du panneau `Changelog` style terminal (statistiques d'ajouts/fix/removals/wip, badges colorés réactifs, police monospace).
+- **[PortfolioAdmin.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioAdmin.jsx)** :
+  - Ajout de la case à cocher *"Activer le journal de modifications / Bugfixes (Changelog)"*.
+  - Éditeur dynamique de logs (sélection du type `[FIX]`, `[ADD]`, `[REM]`, `[WIP]`, champ texte, réorganisation des lignes haut/bas, suppression).
+  - Prise en charge des propriétés `hasChangelog` et `changelog` dans la sauvegarde `POST /api/posts`.
+
+### Justification Technique
+- **Flexible Media Architecture** : Traiter uniformément les images et les vidéos (en iframe YouTube ou balise `<video controls>`) permet une expérience immersive riche sans imposer de structure rigide.
+- **Règles d'Ergonomie Différenciées** : Séparer le comportement des devlogs `major` (flux continu de lecture avec galerie en bas) et `minor` (navigation par onglet avec 2ème média pré-sélectionné) optimise la clarté visuelle selon l'importance du patch.
+- **Observabilité & Suivi Technique (SSOT)** : Le journal de changelog au format cyber-terminal offre une visibilité directe et vivante sur l'avancement du jeu.
+
+---
+
+## [2026-07-30] Intégration du Lightbox Global (Plein Écran) & Refonte Terminologique 'Patch Note'
+
+### Tâche
+1. Créer une visionneuse d'images globalisée plein écran (Lightbox) permettant d'agrandir **toutes les images du site** au clic, ajustée dynamiquement à la taille de l'écran avec flou d'arrière-plan et fermeture via la touche Échap.
+2. Recadrer la terminologie et le design de la fonctionnalité de modifications en **"Patch Note"** pour correspondre aux standards d'un studio de jeu tout en préservant le design system sombre et novateur de BKN Tech.
+
+### Modifications
+- **[ImageLightboxContext.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/context/ImageLightboxContext.jsx)** :
+  - Création du contexte global et du composant modal `ImageLightboxProvider` (animation `framer-motion`, flou d'arrière-plan `backdrop-blur-xl bg-black/90`, dimensionnement automatique `max-w-[92vw] max-h-[85vh]`, fermeture clavier `Escape` et bouton de fermeture ✕).
+- **[App.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/App.jsx)** :
+  - Englobement de l'ensemble de l'application sous `<ImageLightboxProvider>`.
+- **[GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx)**, **[PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx)** & **[Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx)** :
+  - Import du hook `useImageLightbox()`.
+  - Ajout des attributs `cursor-zoom-in hover:opacity-95` et du handler `onClick={() => openLightbox(url, title)}` sur l'intégralité des images des cartes, bannières et galeries.
+  - Refonte visuelle et terminologique de l'onglet de journal de mise à jour sous le nom **`Patch Note`**.
+- **[PortfolioAdmin.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioAdmin.jsx)** :
+  - Ajustement des libellés du formulaire admin sous l'appellation *"Patch Note / Journal de modifications"*.
+
+### Justification Technique
+- **Ergonomie & Accessibilité (SSOT)** : Le Lightbox global centralisé évite la duplication de modales d'images par page et offre une inspection en haute résolution immédiate pour toutes les captures d'écran et illustrations du site.
+- **Identité de Marque** : La terminologie *Patch Note* renforce l'univers studio de jeu vidéo tout en s'intégrant harmonieusement au style visuel sombre et moderne du site.
+
+---
+
+## [2026-07-30] Résolution du Ralentissement au Mouvement de Souris & Preservation 100% Identique du Rendu Grille
+
+### Tâche
+1. Éliminer complètement le bug de ralentissement soudain des particules (`VacuumParticles.jsx`) lors du déplacement de la souris, causé par le recalcul synchrone du masque SVG à chaque événement `mousemove`.
+2. Conserver à **100% l'esthétique et le rendu visuel original** de la grille (`InteractiveGrid.jsx`) : grille 64x64, cercles aux intersections `r=2`, points de fond 32x32 et halo lumineux ambiant sous le curseur.
+
+### Modifications
+- **[InteractiveGrid.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/InteractiveGrid.jsx)** :
+  - Restauration de l'exact motif vectoriel SVG original (`#lens-grid` 64x64, trait 1.2px avec 0.3 d'opacité, cercles `r=2` avec 0.6 d'opacité, fond de points `32px` et halo radial).
+  - Suppression de la mutation directe de variables CSS `--mouse-x`/`--mouse-y` à haute fréquence sur `window.mousemove`.
+  - Intégration d'un conteneur spot de 600px x 600px déplacé par accélération matérielle GPU via `transform: translate3d(x, y, 0)` (`will-change-transform`), bridé au rafraîchissement d'écran via `requestAnimationFrame` et adouci par interpolation fluide (lerp `0.25`).
+- **[VacuumParticles.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/VacuumParticles.jsx)** :
+  - Remplacement de l'appel coûteux au shadowBlur logiciel du canvas (`ctx.shadowBlur`) par un dessin à double arc (particule centrale + halo externe à 25% d'opacité), 10 fois plus économe en ressources processeur.
+
+### Justification Technique
+- **Séparation des Calques de Rendu (GPU Hardware Compositing)** : Le masque `radial-gradient` reste fixe à l'intérieur du conteneur de 600px, ce qui permet au navigateur de mettre en cache la bitmap de masque une fois pour toutes. Le déplacement s'effectue exclusivement par transformation matricielle GPU `translate3d`, annulant ainsi la charge processeur et éliminant tout ralentissement des boucles `requestAnimationFrame`.
+- **Rendu Visuel Invariant** : Le visuel est 100% rigoureusement identique au design d'origine, garantissant zéro compromis esthétique.
+
+---
+
+## [2026-07-30] Ancrage Statique de la Grille & Spot Lumineux par Masque SVG Natif
+
+### Tâche
+1. Corriger la déconnexion visuelle de la grille qui se déplaçait avec le curseur de la souris (origin shifting).
+2. Fixer la grille SVG de manière 100% statique sur le repère de la page pour qu'elle s'aligne parfaitement avec les éléments du site et la timeline, tout en conservant le spot lumineux qui ne révèle que la section sous la souris avec une performance 60 FPS sans lag.
+
+### Modifications
+- **[InteractiveGrid.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/InteractiveGrid.jsx)** :
+  - Restructuration du composant avec un conteneur `<svg className="absolute inset-0 w-full h-full">` 100% fixe sur l'arrière-plan du site.
+  - Le motif `<pattern id="lens-grid">` utilise `patternUnits="userSpaceOnUse"`, ancrant chaque ligne de grille et cercle d'intersection sur les coordonnées réelles de la page (zéro glissement/décalage).
+  - Création d'un masque SVG natif `<mask id="spotlight-mask">` contenant un `<circle ref={maskCircleRef} r="250" fill="url(#spotlight-gradient)">`.
+  - Dans la boucle `requestAnimationFrame`, mise à jour directe des attributs vectoriels `setAttribute('cx', x)` et `setAttribute('cy', y)` du cercle de masque.
+
+### Justification Technique
+- **Ancrage Spatial Exact** : La grille étant statique à l'échelle de la fenêtre, le spotlight agit exactement comme une lampe de poche révélant la portion de grille sous la souris sans la faire dériver.
+- **Mise à jour d'Attributs Négociée (Zéro Reflow/Re-parse)** : Modifier `cx`/`cy` sur me une balise SVG `<circle>` ne déclenche aucun recalcul de variables CSS globales ni re-parsing de chaînes de caractères, offrant une exécution instantanée sur le GPU.
+
+---
+
+## [2026-07-30] Refonte Ultra-Interactive du Canevas de Particules du Footer (InteractiveNetwork)
+
+### Tâche
+1. Transformer le widget de particules du footer (`Footer.jsx`) en une expérience ultra-ludique, créative et dynamique.
+2. Ajouter des interactions riches : ondes de choc colorées au clic, mode aimant/vortex au glisser (drag), faisceaux lasers d'énergie et prise en charge des écrans tactiles mobiles.
+
+### Modifications
+- **[Footer.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Footer.jsx)** :
+  - **Interaction au Clic (Ondes de Choc & Explosion)** : Le clic génère une onde circulaire colorée qui s'étend en repoussant violemment les particules proches avec une impulsion physique, tout en faisant éclore de nouvelles particules d'énergie.
+  - **Interaction au Glisser / Maintenir (Aimant / Vortex Gravitationnel)** : Maintenir le clic et faire glisser transforme le curseur en un vortex gravitationnel. Les particules sont aspirées vers le centre avec un mouvement de rotation en orbite et des liaisons lasers lumineuses (`rgba(78, 222, 163)`).
+  - **Palette Néon Cyberpunk** : Particules de couleurs variées (Vert Secondaire `#4edea3`, Lavande Primaire `#bec2ff`, Violet Électrique `#a855f7`, Or Néon `#f59e0b`).
+  - **Support Tactile Mobile** : Événements `touchstart`, `touchmove` et `touchend` intégrés pour une réactivité parfaite sur smartphone/tablette.
+  - **Subtilité UI** : Ajout du badge réactif `[ CLIC: ONDE ] • [ DRAG: AIMANT ]` au survol de la carte.
+
+### Justification Technique
+- **Physique Vectorielle Améliorée** : L'intégration d'un comportement tangentiel (orbiting/swirl vector) combiné à un amortissement dynamique (`p.vx *= 0.96`) produit un effet d'aspiration magnétique très satisfaisant tout en maintenant des performances d'exécution à 60 FPS sans aucune latence.
+
+---
+
+## [2026-07-30] Ajustement Minimaliste du Canevas Footer & Impulsion d'Explosion au Relâchement
+
+### Tâche
+1. Épurer le widget de particules du footer ([Footer.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Footer.jsx)) pour conserver une esthétique élégante et minimaliste (palette Lavande Primaire `#bec2ff` & Vert Secondaire `#4edea3`).
+2. Donner une vraie personnalité et identité aux particules : 32 particules permanentes qui apparaissent en fondu initial (`p.alpha`) et **ne disparaissent jamais**.
+3. Implémenter le comportement physique exact demandé :
+   - Clic simple : Neutre et épuré.
+   - Maintenir & Glisser (Drag) : Les particules suivent le curseur de manière fluide avec leur propre vitesse/inertie, tout en restant **sensibles aux collisions élastiques avec les murs du cadre**.
+   - Relâchement du clic (Release) : **Déflagration d'explosion instantanée** qui propulse toutes les particules capturées vers l'extérieur avec rebond sur les bordures du canevas.
+
+### Modifications
+- **[Footer.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Footer.jsx)** :
+  - Palette épurée réduite aux teintes BKN Tech.
+  - Conservation fixe de 32 particules permanentes avec fondu d'apparition `p.alpha` progressive à 0.04/frame.
+  - Collisions élastiques bilatérales complètes sur les bordures `(0, width, 0, height)` avec restitution `0.85`.
+  - Vecteur d'impulsion d'explosion au relâchement (`handleMouseUp`) propulsant les particules de manière centrifuge tout en créant un anneau d'onde vert néon éphémère.
+
+### Justification Technique
+- **Conservation d'Identité & Amortissement Physiques** : La conservation des 32 particules permanentes couplée au calcul vectoriel d'accélération au drag et de rejet à la libération crée un feedback haptique visuel très gratifiant, tout en conservant une ligne graphique épurée et moderne.
+
+---
+
+## [2026-07-30] Restriction du Périmètre d'Attraction du Drag au Rayon de Capture
+
+### Tâche
+1. Restreindre l'attraction du drag (`isDragging`) pour qu'elle n'aspire plus toutes les particules du canevas, mais uniquement celles qui pénètrent dans un **rayon de capture de 110px** autour du curseur.
+2. Ajouter un indicateur visuel épuré sous forme de cercle pointillé vert néon pour matérialiser la zone d'attraction.
+
+### Modifications
+- **[Footer.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Footer.jsx)** :
+  - Encadrement de la force d'attraction au drag par la condition `dist < attractRadius` (`110px`). Les particules en dehors du rayon continuent leur trajectoire autonome sans être aspirées.
+  - Dessin d'un cercle d'indication pointillé de rayon 110px (`rgba(78, 222, 163, 0.2)`) autour du curseur lors du drag.
+  - Limitation de la déflagration au relâchement (`handleMouseUp`) aux seules particules se trouvant dans la zone (`dist < 140px`).
+
+### Justification Technique
+- **Ergonomie & Contrôle Sélectif** : Limiter la force d'attraction au rayon de 110px permet à l'utilisateur de "balayer" et de "capturer" uniquement les particules qu'il croise au cours du survol, rendant le jeu interactif beaucoup plus précis et satisfaisant.
+
+---
+
+## [2026-07-30] Harmonisation Visuelle Pure du Patch Note (GamingDevlog & PortfolioAdmin)
+
+### Tâche
+1. Éliminer les éléments visuels disgracieux de l'onglet Patch Note sur la page Devlog (`GamingDevlog.jsx`) : suppression des boutons d'onglets néon fluorescents, de l'en-tête de terminal "CLI matrix" `$ vacuum-protocol --changelog` et des conteneurs noirs bruts.
+2. Refondre entièrement le formulaire d'administration (`PortfolioAdmin.jsx`) : supprimer les deux boîtes noires isolées au profit d'une section d'options unifiée, propre et parfaitement intégrée au design system BKN Tech.
+
+### Modifications
+- **[GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx)** :
+  - Remplacement de l'en-tête de terminal par une barre de résumé minimale et chic : `Journal de version • 2026-07-30` accompagnée de discrets puces d'indicateurs de couleur (`bg-secondary`, `bg-primary`, `bg-red-400`, `bg-amber-400`).
+  - Restructuration des lignes du Patch Note sous forme de **cartes en verre dépoli modernes** (`bg-surface-container-low/40 border border-white/5 rounded-xl p-3.5`).
+  - Utilisation de la typographie officielle BKN Tech (`font-sans`, `text-xs font-normal text-on-surface/90`) et de badges épurés (`Ajout`, `Correctif`, `Suppression`, `En cours`).
+- **[PortfolioAdmin.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioAdmin.jsx)** :
+  - Création d'une sous-section d'options unifiée *"Options Générales & Patch Note"* avec une grille à 2 cartes responsive pour les cases à cocher Discord et Patch Note (`bg-surface-container-low/40 border border-white/5 rounded-xl p-3.5`).
+  - Éditeur de lignes Patch Note au style épuré avec sélecteurs personnalisés et champs de saisie harmonisés.
+
+### Justification Technique
+- **Homogénéité du Design System (SSOT)** : En éliminant les gimmicks CLI et les bordures néon agressives, le Patch Note s'intègre avec une élégance naturelle dans la charte visuelle sombre et moderne du site, offrant une continuité esthétique parfaite entre l'administration et les pages publiques.
+
+---
+
+## [2026-07-30] Catégories Game Dev Réelles & Refonte Visuelle Innovante du Patch Note
+
+### Tâche
+1. Adopter les **vraies catégories de patch notes de jeux vidéo** (Steam / Discord changelogs) :
+   - `content` -> **Nouveau Contenu** (New Content)
+   - `system` -> **Nouveaux Systèmes** (New Systems)
+   - `balance` -> **Équilibrage** (Game Balance)
+   - `improvement` -> **Améliorations** (Improvements)
+   - `fix` -> **Corrections de Bugs** (Bugfixes)
+2. Innovateur et non générique : Structurer l'affichage par en-têtes de catégories élégants (`> Nouveau Contenu`, `> Équilibrage`, etc.) reliés par des lignes d'accent verticales (`border-l-2`) et des puces interactives s'animant au survol (`hover:translate-x-1.5`).
+
+### Modifications
+- **[GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx)** :
+  - Groupement automatique des items de patch note par catégorie canonique (`content` -> `system` -> `balance` -> `improvement` -> `fix`).
+  - En-têtes typographiques BKN Tech avec icônes néon assorties (`fa-box-open`, `fa-microchip`, `fa-scale-balanced`, `fa-sliders`, `fa-bug-slash`) et badges de décompte (`items.length`).
+  - Liste de puces à bordures d'accent colorées (`border-l-2`) et micro-animation de glissement latéral au survol (`hover:translate-x-1.5 transition-all`).
+- **[PortfolioAdmin.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioAdmin.jsx)** :
+  - Mise à jour du menu déroulant du type de ligne avec les 5 vraies catégories Game Dev.
+- **[api/posts.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/posts.json)** :
+  - Mise à jour du post exemple `id: "22"` avec la nouvelle structure par catégories.
+
+### Justification Technique
+- **Authenticité & Ergonomie Spécifique au Jeu Vidéo** : L'organisation par rubriques Game Dev reflète fidèlement les standards de l'industrie (Steam, Discord, Unreal/Unity Release Notes) tout en sublimant le contenu via le design system dépoli et dynamique de BKN Tech.
+
 
 
 

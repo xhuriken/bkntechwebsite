@@ -4,6 +4,7 @@ import { useParams, Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { formatLocaleDate } from '../utils/dateFormatter';
 import { detailedProjects } from '../utils/detailedProjects';
+import { useImageLightbox } from '../context/ImageLightboxContext';
 
 /**
  * Helper to extract YouTube video ID
@@ -177,6 +178,7 @@ function ProjectTerminalList({ tags = [], category = 'gaming' }) {
 export default function PortfolioSection() {
   const { category } = useParams();
   const { t, i18n } = useTranslation();
+  const { openLightbox } = useImageLightbox();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTabs, setActiveTabs] = useState({});
@@ -401,7 +403,8 @@ export default function PortfolioSection() {
                                     <img 
                                       src={post.mediaUrl || '/BknLogo.svg'} 
                                       alt={post.title[currentLang] || post.title['fr']}
-                                      className="w-full max-h-[480px] object-cover"
+                                      className="w-full max-h-[480px] object-cover cursor-zoom-in hover:opacity-95 transition-opacity"
+                                      onClick={() => openLightbox(post.mediaUrl || '/BknLogo.svg', post.title[currentLang] || post.title['fr'])}
                                       loading="lazy"
                                     />
                                   )}
@@ -480,7 +483,8 @@ export default function PortfolioSection() {
                                         <img 
                                           src={post.mediaUrl || '/BknLogo.svg'} 
                                           alt={post.title[currentLang] || post.title['fr']}
-                                          className="w-full max-h-[480px] object-cover"
+                                          className="w-full max-h-[480px] object-cover cursor-zoom-in hover:opacity-95 transition-opacity"
+                                          onClick={() => openLightbox(post.mediaUrl || '/BknLogo.svg', post.title[currentLang] || post.title['fr'])}
                                           loading="lazy"
                                         />
                                       )}
@@ -562,7 +566,12 @@ export default function PortfolioSection() {
                                       className="flex flex-col gap-4"
                                     >
                                       <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-black/40">
-                                        <img src={activeImg} alt="Gallery preview" className="w-full h-full object-cover transition-transform duration-500" />
+                                        <img 
+                                          src={activeImg} 
+                                          alt="Gallery preview" 
+                                          className="w-full h-full object-cover transition-transform duration-500 cursor-zoom-in hover:scale-102" 
+                                          onClick={() => openLightbox(activeImg, post.title[currentLang] || post.title['fr'])}
+                                        />
                                       </div>
                                       <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                                         {galleryImgs.map((img, idx) => {

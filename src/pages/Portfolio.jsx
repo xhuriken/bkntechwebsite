@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Button from '../components/Button';
 import { formatLocaleDate } from '../utils/dateFormatter';
 import VacuumParticles from '../components/VacuumParticles';
+import { useImageLightbox } from '../context/ImageLightboxContext';
 
 
 /**
@@ -156,6 +157,7 @@ function ProjectTerminalList({ tags = [], category = 'gaming' }) {
  */
 export default function Portfolio() {
   const { t, i18n } = useTranslation();
+  const { openLightbox } = useImageLightbox();
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -314,7 +316,8 @@ export default function Portfolio() {
                     <img
                       src={featuredBannerUrl}
                       alt="Vacuum Protocol"
-                      className="w-full h-full object-cover hover:scale-102 transition-transform duration-700"
+                      className="w-full h-full object-cover hover:scale-102 transition-transform duration-700 cursor-zoom-in"
+                      onClick={() => openLightbox(featuredBannerUrl, "Vacuum Protocol")}
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = '/BknLogo.svg';

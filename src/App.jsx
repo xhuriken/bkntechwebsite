@@ -11,6 +11,8 @@ import PortfolioSection from './pages/PortfolioSection';
 import PortfolioAdmin from './pages/PortfolioAdmin';
 import GamingDevlog from './pages/GamingDevlog';
 
+import { ImageLightboxProvider } from './context/ImageLightboxContext';
+
 /**
  * ScrollToAnchor component handles scrolling smoothly to anchors when URL changes.
  */
@@ -55,36 +57,38 @@ function ExternalRedirect({ url }) {
  */
 function App() {
   return (
-    <Router>
-      <ScrollToAnchor />
-      <div className="relative min-h-screen flex flex-col bg-surface text-on-surface selection:bg-primary/30 selection:text-primary">
-        {/* Interactive Background Grid */}
-        <InteractiveGrid />
+    <ImageLightboxProvider>
+      <Router>
+        <ScrollToAnchor />
+        <div className="relative min-h-screen flex flex-col bg-surface text-on-surface selection:bg-primary/30 selection:text-primary">
+          {/* Interactive Background Grid */}
+          <InteractiveGrid />
 
-        {/* Global Responsive Navigation Bar */}
-        <Navbar />
+          {/* Global Responsive Navigation Bar */}
+          <Navbar />
 
-        {/* Main Content Area */}
-        <main className="flex-grow pt-24 pb-12 flex flex-col justify-center relative z-10">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/portfolio/section/gaming" element={<GamingDevlog />} />
-            <Route path="/portfolio/section/:category" element={<PortfolioSection />} />
-            <Route path="/portfolio/admin" element={<PortfolioAdmin />} />
-            <Route path="/game" element={<Navigate to="/portfolio/section/gaming" replace />} />
-            <Route path="/dkp" element={<ExternalRedirect url="https://dkp95.fr" />} />
-            <Route path="/dkp95" element={<ExternalRedirect url="https://dkp95.fr" />} />
-            <Route path="/dkprenovation" element={<ExternalRedirect url="https://dkp95.fr" />} />
-            <Route path="/mentions-legales" element={<MentionsLegales />} />
-            <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
-          </Routes>
-        </main>
+          {/* Main Content Area */}
+          <main className="flex-grow pt-24 pb-12 flex flex-col justify-center relative z-10">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/portfolio/section/gaming" element={<GamingDevlog />} />
+              <Route path="/portfolio/section/:category" element={<PortfolioSection />} />
+              <Route path="/portfolio/admin" element={<PortfolioAdmin />} />
+              <Route path="/game" element={<Navigate to="/portfolio/section/gaming" replace />} />
+              <Route path="/dkp" element={<ExternalRedirect url="https://dkp95.fr" />} />
+              <Route path="/dkp95" element={<ExternalRedirect url="https://dkp95.fr" />} />
+              <Route path="/dkprenovation" element={<ExternalRedirect url="https://dkp95.fr" />} />
+              <Route path="/mentions-legales" element={<MentionsLegales />} />
+              <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
+            </Routes>
+          </main>
 
-        {/* Global Minimal Footer */}
-        <Footer />
-      </div>
-    </Router>
+          {/* Global Minimal Footer */}
+          <Footer />
+        </div>
+      </Router>
+    </ImageLightboxProvider>
   );
 }
 

@@ -137,14 +137,17 @@ export default function VacuumParticles({ targetRef }) {
         const opacity = p.baseOpacity * fadeFactor;
         if (opacity < 0.002) return false;
 
-        // Draw
+        // Draw core particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${p.colorBase}, ${opacity})`;
-        ctx.shadowColor = `rgba(${p.colorBase}, ${opacity * 0.6})`;
-        ctx.shadowBlur = p.size * 4;
         ctx.fill();
-        ctx.shadowBlur = 0;
+
+        // Draw soft outer halo (10x faster than shadowBlur)
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${p.colorBase}, ${opacity * 0.25})`;
+        ctx.fill();
 
         return true;
       });

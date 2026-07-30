@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { formatLocaleDate } from '../utils/dateFormatter';
 import { detailedProjects } from '../utils/detailedProjects';
 import VacuumParticles from '../components/VacuumParticles';
+import { useImageLightbox } from '../context/ImageLightboxContext';
 
 /**
  * Helper to extract YouTube video ID
@@ -469,16 +470,51 @@ export default function GamingDevlog() {
  * Devlog Post Card component (Discord-like look but with beautiful timeline on the left)
  */
 function DevlogPostCard({ post, currentLang }) {
-  const ytId = post.mediaType === 'video' ? getYouTubeId(post.mediaUrl) : null;
+  const { t } = useTranslation();
+  const { openLightbox } = useImageLightbox();
   const relativeDate = getRelativeDateString(post.date, currentLang);
   const typeStyle = getTypeStyles(post.type);
-  const { t } = useTranslation();
+
+  // Extract all media slots (images or videos)
+  const extra = detailedProjects[post.id];
+  const allMediaSlots = Array.isArray(post.slots) && post.slots.length > 0
+    ? post.slots.filter(s => s.url && s.url.trim())
+    : [
+        ...(post.mediaUrl ? [{ type: post.mediaType || 'image', url: post.mediaUrl }] : []),
+        ...(Array.isArray(post.gallery) ? post.gallery.map(g => ({
+          type: isNativeVideoUrl(g) || getYouTubeId(g) ? 'video' : 'image',
+          url: g
+        })) : []),
+        ...(extra?.gallery ? extra.gallery.map(g => ({
+          type: isNativeVideoUrl(g) || getYouTubeId(g) ? 'video' : 'image',
+          url: g
+        })) : [])
+      ];
+
+  // Remove duplicates by base URL
+  const uniqueSlots = [];
+  const seenUrls = new Set();
+  for (const s of allMediaSlots) {
+    const base = (s.url || '').split('?')[0];
+    if (base && !seenUrls.has(base)) {
+      seenUrls.add(base);
+      uniqueSlots.push(s);
+    }
+  }
+
+  const hasMultipleMedia = uniqueSlots.length > 1;
+  const hasChangelog = !!(post.hasChangelog || (Array.isArray(post.changelog) && post.changelog.length > 0));
+  const isMajor = post.importance === 'major';
+  const isMinor = post.importance === 'minor';
+
+  // Default selected gallery item: 2nd item if minor & multiple media (as per user spec), else 1st
+  const [selectedGallerySlot, setSelectedGallerySlot] = useState(() => {
+    return (hasMultipleMedia && isMinor && uniqueSlots.length > 1) ? uniqueSlots[1] : (uniqueSlots[0] || null);
+  });
 
   const [activeTab, setActiveTab] = useState('overview');
-  const [galleryActiveImg, setGalleryActiveImg] = useState(post.mediaUrl || '');
 
   // Determine dot border, bg, and text color based on category/type
-  // Keywords must match getTypeStyles() for consistent color theming
   const getDotColors = (type = '') => {
     const t = type.toLowerCase();
     if (t.includes('ui')) return { border: 'border-secondary', bg: 'bg-secondary', text: 'text-secondary' };
@@ -491,13 +527,56 @@ function DevlogPostCard({ post, currentLang }) {
   };
 
   const dotColors = getDotColors(post.type);
-  const extra = detailedProjects[post.id];
-  const hasTabs = !!extra;
-
-  // Minor posts are compact by default, Major posts are expanded by default
-  const isMajor = post.importance === 'major';
-  const isMinor = post.importance === 'minor';
   const [isExpanded, setIsExpanded] = useState(isMajor);
+
+  // Helper to render media item (video or image)
+  const renderMediaItem = (slot, customClass = "w-full max-h-[360px] object-contain") => {
+    if (!slot || !slot.url) return null;
+    const slotYtId = getYouTubeId(slot.url);
+    if (slot.type === 'video' || slotYtId || isNativeVideoUrl(slot.url)) {
+      if (slotYtId) {
+        return (
+          <div className="aspect-video w-full">
+            <iframe
+              src={`https://www.youtube.com/embed/${slotYtId}`}
+              className="w-full h-full border-none bg-black"
+              title={post.title[currentLang] || post.title['fr']}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        );
+      }
+      return (
+        <div className="w-full bg-black flex justify-center">
+          <video
+            src={slot.url}
+            controls
+            playsInline
+            autoPlay={false}
+            muted
+            className={customClass}
+          />
+        </div>
+      );
+    }
+    return (
+      <img
+        src={slot.url}
+        alt={post.title[currentLang] || post.title['fr']}
+        className={`${customClass} cursor-zoom-in hover:opacity-95 transition-opacity`}
+        onClick={() => openLightbox(slot.url, post.title[currentLang] || post.title['fr'])}
+        loading="lazy"
+      />
+    );
+  };
+
+  // Compute available tabs
+  const availableTabs = ['overview'];
+  if (hasChangelog) availableTabs.push('changelog');
+  if (hasMultipleMedia && isMinor) availableTabs.push('gallery');
+  if (extra?.features && extra.features[currentLang]) availableTabs.push('features');
+  if (extra?.specs) availableTabs.push('specs');
 
   return (
     <motion.article 
@@ -511,14 +590,14 @@ function DevlogPostCard({ post, currentLang }) {
         isMinor ? 'opacity-85' : ''
       }`}
     >
-      {/* Sticky Dot Wrapper (Desktop & Mobile) - Slides down its thread line */}
+      {/* Sticky Dot Wrapper (Desktop & Mobile) */}
       <div className="absolute left-0 top-0 bottom-0 -ml-[39px] md:-ml-[57px] w-4 pointer-events-none z-10">
         <div className={`sticky top-[126px] w-4 h-4 rounded-full bg-surface border-2 ${dotColors.border} flex items-center justify-center`}>
           <div className={`w-1.5 h-1.5 rounded-full ${dotColors.bg} animate-pulse`} />
         </div>
       </div>
 
-      {/* Sticky Date Wrapper (Desktop only) - Slides along the card timeline */}
+      {/* Sticky Date Wrapper (Desktop only) */}
       <div className="hidden md:block absolute left-0 top-0 bottom-0 -ml-[175px] w-[110px] pointer-events-none z-10">
         <div className={`sticky top-[120px] w-full text-right font-mono text-[10px] tracking-wide font-bold transition-colors duration-150 ${dotColors.text}`}>
           {formatLocaleDate(post.date, currentLang)}
@@ -533,9 +612,8 @@ function DevlogPostCard({ post, currentLang }) {
             ? 'bg-surface-container-low/25 border-white/5 hover:border-white/10'
             : 'bg-surface-container-low/40 border-white/5 hover:border-white/10'
       }`}>
-        {/* Terminal Header - Full Width, Flush, No Margins */}
+        {/* Terminal Header */}
         <div className="w-full bg-black/60 border-b border-white/5 px-4 py-2 flex items-center justify-between font-mono text-[9px] text-green-400 select-none relative overflow-hidden">
-          {/* Passive Noise Texture background */}
           <div 
             className="absolute inset-0 opacity-15 pointer-events-none" 
             style={{
@@ -544,7 +622,6 @@ function DevlogPostCard({ post, currentLang }) {
             }}
           />
           <div className="flex items-center gap-1.5 relative z-10">
-            {/* Sexy Folder Open/Close Icon with group-hover dynamic toggle */}
             <span className="relative w-3.5 h-3.5 flex items-center justify-center text-primary mr-1.5 flex-shrink-0">
               <i className="fa-regular fa-folder absolute transition-all duration-200 group-hover:opacity-0 group-hover:scale-90"></i>
               <i className="fa-regular fa-folder-open absolute transition-all duration-200 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"></i>
@@ -557,9 +634,7 @@ function DevlogPostCard({ post, currentLang }) {
             )}
           </div>
           
-          {/* Date + Importance badge on Right */}
           <div className="flex items-center gap-2 text-on-surface-variant/70 font-semibold relative z-10">
-            {/* Importance badge */}
             {post.importance === 'major' && (
               <span className="px-1.5 py-0.5 rounded border border-primary/40 bg-primary/10 text-primary text-[8px] font-bold uppercase tracking-widest">
                 ★ MAJOR
@@ -576,7 +651,7 @@ function DevlogPostCard({ post, currentLang }) {
           </div>
         </div>
 
-      {/* Compact Header — always visible, click to expand */}
+        {/* Compact Header — click to expand */}
         <button
           onClick={() => setIsExpanded(p => !p)}
           className={`w-full text-left flex items-center gap-3 cursor-pointer group/hdr ${
@@ -633,22 +708,19 @@ function DevlogPostCard({ post, currentLang }) {
             className="overflow-hidden"
           >
             <div className="px-5 md:px-6 pb-5 md:pb-6 flex flex-col gap-4">
-              {/* Tab buttons if detailed projects exists */}
-              {hasTabs && (
+              {/* Tab Navigation buttons if more than 1 tab available */}
+              {availableTabs.length > 1 && (
                 <div className="flex border-b border-white/5 pb-2 gap-4 overflow-x-auto select-none scrollbar-none">
-                  {['overview', 'features', 'specs', 'gallery'].map((tabKey) => {
+                  {availableTabs.map((tabKey) => {
                     const isActive = activeTab === tabKey;
-                    if (tabKey === 'gallery' && (!extra.gallery || extra.gallery.length === 0)) return null;
-                    if (tabKey === 'specs' && (!extra.specs || extra.specs.length === 0)) return null;
-                    if (tabKey === 'features' && (!extra.features || !extra.features[currentLang])) return null;
-
                     return (
                       <button
                         key={tabKey}
                         onClick={() => {
                           setActiveTab(tabKey);
-                          if (tabKey === 'gallery' && extra.gallery?.length > 0) {
-                            setGalleryActiveImg(extra.gallery[0]);
+                          if (tabKey === 'gallery' && uniqueSlots.length > 1) {
+                            // On entering gallery tab, select 2nd item if minor (user rule)
+                            setSelectedGallerySlot(uniqueSlots[1]);
                           }
                         }}
                         className={`text-[10px] md:text-xs font-sans font-bold uppercase tracking-wider pb-1.5 transition-all duration-150 relative cursor-pointer focus:outline-none ${
@@ -669,58 +741,176 @@ function DevlogPostCard({ post, currentLang }) {
                 </div>
               )}
 
-              {/* Dynamic Tab Panel content */}
+              {/* Tab Content */}
               <div className="w-full">
-                {(!hasTabs || activeTab === 'overview') && (
+                {/* OVERVIEW TAB */}
+                {activeTab === 'overview' && (
                   <motion.div 
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25 }}
                     className="flex flex-col gap-4"
                   >
-                    {post.mediaUrl && (
+                    {/* 1st Media item */}
+                    {uniqueSlots.length > 0 && (
                       <div className="w-full max-w-xl overflow-hidden rounded-xl bg-black/20 border border-white/5">
-                        {ytId ? (
-                          <div className="aspect-video w-full">
-                            <iframe 
-                              src={`https://www.youtube.com/embed/${ytId}`} 
-                              className="w-full h-full border-none bg-black"
-                              title={post.title[currentLang] || post.title['fr']}
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                            />
-                          </div>
-                        ) : (post.mediaType === 'video' || isNativeVideoUrl(post.mediaUrl)) ? (
-                          <div className="w-full bg-black flex justify-center">
-                            <video
-                              src={post.mediaUrl}
-                              controls
-                              playsInline
-                              autoPlay
-                              loop
-                              muted
-                              className="w-full max-h-[360px] object-contain"
-                            />
-                          </div>
-                        ) : (
-                          <img 
-                            src={post.mediaUrl} 
-                            alt={post.title[currentLang] || post.title['fr']}
-                            className="w-full max-h-[300px] object-cover"
-                            loading="lazy"
-                          />
-                        )}
+                        {renderMediaItem(uniqueSlots[0], "w-full max-h-[360px] object-contain")}
                       </div>
                     )}
+
+                    {/* Text content */}
                     {post.content && (
                       <div className="text-xs font-sans font-normal text-on-surface/90 leading-relaxed whitespace-pre-wrap">
                         {post.content[currentLang] || post.content['fr']}
                       </div>
                     )}
+
+                    {/* For MAJOR posts with MULTIPLE media: Render remaining media below text */}
+                    {hasMultipleMedia && isMajor && (
+                      <div className="mt-4 flex flex-col gap-3">
+                        <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-on-surface-variant/50 border-b border-white/5 pb-1 flex items-center gap-2">
+                          <i className="fa-solid fa-photo-film text-primary text-[10px]" />
+                          <span>Galerie & Captures Complémentaires ({uniqueSlots.length - 1})</span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {uniqueSlots.slice(1).map((slot, idx) => (
+                            <div key={idx} className="w-full rounded-xl overflow-hidden bg-black/40 border border-white/10 shadow-md">
+                              {renderMediaItem(slot, "w-full h-44 object-cover")}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </motion.div>
                 )}
 
-                {hasTabs && activeTab === 'features' && (
+                {/* PATCH NOTE TAB */}
+                {activeTab === 'changelog' && hasChangelog && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 8 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={{ duration: 0.25 }}
+                    className="flex flex-col gap-6"
+                  >
+                    {/* Category Grouping Logic */}
+                    {(() => {
+                      const categoryConfig = {
+                        content: { label: { fr: 'Nouveau Contenu', en: 'New Content' }, icon: 'fa-box-open', color: 'text-green-400', bar: 'border-green-500/40' },
+                        system: { label: { fr: 'Nouveaux Systèmes', en: 'New Systems' }, icon: 'fa-microchip', color: 'text-cyan-400', bar: 'border-cyan-500/40' },
+                        balance: { label: { fr: 'Équilibrage', en: 'Game Balance' }, icon: 'fa-scale-balanced', color: 'text-amber-400', bar: 'border-amber-500/40' },
+                        improvement: { label: { fr: 'Améliorations', en: 'Improvements' }, icon: 'fa-sliders', color: 'text-primary', bar: 'border-primary/40' },
+                        fix: { label: { fr: 'Corrections de Bugs', en: 'Bugfixes' }, icon: 'fa-bug-slash', color: 'text-red-400', bar: 'border-red-500/40' },
+                        add: { label: { fr: 'Nouveau Contenu', en: 'New Content' }, icon: 'fa-box-open', color: 'text-green-400', bar: 'border-green-500/40' },
+                        remove: { label: { fr: 'Suppressions', en: 'Removals' }, icon: 'fa-trash-can', color: 'text-red-400', bar: 'border-red-500/40' },
+                        wip: { label: { fr: 'En Cours', en: 'Work in Progress' }, icon: 'fa-bolt', color: 'text-amber-400', bar: 'border-amber-500/40' }
+                      };
+
+                      const logs = post.changelog || [];
+                      const grouped = {};
+                      const order = ['content', 'add', 'system', 'balance', 'improvement', 'fix', 'remove', 'wip'];
+
+                      logs.forEach((item) => {
+                        const key = item.type || 'fix';
+                        if (!grouped[key]) grouped[key] = [];
+                        grouped[key].push(item);
+                      });
+
+                      const sortedCategories = Object.keys(grouped).sort(
+                        (a, b) => (order.indexOf(a) >= 0 ? order.indexOf(a) : 99) - (order.indexOf(b) >= 0 ? order.indexOf(b) : 99)
+                      );
+
+                      return (
+                        <div className="flex flex-col gap-6 pt-1">
+                          {sortedCategories.map((catKey) => {
+                            const items = grouped[catKey];
+                            const cfg = categoryConfig[catKey] || categoryConfig.fix;
+                            const catTitle = cfg.label[currentLang] || cfg.label['fr'];
+
+                            return (
+                              <div key={catKey} className="flex flex-col gap-1.5">
+                                {/* Minimal Category Header with Glowing Gradient Separator */}
+                                <div className="flex items-center gap-2.5 text-[11px] font-sans font-bold uppercase tracking-widest text-on-surface-variant/90 select-none pb-1">
+                                  <i className={`fa-solid ${cfg.icon} ${cfg.color} text-xs opacity-90`} />
+                                  <span className="text-on-surface">{catTitle}</span>
+                                  <span className="text-[10px] font-mono text-white/30">({items.length})</span>
+                                  <span className="h-px flex-1 bg-gradient-to-r from-white/10 via-white/5 to-transparent ml-2" />
+                                </div>
+
+                                {/* Clean Glass Minimalist List Items */}
+                                <div className="flex flex-col gap-1">
+                                  {items.map((item, idx) => (
+                                    <div
+                                      key={idx}
+                                      className="group/line relative flex items-start gap-3 py-2 px-3 rounded-lg hover:bg-white/[0.03] transition-all duration-200 cursor-default"
+                                    >
+                                      {/* Glowing Vertical Accent Bar */}
+                                      <span className={`w-0.5 h-3.5 rounded-full bg-white/20 group-hover/line:${cfg.color} group-hover/line:shadow-[0_0_8px_currentColor] group-hover/line:scale-y-125 transition-all duration-200 mt-1 flex-shrink-0 origin-center`} />
+
+                                      {/* Text Line */}
+                                      <p className="text-xs font-sans font-normal text-on-surface-variant/80 group-hover/line:text-on-surface group-hover/line:translate-x-1 transition-all duration-200 flex-1 leading-relaxed">
+                                        {typeof item.text === 'object' ? (item.text[currentLang] || item.text['fr']) : item.text}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
+                  </motion.div>
+                )}
+
+                {/* GALLERY TAB (For MINOR posts with MULTIPLE media) */}
+                {activeTab === 'gallery' && hasMultipleMedia && isMinor && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-4">
+                    {/* Main Preview */}
+                    <div className="w-full max-w-xl rounded-xl overflow-hidden border border-white/10 bg-black/40 shadow-inner">
+                      {renderMediaItem(selectedGallerySlot || uniqueSlots[0], "w-full max-h-[380px] object-contain")}
+                    </div>
+                    
+                    {/* Thumbnails strip (supports video & image) */}
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 max-w-xl">
+                      {uniqueSlots.map((slot, idx) => {
+                        const isSelected = selectedGallerySlot?.url === slot.url;
+                        const slotYtId = getYouTubeId(slot.url);
+                        const isVid = slot.type === 'video' || slotYtId || isNativeVideoUrl(slot.url);
+                        const thumbUrl = slotYtId ? `https://img.youtube.com/vi/${slotYtId}/mqdefault.jpg` : slot.url;
+
+                        return (
+                          <button
+                            key={idx}
+                            onClick={() => setSelectedGallerySlot(slot)}
+                            className={`relative aspect-video rounded-lg overflow-hidden border cursor-pointer transition-all duration-150 group/thumb ${
+                              isSelected ? 'border-primary shadow-[0_0_12px_rgba(190,194,255,0.4)] scale-[1.03]' : 'border-white/10 opacity-60 hover:opacity-100'
+                            }`}
+                          >
+                            {isVid ? (
+                              <div className="w-full h-full bg-black relative flex items-center justify-center">
+                                {slotYtId ? (
+                                  <img src={thumbUrl} alt={`Thumb ${idx + 1}`} className="w-full h-full object-cover" />
+                                ) : (
+                                  <video src={slot.url} className="w-full h-full object-cover opacity-70" muted />
+                                )}
+                                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                                  <div className="w-6 h-6 rounded-full bg-primary/90 text-black flex items-center justify-center shadow-lg group-hover/thumb:scale-110 transition-transform">
+                                    <i className="fa-solid fa-play text-[9px] ml-0.5" />
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <img src={slot.url} alt={`Thumb ${idx + 1}`} className="w-full h-full object-cover" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* FEATURES TAB */}
+                {activeTab === 'features' && extra?.features && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {(extra.features[currentLang] || []).map((feature, idx) => (
                       <motion.div 
@@ -737,7 +927,8 @@ function DevlogPostCard({ post, currentLang }) {
                   </div>
                 )}
 
-                {hasTabs && activeTab === 'specs' && (
+                {/* SPECS TAB */}
+                {activeTab === 'specs' && extra?.specs && (
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -757,46 +948,6 @@ function DevlogPostCard({ post, currentLang }) {
                     </div>
                   </motion.div>
                 )}
-
-                {hasTabs && activeTab === 'gallery' && (() => {
-                  // Deduplicate gallery images by base URL path
-                  const seen = new Set();
-                  const galleryImgs = [post.mediaUrl, ...extra.gallery].filter(img => {
-                    if (!img) return false;
-                    const base = img.split('?')[0];
-                    if (seen.has(base)) return false;
-                    seen.add(base);
-                    return true;
-                  });
-                  const activeImg = galleryActiveImg || galleryImgs[0];
-                  return (
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="flex flex-col gap-4"
-                    >
-                      <div className="w-full aspect-video max-w-xl rounded-2xl overflow-hidden border border-white/10 bg-black/40">
-                        <img src={activeImg} alt="Gallery preview" className="w-full h-full object-cover transition-transform duration-500" />
-                      </div>
-                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 max-w-xl">
-                        {galleryImgs.map((img, idx) => {
-                          const isSelected = activeImg === img;
-                          return (
-                            <button
-                              key={idx}
-                              onClick={() => setGalleryActiveImg(img)}
-                              className={`aspect-video rounded-lg overflow-hidden border cursor-pointer transition-all duration-150 hover:scale-105 active:scale-95 ${
-                                isSelected ? 'border-primary shadow-[0_0_10px_rgba(190,194,255,0.3)] scale-[1.02]' : 'border-white/5 opacity-60 hover:opacity-100'
-                              }`}
-                            >
-                              <img src={img} alt={`Thumb ${idx + 1}`} className="w-full h-full object-cover" />
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </motion.div>
-                  );
-                })()}
               </div>
             </div>
           </motion.div>

@@ -1,5 +1,88 @@
 [
   {
+    "id": "22",
+    "category": "gaming",
+    "type": "Bugfix & Netcode",
+    "importance": "major",
+    "date": "2026-07-30",
+    "mediaType": "video",
+    "mediaUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "gallery": [
+      "https://cdn.discordapp.com/attachments/1484276937844326571/1524831810641723525/2026-07-09_19-34-39.mp4?ex=6a6ae309&is=6a699189&hm=ce9a7832ae888a5866e2ad6ae422a53693f1dd88607feb7f4ae4e3d5e5546efc&",
+      "/uploads/1785340820852_image.png"
+    ],
+    "slots": [
+      {
+        "id": "slot-1",
+        "type": "video",
+        "sourceType": "url",
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      },
+      {
+        "id": "slot-2",
+        "type": "video",
+        "sourceType": "url",
+        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1524831810641723525/2026-07-09_19-34-39.mp4?ex=6a6ae309&is=6a699189&hm=ce9a7832ae888a5866e2ad6ae422a53693f1dd88607feb7f4ae4e3d5e5546efc&"
+      },
+      {
+        "id": "slot-3",
+        "type": "image",
+        "sourceType": "url",
+        "url": "/uploads/1785340820852_image.png"
+      }
+    ],
+    "title": {
+      "fr": "Mise à Jour v0.0.7 — Correctifs Critiques Netcode & HUD",
+      "en": "Hotfix v0.0.7 — Critical Netcode & HUD Bugfixes"
+    },
+    "description": {
+      "fr": "Correctifs de bugs de synchronisation multijoueur, optimisation des performances de rendu et ajouts d'interfaces.",
+      "en": "Multiplayer synchronization bugfixes, render performance optimizations, and UI additions."
+    },
+    "content": {
+      "fr": "Journal des correctifs de la version v0.0.7 appliquée aujourd'hui sur le serveur de dev. Cette mise à jour corrige le bug de désynchronisation de l'aspirateur à fantômes et ajoute l'indicateur de perte de paquets.",
+      "en": "Changelog for v0.0.7 hotfix deployed today on the dev build. This update fixes ghost vacuum desync and adds the packet loss indicator."
+    },
+    "tags": [
+      "Bugfix",
+      "Netcode Sync",
+      "Steamworks",
+      "UI Fixes"
+    ],
+    "commentsCount": 0,
+    "hasChangelog": true,
+    "changelog": [
+      {
+        "type": "content",
+        "text": "Ajout du compteur de FPS et de perte de paquets (packet loss) au coin supérieur droit du HUD."
+      },
+      {
+        "type": "content",
+        "text": "Intégration d'un feedback sonore d'avertissement lorsque la jauge d'aspiration surchauffe."
+      },
+      {
+        "type": "system",
+        "text": "Nouveau système de gestion des connexions Steamworks et reconnexion automatique en cas de micro-coupure."
+      },
+      {
+        "type": "balance",
+        "text": "Ajustement de la capacité des réservoirs d'énergie des robots et de la vitesse de surchauffe."
+      },
+      {
+        "type": "improvement",
+        "text": "Amélioration des effets lumineux du scanner d'aspiration et optimisation du rendu du brouillard."
+      },
+      {
+        "type": "fix",
+        "text": "Correction du bug d'aspiration fantôme qui provoquait une désynchronisation de position à 120ms de latence."
+      },
+      {
+        "type": "fix",
+        "text": "Résolution de la fuite de mémoire lors de la bascule répétée entre l'inventaire et les options."
+      }
+    ]
+  },
+  {
     "id": "21",
     "category": "website",
     "type": "Web App",
