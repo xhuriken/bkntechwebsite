@@ -1,5 +1,72 @@
 [
   {
+    "id": "21",
+    "category": "website",
+    "type": "Web App",
+    "importance": "major",
+    "date": "2026-07-29",
+    "mediaType": "image",
+    "mediaUrl": "/uploads/dkp95_hero.png",
+    "gallery": [
+      "/uploads/dkp95_services.png",
+      "/uploads/dkp95_contact.png",
+      "/uploads/dkp95_chantier1.jpg",
+      "/uploads/dkp95_chantier2.jpg"
+    ],
+    "slots": [
+      {
+        "id": "slot-1",
+        "type": "image",
+        "sourceType": "local",
+        "url": "/uploads/dkp95_hero.png"
+      },
+      {
+        "id": "slot-2",
+        "type": "image",
+        "sourceType": "local",
+        "url": "/uploads/dkp95_services.png"
+      },
+      {
+        "id": "slot-3",
+        "type": "image",
+        "sourceType": "local",
+        "url": "/uploads/dkp95_contact.png"
+      },
+      {
+        "id": "slot-4",
+        "type": "image",
+        "sourceType": "local",
+        "url": "/uploads/dkp95_chantier1.jpg"
+      },
+      {
+        "id": "slot-5",
+        "type": "image",
+        "sourceType": "local",
+        "url": "/uploads/dkp95_chantier2.jpg"
+      }
+    ],
+    "title": {
+      "fr": "DKP Rénovation - Vitrine & Plateforma BTP Premium (dkp95.fr)",
+      "en": "DKP Rénovation - Premium BTP Showcase & Platform (dkp95.fr)"
+    },
+    "description": {
+      "fr": "Site web d'exception et système de devis interactif pour l'entreprise BTP DKP Rénovation (https://dkp95.fr).",
+      "en": "Showcase website & interactive estimate request platform for DKP Rénovation BTP firm (https://dkp95.fr)."
+    },
+    "content": {
+      "fr": "Conception et développement complet du site d'entreprise DKP Rénovation (https://dkp95.fr) à Herblay-sur-Seine. Développé sous React et Tailwind CSS avec des animations fluides, un design épuré aux tons dorés et crème, une intégration de formulaires dynamiques avec Google API, Consent Mode GA4 et galerie de chantiers interactive.",
+      "en": "End-to-end design and engineering of the corporate web application for DKP Rénovation (https://dkp95.fr) in Herblay-sur-Seine. Built with React and Tailwind CSS featuring smooth micro-animations, a refined cream & gold aesthetic, dynamic Google API contact forms, GA4 consent mode, and interactive project galleries."
+    },
+    "tags": [
+      "React & Tailwind",
+      "https://dkp95.fr",
+      "Google API & GA4",
+      "BTP Showcase",
+      "Galerie & Devis"
+    ],
+    "commentsCount": 0
+  },
+  {
     "id": "20",
     "category": "gaming",
     "type": "UI",

@@ -13,64 +13,60 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install sshpass and rsync
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq sshpass rsync
+      - name: Setup SSH Key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
 
       - name: Sync files to VPS
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_PORT: ${{ secrets.VPS_PORT }}
-          VPS_USER: ${{ secrets.VPS_USER }}
-          VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
         run: |
           VPS_HOST="${VPS_HOST:-151.80.147.208}"
           VPS_PORT="${VPS_PORT:-22}"
-          VPS_USER="${VPS_USER:-root}"
+          VPS_USER="ubuntu"
           REMOTE_PATH="/var/www/bkntech"
 
-          sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "mkdir -p $REMOTE_PATH"
+          ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "mkdir -p $REMOTE_PATH"
 
-          sshpass -p "$VPS_PASSWORD" rsync -avz --delete \
+          rsync -avz --delete \
             --exclude='node_modules' \
             --exclude='dist' \
             --exclude='.git' \
             --exclude='.env' \
             --exclude='.env.*' \
             --exclude='*.log' \
-            -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p $VPS_PORT" \
+            -e "ssh -o StrictHostKeyChecking=no -p $VPS_PORT" \
             ./ "${VPS_USER}@${VPS_HOST}:$REMOTE_PATH/"
 
       - name: Update .env.production and Restart Docker
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_PORT: ${{ secrets.VPS_PORT }}
-          VPS_USER: ${{ secrets.VPS_USER }}
-          VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           VPS_HOST="${VPS_HOST:-151.80.147.208}"
           VPS_PORT="${VPS_PORT:-22}"
-          VPS_USER="${VPS_USER:-root}"
+          VPS_USER="ubuntu"
           REMOTE_PATH="/var/www/bkntech"
 
-          sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "
+          ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "
             set -e
             cd $REMOTE_PATH
 
-            cat > .env << 'ENVEOF'
-SMTP_HOST=ssl0.ovh.net
-SMTP_PORT=465
-SMTP_SECURE=true
-SMTP_USER=contact@bkntech.fr
-SMTP_PASS=${SMTP_PASS}
-SMTP_TO=contact@bkntech.fr
-ADMIN_PASSWORD=${ADMIN_PASSWORD}
-DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
-ENVEOF
+            {
+              echo \"SMTP_HOST=ssl0.ovh.net\"
+              echo \"SMTP_PORT=465\"
+              echo \"SMTP_SECURE=true\"
+              echo \"SMTP_USER=contact@bkntech.fr\"
+              echo \"SMTP_PASS=\${SMTP_PASS}\"
+              echo \"SMTP_TO=contact@bkntech.fr\"
+              echo \"ADMIN_PASSWORD=\${ADMIN_PASSWORD}\"
+              echo \"DISCORD_WEBHOOK_URL=\${DISCORD_WEBHOOK_URL}\"
+            } > .env
 
             echo 'Rebuilding Docker containers...'
             docker compose build --no-cache

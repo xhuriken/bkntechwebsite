@@ -488,6 +488,21 @@ export default function PortfolioSection() {
                                     <div className="text-on-surface/90 text-sm font-normal leading-relaxed whitespace-pre-wrap max-w-3xl">
                                       {post.content[currentLang] || post.content['fr']}
                                     </div>
+                                    {extra?.externalUrl && (
+                                      <div className="mt-2">
+                                        <a
+                                          href={extra.externalUrl}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-secondary text-black font-sans font-extrabold text-xs uppercase tracking-wider hover:bg-secondary/90 hover:scale-105 transition-all shadow-[0_0_20px_rgba(78,222,163,0.35)]"
+                                        >
+                                          <span>{currentLang === 'fr' ? `Visiter le site (${extra.externalUrl.replace('https://', '')})` : `Visit Live Website (${extra.externalUrl.replace('https://', '')})`}</span>
+                                          <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                            <path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/>
+                                          </svg>
+                                        </a>
+                                      </div>
+                                    )}
                                   </motion.div>
                                 )}
 
