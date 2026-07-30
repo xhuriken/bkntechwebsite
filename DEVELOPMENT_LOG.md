@@ -22,6 +22,7 @@ Ce journal retrace toutes les décisions techniques, les modifications de code e
 - Validation des identifiants SSH (`ubuntu` + mot de passe VPS) et mise à jour des secrets GitHub pour l'exécution automatique des workflows CI/CD.
 - Ajout d'une sécurité dans deploy.yml forçant l'utilisation de l'utilisateur ubuntu pour SSH (prévention des blocages si VPS_USER est configuré sur root dans les secrets GitHub).
 - Migration de l'authentification SSH du workflow vers une clé privée SSH dédiée (`webfactory/ssh-agent@v0.9.0`) et ajout de la clé publique sur le VPS (`/home/ubuntu/.ssh/authorized_keys`).
+- Succès complet du pipeline CI/CD GitHub Actions (Run #34 validé 🟢 Success en 46s).
 
 ### Justification Technique
 L'erreur de syntaxe YAML capturée par GitHub Actions venait d'une désindentation complète des lignes de variables `SMTP_*` sous la directive `run: |`. En encapsulant la création du fichier `.env` dans un bloc de commandes `echo` indenté, la syntaxe YAML reste 100% valide et lisible.
