@@ -2,6 +2,28 @@
 
 Ce journal retrace toutes les décisions techniques, les modifications de code et les résolutions de bugs apportées au projet.
 
+## [2026-07-30] Pull main, Correction Workflow GitHub Actions & Déploiement VPS
+
+### Tâche
+- Récupérer les dernières mises à jour du dépôt distant (`git pull origin main`).
+- Corriger l'erreur de syntaxe YAML dans le workflow GitHub Actions ([deploy.yml](file:///c:/Users/kikep/Desktop/Bkn%20Society/bkntechwebsite/.github/workflows/deploy.yml)).
+- Déployer la version à jour du site sur le VPS OVH (`151.80.147.208`).
+- Analyser les prérequis pour assurer le fonctionnement automatique des futurs déploiements CI/CD GitHub Actions.
+
+### Modifications
+- Exécuté `git pull origin main` : synchronisation locale de 15 fichiers (Logo BKN, Administration Portfolio, Settings API, Contact Form, etc.).
+- Correction de [.github/workflows/deploy.yml](file:///c:/Users/kikep/Desktop/Bkn%20Society/bkntechwebsite/.github/workflows/deploy.yml) :
+  - Correction de l'indentation de la génération du fichier `.env` via un bloc `echo` propre (résolution du bug du parseur YAML ligne 65).
+  - Définition par défaut de l'utilisateur VPS SSH sur `ubuntu` (`VPS_USER:-ubuntu`).
+- Exécution du script de déploiement sécurisé vers le VPS (`151.80.147.208`) :
+  - Transfert d'archive et extraction dans `/var/www/bkntech`.
+  - Écriture de la configuration de production `.env`.
+  - Reconstruction et relancement des conteneurs Docker (`bkntech-api`, `bkntech-frontend`, `traefik`).
+
+### Justification Technique
+L'erreur de syntaxe YAML capturée par GitHub Actions venait d'une désindentation complète des lignes de variables `SMTP_*` sous la directive `run: |`. En encapsulant la création du fichier `.env` dans un bloc de commandes `echo` indenté, la syntaxe YAML reste 100% valide et lisible.
+Le déploiement VPS a été validé à 100% avec les conteneurs `bkntech-api`, `bkntech-frontend` et `traefik` en état *healthy* et opérationnels sur les ports 80/443.
+
 ---
 
 ## [2026-07-26] Initialisation du Projet
