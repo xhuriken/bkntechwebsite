@@ -36,6 +36,20 @@ function ScrollToAnchor() {
 }
 
 /**
+ * ExternalRedirect component for instant client-side redirection
+ */
+function ExternalRedirect({ url }) {
+  useEffect(() => {
+    window.location.href = url;
+  }, [url]);
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[40vh] text-on-surface-variant font-mono text-xs">
+      <p className="animate-pulse">Redirection vers {url}...</p>
+    </div>
+  );
+}
+
+/**
  * Main Application Component
  * Sets up global styling structure, background grid, routing, header, and footer.
  */
@@ -59,6 +73,9 @@ function App() {
             <Route path="/portfolio/section/:category" element={<PortfolioSection />} />
             <Route path="/portfolio/admin" element={<PortfolioAdmin />} />
             <Route path="/game" element={<Navigate to="/portfolio/section/gaming" replace />} />
+            <Route path="/dkp" element={<ExternalRedirect url="https://dkp95.fr" />} />
+            <Route path="/dkp95" element={<ExternalRedirect url="https://dkp95.fr" />} />
+            <Route path="/dkprenovation" element={<ExternalRedirect url="https://dkp95.fr" />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
             <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
           </Routes>

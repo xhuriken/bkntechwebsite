@@ -366,5 +366,37 @@ export const detailedProjects = {
       "https://images.unsplash.com/photo-1621761191319-c6fb62004040?q=80&w=600",
       "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=600"
     ]
+  },
+  // 21. DKP Rénovation - Website
+  "21": {
+    externalUrl: "https://dkp95.fr",
+    features: {
+      fr: [
+        { title: "Vitrine & Branding BTP", desc: "Design épuré et élégan aux teintes crème & dorées avec typographies Playfair Display et Plus Jakarta Sans." },
+        { title: "Formulaire de Devis Interactif", desc: "Système de demande de devis sur mesure sous 24h avec sélection de prestations (Résidentiel, Tertiaire, Commerces) et intégration Google API." },
+        { title: "Galerie de Réalisations & Chantiers", desc: "Présentation haute résolution des chantiers avec filtres par catégorie de travaux et optimisation d'affichage responsive." },
+        { title: "Conformité RGPD & Analytics GA4", desc: "Gestion des consentements utilisateurs (Consent Mode v2) et en-têtes de sécurité OWASP." }
+      ],
+      en: [
+        { title: "BTP Branding & Showcase", desc: "Sophisticated cream & gold aesthetic featuring Playfair Display and Plus Jakarta Sans typography." },
+        { title: "Interactive Quote System", desc: "Tailored 24h estimate request module with service selection (Residential, Office, Retail) and Google API integration." },
+        { title: "Project & Site Gallery", desc: "High-resolution showcase of renovation projects with categorical filters and responsive image delivery." },
+        { title: "GDPR Consent & GA4 Analytics", desc: "User consent management (Consent Mode v2) and strict OWASP security headers." }
+      ]
+    },
+    specs: [
+      { label: { fr: "Site Officiel Live", en: "Live Website" }, value: "https://dkp95.fr" },
+      { label: { fr: "Framework", en: "Framework" }, value: "React & Vite" },
+      { label: { fr: "Design & Style", en: "Styling" }, value: "Tailwind CSS & Framer Motion" },
+      { label: { fr: "APIs & Formulaires", en: "APIs & Forms" }, value: "Google Maps API & Mailer" },
+      { label: { fr: "Score de Performance", en: "Speed Score" }, value: "99/100 Lighthouse" }
+    ],
+    gallery: [
+      "/uploads/dkp95_hero.png",
+      "/uploads/dkp95_services.png",
+      "/uploads/dkp95_contact.png",
+      "/uploads/dkp95_chantier1.jpg",
+      "/uploads/dkp95_chantier2.jpg"
+    ]
   }
 };
