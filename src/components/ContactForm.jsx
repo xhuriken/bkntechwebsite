@@ -41,8 +41,8 @@ function TerminalList() {
   const [showTagsCount, setShowTagsCount] = useState(0);
   const [coloredTagsCount, setColoredTagsCount] = useState(0);
 
-  const stack = ['laravel', 'react', 'javascript', 'flutter', 'docker', 'tailwind', 'unity'];
-  const commandText = "ls keywords";
+  const stack = ['laravel', 'react', 'tailwind', 'javascript', 'flutter', 'java', 'docker', 'unity'];
+  const commandText = "ls skills";
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
