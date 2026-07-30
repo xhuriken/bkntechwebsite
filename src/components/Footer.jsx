@@ -14,19 +14,19 @@ export default function Footer() {
 
   return (
     <>
-      {/* FLASHBANG FULLSCREEN OVERLAY */}
+      {/* FLASHBANG FULLSCREEN OVERLAY (Stays until lightbulb is clicked again) */}
       {isFlashbang && (
         <div
-          onClick={() => setIsFlashbang(false)}
-          className="fixed inset-0 bg-white z-[99999] pointer-events-auto cursor-pointer animate-in fade-in duration-75"
-          title="Cliquez pour éteindre le flashbang"
+          className="fixed inset-0 bg-white z-[99998] pointer-events-auto cursor-default animate-in fade-in duration-75"
         />
       )}
 
-      <footer className="w-full bg-surface-container-lowest/30 backdrop-blur-md border-t border-white/5 pt-4 pb-4 px-6 md:px-12 z-10 relative mt-auto overflow-hidden">
+      <footer className={`w-full border-t border-white/5 pt-4 pb-4 px-6 md:px-12 relative mt-auto overflow-hidden transition-colors duration-300 ${
+        isFlashbang ? 'z-[99999] bg-white text-black' : 'z-10 bg-surface-container-lowest/30 backdrop-blur-md'
+      }`}>
         {/* Passive Noise Texture background */}
         <div 
-          className="absolute inset-0 opacity-15 pointer-events-none" 
+          className={`absolute inset-0 opacity-15 pointer-events-none transition-opacity duration-300 ${isFlashbang ? 'opacity-0' : 'opacity-15'}`} 
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
             backgroundBlendMode: 'soft-light'
@@ -38,7 +38,7 @@ export default function Footer() {
           <div className="lg:col-span-8 flex flex-col justify-between gap-8 pb-1">
             
             {/* Row 1: Columns */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
+            <div className={`grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch transition-opacity duration-300 ${isFlashbang ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
               {/* Column 1: Identity & Socials */}
               <div className="md:col-span-6 flex flex-col gap-4 md:border-r border-white/5 md:pr-8 mt-4 lg:mt-6">
                 <div className="flex items-center gap-1.5">
@@ -142,15 +142,19 @@ export default function Footer() {
             </div>
 
             {/* Row 2: Bottom copyright / authors inside Part 1 */}
-            <div className="pt-6 pb-2 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-on-surface-variant/40 text-[10px] uppercase tracking-wider font-sans font-medium mb-1">
-              <div>
+            <div className={`pt-6 pb-2 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] uppercase tracking-wider font-sans font-medium mb-1 transition-colors duration-300 ${
+              isFlashbang ? 'border-t border-black/10' : 'border-t border-white/5 text-on-surface-variant/40'
+            }`}>
+              <div className={`transition-opacity duration-300 ${isFlashbang ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                 BKN TECH &copy; {new Date().getFullYear()} &mdash; {t('footer.rights')}
               </div>
 
-              <div className="flex items-center gap-3 text-on-surface-variant/60 font-sans font-semibold normal-case">
-                <span>Enrique Puerto, Célestin Honvault</span>
+              <div className="flex items-center gap-2 font-sans font-semibold normal-case">
+                <span className={`transition-opacity duration-300 ${isFlashbang ? 'opacity-0 pointer-events-none' : 'text-on-surface-variant/60'}`}>
+                  Enrique Puerto, Célestin Honvault
+                </span>
 
-                {/* Discrete Lightbulb Flashbang Easter Egg Button */}
+                {/* Ultra-Minimal Discrete Lightbulb Easter Egg Button (Stays at exact footer position) */}
                 <button
                   type="button"
                   onClick={(e) => {
@@ -159,13 +163,13 @@ export default function Footer() {
                   }}
                   title={isFlashbang ? "Éteindre le Flashbang" : "Flashbang !"}
                   aria-label="Flashbang Easter Egg"
-                  className={`transition-all duration-300 cursor-pointer flex items-center justify-center ${
+                  className={`transition-all duration-300 cursor-pointer p-1 rounded-md inline-flex items-center justify-center ${
                     isFlashbang
-                      ? 'fixed bottom-8 right-8 z-[100000] text-black bg-white border border-black/20 p-4 rounded-full shadow-[0_0_30px_rgba(0,0,0,0.4)] scale-125 hover:scale-150'
-                      : 'w-6 h-6 rounded-md bg-white/5 border border-white/10 text-white/50 hover:text-yellow-300 hover:bg-yellow-400/10 hover:border-yellow-400/40 hover:scale-125 hover:shadow-[0_0_12px_rgba(253,224,71,0.6)]'
+                      ? 'text-black hover:scale-140'
+                      : 'text-white/20 hover:text-white hover:scale-130'
                   }`}
                 >
-                  <i className={`fa-solid fa-lightbulb ${isFlashbang ? 'text-2xl text-black animate-pulse' : 'text-xs'}`} />
+                  <i className={`fa-solid fa-lightbulb ${isFlashbang ? 'text-base text-black' : 'text-[11px]'}`} />
                 </button>
               </div>
             </div>
@@ -173,7 +177,7 @@ export default function Footer() {
           </div>
 
           {/* Part 2: Interactive Cyberpunk Vector Node Canvas (Right) - col-span-4 */}
-          <div className="lg:col-span-4 flex">
+          <div className={`lg:col-span-4 flex transition-opacity duration-300 ${isFlashbang ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             <InteractiveNetwork />
           </div>
 

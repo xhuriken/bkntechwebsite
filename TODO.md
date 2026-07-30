@@ -41,6 +41,9 @@
 - [x] Étape 37 : Fix Débordement du Nom de Fichier Upload - Ajout de la troncation CSS (truncate max-w-full min-w-0) et extraction propre du nom de fichier (ex: 09_19-34-39.mp4) dans le bouton de téléversement pointillé (Terminé)
 - [x] Étape 38 : Remplacement de l'Image Fallback par notfound.gif - Remplacement systématique de /BknLogo.svg par /notfound.gif en cas d'erreur de chargement d'image (onError) dans l'administration, le portfolio et le devlog (Terminé)
 - [x] Étape 39 : Easter Egg Flashbang Ampoule dans le Footer - Ajout d'une icône d'ampoule discrète blanche dans le footer avec survol lumineux jaune, déclenchant un Flashbang blanc plein écran où l'ampoule devient noire (z-index 100000) et s'éteint au re-clic (Terminé)
+- [x] Étape 40 : Perfectionnement Easter Egg Flashbang Mode Clair - Bouton ampoule minimaliste à bordure blanche ressortie (w-7 h-7), agrandissement smooth au survol (hover:scale-125 hover:border-white), overlay blanc bloquant (z-99998) nécessitant un re-clic explicite sur l'ampoule devenue noire (z-99999) pour s'éteindre (Terminé)
+- [x] Étape 41 : Ultra-Minimalisme Ampoule & Icône Noire Haute Visibilité sur Overlay - Icône d'ampoule ultra discrète 10px opacity-20 dans le footer, et bouton ampoule noire (text-2xl text-black z-100000) flottant en bas à droite au-dessus de l'overlay blanc pour un contraste et une fermeture parfaits (Terminé)
+- [x] Étape 42 : Maintien de l'Ampoule à son Emplacement Exact Inline du Footer - L'ampoule reste à sa place exacte dans le footer (à côté des auteurs), passe en NOIR (text-black z-99999) sur fond blanc lors du flashbang, et suit le défilement du footer (Terminé)
 
 
 
