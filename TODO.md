@@ -36,6 +36,7 @@
 - [x] Étape 32 : Isolation Précise du Survol des Lignes (group/line) & Micro-Extension Tactile - Encadrement strict de la lueur néon et de l'étirement de la réglette verticale (scale-y-125) au survol individuel de chaque ligne (group-hover/line), et léger décalage latéral du texte (+1px) dans GamingDevlog.jsx (Terminé)
 - [x] Étape 33 : Extraction Modulaire 'InteractiveNetwork' & Audit Traductions FR/EN - Création du composant autonome InteractiveNetwork.jsx réutilisable universellement, simplification de Footer.jsx et vérification de la couverture de traduction 100% bilingue (Terminé)
 - [x] Étape 34 : Refactorisation Architecturale Avancée (SSOT & Découpage Admin) - Création de MediaViewer.jsx (unification médias), PatchNoteList.jsx (unification changelogs), et découpage de PortfolioAdmin.jsx en 3 sous-composants autonomes (BannerSettingsCard, MediaSlotEditor, PatchNoteEditor) (Terminé)
+- [x] Étape 35 : Restauration des 2 Cartes Indépendantes de Bannières Vacuum - Rétablissement de la grille à 2 cartes distinctes (Bannière Portfolio & Bannière Devlog Jeu), avec boutons de sauvegarde et d'upload individuels et synchronisation useEffect des valeurs existantes (Terminé)
 
 
 
