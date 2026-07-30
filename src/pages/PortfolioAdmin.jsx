@@ -5,6 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
 import { formatLocaleDate } from '../utils/dateFormatter';
+import BannerSettingsCard from '../components/admin/BannerSettingsCard';
+import MediaSlotEditor from '../components/admin/MediaSlotEditor';
+import PatchNoteEditor from '../components/admin/PatchNoteEditor';
 
 /**
  * Helper to extract YouTube video ID
@@ -763,278 +766,33 @@ export default function PortfolioAdmin() {
       ) : (
         /* Authenticated Dashboard */
         <div className="flex flex-col gap-8">
-          {/* Featured Banners Editor Cards Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Card 1: Main Portfolio Banner */}
-            <div className="bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row items-stretch gap-4 shadow-lg">
-              {/* Banner Preview */}
-              <div className="w-full md:w-40 h-24 rounded-xl overflow-hidden border border-white/5 bg-black/40 flex-shrink-0">
-                {featuredBannerUrl ? (
-                  <img
-                    src={featuredBannerUrl}
-                    alt="Bannière Vacuum Protocol (Portfolio)"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = '/BknLogo.svg';
-                    }}
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-on-surface-variant/40">
-                    <i className="fa-solid fa-image text-2xl"></i>
-                  </div>
-                )}
-              </div>
-
-              {/* Banner Edit Controls */}
-              <div className="flex-1 flex flex-col justify-between gap-2.5">
-                <div className="flex items-center gap-2">
-                  <div className="w-[4px] h-5 rounded-full bg-gradient-to-b from-secondary to-transparent flex-shrink-0" />
-                  <h3 className="font-sans font-bold text-xs uppercase tracking-wider text-on-surface">1. Bannière Portfolio (/portfolio)</h3>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={bannerInputUrl}
-                    onChange={(e) => setBannerInputUrl(e.target.value)}
-                    placeholder="URL de l'image ou uploader un fichier..."
-                    className="flex-1 bg-black/30 border border-white/10 rounded-xl px-3 py-2 text-xs font-sans text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary/50 transition-colors"
-                  />
-                  <input
-                    ref={bannerFileRef}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
-                      if (file.size > 20 * 1024 * 1024) {
-                        setBannerMsg({ text: 'Fichier trop volumineux (max 20 Mo).', type: 'error' });
-                        return;
-                      }
-                      setBannerSaving(true);
-                      setBannerMsg({ text: 'Téléversement...', type: 'info' });
-                      const reader = new FileReader();
-                      reader.onload = async (ev) => {
-                        try {
-                          const res = await fetch('/api/upload', {
-                            method: 'POST',
-                            headers: {
-                              'Content-Type': 'application/json',
-                              'x-admin-password': password
-                            },
-                            body: JSON.stringify({
-                              fileData: ev.target.result,
-                              fileName: file.name,
-                              fileType: file.type
-                            })
-                          });
-                          if (res.ok) {
-                            const data = await res.json();
-                            setBannerInputUrl(data.url);
-                            setBannerMsg({ text: 'Fichier uploadé, cliquez Sauvegarder.', type: 'success' });
-                          } else {
-                            setBannerMsg({ text: 'Échec du téléversement.', type: 'error' });
-                          }
-                        } catch (err) {
-                          setBannerMsg({ text: 'Erreur réseau.', type: 'error' });
-                        }
-                        setBannerSaving(false);
-                      };
-                      reader.readAsDataURL(file);
-                    }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => bannerFileRef.current?.click()}
-                    className="w-9 h-9 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all duration-200 cursor-pointer flex-shrink-0"
-                    title="Uploader une image"
-                  >
-                    <i className="fa-solid fa-upload text-xs"></i>
-                  </button>
-                </div>
-
-                <div className="flex items-center justify-between gap-3">
-                  {bannerMsg.text && (
-                    <span className={`text-[10px] font-sans font-semibold ${bannerMsg.type === 'success' ? 'text-secondary' : bannerMsg.type === 'error' ? 'text-red-400' : 'text-primary'
-                      }`}>
-                      {bannerMsg.text}
-                    </span>
-                  )}
-                  <Button
-                    variant="green"
-                    type="button"
-                    disabled={bannerSaving || !bannerInputUrl.trim()}
-                    className="!py-1.5 !px-4 text-[10px] ml-auto"
-                    onClick={async () => {
-                      setBannerSaving(true);
-                      setBannerMsg({ text: '', type: '' });
-                      try {
-                        const res = await fetch('/api/settings', {
-                          method: 'PATCH',
-                          headers: {
-                            'Content-Type': 'application/json',
-                            'x-admin-password': password
-                          },
-                          body: JSON.stringify({ featuredBannerUrl: bannerInputUrl.trim() })
-                        });
-                        if (res.ok) {
-                          const settings = await res.json();
-                          setFeaturedBannerUrl(settings.featuredBannerUrl);
-                          setBannerMsg({ text: 'Sauvegardé !', type: 'success' });
-                          setTimeout(() => setBannerMsg({ text: '', type: '' }), 3000);
-                        } else {
-                          setBannerMsg({ text: 'Échec de la sauvegarde.', type: 'error' });
-                        }
-                      } catch (err) {
-                        setBannerMsg({ text: 'Erreur réseau.', type: 'error' });
-                      }
-                      setBannerSaving(false);
-                    }}
-                  >
-                    <i className="fa-solid fa-floppy-disk text-[9px] mr-1"></i>
-                    Sauvegarder
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 2: Devlog Header Banner */}
-            <div className="bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row items-stretch gap-4 shadow-lg">
-              {/* Banner Preview */}
-              <div className="w-full md:w-40 h-24 rounded-xl overflow-hidden border border-white/5 bg-black/40 flex-shrink-0">
-                {devlogBannerUrl ? (
-                  <img
-                    src={devlogBannerUrl}
-                    alt="Bannière En-tête Devlog (/game)"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = '/BknLogo.svg';
-                    }}
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-on-surface-variant/40">
-                    <i className="fa-solid fa-image text-2xl"></i>
-                  </div>
-                )}
-              </div>
-
-              {/* Banner Edit Controls */}
-              <div className="flex-1 flex flex-col justify-between gap-2.5">
-                <div className="flex items-center gap-2">
-                  <div className="w-[4px] h-5 rounded-full bg-gradient-to-b from-primary to-transparent flex-shrink-0" />
-                  <h3 className="font-sans font-bold text-xs uppercase tracking-wider text-on-surface">2. Bannière Devlog Jeu (/game)</h3>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={devlogBannerInputUrl}
-                    onChange={(e) => setDevlogBannerInputUrl(e.target.value)}
-                    placeholder="URL de l'image ou uploader un fichier..."
-                    className="flex-1 bg-black/30 border border-white/10 rounded-xl px-3 py-2 text-xs font-sans text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary/50 transition-colors"
-                  />
-                  <input
-                    ref={devlogBannerFileRef}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
-                      if (file.size > 20 * 1024 * 1024) {
-                        setDevlogBannerMsg({ text: 'Fichier trop volumineux (max 20 Mo).', type: 'error' });
-                        return;
-                      }
-                      setDevlogBannerSaving(true);
-                      setDevlogBannerMsg({ text: 'Téléversement...', type: 'info' });
-                      const reader = new FileReader();
-                      reader.onload = async (ev) => {
-                        try {
-                          const res = await fetch('/api/upload', {
-                            method: 'POST',
-                            headers: {
-                              'Content-Type': 'application/json',
-                              'x-admin-password': password
-                            },
-                            body: JSON.stringify({
-                              fileData: ev.target.result,
-                              fileName: file.name,
-                              fileType: file.type
-                            })
-                          });
-                          if (res.ok) {
-                            const data = await res.json();
-                            setDevlogBannerInputUrl(data.url);
-                            setDevlogBannerMsg({ text: 'Fichier uploadé, cliquez Sauvegarder.', type: 'success' });
-                          } else {
-                            setDevlogBannerMsg({ text: 'Échec du téléversement.', type: 'error' });
-                          }
-                        } catch (err) {
-                          setDevlogBannerMsg({ text: 'Erreur réseau.', type: 'error' });
-                        }
-                        setDevlogBannerSaving(false);
-                      };
-                      reader.readAsDataURL(file);
-                    }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => devlogBannerFileRef.current?.click()}
-                    className="w-9 h-9 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all duration-200 cursor-pointer flex-shrink-0"
-                    title="Uploader une image"
-                  >
-                    <i className="fa-solid fa-upload text-xs"></i>
-                  </button>
-                </div>
-
-                <div className="flex items-center justify-between gap-3">
-                  {devlogBannerMsg.text && (
-                    <span className={`text-[10px] font-sans font-semibold ${devlogBannerMsg.type === 'success' ? 'text-secondary' : devlogBannerMsg.type === 'error' ? 'text-red-400' : 'text-primary'
-                      }`}>
-                      {devlogBannerMsg.text}
-                    </span>
-                  )}
-                  <Button
-                    variant="green"
-                    type="button"
-                    disabled={devlogBannerSaving || !devlogBannerInputUrl.trim()}
-                    className="!py-1.5 !px-4 text-[10px] ml-auto"
-                    onClick={async () => {
-                      setDevlogBannerSaving(true);
-                      setDevlogBannerMsg({ text: '', type: '' });
-                      try {
-                        const res = await fetch('/api/settings', {
-                          method: 'PATCH',
-                          headers: {
-                            'Content-Type': 'application/json',
-                            'x-admin-password': password
-                          },
-                          body: JSON.stringify({ devlogBannerUrl: devlogBannerInputUrl.trim() })
-                        });
-                        if (res.ok) {
-                          const settings = await res.json();
-                          setDevlogBannerUrl(settings.devlogBannerUrl);
-                          setDevlogBannerMsg({ text: 'Sauvegardé !', type: 'success' });
-                          setTimeout(() => setDevlogBannerMsg({ text: '', type: '' }), 3000);
-                        } else {
-                          setDevlogBannerMsg({ text: 'Échec de la sauvegarde.', type: 'error' });
-                        }
-                      } catch (err) {
-                        setDevlogBannerMsg({ text: 'Erreur réseau.', type: 'error' });
-                      }
-                      setDevlogBannerSaving(false);
-                    }}
-                  >
-                    <i className="fa-solid fa-floppy-disk text-[9px] mr-1"></i>
-                    Sauvegarder
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Featured Banners Editor Card Component */}
+          <BannerSettingsCard
+            settings={{
+              vacuumBanner1: featuredBannerUrl,
+              vacuumBanner2: devlogBannerUrl
+            }}
+            onSaveSetting={async (key, val) => {
+              try {
+                const res = await fetch('/api/settings', {
+                  method: 'PATCH',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'x-admin-password': password
+                  },
+                  body: JSON.stringify({ [key]: val })
+                });
+                if (res.ok) {
+                  if (key === 'vacuumBanner1' || key === 'featuredBannerUrl') setFeaturedBannerUrl(val);
+                  if (key === 'vacuumBanner2' || key === 'devlogBannerUrl') setDevlogBannerUrl(val);
+                  return true;
+                }
+                return false;
+              } catch (err) {
+                return false;
+              }
+            }}
+          />
           {/* Section Filter & Search Bar */}
           <div className="bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-2xl p-4 md:p-6 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 shadow-lg">
 
@@ -1555,86 +1313,15 @@ export default function PortfolioAdmin() {
 
                               {/* Expanded Patch Note Lines Manager */}
                               {formData.hasChangelog && (
-                                <div className="flex flex-col gap-3 mt-1 bg-surface-container-low/20 border border-white/5 rounded-xl p-3.5">
-                                  <div className="flex items-center justify-between gap-2 border-b border-white/5 pb-2.5">
-                                    <span className="text-xs font-sans font-semibold text-on-surface flex items-center gap-2">
-                                      <i className="fa-solid fa-list-check text-primary text-xs" />
-                                      <span>Éléments du Patch Note ({formData.changelog?.length || 0})</span>
-                                    </span>
-                                    <button
-                                      type="button"
-                                      onClick={handleAddChangelogItem}
-                                      className="px-2.5 py-1 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-sans font-semibold hover:bg-primary/20 transition-colors flex items-center gap-1.5 cursor-pointer"
-                                    >
-                                      <i className="fa-solid fa-plus text-[10px]" />
-                                      <span>Ajouter une ligne</span>
-                                    </button>
-                                  </div>
-
-                                  <div className="flex flex-col gap-2">
-                                    {(formData.changelog || []).length === 0 ? (
-                                      <div className="text-xs font-sans text-on-surface-variant/50 italic py-2 text-center">
-                                        Aucune ligne. Cliquez sur "Ajouter une ligne" ci-dessus.
-                                      </div>
-                                    ) : (
-                                      (formData.changelog || []).map((item, idx) => (
-                                        <div key={idx} className="flex items-center gap-2.5 bg-black/30 border border-white/5 rounded-lg p-2 flex-wrap sm:flex-nowrap">
-                                          {/* Type Select */}
-                                          <select
-                                            value={item.type || 'fix'}
-                                            onChange={(e) => handleUpdateChangelogItem(idx, 'type', e.target.value)}
-                                            className="bg-black/60 border border-white/10 rounded-md px-2.5 py-1.5 text-xs font-sans font-semibold text-on-surface focus:border-primary focus:outline-none cursor-pointer flex-shrink-0"
-                                          >
-                                            <option value="content" className="bg-neutral-900 text-green-400 font-semibold">Nouveau Contenu</option>
-                                            <option value="system" className="bg-neutral-900 text-cyan-400 font-semibold">Nouveaux Systèmes</option>
-                                            <option value="balance" className="bg-neutral-900 text-amber-400 font-semibold">Équilibrage</option>
-                                            <option value="improvement" className="bg-neutral-900 text-primary font-semibold">Améliorations</option>
-                                            <option value="fix" className="bg-neutral-900 text-red-400 font-semibold">Corrections de Bugs</option>
-                                          </select>
-
-                                          {/* Text Input */}
-                                          <input
-                                            type="text"
-                                            value={typeof item.text === 'object' ? (item.text.fr || '') : item.text}
-                                            onChange={(e) => handleUpdateChangelogItem(idx, 'text', e.target.value)}
-                                            placeholder="Ex: Correction de la fuite de mémoire du HUD..."
-                                            className="flex-1 min-w-[200px] bg-black/40 border border-white/10 rounded-md px-3 py-1.5 text-xs font-sans text-on-surface placeholder:text-white/20 focus:border-primary focus:outline-none"
-                                          />
-
-                                          {/* Action Buttons */}
-                                          <div className="flex items-center gap-1 flex-shrink-0">
-                                            <button
-                                              type="button"
-                                              onClick={() => handleMoveChangelogItemUp(idx)}
-                                              disabled={idx === 0}
-                                              className="p-1.5 text-white/40 hover:text-white disabled:opacity-20 cursor-pointer"
-                                              title="Monter"
-                                            >
-                                              <i className="fa-solid fa-arrow-up text-xs" />
-                                            </button>
-                                            <button
-                                              type="button"
-                                              onClick={() => handleMoveChangelogItemDown(idx)}
-                                              disabled={idx === (formData.changelog || []).length - 1}
-                                              className="p-1.5 text-white/40 hover:text-white disabled:opacity-20 cursor-pointer"
-                                              title="Descendre"
-                                            >
-                                              <i className="fa-solid fa-arrow-down text-xs" />
-                                            </button>
-                                            <button
-                                              type="button"
-                                              onClick={() => handleRemoveChangelogItem(idx)}
-                                              className="p-1.5 text-red-400/60 hover:text-red-400 cursor-pointer ml-1"
-                                              title="Supprimer"
-                                            >
-                                              <i className="fa-solid fa-trash text-xs" />
-                                            </button>
-                                          </div>
-                                        </div>
-                                      ))
-                                    )}
-                                  </div>
-                                </div>
+                                <PatchNoteEditor
+                                  hasChangelog={formData.hasChangelog}
+                                  changelog={formData.changelog || []}
+                                  onAddChangelogItem={handleAddChangelogItem}
+                                  onUpdateChangelogItem={handleUpdateChangelogItem}
+                                  onRemoveChangelogItem={handleRemoveChangelogItem}
+                                  onMoveChangelogItemUp={handleMoveChangelogItemUp}
+                                  onMoveChangelogItemDown={handleMoveChangelogItemDown}
+                                />
                               )}
                             </div>
                           )}
@@ -1643,252 +1330,18 @@ export default function PortfolioAdmin() {
 
                       {/* TAB 2: MEDIA SLOTS MANAGER */}
                       {formTab === 'media' && (
-                        <div className="flex flex-col gap-5">
-                          <div className="flex items-center justify-between flex-wrap gap-2 border-b border-white/5 pb-3">
-                            <div>
-                              <h3 className="text-xs font-sans font-bold uppercase tracking-wider text-on-surface flex items-center gap-2">
-                                <i className="fa-solid fa-layer-group text-secondary"></i>
-                                <span>Slots Médias & Ordre d'Affichage ({formData.slots?.length || 0})</span>
-                              </h3>
-                              <p className="text-[11px] text-on-surface-variant/60 mt-0.5">
-                                Le <strong className="text-secondary">Slot #1</strong> est le média principal (couverture). Les slots suivants (#2, #3...) composent la galerie.
-                              </p>
-                            </div>
-                            <Button
-                              variant="green"
-                              type="button"
-                              onClick={handleAddSlot}
-                              className="!py-2 !px-3 text-xs flex-shrink-0"
-                            >
-                              <i className="fa-solid fa-plus mr-1.5 text-xs"></i>
-                              Ajouter un Slot Média
-                            </Button>
-                          </div>
-
-                          <AnimatePresence mode="popLayout">
-                            {formData.slots?.map((slot, index) => {
-                              const isPrimary = index === 0;
-                              const ytId = slot.type === 'video' ? getYouTubeId(slot.url) : null;
-
-                              return (
-                                <motion.div
-                                  key={slot.id || index}
-                                  layout
-                                  initial={{ opacity: 0, y: 15 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, scale: 0.95 }}
-                                  transition={{ duration: 0.25 }}
-                                  className={`p-4 rounded-2xl border transition-all flex flex-col gap-4 bg-surface-container-low/40 backdrop-blur-md relative ${isPrimary
-                                    ? 'border-secondary/50 bg-secondary/[0.04] shadow-[0_0_20px_rgba(78,222,163,0.08)]'
-                                    : 'border-white/10 hover:border-white/20'
-                                    }`}
-                                >
-                                  {/* Card Header: Slot Badge & Action Buttons */}
-                                  <div className="flex items-center justify-between gap-2 border-b border-white/5 pb-2.5 select-none">
-                                    <div className="flex items-center gap-2">
-                                      <span className={`text-[9px] font-sans font-black uppercase tracking-wider px-2 py-0.5 rounded border ${isPrimary
-                                        ? 'bg-secondary/20 text-secondary border-secondary/40 shadow-[0_0_10px_rgba(78,222,163,0.3)]'
-                                        : 'bg-white/5 text-on-surface-variant/70 border-white/10'
-                                        }`}>
-                                        {isPrimary ? 'SLOT #1 — MÉDIA PRINCIPAL (COUVERTURE)' : `SLOT #${index + 1}`}
-                                      </span>
-                                    </div>
-
-                                    {/* Reorder & Remove Actions */}
-                                    <div className="flex items-center gap-1.5">
-                                      <button
-                                        type="button"
-                                        disabled={index === 0}
-                                        onClick={() => handleMoveSlotUp(index)}
-                                        className="px-2 py-1 bg-white/5 hover:bg-white/15 disabled:opacity-20 rounded-lg text-xs text-on-surface transition-all cursor-pointer disabled:cursor-not-allowed flex items-center gap-1"
-                                        title="Monter dans l'ordre"
-                                      >
-                                        <i className="fa-solid fa-arrow-up text-[10px]"></i>
-                                        <span className="text-[9px] font-mono">Monter</span>
-                                      </button>
-                                      <button
-                                        type="button"
-                                        disabled={index === formData.slots.length - 1}
-                                        onClick={() => handleMoveSlotDown(index)}
-                                        className="px-2 py-1 bg-white/5 hover:bg-white/15 disabled:opacity-20 rounded-lg text-xs text-on-surface transition-all cursor-pointer disabled:cursor-not-allowed flex items-center gap-1"
-                                        title="Descendre dans l'ordre"
-                                      >
-                                        <i className="fa-solid fa-arrow-down text-[10px]"></i>
-                                        <span className="text-[9px] font-mono">Descendre</span>
-                                      </button>
-                                      {formData.slots.length > 1 && (
-                                        <button
-                                          type="button"
-                                          onClick={() => handleRemoveSlot(index)}
-                                          className="px-2 py-1 bg-red-950/40 hover:bg-red-600/80 border border-red-800/40 text-red-300 hover:text-white rounded-lg text-xs transition-all cursor-pointer ml-1"
-                                          title="Supprimer ce slot"
-                                        >
-                                          <i className="fa-solid fa-trash-can"></i>
-                                        </button>
-                                      )}
-                                    </div>
-                                  </div>
-
-                                  {/* Slot Type & Source Mode Switcher Bar (SSOT Sliding Pill Toggles) */}
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    {/* Type Switcher: Image or Video */}
-                                    <div className="flex flex-col gap-1">
-                                      <label className="text-[10px] font-sans font-bold uppercase tracking-wider text-on-surface-variant/70">
-                                        Type de Média
-                                      </label>
-                                      <div className="relative flex items-center p-1 bg-black/50 rounded-xl border border-white/10 select-none">
-                                        <motion.div
-                                          className={`absolute inset-y-1 rounded-lg shadow-md ${slot.type === 'image'
-                                            ? 'bg-secondary text-surface shadow-[0_0_12px_rgba(78,222,163,0.35)]'
-                                            : 'bg-primary text-surface shadow-[0_0_12px_rgba(190,194,255,0.35)]'
-                                            }`}
-                                          animate={{
-                                            left: slot.type === 'image' ? '4px' : '50%',
-                                            width: 'calc(50% - 4px)'
-                                          }}
-                                          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                                        />
-                                        <button
-                                          type="button"
-                                          onClick={() => handleUpdateSlot(index, 'type', 'image')}
-                                          className={`relative z-10 flex-1 py-1.5 text-xs font-sans font-black flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus:outline-none ${slot.type === 'image' ? 'text-surface' : 'text-on-surface-variant/70 hover:text-on-surface'
-                                            }`}
-                                        >
-                                          <i className="fa-solid fa-image text-xs"></i>
-                                          <span>Image</span>
-                                        </button>
-                                        <button
-                                          type="button"
-                                          onClick={() => handleUpdateSlot(index, 'type', 'video')}
-                                          className={`relative z-10 flex-1 py-1.5 text-xs font-sans font-black flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus:outline-none ${slot.type === 'video' ? 'text-surface' : 'text-on-surface-variant/70 hover:text-on-surface'
-                                            }`}
-                                        >
-                                          <i className="fa-solid fa-video text-xs"></i>
-                                          <span>Vidéo</span>
-                                        </button>
-                                      </div>
-                                    </div>
-
-                                    {/* Source Mode Switcher: Link URL vs Local File */}
-                                    <div className="flex flex-col gap-1">
-                                      <label className="text-[10px] font-sans font-bold uppercase tracking-wider text-on-surface-variant/70">
-                                        Source du Média
-                                      </label>
-                                      <div className="relative flex items-center p-1 bg-black/50 rounded-xl border border-white/10 select-none">
-                                        <motion.div
-                                          className="absolute inset-y-1 rounded-lg bg-white/20 shadow-md"
-                                          animate={{
-                                            left: slot.sourceType !== 'local' ? '4px' : '50%',
-                                            width: 'calc(50% - 4px)'
-                                          }}
-                                          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                                        />
-                                        <button
-                                          type="button"
-                                          onClick={() => handleUpdateSlot(index, 'sourceType', 'url')}
-                                          className={`relative z-10 flex-1 py-1.5 text-xs font-sans font-black flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus:outline-none ${slot.sourceType !== 'local' ? 'text-on-surface' : 'text-on-surface-variant/70 hover:text-on-surface'
-                                            }`}
-                                        >
-                                          <i className="fa-solid fa-link text-xs"></i>
-                                          <span>Lien / URL</span>
-                                        </button>
-                                        <button
-                                          type="button"
-                                          onClick={() => handleUpdateSlot(index, 'sourceType', 'local')}
-                                          className={`relative z-10 flex-1 py-1.5 text-xs font-sans font-black flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus:outline-none ${slot.sourceType === 'local' ? 'text-on-surface' : 'text-on-surface-variant/70 hover:text-on-surface'
-                                            }`}
-                                        >
-                                          <i className="fa-solid fa-cloud-arrow-up text-xs"></i>
-                                          <span>Fichier Local</span>
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  {/* Slot Input Area: URL vs File Upload */}
-                                  {slot.sourceType === 'local' ? (
-                                    <div className="flex flex-col gap-1.5">
-                                      <label className="text-xs font-sans font-semibold text-on-surface-variant">
-                                        Téléverser un fichier local ({slot.type === 'video' ? 'Vidéo MP4 / WebM' : 'Image JPG / PNG / WebP'})
-                                      </label>
-                                      <input
-                                        type="file"
-                                        accept={slot.type === 'video' ? 'video/mp4,video/webm' : 'image/*'}
-                                        onChange={(e) => {
-                                          const file = e.target.files?.[0];
-                                          if (file) handleSlotFileUpload(index, file);
-                                        }}
-                                        className="hidden"
-                                        id={`slot-file-input-${index}`}
-                                      />
-                                      <label
-                                        htmlFor={`slot-file-input-${index}`}
-                                        className="w-full bg-white/5 hover:bg-white/10 border border-dashed border-secondary/40 hover:border-secondary rounded-xl px-4 py-3 text-xs font-sans font-bold text-secondary flex items-center justify-center gap-2 cursor-pointer transition-all"
-                                      >
-                                        <i className="fa-solid fa-cloud-arrow-up text-sm"></i>
-                                        <span>{slot.url ? `Fichier chargé : ${slot.url}` : `Parcourir et charger ${slot.type === 'video' ? 'une Vidéo MP4' : 'une Image'}`}</span>
-                                      </label>
-                                    </div>
-                                  ) : (
-                                    <div className="flex flex-col gap-1">
-                                      <label className="text-xs font-sans font-semibold text-on-surface-variant">
-                                        Lien URL du Média ({slot.type === 'video' ? 'YouTube / Lien MP4 direct' : 'URL d\'image ou /uploads/...'})
-                                      </label>
-                                      <input
-                                        type="text"
-                                        value={slot.url || ''}
-                                        onChange={(e) => handleUpdateSlot(index, 'url', e.target.value)}
-                                        placeholder={slot.type === 'video' ? 'https://youtube.com/watch?v=... ou /uploads/video.mp4' : 'https://images.unsplash.com/... ou /uploads/image.png'}
-                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-sans text-on-surface focus:outline-none focus:border-secondary/60 transition-colors"
-                                      />
-                                    </div>
-                                  )}
-
-                                  {/* Live Slot Preview Box */}
-                                  {slot.url && (
-                                    <div className="flex flex-col gap-1.5 pt-1">
-                                      <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-secondary flex items-center gap-1.5">
-                                        <i className="fa-solid fa-eye text-xs"></i>
-                                        <span>Aperçu en direct du Slot #{index + 1}</span>
-                                      </span>
-                                      <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-black/60 aspect-video max-h-48 relative flex items-center justify-center">
-                                        {slot.type === 'video' ? (
-                                          ytId ? (
-                                            <iframe
-                                              src={`https://www.youtube.com/embed/${ytId}`}
-                                              className="w-full h-full border-none"
-                                              title={`Preview Slot ${index + 1}`}
-                                              allowFullScreen
-                                            />
-                                          ) : (
-                                            <video
-                                              src={slot.url}
-                                              controls
-                                              playsInline
-                                              muted
-                                              className="w-full h-full object-contain bg-black"
-                                            />
-                                          )
-                                        ) : (
-                                          <img
-                                            src={slot.url}
-                                            alt={`Preview Slot ${index + 1}`}
-                                            className="w-full h-full object-cover"
-                                            onError={(e) => {
-                                              e.target.onerror = null;
-                                              e.target.src = '/BknLogo.svg';
-                                            }}
-                                          />
-                                        )}
-                                      </div>
-                                    </div>
-                                  )}
-
-                                </motion.div>
-                              );
-                            })}
-                          </AnimatePresence>
-                        </div>
+                        <MediaSlotEditor
+                          slots={formData.slots || []}
+                          onAddSlot={handleAddSlot}
+                          onUpdateSlot={handleUpdateSlot}
+                          onRemoveSlot={handleRemoveSlot}
+                          onMoveSlotUp={handleMoveSlotUp}
+                          onMoveSlotDown={handleMoveSlotDown}
+                          onFileUpload={(e, idx) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleSlotFileUpload(idx, file);
+                          }}
+                        />
                       )}
 
                       {/* TAB 3: CONTENT FR & EN (SSOT Language Toggle Switcher) */}
