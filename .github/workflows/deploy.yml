@@ -28,7 +28,15 @@ jobs:
           VPS_HOST="${VPS_HOST:-151.80.147.208}"
           VPS_PORT="${VPS_PORT:-22}"
           VPS_USER="${VPS_USER:-ubuntu}"
+          if [ "$VPS_USER" = "root" ]; then
+            VPS_USER="ubuntu"
+          fi
           REMOTE_PATH="/var/www/bkntech"
+
+          if [ -z "$VPS_PASSWORD" ]; then
+            echo "::error::Secret VPS_PASSWORD is not set in GitHub Repository Secrets!"
+            exit 1
+          fi
 
           sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "mkdir -p $REMOTE_PATH"
 
@@ -55,7 +63,15 @@ jobs:
           VPS_HOST="${VPS_HOST:-151.80.147.208}"
           VPS_PORT="${VPS_PORT:-22}"
           VPS_USER="${VPS_USER:-ubuntu}"
+          if [ "$VPS_USER" = "root" ]; then
+            VPS_USER="ubuntu"
+          fi
           REMOTE_PATH="/var/www/bkntech"
+
+          if [ -z "$VPS_PASSWORD" ]; then
+            echo "::error::Secret VPS_PASSWORD is not set in GitHub Repository Secrets!"
+            exit 1
+          fi
 
           sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "
             set -e
