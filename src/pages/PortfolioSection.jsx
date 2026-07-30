@@ -302,23 +302,26 @@ export default function PortfolioSection() {
                 id={`post-${post.id}`}
                 variants={itemVariants}
                 layout
-                className={`relative w-full bg-surface-container-low/25 backdrop-blur-md border rounded-2xl overflow-hidden transition-all duration-300 flex flex-col group ${
-                  isExpanded ? 'border-white/10' : 'border-white/5 hover:border-white/10'
-                }`}
+                className="relative w-full group flex flex-col"
               >
                 {/* Sticky Dot Wrapper (Desktop & Mobile) - Slides down its thread line */}
-                <div className="absolute left-0 top-0 bottom-0 -ml-[39px] md:-ml-[57px] w-4 pointer-events-none">
+                <div className="absolute left-0 top-0 bottom-0 -ml-[39px] md:-ml-[57px] w-4 pointer-events-none z-10">
                   <div className={`sticky top-[126px] w-4 h-4 rounded-full bg-surface border-2 ${dotColors.border} flex items-center justify-center`}>
                     <div className={`w-1.5 h-1.5 rounded-full ${dotColors.bg} animate-pulse`} />
                   </div>
                 </div>
 
                 {/* Sticky Date Wrapper (Desktop only) - Slides along the card timeline */}
-                <div className="hidden md:block absolute left-0 top-0 bottom-0 -ml-[175px] w-[110px] pointer-events-none">
+                <div className="hidden md:block absolute left-0 top-0 bottom-0 -ml-[175px] w-[110px] pointer-events-none z-10">
                   <div className={`sticky top-[120px] w-full text-right font-mono text-[10px] tracking-wide font-bold transition-colors duration-150 ${dotColors.text}`}>
                     {formatLocaleDate(post.date, currentLang)}
                   </div>
                 </div>
+
+                {/* Inner Card Wrapper with overflow-hidden */}
+                <div className={`w-full bg-surface-container-low/25 backdrop-blur-md border rounded-2xl overflow-hidden transition-all duration-300 flex flex-col ${
+                  isExpanded ? 'border-white/10' : 'border-white/5 hover:border-white/10'
+                }`}>
 
                 {/* Compact Header Row – always visible, click to expand */}
                 <button
@@ -396,7 +399,7 @@ export default function PortfolioSection() {
                                     </div>
                                   ) : (
                                     <img 
-                                      src={post.mediaUrl || 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800'} 
+                                      src={post.mediaUrl || '/BknLogo.svg'} 
                                       alt={post.title[currentLang] || post.title['fr']}
                                       className="w-full max-h-[480px] object-cover"
                                       loading="lazy"
@@ -475,7 +478,7 @@ export default function PortfolioSection() {
                                         </div>
                                       ) : (
                                         <img 
-                                          src={post.mediaUrl || 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800'} 
+                                          src={post.mediaUrl || '/BknLogo.svg'} 
                                           alt={post.title[currentLang] || post.title['fr']}
                                           className="w-full max-h-[480px] object-cover"
                                           loading="lazy"
@@ -580,6 +583,7 @@ export default function PortfolioSection() {
                     </div>
                   </motion.div>
                 )}
+                </div>
               </motion.article>
             );
           })}

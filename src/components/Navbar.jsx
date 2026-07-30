@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from './Button';
@@ -14,27 +14,31 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const navLinks = [
+  const siteLinks = [
     { name: t('nav.home'), path: '/' },
-    { name: t('nav.portfolio'), path: '/portfolio' },
     { name: t('nav.contact'), path: '/#contact', isAnchor: true, targetId: 'contact' },
+    { name: t('nav.portfolio'), path: '/portfolio' },
   ];
 
+  const gameLink = {
+    name: t('nav.vacuum') || 'Vacuum Protocol',
+    path: '/portfolio/section/gaming',
+  };
+
   const handleLinkClick = (e, link) => {
+    setIsOpen(false);
     if (link.isAnchor) {
+      if (e) e.preventDefault();
       if (location.pathname === '/') {
-        e.preventDefault();
-        setIsOpen(false);
         const element = document.getElementById(link.targetId);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
         }
       } else {
-        setIsOpen(false);
+        navigate(`/#${link.targetId}`);
       }
-    } else {
-      setIsOpen(false);
     }
   };
 
@@ -50,31 +54,59 @@ export default function Navbar() {
       />
       {/* Brand Identity / Logo */}
       <Link to="/" className="flex items-center gap-0.5 font-display font-black text-3xl tracking-[0.2em] text-on-surface hover:text-primary transition-colors uppercase">
-        <img src="/BknLogo.svg" alt="Next.js" className="w-12 h-12" />
+        <img src="/BknLogo.svg" alt="BKN Tech Logo" className="w-12 h-12" />
         <span>KN Tech</span>
       </Link>
 
       {/* Desktop Links (Hidden on mobile) */}
-      <div className="hidden md:flex items-center gap-8">
-        {navLinks.map((link) => {
-          const isActive = location.pathname === link.path || (link.isAnchor && location.pathname === '/' && location.hash === `#${link.targetId}`);
+      <div className="hidden md:flex items-center gap-6 lg:gap-8">
+        {/* Main Agency Links: Accueil, Contact, Portfolio */}
+        <div className="flex items-center gap-6 lg:gap-8">
+          {siteLinks.map((link) => {
+            const isActive = link.isAnchor
+              ? (location.pathname === '/' && location.hash === `#${link.targetId}`)
+              : (location.pathname === link.path);
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={(e) => handleLinkClick(e, link)}
+                className={`relative py-1 font-sans font-semibold text-[11px] uppercase tracking-[0.15em] transition-all duration-150 ${isActive ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
+                  } group/link`}
+              >
+                {link.name}
+                {/* Responsive underline hover/active effect */}
+                <div
+                  className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-150 ${isActive ? 'w-full' : 'w-0 group-hover/link:w-full'
+                    }`}
+                />
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Visual Separator between Agency links and Vacuum Protocol */}
+        <div className="h-3.5 w-px bg-white/15" />
+
+        {/* Vacuum Protocol Link */}
+        {(() => {
+          const isActive = location.pathname === gameLink.path;
           return (
             <Link
-              key={link.path}
-              to={link.path}
-              onClick={(e) => handleLinkClick(e, link)}
-              className={`relative py-1 font-sans font-semibold text-[11px] uppercase tracking-[0.15em] transition-all duration-150 ${isActive ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
+              to={gameLink.path}
+              onClick={(e) => handleLinkClick(e, gameLink)}
+              className={`relative py-1 font-sans font-semibold text-[11px] uppercase tracking-[0.15em] transition-all duration-150 flex items-center gap-1.5 ${isActive ? 'text-secondary font-bold' : 'text-on-surface-variant hover:text-secondary'
                 } group/link`}
             >
-              {link.name}
-              {/* Responsive underline hover/active effect */}
+              <i className="fa-solid fa-gamepad text-[11px] text-secondary/80 group-hover/link:text-secondary transition-colors" />
+              <span>{gameLink.name}</span>
               <div
-                className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-150 ${isActive ? 'w-full' : 'w-0 group-hover/link:w-full'
+                className={`absolute -bottom-1 left-0 h-px bg-secondary transition-all duration-150 ${isActive ? 'w-full' : 'w-0 group-hover/link:w-full'
                   }`}
               />
             </Link>
           );
-        })}
+        })()}
       </div>
 
       {/* Desktop Utilities */}
@@ -109,21 +141,35 @@ export default function Navbar() {
             transition={{ duration: 0.3 }}
             className="absolute top-full left-0 w-full bg-surface-container-low/95 border-b border-white/5 backdrop-blur-xl p-8 flex flex-col items-center gap-6 md:hidden shadow-2xl z-40"
           >
-            <div className="flex flex-col items-center gap-4 w-full">
-              {navLinks.map((link) => {
-                const isActive = location.pathname === link.path;
+            <div className="flex flex-col items-center gap-3.5 w-full">
+              {siteLinks.map((link) => {
+                const isActive = link.isAnchor
+                  ? (location.pathname === '/' && location.hash === `#${link.targetId}`)
+                  : (location.pathname === link.path);
                 return (
                   <Link
                     key={link.path}
                     to={link.path}
                     onClick={(e) => handleLinkClick(e, link)}
-                    className={`py-2 font-sans font-semibold text-xs uppercase tracking-[0.15em] transition-all duration-300 ${isActive ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
+                    className={`py-1.5 font-sans font-semibold text-xs uppercase tracking-[0.15em] transition-all duration-300 ${isActive ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
                       }`}
                   >
                     {link.name}
                   </Link>
                 );
               })}
+
+              <div className="h-px w-16 bg-white/15 my-1" />
+
+              <Link
+                to={gameLink.path}
+                onClick={(e) => handleLinkClick(e, gameLink)}
+                className={`py-1.5 font-sans font-semibold text-xs uppercase tracking-[0.15em] transition-all duration-300 flex items-center gap-2 ${location.pathname === gameLink.path ? 'text-secondary font-bold' : 'text-on-surface-variant hover:text-secondary'
+                  }`}
+              >
+                <i className="fa-solid fa-gamepad text-xs text-secondary/80" />
+                <span>{gameLink.name}</span>
+              </Link>
             </div>
 
             <div className="h-px w-full bg-white/5" />

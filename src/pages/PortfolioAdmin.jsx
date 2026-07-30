@@ -55,14 +55,19 @@ export default function PortfolioAdmin() {
   const [textLang, setTextLang] = useState('fr'); // 'fr' | 'en' for Tab 3 SSOT toggle
   const [deletingPost, setDeletingPost] = useState(null); // Post pending deletion for custom modal
   const [saveSuccess, setSaveSuccess] = useState(false); // Success screen transition like ContactForm.jsx
-  const fileInputRef = useRef(null);
   const bannerFileRef = useRef(null);
+  const devlogBannerFileRef = useRef(null);
 
-  // Featured banner settings state
+  // Featured banner settings state (Portfolio page & Devlog page)
   const [featuredBannerUrl, setFeaturedBannerUrl] = useState('');
   const [bannerInputUrl, setBannerInputUrl] = useState('');
   const [bannerSaving, setBannerSaving] = useState(false);
   const [bannerMsg, setBannerMsg] = useState({ text: '', type: '' });
+
+  const [devlogBannerUrl, setDevlogBannerUrl] = useState('');
+  const [devlogBannerInputUrl, setDevlogBannerInputUrl] = useState('');
+  const [devlogBannerSaving, setDevlogBannerSaving] = useState(false);
+  const [devlogBannerMsg, setDevlogBannerMsg] = useState({ text: '', type: '' });
 
   const [formData, setFormData] = useState({
     category: 'gaming',
@@ -103,13 +108,17 @@ export default function PortfolioAdmin() {
           setIsAuth(true);
           localStorage.setItem('bkn_admin_pass', pass);
 
-          // Load site settings (featured banner URL)
+          // Load site settings (featured banner URLs)
           try {
             const settingsRes = await fetch('/api/settings');
             const settings = await settingsRes.json();
             if (settings.featuredBannerUrl) {
               setFeaturedBannerUrl(settings.featuredBannerUrl);
               setBannerInputUrl(settings.featuredBannerUrl);
+            }
+            if (settings.devlogBannerUrl) {
+              setDevlogBannerUrl(settings.devlogBannerUrl);
+              setDevlogBannerInputUrl(settings.devlogBannerUrl);
             }
           } catch (err) {
             console.error('Failed to load settings:', err);
@@ -336,7 +345,7 @@ export default function PortfolioAdmin() {
 
     // Derive primary mediaUrl and gallery from slots
     const validSlots = (formData.slots || []).filter(s => s.url && s.url.trim() !== '');
-    const primarySlot = validSlots[0] || { type: 'image', url: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800' };
+    const primarySlot = validSlots[0] || { type: 'image', url: '/BknLogo.svg' };
 
     const payload = {
       id: editingId,
@@ -564,7 +573,7 @@ export default function PortfolioAdmin() {
           className="w-full max-h-56 object-cover"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800';
+            e.target.src = '/BknLogo.svg';
           }}
         />
       </div>
@@ -699,137 +708,275 @@ export default function PortfolioAdmin() {
       ) : (
         /* Authenticated Dashboard */
         <div className="flex flex-col gap-8">
-          {/* Featured Banner Editor Card */}
-          <div className="bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row items-stretch gap-4 shadow-lg">
-            {/* Banner Preview */}
-            <div className="w-full md:w-48 h-28 rounded-xl overflow-hidden border border-white/5 bg-black/40 flex-shrink-0">
-              {featuredBannerUrl ? (
-                <img
-                  src={featuredBannerUrl}
-                  alt="Bannière Vacuum Protocol"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800';
-                  }}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-on-surface-variant/40">
-                  <i className="fa-solid fa-image text-2xl"></i>
-                </div>
-              )}
-            </div>
-
-            {/* Banner Edit Controls */}
-            <div className="flex-1 flex flex-col justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <div className="w-[4px] h-5 rounded-full bg-gradient-to-b from-secondary to-transparent flex-shrink-0" />
-                <h3 className="font-sans font-bold text-xs uppercase tracking-wider text-on-surface">Bannière Vacuum Protocol</h3>
+          {/* Featured Banners Editor Cards Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Card 1: Main Portfolio Banner */}
+            <div className="bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row items-stretch gap-4 shadow-lg">
+              {/* Banner Preview */}
+              <div className="w-full md:w-40 h-24 rounded-xl overflow-hidden border border-white/5 bg-black/40 flex-shrink-0">
+                {featuredBannerUrl ? (
+                  <img
+                    src={featuredBannerUrl}
+                    alt="Bannière Vacuum Protocol (Portfolio)"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/BknLogo.svg';
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-on-surface-variant/40">
+                    <i className="fa-solid fa-image text-2xl"></i>
+                  </div>
+                )}
               </div>
 
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={bannerInputUrl}
-                  onChange={(e) => setBannerInputUrl(e.target.value)}
-                  placeholder="URL de l'image ou uploader un fichier..."
-                  className="flex-1 bg-black/30 border border-white/10 rounded-xl px-3 py-2 text-xs font-sans text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary/50 transition-colors"
-                />
-                <input
-                  ref={bannerFileRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={async (e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) return;
-                    if (file.size > 20 * 1024 * 1024) {
-                      setBannerMsg({ text: 'Fichier trop volumineux (max 20 Mo).', type: 'error' });
-                      return;
-                    }
-                    setBannerSaving(true);
-                    setBannerMsg({ text: 'Téléversement...', type: 'info' });
-                    const reader = new FileReader();
-                    reader.onload = async (ev) => {
+              {/* Banner Edit Controls */}
+              <div className="flex-1 flex flex-col justify-between gap-2.5">
+                <div className="flex items-center gap-2">
+                  <div className="w-[4px] h-5 rounded-full bg-gradient-to-b from-secondary to-transparent flex-shrink-0" />
+                  <h3 className="font-sans font-bold text-xs uppercase tracking-wider text-on-surface">1. Bannière Portfolio (/portfolio)</h3>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={bannerInputUrl}
+                    onChange={(e) => setBannerInputUrl(e.target.value)}
+                    placeholder="URL de l'image ou uploader un fichier..."
+                    className="flex-1 bg-black/30 border border-white/10 rounded-xl px-3 py-2 text-xs font-sans text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary/50 transition-colors"
+                  />
+                  <input
+                    ref={bannerFileRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      if (file.size > 20 * 1024 * 1024) {
+                        setBannerMsg({ text: 'Fichier trop volumineux (max 20 Mo).', type: 'error' });
+                        return;
+                      }
+                      setBannerSaving(true);
+                      setBannerMsg({ text: 'Téléversement...', type: 'info' });
+                      const reader = new FileReader();
+                      reader.onload = async (ev) => {
+                        try {
+                          const res = await fetch('/api/upload', {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'x-admin-password': password
+                            },
+                            body: JSON.stringify({
+                              fileData: ev.target.result,
+                              fileName: file.name,
+                              fileType: file.type
+                            })
+                          });
+                          if (res.ok) {
+                            const data = await res.json();
+                            setBannerInputUrl(data.url);
+                            setBannerMsg({ text: 'Fichier uploadé, cliquez Sauvegarder.', type: 'success' });
+                          } else {
+                            setBannerMsg({ text: 'Échec du téléversement.', type: 'error' });
+                          }
+                        } catch (err) {
+                          setBannerMsg({ text: 'Erreur réseau.', type: 'error' });
+                        }
+                        setBannerSaving(false);
+                      };
+                      reader.readAsDataURL(file);
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => bannerFileRef.current?.click()}
+                    className="w-9 h-9 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all duration-200 cursor-pointer flex-shrink-0"
+                    title="Uploader une image"
+                  >
+                    <i className="fa-solid fa-upload text-xs"></i>
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between gap-3">
+                  {bannerMsg.text && (
+                    <span className={`text-[10px] font-sans font-semibold ${bannerMsg.type === 'success' ? 'text-secondary' : bannerMsg.type === 'error' ? 'text-red-400' : 'text-primary'
+                      }`}>
+                      {bannerMsg.text}
+                    </span>
+                  )}
+                  <Button
+                    variant="green"
+                    type="button"
+                    disabled={bannerSaving || !bannerInputUrl.trim()}
+                    className="!py-1.5 !px-4 text-[10px] ml-auto"
+                    onClick={async () => {
+                      setBannerSaving(true);
+                      setBannerMsg({ text: '', type: '' });
                       try {
-                        const res = await fetch('/api/upload', {
-                          method: 'POST',
+                        const res = await fetch('/api/settings', {
+                          method: 'PATCH',
                           headers: {
                             'Content-Type': 'application/json',
                             'x-admin-password': password
                           },
-                          body: JSON.stringify({
-                            fileData: ev.target.result,
-                            fileName: file.name,
-                            fileType: file.type
-                          })
+                          body: JSON.stringify({ featuredBannerUrl: bannerInputUrl.trim() })
                         });
                         if (res.ok) {
-                          const data = await res.json();
-                          setBannerInputUrl(data.url);
-                          setBannerMsg({ text: 'Fichier uploadé, cliquez Sauvegarder.', type: 'success' });
+                          const settings = await res.json();
+                          setFeaturedBannerUrl(settings.featuredBannerUrl);
+                          setBannerMsg({ text: 'Sauvegardé !', type: 'success' });
+                          setTimeout(() => setBannerMsg({ text: '', type: '' }), 3000);
                         } else {
-                          setBannerMsg({ text: 'Échec du téléversement.', type: 'error' });
+                          setBannerMsg({ text: 'Échec de la sauvegarde.', type: 'error' });
                         }
                       } catch (err) {
                         setBannerMsg({ text: 'Erreur réseau.', type: 'error' });
                       }
                       setBannerSaving(false);
-                    };
-                    reader.readAsDataURL(file);
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={() => bannerFileRef.current?.click()}
-                  className="w-9 h-9 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all duration-200 cursor-pointer flex-shrink-0"
-                  title="Uploader une image"
-                >
-                  <i className="fa-solid fa-upload text-xs"></i>
-                </button>
+                    }}
+                  >
+                    <i className="fa-solid fa-floppy-disk text-[9px] mr-1"></i>
+                    Sauvegarder
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: Devlog Header Banner */}
+            <div className="bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row items-stretch gap-4 shadow-lg">
+              {/* Banner Preview */}
+              <div className="w-full md:w-40 h-24 rounded-xl overflow-hidden border border-white/5 bg-black/40 flex-shrink-0">
+                {devlogBannerUrl ? (
+                  <img
+                    src={devlogBannerUrl}
+                    alt="Bannière En-tête Devlog (/game)"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/BknLogo.svg';
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-on-surface-variant/40">
+                    <i className="fa-solid fa-image text-2xl"></i>
+                  </div>
+                )}
               </div>
 
-              <div className="flex items-center justify-between gap-3">
-                {bannerMsg.text && (
-                  <span className={`text-[10px] font-sans font-semibold ${bannerMsg.type === 'success' ? 'text-secondary' : bannerMsg.type === 'error' ? 'text-red-400' : 'text-primary'
-                    }`}>
-                    {bannerMsg.text}
-                  </span>
-                )}
-                <Button
-                  variant="green"
-                  type="button"
-                  disabled={bannerSaving || !bannerInputUrl.trim()}
-                  className="!py-1.5 !px-4 text-[10px] ml-auto"
-                  onClick={async () => {
-                    setBannerSaving(true);
-                    setBannerMsg({ text: '', type: '' });
-                    try {
-                      const res = await fetch('/api/settings', {
-                        method: 'PATCH',
-                        headers: {
-                          'Content-Type': 'application/json',
-                          'x-admin-password': password
-                        },
-                        body: JSON.stringify({ featuredBannerUrl: bannerInputUrl.trim() })
-                      });
-                      if (res.ok) {
-                        const settings = await res.json();
-                        setFeaturedBannerUrl(settings.featuredBannerUrl);
-                        setBannerMsg({ text: 'Bannière sauvegardée !', type: 'success' });
-                        setTimeout(() => setBannerMsg({ text: '', type: '' }), 3000);
-                      } else {
-                        setBannerMsg({ text: 'Échec de la sauvegarde.', type: 'error' });
+              {/* Banner Edit Controls */}
+              <div className="flex-1 flex flex-col justify-between gap-2.5">
+                <div className="flex items-center gap-2">
+                  <div className="w-[4px] h-5 rounded-full bg-gradient-to-b from-primary to-transparent flex-shrink-0" />
+                  <h3 className="font-sans font-bold text-xs uppercase tracking-wider text-on-surface">2. Bannière Devlog Jeu (/game)</h3>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={devlogBannerInputUrl}
+                    onChange={(e) => setDevlogBannerInputUrl(e.target.value)}
+                    placeholder="URL de l'image ou uploader un fichier..."
+                    className="flex-1 bg-black/30 border border-white/10 rounded-xl px-3 py-2 text-xs font-sans text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary/50 transition-colors"
+                  />
+                  <input
+                    ref={devlogBannerFileRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      if (file.size > 20 * 1024 * 1024) {
+                        setDevlogBannerMsg({ text: 'Fichier trop volumineux (max 20 Mo).', type: 'error' });
+                        return;
                       }
-                    } catch (err) {
-                      setBannerMsg({ text: 'Erreur réseau.', type: 'error' });
-                    }
-                    setBannerSaving(false);
-                  }}
-                >
-                  <i className="fa-solid fa-floppy-disk text-[9px] mr-1"></i>
-                  Sauvegarder
-                </Button>
+                      setDevlogBannerSaving(true);
+                      setDevlogBannerMsg({ text: 'Téléversement...', type: 'info' });
+                      const reader = new FileReader();
+                      reader.onload = async (ev) => {
+                        try {
+                          const res = await fetch('/api/upload', {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'x-admin-password': password
+                            },
+                            body: JSON.stringify({
+                              fileData: ev.target.result,
+                              fileName: file.name,
+                              fileType: file.type
+                            })
+                          });
+                          if (res.ok) {
+                            const data = await res.json();
+                            setDevlogBannerInputUrl(data.url);
+                            setDevlogBannerMsg({ text: 'Fichier uploadé, cliquez Sauvegarder.', type: 'success' });
+                          } else {
+                            setDevlogBannerMsg({ text: 'Échec du téléversement.', type: 'error' });
+                          }
+                        } catch (err) {
+                          setDevlogBannerMsg({ text: 'Erreur réseau.', type: 'error' });
+                        }
+                        setDevlogBannerSaving(false);
+                      };
+                      reader.readAsDataURL(file);
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => devlogBannerFileRef.current?.click()}
+                    className="w-9 h-9 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all duration-200 cursor-pointer flex-shrink-0"
+                    title="Uploader une image"
+                  >
+                    <i className="fa-solid fa-upload text-xs"></i>
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between gap-3">
+                  {devlogBannerMsg.text && (
+                    <span className={`text-[10px] font-sans font-semibold ${devlogBannerMsg.type === 'success' ? 'text-secondary' : devlogBannerMsg.type === 'error' ? 'text-red-400' : 'text-primary'
+                      }`}>
+                      {devlogBannerMsg.text}
+                    </span>
+                  )}
+                  <Button
+                    variant="green"
+                    type="button"
+                    disabled={devlogBannerSaving || !devlogBannerInputUrl.trim()}
+                    className="!py-1.5 !px-4 text-[10px] ml-auto"
+                    onClick={async () => {
+                      setDevlogBannerSaving(true);
+                      setDevlogBannerMsg({ text: '', type: '' });
+                      try {
+                        const res = await fetch('/api/settings', {
+                          method: 'PATCH',
+                          headers: {
+                            'Content-Type': 'application/json',
+                            'x-admin-password': password
+                          },
+                          body: JSON.stringify({ devlogBannerUrl: devlogBannerInputUrl.trim() })
+                        });
+                        if (res.ok) {
+                          const settings = await res.json();
+                          setDevlogBannerUrl(settings.devlogBannerUrl);
+                          setDevlogBannerMsg({ text: 'Sauvegardé !', type: 'success' });
+                          setTimeout(() => setDevlogBannerMsg({ text: '', type: '' }), 3000);
+                        } else {
+                          setDevlogBannerMsg({ text: 'Échec de la sauvegarde.', type: 'error' });
+                        }
+                      } catch (err) {
+                        setDevlogBannerMsg({ text: 'Erreur réseau.', type: 'error' });
+                      }
+                      setDevlogBannerSaving(false);
+                    }}
+                  >
+                    <i className="fa-solid fa-floppy-disk text-[9px] mr-1"></i>
+                    Sauvegarder
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -1050,7 +1197,7 @@ export default function PortfolioAdmin() {
                                           className="w-full max-h-48 object-cover"
                                           onError={(e) => {
                                             e.target.onerror = null;
-                                            e.target.src = 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800';
+                                            e.target.src = '/BknLogo.svg';
                                           }}
                                         />
                                       )}
@@ -1559,7 +1706,7 @@ export default function PortfolioAdmin() {
                                             className="w-full h-full object-cover"
                                             onError={(e) => {
                                               e.target.onerror = null;
-                                              e.target.src = 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800';
+                                              e.target.src = '/BknLogo.svg';
                                             }}
                                           />
                                         )}

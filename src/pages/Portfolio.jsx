@@ -162,7 +162,7 @@ export default function Portfolio() {
   const [selectedIndices, setSelectedIndices] = useState({ website: 0, 'ai-agent': 0, mobile: 0 });
   const currentLang = i18n.language || 'fr';
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
-  const [featuredBannerUrl, setFeaturedBannerUrl] = useState('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800');
+  const [featuredBannerUrl, setFeaturedBannerUrl] = useState('/BknLogo.svg');
   const letterORef = useRef(null);
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
@@ -221,7 +221,7 @@ export default function Portfolio() {
       const ytId = getYouTubeId(post.mediaUrl);
       if (ytId) return `https://img.youtube.com/vi/${ytId}/mqdefault.jpg`;
     }
-    return post.mediaUrl || 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800';
+    return post.mediaUrl || '/BknLogo.svg';
   };
 
   const containerVariants = {
@@ -317,7 +317,7 @@ export default function Portfolio() {
                       className="w-full h-full object-cover hover:scale-102 transition-transform duration-700"
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800';
+                        e.target.src = '/BknLogo.svg';
                       }}
                     />
                   </div>

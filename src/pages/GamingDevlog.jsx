@@ -88,13 +88,14 @@ export default function GamingDevlog() {
   // API posts loading
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [devlogBannerUrl, setDevlogBannerUrl] = useState('');
   
   // Search and filters states
   const [search, setSearch] = useState('');
   const [selectedType, setSelectedType] = useState('all');
   const [sortBy, setSortBy] = useState('newest'); // 'newest' | 'oldest'
 
-  // Load devlog posts
+  // Load devlog posts and site settings
   useEffect(() => {
     fetch('/api/posts')
       .then(res => res.json())
@@ -110,6 +111,15 @@ export default function GamingDevlog() {
         console.error("Failed to load devlog posts:", err);
         setLoading(false);
       });
+
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.devlogBannerUrl) {
+          setDevlogBannerUrl(data.devlogBannerUrl);
+        }
+      })
+      .catch(err => console.error("Failed to load settings:", err));
   }, []);
 
   useEffect(() => {
@@ -193,8 +203,25 @@ export default function GamingDevlog() {
         </Link>
       </div>
 
-      {/* Devlog Game Header */}
-      <div className="bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+      {/* Devlog Game Header Container */}
+      <div className="bg-surface-container-low/45 backdrop-blur-md border border-white/5 rounded-2xl p-3 md:p-4 pb-6 md:pb-8 flex flex-col gap-6 mb-12">
+        {/* 2nd Vacuum Banner (Low height & wide) */}
+        {devlogBannerUrl && (
+          <div className="w-full h-28 md:h-36 overflow-hidden rounded-xl border border-white/10 relative group bg-black/40">
+            <img
+              src={devlogBannerUrl}
+              alt="Vacuum Protocol Header Banner"
+              className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = '/BknLogo.svg';
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-surface-container-low/90 via-transparent to-transparent pointer-events-none" />
+          </div>
+        )}
+
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 w-full px-3 md:px-4">
         <div className="max-w-xl flex flex-col gap-3">
           <h1 className="font-sans font-extrabold text-3xl md:text-4xl uppercase tracking-tight text-on-surface">
             V<span ref={letterARef} className="relative inline-block text-primary">a</span>cuum Protocol
@@ -256,6 +283,7 @@ export default function GamingDevlog() {
             <div>Engine : Unity URP + Mirror</div>
             <div>{t('devlog.updates')} : {t('devlog.frequent')}</div>
           </div>
+        </div>
         </div>
       </div>
 

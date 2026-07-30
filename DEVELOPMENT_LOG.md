@@ -452,6 +452,83 @@ Rendre la photo de bannière du projet à la une (Vacuum Protocol) sur la page P
 - **Réutilisation** : L'upload d'image passe par le même endpoint `/api/upload` existant, zéro duplication de logique.
 - **Fallback Robuste** : Si le fichier settings est vide ou l'image inaccessible, le placeholder Unsplash est utilisé en fallback automatique.
 
+---
+
+## [2026-07-30] Correction Navigation inter-pages Navbar, Re-structuration & Séparation des Liens & Ajustement Espacement Contact
+
+### Tâche
+1. Résoudre le dysfonctionnement du bouton "Lancez-vous !" CTA de la navbar lorsqu'on clique dessus depuis une page autre que la page d'accueil.
+2. Réorganiser et séparer visuellement les liens de navigation dans la navbar (`Accueil`, `Contact`, `Portfolio`, `Vacuum Protocol`).
+3. Réduire l'espacement vertical excessif entre la ligne sous le menu d'onglets du formulaire de contact et le conteneur rectangulaire intérieur des champs.
+
+### Modifications
+- **[Navbar.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Navbar.jsx)** :
+  - Importation et utilisation du hook `useNavigate` de `react-router-dom`.
+  - Mise à jour du handler `handleLinkClick` : si la destination est une ancre (`isAnchor`) et que l'utilisateur se trouve sur une autre page que la racine `/`, le handler exécute `e.preventDefault()` et déclenche une redirection explicite via `navigate('/#' + link.targetId)`.
+  - Réorganisation des liens du site : `Accueil` (`/`), `Contact` (`/#contact`), `Portfolio` (`/portfolio`).
+  - Intégration du lien dédié au jeu : `Vacuum Protocol` (`/portfolio/section/gaming`).
+  - Séparation visuelle nette ("separe les deux") entre la section agence (`Accueil`, `Contact`, `Portfolio`) et la section produit/jeu (`Vacuum Protocol`) via une ligne de séparation verticale subtile (`h-3.5 w-px bg-white/15`) sur desktop, et un séparateur horizontal (`h-px w-16 bg-white/15`) sur mobile.
+  - Ajout d'un accent visuel thématique (icône manette `fa-gamepad` + couleur `secondary`) sur le lien `Vacuum Protocol`.
+- **[App.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/App.jsx)** :
+  - Amélioration de `ScrollToAnchor` : placement de la requête `document.getElementById(id)` à l'intérieur d'un `setTimeout` de 100ms pour garantir la présence de l'élément DOM `#contact` lors des transitions de routes entre pages.
+- **[ContactForm.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ContactForm.jsx)** :
+  - Réduction de la marge inférieure sous la ligne de division des onglets de modèles de message (`border-b border-white/5`), passant de `mb-8` (32px) à `mb-3.5` (14px), resserrant ainsi l'espace vertical entre le menu d'onglets et le début du rectangle des champs.
+- **[fr.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/fr.json)** & **[en.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/en.json)** :
+  - Ajout de la clé `"vacuum": "Vacuum Protocol"` dans les dictionnaires d'i18n.
+
+### Justification Technique
+- **Navigation Propre & Accessible (SPA Anchor Linking)** : Les éléments bouton (`<button>`) sans attribut `href` / `to` n'effectuaient aucune navigation lorsque `location.pathname !== '/'`. L'association de `useNavigate` avec la détection d'ancre permet une redirection fluide vers `/#contact` tout en conservant le défilement auto-animé de `ScrollToAnchor`.
+- **Hiérarchie Visuelle (Navigation)** : La séparation graphique des liens d'entreprise agence (Accueil, Contact, Portfolio) et du lien produit jeu (Vacuum Protocol) clarifie le double rôle de BKN Tech (Agence B2B + Studio de jeu vidéo) en offrant un repère visuel immédiat.
+- **Compacité Graphique (UX Formulaire)** : Le resserrement de `mb-8` à `mb-3.5` élimine le grand vide inutile au sommet du rectangle de saisie, offrant une structure visuelle plus compacte, moderne et équilibrée.
+
+---
+
+## [2026-07-30] Intégration de la 2ème Bannière Vacuum Devlog & Remplacement de l'Image Fallback
+
+### Tâche
+1. Intégrer une 2ème bannière Vacuum Protocol (format panoramique / peu haute et longue) au sommet du premier conteneur de la page `/game` (`GamingDevlog.jsx`), au-dessus du titre et du panneau de liens & informations.
+2. Rendre cette 2ème bannière modifiable depuis le panneau d'administration (`PortfolioAdmin.jsx`) via l'API `/api/settings` (`devlogBannerUrl`).
+3. Remplacer l'image par défaut de création de post (le clavier RGB d'Unsplash) par le logo officiel `/BknLogo.svg`.
+
+### Modifications
+- **[settings.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/settings.json)** :
+  - Ajout de la propriété `devlogBannerUrl`.
+- **[GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx)** :
+  - Ajout de l'état `devlogBannerUrl` et chargement dynamique depuis `/api/settings` dans `useEffect`.
+  - Insertion du conteneur d'image panoramique (`w-full h-28 md:h-36 object-cover rounded-xl border border-white/10`) au tout début du premier bloc d'en-tête de la page `/game`, au-dessus du titre et du panneau "Liens & Infos".
+- **[PortfolioAdmin.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioAdmin.jsx)** :
+  - Ajout des états et des handlers de gestion pour `devlogBannerUrl` (chargement au login, prévisualisation, téléversement de fichier et sauvegarde `PATCH /api/settings`).
+  - Restructuration du bloc d'édition de bannière en une grille à 2 cartes : Bannière 1 (Portfolio `/portfolio`) et Bannière 2 (Devlog `/game`).
+  - Remplacement de l'ensemble des fallbacks d'images d'erreurs/défaut Unsplash (clavier RGB `photo-1538481199705`) par l'asset SVG vectoriel de la marque `/BknLogo.svg`.
+- **[Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx)** & **[PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx)** :
+  - Remplacement de l'image de secours par `/BknLogo.svg`.
+
+### Justification Technique
+- **Continuité de la Marque & Esthétique** : L'utilisation de `/BknLogo.svg` comme image de remplacement par défaut garantit que même sans image importée, les cartes affichent l'identité visuelle officielle de l'agence BKN Tech.
+- **Administration Centralisée & Performance** : L'API `/api/settings` centralise désormais les configurations globales du site (bannières Portfolio et Devlog). Le conteneur d'image au format panoramique responsive (`h-28 md:h-36`) s'intègre harmonieusement sans altérer le temps de chargement.
+
+---
+
+## [2026-07-30] Ajustement des Marges de la Bannière Devlog & Synchronisation Texte Carte Portfolio
+
+### Tâche
+1. Réduire les marges supérieure, gauche et droite entre la 2ème bannière et la bordure intérieure du premier conteneur de la page `/game`.
+2. Mettre à jour la description texte de la carte "Projet à la une" (Vacuum Protocol) sur la page `/portfolio` pour remplacer l'ancien placeholder (tir tactique HDRP) par la description officielle exacte du jeu.
+
+### Modifications
+- **[GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx)** :
+  - Ajustement du padding du conteneur parent d'en-tête de `p-6 md:p-8` à `p-3 md:p-4 pb-6 md:pb-8`.
+  - Les marges haut, gauche et droite entre l'image de bannière et le contour du conteneur sont réduites à 12px (mobile) / 16px (desktop).
+  - Ajout du rembourrage horizontal (`px-3 md:px-4`) sur le conteneur du titre et des liens/infos pour conserver un alignement pixel-perfect.
+- **[fr.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/fr.json)** & **[en.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/en.json)** :
+  - Mise à jour de la clé `portfolio.featured_desc` :
+    - FR : *"Projet indépendant développé en solo. Vacuum Protocol est un jeu coopératif en ligne pour 4 joueurs dans lequel vous pilotez des robots nettoyeurs de fantômes. Entre humour, esthétique PSX cartoon et cohésion d'équipe : une expérience unique qui débarque sur Steam en accès anticipé."*
+    - EN : *"Solo indie project. Vacuum Protocol is a 4-player online co-op game where you pilot ghost-cleaning robots. Blending humor, PSX cartoon aesthetics, and team coordination: a unique experience coming to Steam Early Access."*
+
+### Justification Technique
+- **Harmonie Visuelle** : Le resserrement du padding haut/gauche/droite du premier conteneur procure un encadrement beaucoup plus élégant et compact autour de la bannière panoramique.
+- **Cohérence des Contenus (SSOT)** : La mise à jour des traductions i18n de la carte "Projet à la une" sur `/portfolio` supprime les anciens placeholders de test et harmonise la présentation du jeu avec la page devlog dédiée `/game`.
+
 
 
 

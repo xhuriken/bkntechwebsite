@@ -371,7 +371,7 @@ export default function ContactForm() {
 
           <div className="relative z-10 flex flex-col h-full w-full">
             {/* Centered SSOT Template Tab Navigation matching Admin category tabs */}
-            <div className="flex justify-center border-b border-white/5 pb-3 mb-8 w-full">
+            <div className="flex justify-center border-b border-white/5 pb-3 mb-3.5 w-full">
               <div className="flex items-center gap-6 overflow-x-auto scrollbar-none justify-center">
                 {['none', 'web', 'gaming', 'quick'].map((key) => {
                   const isActive = activeTemplate === key;

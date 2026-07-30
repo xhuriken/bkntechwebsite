@@ -3,6 +3,7 @@
     "home": "Accueil",
     "portfolio": "Portfolio",
     "game": "Jeu Unity",
+    "vacuum": "Vacuum Protocol",
     "contact": "Contact",
     "cta": "Lancez vous !"
   },
@@ -26,7 +27,7 @@
     "loading": "Chargement du portfolio...",
     "featured_title": "PROJET À LA UNE",
     "production_active": "Production active • Version 0.0.6",
-    "featured_desc": "Un jeu de tir tactique multijoueur compétitif en 3D développé sous Unity HDRP. Explorez notre cycle de développement à long terme, nos optimisations netcode et nos avancées d'intégration de gameplay.",
+    "featured_desc": "Projet indépendant développé en solo. Vacuum Protocol est un jeu coopératif en ligne pour 4 joueurs dans lequel vous pilotez des robots nettoyeurs de fantômes. Entre humour, esthétique PSX cartoon et cohésion d'équipe : une expérience unique qui débarque sur Steam en accès anticipé.",
     "featured_devlog_btn": "Visiter le Devlog",
     "featured_discord_btn": "Rejoindre le Discord",
     "open": "Ouvrir",

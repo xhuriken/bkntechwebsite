@@ -20,13 +20,13 @@ function ScrollToAnchor() {
   useEffect(() => {
     if (location.hash) {
       const id = location.hash.replace('#', '');
-      const element = document.getElementById(id);
-      if (element) {
-        const timer = setTimeout(() => {
+      const timer = setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
-        }, 150);
-        return () => clearTimeout(timer);
-      }
+        }
+      }, 100);
+      return () => clearTimeout(timer);
     } else {
       window.scrollTo(0, 0);
     }

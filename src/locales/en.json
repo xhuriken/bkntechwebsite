@@ -3,6 +3,7 @@
     "home": "Home",
     "portfolio": "Portfolio",
     "game": "Unity Game",
+    "vacuum": "Vacuum Protocol",
     "contact": "Contact",
     "cta": "Get Started !"
   },
@@ -26,7 +27,7 @@
     "loading": "Loading portfolio...",
     "featured_title": "FEATURED PROJECT",
     "production_active": "Active production • Version 0.0.6",
-    "featured_desc": "A competitive 3D multiplayer tactical shooter developed under Unity HDRP. Explore our long-term development cycle, our netcode optimizations and our gameplay integration breakthroughs.",
+    "featured_desc": "Solo indie project. Vacuum Protocol is a 4-player online co-op game where you pilot ghost-cleaning robots. Blending humor, PSX cartoon aesthetics, and team coordination: a unique experience coming to Steam Early Access.",
     "featured_devlog_btn": "Visit Devlog",
     "featured_discord_btn": "Join Discord",
     "open": "Open",
