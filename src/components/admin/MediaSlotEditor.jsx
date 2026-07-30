@@ -205,7 +205,7 @@ export default function MediaSlotEditor({
 
                 {/* Slot Input Area: URL vs File Upload */}
                 {slot.sourceType === 'local' ? (
-                  <div className="flex flex-col gap-1.5">
+                  <div className="flex flex-col gap-1.5 min-w-0 max-w-full">
                     <label className="text-xs font-sans font-semibold text-on-surface-variant">
                       Téléverser un fichier local ({slot.type === 'video' ? 'Vidéo MP4 / WebM' : 'Image JPG / PNG / WebP'})
                     </label>
@@ -218,12 +218,20 @@ export default function MediaSlotEditor({
                     />
                     <label
                       htmlFor={`slot-file-input-${index}`}
-                      className="w-full bg-white/5 hover:bg-white/10 border border-dashed border-secondary/40 hover:border-secondary rounded-xl px-4 py-3 text-xs font-sans font-bold text-secondary flex items-center justify-center gap-2 cursor-pointer transition-all"
+                      className="w-full max-w-full overflow-hidden min-w-0 bg-white/5 hover:bg-white/10 border border-dashed border-secondary/40 hover:border-secondary rounded-xl px-4 py-3 text-xs font-sans font-bold text-secondary flex items-center justify-center gap-2 cursor-pointer transition-all"
                     >
-                      <i className="fa-solid fa-cloud-arrow-up text-sm" />
-                      <span>
+                      <i className="fa-solid fa-cloud-arrow-up text-sm flex-shrink-0" />
+                      <span className="truncate max-w-full min-w-0">
                         {slot.url
-                          ? `Fichier chargé : ${slot.url}`
+                          ? `Fichier chargé : ${(() => {
+                              try {
+                                const clean = slot.url.split('?')[0];
+                                const parts = clean.split('/');
+                                return parts[parts.length - 1] || slot.url;
+                              } catch {
+                                return slot.url;
+                              }
+                            })()}`
                           : `Parcourir et charger ${slot.type === 'video' ? 'une Vidéo MP4' : 'une Image'}`}
                       </span>
                     </label>

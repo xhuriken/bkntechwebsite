@@ -725,10 +725,6 @@ Rendre la photo de bannière du projet à la une (Vacuum Protocol) sur la page P
   - Remplacement de l'en-tête de terminal par une barre de résumé minimale et chic : `Journal de version • 2026-07-30` accompagnée de discrets puces d'indicateurs de couleur (`bg-secondary`, `bg-primary`, `bg-red-400`, `bg-amber-400`).
   - Restructuration des lignes du Patch Note sous forme de **cartes en verre dépoli modernes** (`bg-surface-container-low/40 border border-white/5 rounded-xl p-3.5`).
   - Utilisation de la typographie officielle BKN Tech (`font-sans`, `text-xs font-normal text-on-surface/90`) et de badges épurés (`Ajout`, `Correctif`, `Suppression`, `En cours`).
-- **[PortfolioAdmin.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioAdmin.jsx)** :
-  - Création d'une sous-section d'options unifiée *"Options Générales & Patch Note"* avec une grille à 2 cartes responsive pour les cases à cocher Discord et Patch Note (`bg-surface-container-low/40 border border-white/5 rounded-xl p-3.5`).
-  - Éditeur de lignes Patch Note au style épuré avec sélecteurs personnalisés et champs de saisie harmonisés.
-
 ### Justification Technique
 - **Homogénéité du Design System (SSOT)** : En éliminant les gimmicks CLI et les bordures néon agressives, le Patch Note s'intègre avec une élégance naturelle dans la charte visuelle sombre et moderne du site, offrant une continuité esthétique parfaite entre l'administration et les pages publiques.
 
