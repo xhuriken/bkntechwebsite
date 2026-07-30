@@ -23,24 +23,22 @@ jobs:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_PORT: ${{ secrets.VPS_PORT }}
           VPS_USER: ${{ secrets.VPS_USER }}
-          VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
+          SSHPASS: ${{ secrets.VPS_PASSWORD }}
         run: |
           VPS_HOST="${VPS_HOST:-151.80.147.208}"
           VPS_PORT="${VPS_PORT:-22}"
-          VPS_USER="${VPS_USER:-ubuntu}"
-          if [ "$VPS_USER" = "root" ]; then
-            VPS_USER="ubuntu"
-          fi
+          VPS_USER="ubuntu"
           REMOTE_PATH="/var/www/bkntech"
 
-          if [ -z "$VPS_PASSWORD" ]; then
+          if [ -z "$SSHPASS" ]; then
             echo "::error::Secret VPS_PASSWORD is not set in GitHub Repository Secrets!"
             exit 1
           fi
 
-          sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "mkdir -p $REMOTE_PATH"
+          echo "Connecting via SSH to ${VPS_USER}@${VPS_HOST}:${VPS_PORT}..."
+          sshpass -e ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "mkdir -p $REMOTE_PATH"
 
-          sshpass -p "$VPS_PASSWORD" rsync -avz --delete \
+          sshpass -e rsync -avz --delete \
             --exclude='node_modules' \
             --exclude='dist' \
             --exclude='.git' \
@@ -55,25 +53,22 @@ jobs:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_PORT: ${{ secrets.VPS_PORT }}
           VPS_USER: ${{ secrets.VPS_USER }}
-          VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
+          SSHPASS: ${{ secrets.VPS_PASSWORD }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           VPS_HOST="${VPS_HOST:-151.80.147.208}"
           VPS_PORT="${VPS_PORT:-22}"
-          VPS_USER="${VPS_USER:-ubuntu}"
-          if [ "$VPS_USER" = "root" ]; then
-            VPS_USER="ubuntu"
-          fi
+          VPS_USER="ubuntu"
           REMOTE_PATH="/var/www/bkntech"
 
-          if [ -z "$VPS_PASSWORD" ]; then
+          if [ -z "$SSHPASS" ]; then
             echo "::error::Secret VPS_PASSWORD is not set in GitHub Repository Secrets!"
             exit 1
           fi
 
-          sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "
+          sshpass -e ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "
             set -e
             cd $REMOTE_PATH
 

@@ -21,6 +21,7 @@ Ce journal retrace toutes les décisions techniques, les modifications de code e
   - Reconstruction et relancement des conteneurs Docker (`bkntech-api`, `bkntech-frontend`, `traefik`).
 - Validation des identifiants SSH (`ubuntu` + mot de passe VPS) et mise à jour des secrets GitHub pour l'exécution automatique des workflows CI/CD.
 - Ajout d'une sécurité dans deploy.yml forçant l'utilisation de l'utilisateur ubuntu pour SSH (prévention des blocages si VPS_USER est configuré sur root dans les secrets GitHub).
+- Utilisation de la variable d'environnement SSHPASS avec `sshpass -e` pour transmettre le mot de passe sans déformation des caractères spéciaux (`$`, `^`, `()`).
 
 ### Justification Technique
 L'erreur de syntaxe YAML capturée par GitHub Actions venait d'une désindentation complète des lignes de variables `SMTP_*` sous la directive `run: |`. En encapsulant la création du fichier `.env` dans un bloc de commandes `echo` indenté, la syntaxe YAML reste 100% valide et lisible.
