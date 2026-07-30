@@ -23,6 +23,7 @@ Ce journal retrace toutes les décisions techniques, les modifications de code e
 - Ajout d'une sécurité dans deploy.yml forçant l'utilisation de l'utilisateur ubuntu pour SSH (prévention des blocages si VPS_USER est configuré sur root dans les secrets GitHub).
 - Migration de l'authentification SSH du workflow vers une clé privée SSH dédiée (`webfactory/ssh-agent@v0.9.0`) et ajout de la clé publique sur le VPS (`/home/ubuntu/.ssh/authorized_keys`).
 - Succès complet du pipeline CI/CD GitHub Actions (Run #34 validé 🟢 Success en 46s).
+- Intégration du projet fini DKP Rénovation (`https://dkp95.fr` / `Dkp-Website`) dans la catégorie Site Web du Portfolio avec galerie d'images complète (`public/uploads/dkp95_*`) et mise à jour de [posts.json](file:///c:/Users/kikep/Desktop/Bkn%20Society/bkntechwebsite/api/posts.json).
 
 ### Justification Technique
 L'erreur de syntaxe YAML capturée par GitHub Actions venait d'une désindentation complète des lignes de variables `SMTP_*` sous la directive `run: |`. En encapsulant la création du fichier `.env` dans un bloc de commandes `echo` indenté, la syntaxe YAML reste 100% valide et lisible.
