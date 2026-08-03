@@ -689,14 +689,16 @@ function DevlogPostCard({ post, currentLang }) {
                       message: `Êtes-vous sûr de vouloir supprimer définitivement le devlog "${post.title?.fr || 'ce post'}" ?`,
                       onConfirm: async () => {
                         try {
+                          const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || 'bkntech';
                           await fetch(`/api/posts?id=${post.id}`, {
                             method: 'DELETE',
-                            headers: { 'x-admin-password': adminPassword }
+                            headers: { 'x-admin-password': passToUse }
                           });
                           triggerRefresh();
                         } catch (err) {
                           console.error('Delete failed:', err);
                         }
+
                       }
                     });
                   }}

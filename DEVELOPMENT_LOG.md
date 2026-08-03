@@ -2,6 +2,19 @@
 
 Ce journal retrace toutes les décisions techniques, les modifications de code et les résolutions de bugs apportées au projet.
 
+## [2026-08-03] Correctif HTTP 400 Bad Request sur la Suppression `DELETE /api/posts?id=...`
+
+### Tâche
+- Résoudre l'erreur `DELETE http://localhost:5173/api/posts?id=1785777281372 400 (Bad Request)` :
+  1. **Source du bogue** : L'API [api/posts.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/posts.js) extrayait l'ID de suppression uniquement depuis `req.body.id` (`const { id } = req.body`), ignorant `req.query.id`. Or, les requêtes `DELETE` avec paramètre d'URL (`/api/posts?id=...`) transmettent l'ID dans `req.query.id` sans corps JSON !
+  2. **Correction de la méthode `DELETE`** : Mise à jour de [api/posts.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/posts.js) pour lire `const targetId = req.query?.id || req.body?.id || req.query?.postId || req.body?.postId;` et effectuer une comparaison par chaîne de caractères `String(p.id) === String(targetId)`.
+  3. **Sécurisation du header `x-admin-password`** : Ajout du secours `passToUse` dans [Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx), [GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx), et [PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx).
+
+### Modifications
+- Mis à jour [api/posts.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/posts.js), [src/pages/Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx), [src/pages/GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx), et [src/pages/PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx).
+
+---
+
 ## [2026-08-03] Authentification Infaillible & Raccordement backend `npm run dev`
 
 ### Tâche

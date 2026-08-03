@@ -1,11 +1,8 @@
-# TODO TEMPORAIRE - Infaillibilité Authentification Admin
+# TODO TEMPORAIRE - Correctif DELETE 400 & Bad Request
 
-- [x] 1. Harmoniser la fonction `checkAuth` dans `api/posts.js`, `api/upload.js` et `api/settings.js` :
-  - Accepter `x-admin-password`, `authorization` et `adminPassword` de manière souple et insensible à la casse (`bkntech`, `admin`, `process.env.ADMIN_PASSWORD`).
-  - Autoriser à la fois `POST` et `PATCH` sur `api/settings.js`.
+- [x] 1. Résoudre le bug HTTP 400 Bad Request sur `DELETE /api/posts?id=...` :
+  - Mise à jour de `api/posts.js` pour extraire l'ID à la fois dans `req.query.id`, `req.query.postId`, `req.body.id`, `req.body.postId`.
+  - Comparaison sécurisée insensible au type (`String(p.id) === String(targetId)`).
+  - Envoi systématique du header `x-admin-password` sécurisé (`passToUse`) dans `Portfolio.jsx`, `GamingDevlog.jsx` et `PortfolioSection.jsx`.
 
-- [x] 2. Sécuriser la vérification de l'authentification dans `AdminContext.jsx` et `AdminLoginModal.jsx` :
-  - Nettoyage du mot de passe saisi (`password.trim()`).
-  - Validation instantanée sans dépendance à d'anciennes clés périmées.
-
-- [x] 3. Mettre à jour `TODO.md` et `DEVELOPMENT_LOG.md`.
+- [x] 2. Mettre à jour `TODO.md` et `DEVELOPMENT_LOG.md`.

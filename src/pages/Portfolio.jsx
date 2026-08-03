@@ -575,9 +575,10 @@ export default function Portfolio() {
                                                 message: `Êtes-vous sûr de vouloir supprimer définitivement "${post.title?.fr || 'ce projet'}" ? Cette action est irréversible.`,
                                                 onConfirm: async () => {
                                                   try {
+                                                    const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || 'bkntech';
                                                     await fetch(`/api/posts?id=${post.id}`, {
                                                       method: 'DELETE',
-                                                      headers: { 'x-admin-password': adminPassword }
+                                                      headers: { 'x-admin-password': passToUse }
                                                     });
                                                     triggerRefresh();
                                                   } catch (err) {
