@@ -8,11 +8,68 @@
     "cta": "Get Started !"
   },
   "hero": {
-    "title_part1": "Shaping the web,",
-    "title_part2": "coding the future.",
-    "description": "BKN Tech is an agency of technological excellence. We design custom websites and mobile applications while editing an innovative multiplayer game under Unity.",
-    "cta_contact": "Contact Us",
-    "cta_game": "Discover the Game"
+    "badge": "Custom Engineering & Independent Studio",
+    "title_part1": "We build your web & AI products.",
+    "title_part2": "And we craft our own games.",
+    "description": "No sales fluff or generic templates. At BKN Tech, we are passionate engineers and creators: we build elite web & mobile platforms, integrate truly useful AI agents into your operations, and develop our own cooperative game.",
+    "cta_contact": "Discuss a Project",
+    "cta_services": "Explore Our Expertise",
+    "cta_game": "Discover Vacuum Protocol"
+  },
+  "about": {
+    "badge": "Who We Are",
+    "title": "Hands-on engineers, not smooth talkers.",
+    "description": "BKN Tech combines a rare dual expertise: bespoke B2B software engineering and complex system architecture (Unity netcode, autonomous AI agents, cloud infrastructure). We champion clean code, clarity, and real business impact.",
+    "pillars": {
+      "tech": {
+        "title": "Technical Excellence",
+        "desc": "Strictly typed code, maintainable architecture (SOLID), and millisecond-level optimization."
+      },
+      "roi": {
+        "title": "Value & ROI Focus",
+        "desc": "No bloated bloatware or vanity features. Every single line of code solves a practical problem."
+      },
+      "craft": {
+        "title": "Build Culture",
+        "desc": "We don't just advise: we design, test, and stress-test our own tech stacks daily."
+      }
+    }
+  },
+  "services_home": {
+    "badge": "B2B Expertise",
+    "title": "What We Build For You",
+    "subtitle": "From high-conversion showcase sites to self-hosted sovereign AI agents.",
+    "web": {
+      "tag": "Web & Cloud",
+      "title": "Web Apps & Fullstack Platforms",
+      "desc": "High-impact landing pages, SEO-optimized showcase sites, and responsive web applications (Next.js, Node.js, Supabase, Stripe). Customer portals, dashboards, and automated workflows.",
+      "features": ["SEO Showcase & High-Converting Landing Pages", "Fullstack SaaS Apps & E-Commerce", "Cloud Infrastructure & Docker"]
+    },
+    "mobile": {
+      "tag": "Mobile Native & Cross",
+      "title": "iOS & Android Engineering",
+      "desc": "Fluid mobile apps engineered with React Native or Flutter. Strict adherence to platform guidelines (Human Interface & Material Design) and hardware integration.",
+      "features": ["Biometrics (FaceID / TouchID)", "Push Notifications & Offline Mode", "App Store / Play Store Publishing & Compliance"]
+    },
+    "ai": {
+      "tag": "AI & Sovereignty",
+      "title": "Business AI Agents & Private LLMs",
+      "desc": "Deployment of 24/7 RAG agents plugged into your internal knowledge base, automated document processing (OCR), and zero-data-leak private AI models.",
+      "features": ["24/7 Support & Sales Outreach Agents", "OCR & Accounting Automation", "Private LLMs (Llama 3, Mistral via Ollama)"]
+    }
+  },
+  "game_home": {
+    "badge": "Side Studio Project",
+    "title": "On the side: Vacuum Protocol",
+    "subtitle": "A cooperative multiplayer game crafted in-house.",
+    "desc": "Alongside our B2B engineering services, we design Vacuum Protocol: a 4-player co-op action game built with Unity. Command ghost-vacuuming robots in a quirky universe with retro PSX cartoon aesthetics.",
+    "netcode_title": "Custom Unity Netcode",
+    "netcode_desc": "Authoritative Mirror Networking with real-time prediction and state sync.",
+    "graphics_title": "PSX Cartoon Art Direction",
+    "graphics_desc": "Nostalgic retro aesthetics featuring PSX vertex snapping and vibrant textures.",
+    "devlog_title": "Transparent Devlog",
+    "graphics_cta": "Follow the devlog & game updates",
+    "discord_cta": "Join the Discord playtest community"
   },
   "services": {
     "title": "Our Services",

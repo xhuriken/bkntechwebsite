@@ -44,7 +44,4 @@
 - [x] Étape 40 : Perfectionnement Easter Egg Flashbang Mode Clair - Bouton ampoule minimaliste à bordure blanche ressortie (w-7 h-7), agrandissement smooth au survol (hover:scale-125 hover:border-white), overlay blanc bloquant (z-99998) nécessitant un re-clic explicite sur l'ampoule devenue noire (z-99999) pour s'éteindre (Terminé)
 - [x] Étape 41 : Ultra-Minimalisme Ampoule & Icône Noire Haute Visibilité sur Overlay - Icône d'ampoule ultra discrète 10px opacity-20 dans le footer, et bouton ampoule noire (text-2xl text-black z-100000) flottant en bas à droite au-dessus de l'overlay blanc pour un contraste et une fermeture parfaits (Terminé)
 - [x] Étape 42 : Maintien de l'Ampoule à son Emplacement Exact Inline du Footer - L'ampoule reste à sa place exacte dans le footer (à côté des auteurs), passe en NOIR (text-black z-99999) sur fond blanc lors du flashbang, et suit le défilement du footer (Terminé)
-
-
-
-
+- [x] Étape 43 : Refonte Dynamique & Authentique de la Page d'Accueil (Home.jsx) - Réécriture du Hero sans slogans IA, sections 'Qui on est / Ce qu'on fait' (Web, Mobile, IA Métier & Souveraine d'après SERVICES_BKN_TECH.md), showcase du jeu Unity annexe 'Vacuum Protocol' avec renvoi vers le Devlog, animations Framer Motion & textures d'exception (Terminé)

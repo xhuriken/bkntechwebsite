@@ -8,11 +8,68 @@
     "cta": "Lancez vous !"
   },
   "hero": {
-    "title_part1": "Façonner le web,",
-    "title_part2": "coder le futur.",
-    "description": "BKN Tech est une agence technologique d'excellence. Nous concevons vos sites web et applications mobiles sur mesure, tout en éditant un jeu vidéo multijoueur innovant sous Unity.",
-    "cta_contact": "Nous Contacter",
-    "cta_game": "Découvrir le Jeu"
+    "badge": "Ingénierie sur-mesure & Studio Indépendant",
+    "title_part1": "On conçoit vos produits web & IA.",
+    "title_part2": "Et on crée nos propres jeux.",
+    "description": "Pas de jargon commercial ni de templates génériques. Chez BKN Tech, nous sommes des ingénieurs et créateurs passionnés : nous bâtissons des plateformes web & mobiles d'élite, intégrons des agents IA véritablement utiles à vos opérations, et développons notre propre jeu vidéo coopératif.",
+    "cta_contact": "Discuter d'un projet",
+    "cta_services": "Voir nos expertises",
+    "cta_game": "Explorer Vacuum Protocol"
+  },
+  "about": {
+    "badge": "Qui Sommes-Nous",
+    "title": "Des ingénieurs du quotidien, pas des vendeurs de vent.",
+    "description": "BKN Tech réunit une double expertise rare : l'ingénierie logicielle sur-mesure pour les entreprises et la création de systèmes complexes (netcode Unity, agents IA autonomes, architectures cloud). Nous privilégions le code propre, la clarté et l'impact réel sur votre activité.",
+    "pillars": {
+      "tech": {
+        "title": "Excellence Technique",
+        "desc": "Code typé strict, architectures maintenables (SOLID) et performances mesurées au millième de seconde."
+      },
+      "roi": {
+        "title": "Focus Valeur & ROI",
+        "desc": "Pas d'usines à gaz ni de fonctionnalités superflues. Chaque ligne de code résout un problème concret."
+      },
+      "craft": {
+        "title": "Culture du Build",
+        "desc": "Nous ne faisons pas que conseiller : nous concevons, testons et éprouvons nos propres technologies chaque jour."
+      }
+    }
+  },
+  "services_home": {
+    "badge": "Nos Expertises B2B",
+    "title": "Ce que nous construisons pour vous",
+    "subtitle": "Du site vitrine haute conversion jusqu'aux agents IA souverains hébergés sur vos serveurs.",
+    "web": {
+      "tag": "Web & Cloud",
+      "title": "Applications Web & Plateformes Fullstack",
+      "desc": "Landing pages à fort impact, sites vitrines optimisés pour le SEO sémantique, et applications web réactives (Next.js, Node.js, Supabase, Stripe). Espaces clients, dashboards et automatisation de flux.",
+      "features": ["Sites vitrines SEO & Landing pages", "Applications SaaS Fullstack & E-Commerce", "Infrastructures Cloud & Docker"]
+    },
+    "mobile": {
+      "tag": "Mobile Native & Cross",
+      "title": "Ingénierie Mobile iOS & Android",
+      "desc": "Applications mobiles fluides développées en React Native ou Flutter. Respect strict des standards ergonomiques (Human Interface & Material Design) et accès aux composants matériels.",
+      "features": ["Biométrie (FaceID / TouchID)", "Notifications Push & Mode Hors-ligne", "Publication & Validation App Store / Play Store"]
+    },
+    "ai": {
+      "tag": "IA & Souveraineté",
+      "title": "Agents IA Métier & IA Privée",
+      "desc": "Déploiement d'agents RAG 24/7 connectés à vos bases de connaissances internes, automatisation du traitement de documents (OCR) et modèles IA totalement privés sans fuite de données.",
+      "features": ["Agents Support & Prospection 24/7", "OCR & Automatisation comptable / admin", "LLM Privés (Llama 3, Mistral via Ollama)"]
+    }
+  },
+  "game_home": {
+    "badge": "Projet Studio Annexe",
+    "title": "En parallèle : Vacuum Protocol",
+    "subtitle": "Un jeu vidéo coopératif développé en solo au sein du studio.",
+    "desc": "En marge de nos prestations de services B2B, nous concevons Vacuum Protocol : un jeu d'action coopératif à 4 joueurs sous Unity. Pilotez des robots nettoyeurs de fantômes dans un univers absurde aux graphismes rétro PSX cartoon.",
+    "netcode_title": "Netcode Custom Unity",
+    "netcode_desc": "Mirror Networking autoritaire avec prédiction et synchronisation temps réel.",
+    "graphics_title": "Direction Artistique PSX",
+    "graphics_desc": "Esthétique rétro cartoon avec vertex snapping et textures nostalgiques.",
+    "devlog_title": "Devlog Transparence",
+    "graphics_cta": "Suivre l'avancement et les devlogs du jeu",
+    "discord_cta": "Rejoindre les playtests Discord"
   },
   "services": {
     "title": "Nos Services",

@@ -2,6 +2,37 @@
 
 Ce journal retrace toutes les décisions techniques, les modifications de code et les résolutions de bugs apportées au projet.
 
+## [2026-08-03] Refonte Dynamique & Authentique de la Page d'Accueil (Home.jsx)
+
+### Tâche
+- Réarchitecturer la page d'accueil ([Home.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Home.jsx)) pour éliminer tout slogan générique "style IA".
+- Mettre en avant **qui on est** et **nos expertises B2B** (Web & Cloud Fullstack, Mobile iOS/Android, IA Métier & Modèles Privés Souverains) en intégrant les éléments du référentiel `SERVICES_BKN_TECH.md`.
+- Présenter en section dédiée le développement de notre **jeu vidéo annexe Unity (Vacuum Protocol)** avec renvoi direct vers le Devlog public (`/portfolio/section/gaming`).
+- Conserver intégralement le formulaire de contact ([ContactForm.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ContactForm.jsx)) et le footer global ([Footer.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Footer.jsx)).
+- Mettre à jour les fichiers de localisation bilingues ([fr.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/fr.json) et [en.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/en.json)).
+
+### Modifications
+- **Refonte du premier conteneur (Hero)** :
+  - Remplacement de l'accroche passe-partout par un titre direct et percutant (*"On conçoit vos produits web & IA. Et on crée nos propres jeux."*).
+  - Ajout d'un badge néon supérieur réactif et d'un paragraphe d'intro transparent sur la culture de build et l'exigence de code.
+  - CTA tri-boutons dynamiques avec animations d'élévation et scroll smooth vers les sections dédiées ou le Devlog Vacuum.
+  - Intégration d'une barre de métriques authentiques (3 Axes Web/Mobile/IA, 100% Clean Code, Studio Annexe Vacuum).
+- **Création de la section 'Qui Sommes-Nous & Philosophie' (`#about`)** :
+  - 3 cartes de piliers interactives (*Excellence Technique*, *Focus Valeur & ROI*, *Culture du Build*) avec effet glow dynamique et fond dépoli glassmorphism.
+- **Création du Showcase 'Nos Métiers B2B' (`#services-overview`)** :
+  - Découpage en 3 cartes d'ingénierie tirées de `SERVICES_BKN_TECH.md` : Web Apps & SaaS Fullstack (`Next.js / Node.js / Supabase / Stripe`), Mobile Native & Cross (`React Native / Flutter`), et IA Métier Souveraine (`Agents RAG 24/7, OCR, LLM Privés Llama 3 / Mistral via Ollama`).
+  - Chaque carte contient sa liste à puces dynamique et un lien d'exploration directe vers la section correspondante du Portfolio.
+- **Création de la section dédiée au Studio de Jeu Annexe (`#gaming-showcase`)** :
+  - Mise en valeur immersive de *Vacuum Protocol* : jeu d'action coopératif à 4 joueurs sous Unity.
+  - Mise en relief des spécificités techniques (Netcode Mirror autoritaire, Direction Artistique PSX Cartoon rétro) et boutons d'action vers le Devlog (`/portfolio/section/gaming`) et le Discord de playtest.
+- **Mise à jour i18n (`fr.json` & `en.json`)** :
+  - Ajout des blocs de clés `hero`, `about`, `services_home`, `game_home` traduits en français et anglais.
+
+### Justification Technique
+L'objectif principal était d'offrir une identité visuelle et narrative forte, loin des formules d'agence impersonnelles et des textes d'IA génériques. En mariant des micro-animations Framer Motion fluides (`whileHover`, `whileInView`), un glassmorphism haut de gamme et des textes humains axés sur la valeur métier et la passion du code, la page d'accueil reflète désormais la vraie double casquette de BKN Tech : ingénierie logicielle d'élite et création indépendante.
+
+---
+
 ## [2026-07-30] Pull main, Correction Workflow GitHub Actions & Déploiement VPS
 
 ### Tâche
