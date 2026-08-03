@@ -46,10 +46,20 @@ export default async function handler(req, res) {
 
   // Authentication Helper
   const checkAuth = () => {
-    const adminPassword = process.env.ADMIN_PASSWORD || 'bkntech';
-    const clientPassword = req.headers['x-admin-password'] || req.body?.adminPassword;
+    const adminPassword = (process.env.ADMIN_PASSWORD || 'bkntech').trim().toLowerCase();
+    const clientPassword = (
+      req.headers['x-admin-password'] ||
+      req.headers['authorization'] ||
+      req.body?.adminPassword ||
+      ''
+    ).trim().toLowerCase();
+
     if (!clientPassword) return false;
-    return clientPassword === adminPassword || clientPassword === 'bkntech' || clientPassword === 'admin';
+    return (
+      clientPassword === adminPassword ||
+      clientPassword === 'bkntech' ||
+      clientPassword === 'admin'
+    );
   };
 
   // 1. GET — Public read of settings
@@ -58,20 +68,25 @@ export default async function handler(req, res) {
     return res.status(200).json(settings);
   }
 
-  // 2. PATCH — Authenticated partial update of settings
-  if (req.method === 'PATCH') {
+  // 2. POST or PATCH — Authenticated update of settings
+  if (req.method === 'POST' || req.method === 'PATCH') {
     if (!checkAuth()) {
       return res.status(401).json({ error: 'Unauthorized. Invalid password.' });
     }
 
-    const updates = req.body;
-    if (!updates || typeof updates !== 'object') {
+    const body = req.body;
+    if (!body || typeof body !== 'object') {
       return res.status(400).json({ error: 'Invalid request body.' });
     }
 
     const settings = readSettings();
-    // Merge updates into existing settings
-    Object.assign(settings, updates);
+    
+    // Support { key: 'featuredBannerUrl', value: '...' } OR { featuredBannerUrl: '...' }
+    if (body.key && body.value !== undefined) {
+      settings[body.key] = body.value;
+    } else {
+      Object.assign(settings, body);
+    }
 
     const success = writeSettings(settings);
     if (!success) {
@@ -83,3 +98,4 @@ export default async function handler(req, res) {
 
   return res.status(405).json({ error: 'Method not allowed.' });
 }
+

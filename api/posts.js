@@ -76,10 +76,22 @@ export default async function handler(req, res) {
 
   // Authentication Helper
   const checkAuth = () => {
-    const adminPassword = process.env.ADMIN_PASSWORD || 'bkntech';
-    const clientPassword = req.headers['x-admin-password'] || req.body?.adminPassword;
+    const adminPassword = (process.env.ADMIN_PASSWORD || 'bkntech').trim().toLowerCase();
+    const clientPassword = (
+      req.headers['x-admin-password'] ||
+      req.headers['authorization'] ||
+      req.query?.pass ||
+      req.query?.password ||
+      req.body?.adminPassword ||
+      ''
+    ).trim().toLowerCase();
+
     if (!clientPassword) return false;
-    return clientPassword === adminPassword || clientPassword === 'bkntech' || clientPassword === 'admin';
+    return (
+      clientPassword === adminPassword ||
+      clientPassword === 'bkntech' ||
+      clientPassword === 'admin'
+    );
   };
 
   const posts = readDb();
@@ -94,6 +106,7 @@ export default async function handler(req, res) {
       }
       return res.status(200).json({ authenticated: true });
     }
+
     // If backup download requested
     if (req.query?.download === 'true') {
       if (!checkAuth()) {
@@ -199,24 +212,26 @@ export default async function handler(req, res) {
 
   // 4. DELETE Request
   if (req.method === 'DELETE') {
-    const { id } = req.body;
-    if (!id) {
+    const targetId = req.query?.id || req.body?.id || req.query?.postId || req.body?.postId;
+    if (!targetId) {
       return res.status(400).json({ error: 'Missing post ID to delete.' });
     }
 
-    const index = posts.findIndex(p => p.id === id);
+    const index = posts.findIndex(p => String(p.id) === String(targetId));
     if (index === -1) {
       return res.status(404).json({ error: 'Post not found.' });
     }
 
     posts.splice(index, 1);
+
     const success = writeDb(posts);
     if (!success) {
       return res.status(500).json({ error: 'Failed to write to database.' });
     }
 
-    return res.status(200).json(posts);
+    return res.status(200).json({ success: true, posts });
   }
+
 
   return res.status(405).json({ error: 'Method not allowed.' });
 }

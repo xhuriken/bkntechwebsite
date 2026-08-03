@@ -17,14 +17,24 @@ export default async function handler(req, res) {
   }
 
   // Authentication check
-  const adminPassword = process.env.ADMIN_PASSWORD || 'bkntech';
-  const reqPassword = req.headers['x-admin-password'];
+  const adminPassword = (process.env.ADMIN_PASSWORD || 'bkntech').trim().toLowerCase();
+  const reqPassword = (
+    req.headers['x-admin-password'] ||
+    req.headers['authorization'] ||
+    req.body?.adminPassword ||
+    ''
+  ).trim().toLowerCase();
 
-  const isValidPassword = reqPassword && (reqPassword === adminPassword || reqPassword === 'bkntech' || reqPassword === 'admin');
+  const isValidPassword = reqPassword && (
+    reqPassword === adminPassword ||
+    reqPassword === 'bkntech' ||
+    reqPassword === 'admin'
+  );
 
   if (!isValidPassword) {
     return res.status(401).json({ error: 'Unauthorized. Invalid password.' });
   }
+
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });

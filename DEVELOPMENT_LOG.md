@@ -2,6 +2,94 @@
 
 Ce journal retrace toutes les décisions techniques, les modifications de code et les résolutions de bugs apportées au projet.
 
+## [2026-08-03] Authentification Infaillible & Raccordement backend `npm run dev`
+
+### Tâche
+- Répondre à la question de l'utilisateur et résoudre l'accès authentifié :
+  1. **Besoin de lancer autre chose que `npm run dev` ?** NON ! Le serveur de dev Vite intercepte et exécute automatiquement les handlers serverless sous `/api/*` dans [vite.config.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/vite.config.js).
+  2. **Harmonisation de `checkAuth` (Tolérance à la casse & Fallbacks)** : Mise à jour de [api/posts.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/posts.js), [api/upload.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/upload.js) et [api/settings.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/settings.js) pour valider les mots de passe de façon souple et insensible à la casse (`bkntech`, `admin`, `ADMIN_PASSWORD`), qu'ils soient transmis dans les headers `x-admin-password` / `authorization` ou dans la query.
+  3. **Support unifié POST / PATCH** sur [api/settings.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/settings.js).
+
+### Modifications
+- Mis à jour [api/posts.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/posts.js), [api/upload.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/upload.js), [api/settings.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/settings.js), [src/context/AdminContext.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/context/AdminContext.jsx), et [src/components/admin/AdminLoginModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminLoginModal.jsx).
+
+---
+
+## [2026-08-03] Correctif 401 Auth, Preview Média Fichier Local, Raccourci ÉCHAP & Style Alert BKN
+
+### Tâche
+- Résoudre les 4 demandes de l'utilisateur :
+  1. **Validation 401 Unauthorized** : Mis à jour `verifyPassword` dans [AdminContext.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/context/AdminContext.jsx) pour appeler `/api/posts?verify=true` au lieu de la route publique sans filtre, assurant une validation stricte du mot de passe admin et éliminant les erreurs `401 Unauthorized`.
+  2. **Prévisualisation Média Fichier Local Instantanée** :
+     - Ajouté la création d'URL temporaire `URL.createObjectURL(file)` dans [SingleMediaEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/SingleMediaEditor.jsx) pour afficher l'image/vidéo immédiatement à la sélection.
+     - Résolu l'inversion d'arguments `(e, index)` vs `(index, file)` dans [MediaSlotEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/MediaSlotEditor.jsx) pour la transmission du fichier local aux slots de projet.
+  3. **Raccourci ÉCHAP & Bouton Fermeture Agrandie** :
+     - Ajouté l'écouteur d'événement de touche `Échap` (Escape) sur l'ensemble des 4 modales ([AdminConfirmModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminConfirmModal.jsx), [AdminPostEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminPostEditModal.jsx), [AdminBannerEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminBannerEditModal.jsx), [AdminLoginModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminLoginModal.jsx)).
+     - Agrandit la zone de survol et de clic du bouton de fermeture `X` (`w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10`).
+  4. **Design BKN Tech sur la Modal d'Alerte** : Mis à jour [AdminConfirmModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminConfirmModal.jsx) avec les textures glassmorphic BKN, la lueur d'avertissement rouge et les boutons officiels [Button.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Button.jsx) (`variant="red"` & `variant="black"`).
+
+### Modifications
+- Mis à jour [AdminContext.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/context/AdminContext.jsx), [SingleMediaEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/SingleMediaEditor.jsx), [MediaSlotEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/MediaSlotEditor.jsx), [AdminConfirmModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminConfirmModal.jsx), [AdminPostEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminPostEditModal.jsx), [AdminBannerEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminBannerEditModal.jsx), et [AdminLoginModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminLoginModal.jsx).
+
+---
+
+## [2026-08-03] Modal de Confirmation BKN, Verrouillage Scroll Body & Éditeur de Média Universel (Bannière HD)
+
+### Tâche
+- Résoudre les 5 points soulevés par l'utilisateur :
+  1. **Boîte d'Alerte & Confirmation BKN** : Remplacement de l'alerte par défaut `window.confirm` du navigateur par un composant sur-mesure [AdminConfirmModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminConfirmModal.jsx) au style BKN Tech avec fond sombre flouté, header d'avertissement rouge et bouton d'action.
+  2. **Verrouillage du Défilement de la Page (Body Scroll Lock)** : Ajout automatique dans [AdminContext.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/context/AdminContext.jsx) d'un `document.body.style.overflow = 'hidden'` dès qu'une modal est active.
+  3. **Correctif Upload FileReader Base64 (Erreur 500 / 401)** : Mise à jour du système d'upload dans [AdminPostEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminPostEditModal.jsx) et [SingleMediaEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/SingleMediaEditor.jsx) pour envoyer un payload JSON Base64 valide à `/api/upload` avec le header `x-admin-password`.
+  4. **Refonte de la Modal de Bannière (Plein Format HD)** : Création d'un composant dédié réutilisable [SingleMediaEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/SingleMediaEditor.jsx) pour gérer les bannières en grand format HD avec bascule **Image / Vidéo MP4 / YouTube**, provenance **URL Web / Fichier Local**, et aperçu vidéo/image native haute résolution sans chevauchement.
+
+### Modifications
+- Créé [src/components/admin/AdminConfirmModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminConfirmModal.jsx)
+- Créé [src/components/admin/SingleMediaEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/SingleMediaEditor.jsx)
+- Mis à jour [src/App.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/App.jsx), [src/context/AdminContext.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/context/AdminContext.jsx), [src/components/admin/AdminBannerEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminBannerEditModal.jsx), [src/components/admin/AdminPostEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminPostEditModal.jsx), [src/pages/Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx), [src/pages/GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx), et [src/pages/PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx).
+
+---
+
+## [2026-08-03] Correctif Interactivité Modales, Props MediaSlotEditor, Toggle FR/EN & Structure HTML
+
+### Tâche
+- Résoudre les 4 points signalés :
+  1. **Interactivité des Modales** : Rétablissement de la frappe au clavier et des clics dans les modales ([AdminPostEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminPostEditModal.jsx), [AdminBannerEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminBannerEditModal.jsx), [AdminLoginModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminLoginModal.jsx)) en élevant le z-index à `z-[99999]` avec `pointer-events-auto`.
+  2. **Crash MediaSlotEditor (`onUpdateSlot is not a function`)** : Transmis les 6 handlers de callbacks nécessaires (`onAddSlot`, `onUpdateSlot`, `onRemoveSlot`, `onMoveSlotUp`, `onMoveSlotDown`, `onFileUpload`) à [MediaSlotEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/MediaSlotEditor.jsx).
+  3. **Erreur HTML (`<button> descendant of <button>`)** : Dans [PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx), remplacé l'élément englobant `<button>` par une `<div className="w-full ... cursor-pointer">` pour autoriser les boutons d'action rapide sans conflit HTML.
+  4. **Toggle FR / EN de l'Éditeur** : Remplacé les boutons ordinaires de sélection de langue par le **Toggle FR/EN identique à la Navbar** avec pilule glissante.
+  5. **Footer** : Supprimé le point/puce verte clignotante à côté de la mention `Admin` dans [Footer.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Footer.jsx).
+
+### Modifications
+- Mis à jour [AdminPostEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminPostEditModal.jsx), [AdminLoginModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminLoginModal.jsx), [AdminBannerEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminBannerEditModal.jsx), [PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx), et [Footer.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Footer.jsx).
+- Validé 100% de [TODO_TEMPORAIRE.md](file:///c:/Users/celestin/Desktop/bkntechwebsite/TODO_TEMPORAIRE.md).
+
+---
+
+## [2026-08-03] Système Administration In-Context Globale & Édition Directe Partout sur le Site
+
+### Tâche
+- Transformer le système d'administration pour qu'il soit **intégré en-contexte (In-Context Direct Edit Mode) partout sur le site** :
+  1. **Suppression du petit cadenas/logo Admin** dans l'en-tête de la page [Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx).
+  2. **Connexion & Déconnexion Admin dans le Footer** ([Footer.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Footer.jsx)) : affichage discret du lien `Admin` / `Accès Admin` qui déclenche une modal de mot de passe [AdminLoginModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminLoginModal.jsx), et indicateur `[ Admin Connecté ]` + bouton `[Déconnexion]` quand la session est active.
+  3. **Création d'un Contexte d'Administration Globale** [AdminContext.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/context/AdminContext.jsx) pour partager l'état d'authentification (`isAdmin`), le mot de passe admin et le compteur de rafraîchissement (`dataRefreshCounter`).
+  4. **Modales d'Édition In-Context** :
+     - [AdminPostEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminPostEditModal.jsx) : modification/création de projets/devlogs en direct sans quitter la page.
+     - [AdminBannerEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminBannerEditModal.jsx) : modification directe de la Bannière 1 (Portfolio) et de la Bannière 2 (Devlog).
+  5. **Boutons d'Édition Directe sur le Front** :
+     - Bouton `[ Modifier Bannière ]` directement sur la Bannière Vacuum 1 et la Bannière Devlog 2.
+     - Boutons `[ Modifier ]` et `[ Supprimer ]` directement sur chaque carte de projet/devlog ([Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx), [GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx), [PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx)).
+     - Bouton `+ Nouveau Projet` / `+ Nouveau Post Devlog` directement visible dans l'en-tête de la page quand `isAdmin` est actif.
+  6. **Conservation intégrale du Backend** : Utilisation stricte des endpoints API existants (`/api/posts`, `/api/settings`, `/api/upload`) avec envoi du header `x-admin-password`.
+
+### Modifications
+- Créé [src/context/AdminContext.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/context/AdminContext.jsx)
+- Créé [src/components/admin/AdminLoginModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminLoginModal.jsx)
+- Créé [src/components/admin/AdminPostEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminPostEditModal.jsx)
+- Créé [src/components/admin/AdminBannerEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminBannerEditModal.jsx)
+- Mis à jour [src/App.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/App.jsx), [src/components/Footer.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Footer.jsx), [src/pages/Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx), [src/pages/GamingDevlog.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/GamingDevlog.jsx), et [src/pages/PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx).
+
+---
+
 ## [2026-08-03] Restauration des Thèmes de Couleur Dédiés par Catégorie sur les Cartes B2B
 
 ### Tâche

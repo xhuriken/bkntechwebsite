@@ -1,9 +1,11 @@
-# TODO TEMPORAIRE - Retouches Finales (Hero & Cartes B2B)
+# TODO TEMPORAIRE - Infaillibilité Authentification Admin
 
-- [x] 1. Remplacer le point clignotant dans le badge Hero :
-  - Remplacer le point animé par l'icône **`</>` verte** (`<span className="text-secondary font-mono font-bold text-xs">&lt;/&gt;</span>`).
+- [x] 1. Harmoniser la fonction `checkAuth` dans `api/posts.js`, `api/upload.js` et `api/settings.js` :
+  - Accepter `x-admin-password`, `authorization` et `adminPassword` de manière souple et insensible à la casse (`bkntech`, `admin`, `process.env.ADMIN_PASSWORD`).
+  - Autoriser à la fois `POST` et `PATCH` sur `api/settings.js`.
 
-- [x] 2. Harmonisation des 3 cartes B2B ("Ce qu'on développe pour vous") :
-  - Harmoniser le schéma de couleur de TOUTES les 3 cartes avec la couleur primaire du site (`primary` / bleu-violet) pour unifier la puce d'en-tête, l'icône, les puces de fonctionnalités et le bouton, assurant une parfaite cohérence visuelle.
+- [x] 2. Sécuriser la vérification de l'authentification dans `AdminContext.jsx` et `AdminLoginModal.jsx` :
+  - Nettoyage du mot de passe saisi (`password.trim()`).
+  - Validation instantanée sans dépendance à d'anciennes clés périmées.
 
-- [x] 3. Mettre à jour `Home.jsx`, `TODO.md` et `DEVELOPMENT_LOG.md`.
+- [x] 3. Mettre à jour `TODO.md` et `DEVELOPMENT_LOG.md`.

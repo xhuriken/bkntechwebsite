@@ -6,6 +6,7 @@ import Button from '../components/Button';
 import { formatLocaleDate } from '../utils/dateFormatter';
 import VacuumParticles from '../components/VacuumParticles';
 import { useImageLightbox } from '../context/ImageLightboxContext';
+import { useAdmin } from '../context/AdminContext';
 
 
 /**
@@ -158,6 +159,8 @@ function ProjectTerminalList({ tags = [], category = 'gaming' }) {
 export default function Portfolio() {
   const { t, i18n } = useTranslation();
   const { openLightbox } = useImageLightbox();
+  const { isAdmin, openCreatePost, openEditPost, openBannerModal, openConfirmModal, adminPassword, dataRefreshCounter, triggerRefresh } = useAdmin();
+
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -166,6 +169,7 @@ export default function Portfolio() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
   const [featuredBannerUrl, setFeaturedBannerUrl] = useState('/BknLogo.svg');
   const letterORef = useRef(null);
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
     window.addEventListener('resize', handleResize);
@@ -210,7 +214,8 @@ export default function Portfolio() {
         }
       })
       .catch(err => console.error('Failed to load settings:', err));
-  }, []);
+  }, [dataRefreshCounter]);
+
 
   const categories = [
     { key: 'website', title: t('portfolio.categories.website'), color: 'from-secondary/20 to-transparent' },
@@ -250,15 +255,18 @@ export default function Portfolio() {
             {t('portfolio.subtitle')}
           </p>
         </div>
-        <Link
-          to="/portfolio/admin"
-          className="w-10 h-10 rounded-xl bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all duration-300 group"
-          title={t('portfolio.admin.title')}
-        >
-          <svg className="w-4 h-4 group-hover:scale-105 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-          </svg>
-        </Link>
+        <div>
+          {isAdmin && (
+            <Button
+              variant="primary"
+              onClick={() => openCreatePost('website')}
+            >
+              <i className="fa-solid fa-plus text-xs"></i>
+              <span>{t('portfolio.admin.create_btn') || '+ Nouveau Projet'}</span>
+            </Button>
+          )}
+        </div>
+
       </div>
 
       {loading ? (
@@ -320,7 +328,21 @@ export default function Portfolio() {
                         e.target.src = '/notfound.gif';
                       }}
                     />
+                    {isAdmin && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openBannerModal('featured');
+                        }}
+                        className="absolute top-2 right-2 px-2.5 py-1 rounded-lg bg-black/80 border border-primary/40 text-primary font-mono text-[10px] font-bold uppercase backdrop-blur-md hover:bg-primary hover:text-black transition-all cursor-pointer z-20"
+                      >
+                        <i className="fa-solid fa-pen text-[9px] mr-1"></i>
+                        Modifier Bannière
+                      </button>
+                    )}
                   </div>
+
 
                   {/* Padded Text details & CTAs */}
                   <div className="md:w-1/2 flex flex-col justify-between gap-6">
@@ -525,6 +547,50 @@ export default function Portfolio() {
                                               <path d="M8 5v14l11-7z" />
                                             </svg>
                                           </div>
+                                        </div>
+                                      )}
+
+                                      {isAdmin && (
+                                        <div className="absolute top-2 right-2 flex items-center gap-1.5 z-20">
+                                          <button
+                                            type="button"
+                                            onClick={(e) => {
+                                              e.preventDefault();
+                                              e.stopPropagation();
+                                              openEditPost(post);
+                                            }}
+                                            className="px-2 py-1 rounded-md bg-black/90 border border-primary/50 text-primary font-mono text-[9px] font-bold uppercase hover:bg-primary hover:text-black transition-all cursor-pointer shadow-lg"
+                                            title="Modifier ce projet"
+                                          >
+                                            <i className="fa-solid fa-pen text-[8px] mr-1"></i>
+                                            Modifier
+                                          </button>
+                                          <button
+                                            type="button"
+                                            onClick={(e) => {
+                                              e.preventDefault();
+                                              e.stopPropagation();
+                                              openConfirmModal({
+                                                title: 'Suppression de Projet',
+                                                message: `Êtes-vous sûr de vouloir supprimer définitivement "${post.title?.fr || 'ce projet'}" ? Cette action est irréversible.`,
+                                                onConfirm: async () => {
+                                                  try {
+                                                    await fetch(`/api/posts?id=${post.id}`, {
+                                                      method: 'DELETE',
+                                                      headers: { 'x-admin-password': adminPassword }
+                                                    });
+                                                    triggerRefresh();
+                                                  } catch (err) {
+                                                    console.error('Delete failed:', err);
+                                                  }
+                                                }
+                                              });
+                                            }}
+                                            className="px-2 py-1 rounded-md bg-black/90 border border-red-500/50 text-red-400 font-mono text-[9px] font-bold uppercase hover:bg-red-500 hover:text-white transition-all cursor-pointer shadow-lg"
+                                            title="Supprimer ce projet"
+                                          >
+                                            <i className="fa-solid fa-trash text-[8px]"></i>
+                                          </button>
                                         </div>
                                       )}
                                     </div>

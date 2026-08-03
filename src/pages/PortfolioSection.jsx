@@ -5,6 +5,9 @@ import { motion } from 'framer-motion';
 import { formatLocaleDate } from '../utils/dateFormatter';
 import { detailedProjects } from '../utils/detailedProjects';
 import { useImageLightbox } from '../context/ImageLightboxContext';
+import Button from '../components/Button';
+import { useAdmin } from '../context/AdminContext';
+
 
 /**
  * Helper to extract YouTube video ID
@@ -179,6 +182,8 @@ export default function PortfolioSection() {
   const { category } = useParams();
   const { t, i18n } = useTranslation();
   const { openLightbox } = useImageLightbox();
+  const { isAdmin, openCreatePost, openEditPost, openConfirmModal, adminPassword, dataRefreshCounter, triggerRefresh } = useAdmin();
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTabs, setActiveTabs] = useState({});
@@ -209,7 +214,8 @@ export default function PortfolioSection() {
         console.error(err);
         setLoading(false);
       });
-  }, [category]);
+  }, [category, dataRefreshCounter]);
+
 
   useEffect(() => {
     if (loading || posts.length === 0) return;
@@ -257,6 +263,7 @@ export default function PortfolioSection() {
 
       <div className="flex justify-between items-end border-b border-white/5 pb-6 mb-12">
         <div>
+
           <h1 className="font-sans font-extrabold text-3xl md:text-5xl uppercase tracking-tight mb-3">
             {t(`portfolio.categories.${category}`)}
           </h1>
@@ -264,7 +271,20 @@ export default function PortfolioSection() {
             {t('portfolio.section_desc', { cat: t(`portfolio.categories.${category}`) })}
           </p>
         </div>
+        <div>
+          {isAdmin && (
+            <Button
+              variant="primary"
+              onClick={() => openCreatePost(category)}
+            >
+              <i className="fa-solid fa-plus text-xs"></i>
+              <span>+ Nouveau Projet</span>
+            </Button>
+          )}
+        </div>
       </div>
+
+
 
       {loading ? (
         <div className="flex flex-col items-center justify-center min-h-[40vh] text-on-surface-variant/80 font-sans font-medium text-sm">
@@ -326,10 +346,11 @@ export default function PortfolioSection() {
                 }`}>
 
                 {/* Compact Header Row – always visible, click to expand */}
-                <button
+                <div
                   onClick={() => toggleExpanded(post.id)}
                   className="w-full text-left pt-4 md:pt-5 px-6 md:px-8 pb-4 flex items-center justify-between gap-4 group/header cursor-pointer"
                 >
+
                   <div className="flex flex-col gap-1.5 flex-1 min-w-0">
                     {/* Mobile Date */}
                     <span className={`md:hidden font-mono text-[10px] font-bold ${dotColors.text}`}>
@@ -354,17 +375,59 @@ export default function PortfolioSection() {
                       </div>
                     )}
                   </div>
-                  {/* Expand / Collapse Arrow */}
-                  <motion.span
-                    animate={{ rotate: isExpanded ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                    className={`text-on-surface-variant/40 group-hover/header:text-primary flex-shrink-0 transition-colors`}
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </motion.span>
-                </button>
+                  {/* Expand / Collapse Arrow & Admin Actions */}
+                  <div className="flex items-center gap-3 flex-shrink-0">
+                    {isAdmin && (
+                      <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                        <button
+                          type="button"
+                          onClick={() => openEditPost(post)}
+                          className="px-2 py-1 rounded bg-primary/20 text-primary border border-primary/40 hover:bg-primary hover:text-black font-mono text-[9px] font-bold uppercase transition-colors cursor-pointer"
+                          title="Modifier ce projet"
+                        >
+                          <i className="fa-solid fa-pen text-[8px] mr-1"></i>
+                          Modifier
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            openConfirmModal({
+                              title: 'Suppression de Projet',
+                              message: `Êtes-vous sûr de vouloir supprimer définitivement "${post.title?.fr || 'ce projet'}" ?`,
+                              onConfirm: async () => {
+                                try {
+                                  await fetch(`/api/posts?id=${post.id}`, {
+                                    method: 'DELETE',
+                                    headers: { 'x-admin-password': adminPassword }
+                                  });
+                                  triggerRefresh();
+                                } catch (err) {
+                                  console.error('Delete failed:', err);
+                                }
+                              }
+                            });
+                          }}
+                          className="px-2 py-1 rounded bg-red-500/20 text-red-400 border border-red-500/40 hover:bg-red-500 hover:text-white font-mono text-[9px] font-bold uppercase transition-colors cursor-pointer"
+                          title="Supprimer ce projet"
+                        >
+                          <i className="fa-solid fa-trash text-[8px]"></i>
+                        </button>
+
+                      </div>
+                    )}
+                    <motion.span
+                      animate={{ rotate: isExpanded ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                      className={`text-on-surface-variant/40 group-hover/header:text-primary flex-shrink-0 transition-colors`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </motion.span>
+                  </div>
+
+                </div>
+
 
                 {/* Expandable Body */}
                 {isExpanded && (

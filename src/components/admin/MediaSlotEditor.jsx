@@ -212,10 +212,11 @@ export default function MediaSlotEditor({
                     <input
                       type="file"
                       accept={slot.type === 'video' ? 'video/mp4,video/webm' : 'image/*'}
-                      onChange={(e) => onFileUpload(e, index)}
+                      onChange={(e) => onFileUpload(index, e.target.files?.[0])}
                       className="hidden"
                       id={`slot-file-input-${index}`}
                     />
+
                     <label
                       htmlFor={`slot-file-input-${index}`}
                       className="w-full max-w-full overflow-hidden min-w-0 bg-white/5 hover:bg-white/10 border border-dashed border-secondary/40 hover:border-secondary rounded-xl px-4 py-3 text-xs font-sans font-bold text-secondary flex items-center justify-center gap-2 cursor-pointer transition-all"

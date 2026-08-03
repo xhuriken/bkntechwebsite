@@ -2,15 +2,13 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import InteractiveNetwork from './InteractiveNetwork';
+import { useAdmin } from '../context/AdminContext';
 
-/**
- * Footer Component
- * Premium multi-column footer containing brand tagline, interactive links,
- * social connections, legal copyright, and a discrete Flashbang Easter Egg lightbulb.
- */
 export default function Footer() {
   const { t } = useTranslation();
+  const { isAdmin, setIsLoginModalOpen, logout } = useAdmin();
   const [isFlashbang, setIsFlashbang] = useState(false);
+
 
   return (
     <>
@@ -149,10 +147,41 @@ export default function Footer() {
                 BKN TECH &copy; {new Date().getFullYear()} &mdash; {t('footer.rights')}
               </div>
 
-              <div className="flex items-center gap-2 font-sans font-semibold normal-case">
+              <div className="flex items-center gap-4 font-sans font-semibold normal-case">
                 <span className={`transition-opacity duration-300 ${isFlashbang ? 'opacity-0 pointer-events-none' : 'text-on-surface-variant/60'}`}>
                   Enrique Puerto, Célestin Honvault
                 </span>
+
+                {/* Admin Auth Toggle in Footer */}
+                {!isFlashbang && (
+                  isAdmin ? (
+                    <div className="flex items-center gap-3 font-mono text-[10px] lowercase">
+                      <span className="text-green-400 font-bold">
+                        Admin
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={logout}
+                        className="inline-flex items-center gap-1 text-red-400/80 hover:text-red-400 hover:underline transition-colors cursor-pointer"
+                        title="Se déconnecter de l'administration"
+                      >
+                        <i className="fa-solid fa-right-from-bracket text-[9px]"></i>
+                        <span>[Déconnexion]</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setIsLoginModalOpen(true)}
+                      className="inline-flex items-center gap-1 text-[10px] font-mono text-on-surface-variant/40 hover:text-primary transition-colors cursor-pointer"
+                      title="Espace Administrateur"
+                    >
+                      <i className="fa-solid fa-lock text-[9px]"></i>
+                      <span>Admin</span>
+                    </button>
+                  )
+                )}
 
                 {/* Ultra-Minimal Discrete Lightbulb Easter Egg Button (Stays at exact footer position) */}
                 <button
@@ -172,6 +201,7 @@ export default function Footer() {
                   <i className={`fa-solid fa-lightbulb ${isFlashbang ? 'text-base text-black' : 'text-[11px]'}`} />
                 </button>
               </div>
+
             </div>
 
           </div>

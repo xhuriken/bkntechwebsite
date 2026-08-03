@@ -8,6 +8,9 @@ import VacuumParticles from '../components/VacuumParticles';
 import { useImageLightbox } from '../context/ImageLightboxContext';
 import PatchNoteList from '../components/PatchNoteList';
 import MediaViewer from '../components/MediaViewer';
+import Button from '../components/Button';
+import { useAdmin } from '../context/AdminContext';
+
 
 /**
  * Helper to extract YouTube video ID
@@ -87,6 +90,8 @@ export default function GamingDevlog() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'fr';
   const location = useLocation();
+  const { isAdmin, openCreatePost, openEditPost, openBannerModal, openConfirmModal, adminPassword, dataRefreshCounter, triggerRefresh } = useAdmin();
+
 
   // API posts loading
   const [posts, setPosts] = useState([]);
@@ -123,7 +128,8 @@ export default function GamingDevlog() {
         }
       })
       .catch(err => console.error("Failed to load settings:", err));
-  }, []);
+  }, [dataRefreshCounter]);
+
 
   useEffect(() => {
     if (loading || posts.length === 0) return;
@@ -193,17 +199,27 @@ export default function GamingDevlog() {
       {/* Vacuum suction particles backdrop */}
       <VacuumParticles targetRef={letterARef} />
 
-      {/* Return button */}
-      <div className="mb-8">
-        <Link 
-          to="/portfolio" 
-          className="inline-flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-on-surface hover:text-primary transition-colors group"
+      {/* Top Bar with Navigation & Admin Action */}
+      <div className="flex items-center justify-between mb-6">
+        <Link
+          to="/portfolio"
+          className="inline-flex items-center gap-2 text-xs font-mono text-on-surface-variant hover:text-primary transition-colors group"
         >
-          <svg className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+          <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
           {t('portfolio.back')}
         </Link>
+
+        {isAdmin && (
+          <Button
+            variant="primary"
+            onClick={() => openCreatePost('gaming')}
+          >
+            <i className="fa-solid fa-plus text-xs"></i>
+            <span>+ Nouveau Post Devlog</span>
+          </Button>
+        )}
       </div>
 
       {/* Devlog Game Header Container */}
@@ -221,6 +237,20 @@ export default function GamingDevlog() {
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-surface-container-low/90 via-transparent to-transparent pointer-events-none" />
+
+            {isAdmin && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openBannerModal('devlog');
+                }}
+                className="absolute top-2 right-2 px-2.5 py-1 rounded-lg bg-black/80 border border-primary/40 text-primary font-mono text-[10px] font-bold uppercase backdrop-blur-md hover:bg-primary hover:text-black transition-all cursor-pointer z-20"
+              >
+                <i className="fa-solid fa-pen text-[9px] mr-1"></i>
+                Modifier Bannière Devlog
+              </button>
+            )}
           </div>
         )}
 
@@ -474,8 +504,11 @@ export default function GamingDevlog() {
 function DevlogPostCard({ post, currentLang }) {
   const { t } = useTranslation();
   const { openLightbox } = useImageLightbox();
+  const { isAdmin, openEditPost, openConfirmModal, adminPassword, triggerRefresh } = useAdmin();
+
   const relativeDate = getRelativeDateString(post.date, currentLang);
   const typeStyle = getTypeStyles(post.type);
+
 
   // Extract all media slots (images or videos)
   const extra = detailedProjects[post.id];
@@ -637,6 +670,44 @@ function DevlogPostCard({ post, currentLang }) {
           </div>
           
           <div className="flex items-center gap-2 text-on-surface-variant/70 font-semibold relative z-10">
+            {isAdmin && (
+              <div className="flex items-center gap-1.5 mr-2">
+                <button
+                  type="button"
+                  onClick={() => openEditPost(post)}
+                  className="px-2 py-0.5 rounded bg-primary/20 text-primary border border-primary/40 hover:bg-primary hover:text-black font-mono text-[9px] font-bold uppercase transition-colors cursor-pointer"
+                  title="Modifier ce devlog"
+                >
+                  <i className="fa-solid fa-pen text-[8px] mr-1"></i>
+                  Modifier
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    openConfirmModal({
+                      title: 'Suppression de Devlog',
+                      message: `Êtes-vous sûr de vouloir supprimer définitivement le devlog "${post.title?.fr || 'ce post'}" ?`,
+                      onConfirm: async () => {
+                        try {
+                          await fetch(`/api/posts?id=${post.id}`, {
+                            method: 'DELETE',
+                            headers: { 'x-admin-password': adminPassword }
+                          });
+                          triggerRefresh();
+                        } catch (err) {
+                          console.error('Delete failed:', err);
+                        }
+                      }
+                    });
+                  }}
+                  className="px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/40 hover:bg-red-500 hover:text-white font-mono text-[9px] font-bold uppercase transition-colors cursor-pointer"
+                  title="Supprimer ce devlog"
+                >
+                  <i className="fa-solid fa-trash text-[8px]"></i>
+                </button>
+
+              </div>
+            )}
             {post.importance === 'major' && (
               <span className="px-1.5 py-0.5 rounded border border-primary/40 bg-primary/10 text-primary text-[8px] font-bold uppercase tracking-widest">
                 ★ MAJOR
@@ -647,6 +718,7 @@ function DevlogPostCard({ post, currentLang }) {
                 MINOR
               </span>
             )}
+
             <span className="md:hidden text-on-surface-variant/90 font-bold">{formatLocaleDate(post.date, currentLang)}</span>
             <span className="hidden md:inline text-on-surface-variant/30">•</span>
             <span className="text-on-surface font-bold">{relativeDate}</span>
