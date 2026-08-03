@@ -144,7 +144,12 @@ export default function MediaSlotEditor({
                       />
                       <button
                         type="button"
-                        onClick={() => onUpdateSlot(index, 'type', 'image')}
+                        onClick={() => {
+                          if (typeof onUpdateSlot === 'function') {
+                            const updated = { ...slot, type: 'image' };
+                            onUpdateSlot(index, updated);
+                          }
+                        }}
                         className={`relative z-10 flex-1 py-1.5 text-xs font-sans font-black flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus:outline-none ${
                           slot.type === 'image' ? 'text-surface' : 'text-on-surface-variant/70 hover:text-on-surface'
                         }`}
@@ -154,11 +159,17 @@ export default function MediaSlotEditor({
                       </button>
                       <button
                         type="button"
-                        onClick={() => onUpdateSlot(index, 'type', 'video')}
+                        onClick={() => {
+                          if (typeof onUpdateSlot === 'function') {
+                            const updated = { ...slot, type: 'video' };
+                            onUpdateSlot(index, updated);
+                          }
+                        }}
                         className={`relative z-10 flex-1 py-1.5 text-xs font-sans font-black flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus:outline-none ${
                           slot.type === 'video' ? 'text-surface' : 'text-on-surface-variant/70 hover:text-on-surface'
                         }`}
                       >
+
                         <i className="fa-solid fa-video text-xs" />
                         <span>Vidéo</span>
                       </button>
@@ -181,7 +192,10 @@ export default function MediaSlotEditor({
                       />
                       <button
                         type="button"
-                        onClick={() => onUpdateSlot(index, 'sourceType', 'url')}
+                        onClick={() => {
+                          const updated = { ...slot, sourceType: 'url' };
+                          onUpdateSlot(index, updated);
+                        }}
                         className={`relative z-10 flex-1 py-1.5 text-xs font-sans font-black flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus:outline-none ${
                           slot.sourceType !== 'local' ? 'text-on-surface' : 'text-on-surface-variant/70 hover:text-on-surface'
                         }`}
@@ -191,7 +205,10 @@ export default function MediaSlotEditor({
                       </button>
                       <button
                         type="button"
-                        onClick={() => onUpdateSlot(index, 'sourceType', 'local')}
+                        onClick={() => {
+                          const updated = { ...slot, sourceType: 'local' };
+                          onUpdateSlot(index, updated);
+                        }}
                         className={`relative z-10 flex-1 py-1.5 text-xs font-sans font-black flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus:outline-none ${
                           slot.sourceType === 'local' ? 'text-on-surface' : 'text-on-surface-variant/70 hover:text-on-surface'
                         }`}
@@ -245,7 +262,10 @@ export default function MediaSlotEditor({
                     <input
                       type="text"
                       value={slot.url || ''}
-                      onChange={(e) => onUpdateSlot(index, 'url', e.target.value)}
+                      onChange={(e) => {
+                        const updated = { ...slot, url: e.target.value };
+                        onUpdateSlot(index, updated);
+                      }}
                       placeholder={
                         slot.type === 'video'
                           ? 'https://youtube.com/watch?v=... ou /uploads/video.mp4'
@@ -255,6 +275,7 @@ export default function MediaSlotEditor({
                     />
                   </div>
                 )}
+
 
                 {/* Live Slot Preview Box */}
                 {slot.url && (

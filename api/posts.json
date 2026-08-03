@@ -1,5 +1,86 @@
 [
   {
+    "id": "1785778771146",
+    "category": "website",
+    "type": "Sous titre, type de prestation",
+    "date": "2026-08-03",
+    "mediaType": "image",
+    "mediaUrl": "/uploads/1785778759826_maxresdefault.jpg",
+    "gallery": [],
+    "slots": [
+      {
+        "id": "slot-1",
+        "type": "image",
+        "sourceType": "url",
+        "url": "/uploads/1785778759826_maxresdefault.jpg"
+      },
+      {
+        "id": "slot-1785778762566",
+        "type": "image",
+        "sourceType": "url",
+        "url": "/uploads/1785778768638_Capture_d__cran_2026-06-08_121046.png"
+      }
+    ],
+    "title": {
+      "fr": "TItre du projet",
+      "en": "TItre du projet"
+    },
+    "description": {
+      "fr": "Résumé Rapide (FR) — Aperçu sur la carte repliée",
+      "en": "Résumé Rapide (FR) — Aperçu sur la carte repliée"
+    },
+    "content": {
+      "fr": "escription Approfondie & Contexte (FR) — Visible au dépliage\nescription Approfondie & Contexte (FR) — Visible au dépliage\nescription Approfondie & Contexte (FR) — Visible au dépliageescription Approfondie & Contexte (FR) — Visible au dépliageescription Approfondie & Contexte (FR) — Visible au dépliage",
+      "en": "escription Approfondie & Contexte (FR) — Visible au dépliage\nescription Approfondie & Contexte (FR) — Visible au dépliage\nescription Approfondie & Contexte (FR) — Visible au dépliageescription Approfondie & Contexte (FR) — Visible au dépliageescription Approfondie & Contexte (FR) — Visible au dépliage"
+    },
+    "tags": [
+      "Mot",
+      "Cléf",
+      "séparer",
+      "par",
+      "virgule"
+    ],
+    "commentsCount": 0,
+    "changelog": [],
+    "hasChangelog": false,
+    "extra": {
+      "externalUrl": "https://celestin.honvault.com",
+      "featuresList": [
+        {
+          "title": "Feature 1",
+          "desc": " ite"
+        },
+        {
+          "title": "feature 2",
+          "desc": " ite ite ite ite ite ite ite ite ite ite ite ite ite itev"
+        },
+        {
+          "title": "feature skibidi",
+          "desc": " ite ite ite ite"
+        }
+      ],
+      "specsList": [
+        {
+          "label": "FRONTEND",
+          "value": "Tailwind"
+        },
+        {
+          "label": "BACKEND",
+          "value": "Javascript"
+        },
+        {
+          "label": "FRAMEWORK",
+          "value": "React & Vite"
+        }
+      ],
+      "features": {
+        "fr": "Feature 1:  ite\nfeature 2:  ite ite ite ite ite ite ite ite ite ite ite ite ite itev\nfeature skibidi:  ite ite ite ite",
+        "en": "Feature 1:  ite\nfeature 2:  ite ite ite ite ite ite ite ite ite ite ite ite ite itev\nfeature skibidi:  ite ite ite ite"
+      },
+      "techStack": "FRONTEND: Tailwind | BACKEND: Javascript | FRAMEWORK: React & Vite"
+    }
+  },
+  {
     "id": "22",
     "category": "gaming",
     "type": "Bugfix & Netcode",

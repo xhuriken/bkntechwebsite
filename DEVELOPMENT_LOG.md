@@ -2,6 +2,111 @@
 
 Ce journal retrace toutes les décisions techniques, les modifications de code et les résolutions de bugs apportées au projet.
 
+## [2026-08-03] Redesign Minimaliste & Vibrant des Onglets Caractéristiques & Fiche Technique
+
+### Tâche
+- Sublimer le rendu visuel des onglets Caractéristiques et Fiche Technique dans [ProjectCard.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ProjectCard.jsx) :
+  1. **Onglet Caractéristiques Minimaliste & Percutant** :
+     - Cartes glassmorphic noires translucides `bg-black/40 backdrop-blur-md border border-white/[0.08]` avec ligne néon d'accentuation supérieure au survol.
+     - Puce lumineuse néon verte à gauche de chaque titre et numérotation index rétro-éclairée (`01`, `02`, `03`...).
+     - Typographie épurée à haut contraste et lisibilité parfaite.
+  2. **Onglet Fiche Technique ("Tech Spec Grid")** :
+     - Grille minimale d'inspiration Vercel/Apple.
+     - Intitulés monospace épurés `font-mono text-[9px] uppercase tracking-widest text-on-surface-variant/50`.
+     - Valeurs affichées en typographie néon contrastée avec puces lumineuses `tertiary`.
+
+### Modifications
+- Mis à jour [src/components/ProjectCard.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ProjectCard.jsx).
+
+---
+
+## [2026-08-03] Composants Réutilisables (BrandPill & Button), Smooth Layout Déroulement & Éditeurs Structurés
+
+### Tâche
+- Réaliser l'ensemble des ajustements demandés :
+  1. **Composant Réutilisable Pilule Néon ([BrandPill.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/BrandPill.jsx))** : Extraction de la pilule verte néon dégradée officielle de la capture #2 sous forme de composant React réutilisable. Placé **exclusivement à gauche du titre**, préservant l'alignement naturel à gauche des tags/mots-clés et du résumé sur le bord de carte principal.
+  2. **Suppression de la Téléportation ("TP") au Déroulement** : Ajout d'un `motion.div` avec `layout` et transition douce `cubic-bezier(0.16, 1, 0.3, 1)` sur le conteneur principal du titre et du résumé dans [ProjectCard.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ProjectCard.jsx).
+  3. **Bouton Web Officiel React (<Button>)** : Remplacement de l'élément HTML brut par le composant React officiel [Button.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Button.jsx) `variant="green"` pour intégrer la technologie magnétique et les effets néon BKN.
+  4. **Édition Structurée des Caractéristiques ([FeaturesEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/FeaturesEditor.jsx))** : Remplacement du textarea brut par un composant d'édition avec champs séparés pour le **Titre** et la **Description** de chaque caractéristique, avec ré-organisation et suppression.
+  5. **Harmonisation Fiche Technique ([TechStackEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/TechStackEditor.jsx))** : Édition par paires d'objets `{ label, value }` dans la modal pour que tous les nouveaux projets affichent exactement la grille de cartes de spécifications structurées vue sur Screen #1 bas.
+
+### Modifications
+- Mis à jour [src/components/ProjectCard.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ProjectCard.jsx), [src/components/admin/AdminProjectEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminProjectEditModal.jsx), et créé [src/components/BrandPill.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/BrandPill.jsx), [src/components/admin/FeaturesEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/FeaturesEditor.jsx), [src/components/admin/TechStackEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/TechStackEditor.jsx).
+
+---
+
+## [2026-08-03] Correctif HTTP 405 Sauvegarde, Pilule Néon Titre Screen #2 & Fluidification Dépliage/Repliage
+
+### Tâche
+- Répondre aux 3 points soulevés par l'utilisateur :
+  1. **Résolution de l'Erreur HTTP 405 Method Not Allowed sur la Sauvegarde** : Mis à jour [api/posts.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/posts.js) pour autoriser les méthodes HTTP `PUT` et `PATCH` dans les en-têtes CORS (`Access-Control-Allow-Methods`) et gérer `req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH'` en conservant le champ `extra`.
+  2. **Intégration de la Décoration Néon de la Capture #2** : Réintégré la pilule néon verticale verte dégradée `<span className="w-1.5 h-6 rounded-full bg-gradient-to-b from-[#4EDE A3] to-[#12A065] shadow-[0_0_12px_rgba(78,222,163,0.6)]">` à gauche du titre dans [ProjectCard.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ProjectCard.jsx).
+  3. **Animation de Dépliage / Repliage Ultra Fluidifiée** : Enveloppé l'image de fond repliée dans un `<AnimatePresence>` avec fondu croisé `opacity: 0.6` <-> `0` sur `0.4s`, et appliqué une courbe d'accélération fluide `cubic-bezier(0.16, 1, 0.3, 1)` sur le contenu déplié pour éliminer tout effet brusque ou saccadé.
+
+### Modifications
+- Mis à jour [api/posts.js](file:///c:/Users/celestin/Desktop/bkntechwebsite/api/posts.js) et [src/components/ProjectCard.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ProjectCard.jsx).
+
+---
+
+## [2026-08-03] Correctif Sélection Modale Édition, Affichage Lien Web & Transitions Onglets Smooth Sans Bounce
+
+### Tâche
+- Répondre aux 3 demandes précises de l'utilisateur :
+  1. **Ouverture de la Bonne Modale d'Édition** : Dans [AdminProjectEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminProjectEditModal.jsx) et [AdminDevlogEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminDevlogEditModal.jsx), alignement de la détection : `isGamingCategory` s'active EXCLUSIVEMENT pour la catégorie `'gaming'`, tandis que `isProjectCategory` s'active pour TOUTES les autres catégories de projets (`sites`, `website`, `ai-agent`, `mobile`, `ai`, etc.).
+  2. **Bouton Lien Web NÉON BKN Infaillible** : Dans [ProjectCard.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ProjectCard.jsx), ajout d'un parsing JSON universel de `post.extra` et auto-ajout du protocole `https://` si nécessaire. Le bouton `Visiter le site en direct` s'affiche systématiquement dès qu'une URL est présente.
+  3. **Transition des Onglets Ultra Smooth Sans Bounce** : Suppression du `layout` global sur l'article parent. Le ressort physique (spring bounce) est réservé exclusivement à l'ouverture/fermeture de la carte, tandis que la bascule d'onglet est animée de façon progressive et douce avec `easeInOut` (`0.2s`), sans faire sauter ni bouger le menu d'onglets.
+
+### Modifications
+- Mis à jour [src/components/ProjectCard.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ProjectCard.jsx), [src/components/admin/AdminProjectEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminProjectEditModal.jsx), et [src/components/admin/AdminDevlogEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminDevlogEditModal.jsx).
+
+---
+
+## [2026-08-03] Design Immersif Cartes Repliées, Flèche Coin Supérieur Droit & Menu Onglets Caractéristiques
+
+### Tâche
+- Réaliser les améliorations visuelles et fonctionnelles demandées :
+  1. **Flèche de Dépliage dans le Coin Supérieur Droit** : Positionné le bouton de bascule `<button className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center">` dans l'en-tête terminal à droite.
+  2. **Image en Fond de Carte Repliée + Flou Foncé** : Affichage de l'image du slot #1 en fond de carte quand `!isExpanded`, avec une hauteur minimale accrue (`min-h-[220px] md:min-h-[250px]`) et un gradient sombre flouté (`bg-gradient-to-t from-black via-black/80 to-black/40 backdrop-blur-[2px]`) pour garantir une lisibilité optimale du titre et du résumé.
+  3. **Média Grand Format au Dépliage** : Dès l'expansion de la carte, le média clé bascule en grand format HD (`max-h-[520px]`) dans la section **Aperçu & Média**.
+  4. **Menu d'Onglets Interactif (Aperçu, Caractéristiques, Fiche Technique, Galerie)** : Réintégré la barre d'onglets avec l'effet de soulignement néon Framer Motion `layoutId="activeTabBorder"`.
+  5. **Précision pour la saisie des Caractéristiques dans [AdminProjectEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminProjectEditModal.jsx)** : Ajout d'une aide bleue claire expliquant que chaque ligne saisie (avec ou sans tiret `-` ou puce `•`) génère une carte de caractéristique dans l'onglet du projet.
+
+### Modifications
+- Mis à jour [src/components/ProjectCard.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ProjectCard.jsx) et [src/components/admin/AdminProjectEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminProjectEditModal.jsx).
+
+---
+
+## [2026-08-03] Rétablissement du Front Origine Frise Chronologique & Correctif Clics Modales
+
+### Tâche
+- Répondre aux demandes de l'utilisateur :
+  1. **Rétablissement du Front & Frise Chronologique d'Origine** : Réintégré le `Sticky Dot Wrapper` (la puce temporelle), le `Sticky Date Wrapper` (la date latérale), et le `Terminal Header` (`bkn@tech:~/portfolio$ ./projet.log`) dans [ProjectCard.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ProjectCard.jsx) pour s'inscrire exactement sur la ligne verticale de timeline.
+  2. **Correction du bouton `+` des Patch Notes** : Résolu la réconciliation des props `onChange` vs `onAddChangelogItem` dans [PatchNoteEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/PatchNoteEditor.jsx). Les clics sur "Ajouter une ligne" ajoutent instantanément une nouvelle entrée dans le tableau.
+  3. **Correction des Sliders & Toggles Médias dans les Modales** : Harmonisé les déclencheurs dans [MediaSlotEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/MediaSlotEditor.jsx) pour transmettre des objets de slots complets lors des bascules Image/Vidéo et URL/Fichier Local.
+
+### Modifications
+- Mis à jour [ProjectCard.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ProjectCard.jsx), [PatchNoteEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/PatchNoteEditor.jsx), et [MediaSlotEditor.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/MediaSlotEditor.jsx).
+
+---
+
+## [2026-08-03] Séparation des Modales Admin (Projet B2B vs Devlog Gaming) & Refonte des Cartes
+
+### Tâche
+- Réaliser la séparation complète des modales et l'amélioration du système de cartes :
+  1. **Conservation absolue du style BKN Tech** : Utilisation stricte des mêmes backgrounds `bg-surface-container-low`, bordures `border-white/10`, inputs `InputField.jsx`, textures SVG et boutons magnétiques.
+  2. **Modale Éditeur de Projet B2B ([AdminProjectEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminProjectEditModal.jsx))** : Formulaire sur-mesure pour les projets vitrines client (Web, Mobile, IA). Champs : Titre, mots-clés/tags, image/vidéo clé, description approfondie avec contexte, lien externe avec aide guidée, section **Caractéristiques (Features)** et **Stack Technique (Specs)**. Aucune option de Patch Note ou Minor/Major.
+  3. **Modale Éditeur de Devlog Gaming ([AdminDevlogEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminDevlogEditModal.jsx))** : Formulaire spécifique au jeu *Vacuum Protocol* avec suivi de versions, Patch Notes classés, et notification automatique par Bot Discord.
+  4. **Composant Carte Projet ([ProjectCard.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ProjectCard.jsx))** :
+     - **Repliée par défaut** : Affiche uniquement la 1ère image/vidéo clé et la 1ère ligne de description.
+     - **Animation de dépliage fluide** : Remplacée par l'animation ressort Framer Motion identique à celle de Vacuum.
+     - **Bouton néon officiel BKN Tech** généré automatiquement sous la description pour rediriger vers le site web externe.
+
+### Modifications
+- Créé [AdminProjectEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminProjectEditModal.jsx), [AdminDevlogEditModal.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/admin/AdminDevlogEditModal.jsx), et [ProjectCard.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/ProjectCard.jsx).
+- Mis à jour [App.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/App.jsx) et [PortfolioSection.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/PortfolioSection.jsx).
+
+---
+
 ## [2026-08-03] Correctif HTTP 400 Bad Request sur la Suppression `DELETE /api/posts?id=...`
 
 ### Tâche

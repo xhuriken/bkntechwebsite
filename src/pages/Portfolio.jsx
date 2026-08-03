@@ -7,6 +7,8 @@ import { formatLocaleDate } from '../utils/dateFormatter';
 import VacuumParticles from '../components/VacuumParticles';
 import { useImageLightbox } from '../context/ImageLightboxContext';
 import { useAdmin } from '../context/AdminContext';
+import ProjectCard from '../components/ProjectCard';
+
 
 
 /**

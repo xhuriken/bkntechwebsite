@@ -53,7 +53,8 @@ function ExternalRedirect({ url }) {
 import { ImageLightboxProvider } from './context/ImageLightboxContext';
 import { AdminProvider } from './context/AdminContext';
 import AdminLoginModal from './components/admin/AdminLoginModal';
-import AdminPostEditModal from './components/admin/AdminPostEditModal';
+import AdminProjectEditModal from './components/admin/AdminProjectEditModal';
+import AdminDevlogEditModal from './components/admin/AdminDevlogEditModal';
 import AdminBannerEditModal from './components/admin/AdminBannerEditModal';
 import AdminConfirmModal from './components/admin/AdminConfirmModal';
 
@@ -92,7 +93,8 @@ function App() {
 
             {/* In-Context Admin Modals */}
             <AdminLoginModal />
-            <AdminPostEditModal />
+            <AdminProjectEditModal />
+            <AdminDevlogEditModal />
             <AdminBannerEditModal />
             <AdminConfirmModal />
           </div>
@@ -101,6 +103,7 @@ function App() {
     </ImageLightboxProvider>
   );
 }
+
 
 
 export default App;

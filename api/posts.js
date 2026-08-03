@@ -3,13 +3,13 @@ import path from 'path';
 
 /**
  * Serverless API handler for BKN Tech Portfolio Posts
- * Supports GET (list/backup), POST/PUT (create/update), and DELETE (delete).
+ * Supports GET (list/backup), POST/PUT/PATCH (create/update), and DELETE (delete).
  * Uses local posts.json as a database, fallback to /tmp/posts.json in read-only environments.
  */
 export default async function handler(req, res) {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-password');
 
   if (req.method === 'OPTIONS') {
@@ -28,7 +28,6 @@ export default async function handler(req, res) {
   const initializeDb = () => {
     try {
       if (isVercel && !fs.existsSync(tempDbPath)) {
-        // Copy original file to /tmp
         if (fs.existsSync(localDbPath)) {
           fs.copyFileSync(localDbPath, tempDbPath);
         } else {
@@ -99,7 +98,6 @@ export default async function handler(req, res) {
 
   // 1. GET Request
   if (req.method === 'GET') {
-    // Verification query check
     if (req.query?.verify === 'true') {
       if (!checkAuth()) {
         return res.status(401).json({ error: 'Unauthorized. Invalid password.' });
@@ -107,7 +105,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ authenticated: true });
     }
 
-    // If backup download requested
     if (req.query?.download === 'true') {
       if (!checkAuth()) {
         return res.status(401).json({ error: 'Unauthorized. Invalid password.' });
@@ -124,9 +121,9 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized. Invalid password.' });
   }
 
-  // 3. POST / PUT Request (Create or Edit)
-  if (req.method === 'POST') {
-    const { id, category, type, importance, date, mediaType, mediaUrl, gallery, slots, title, description, content, tags, commentsCount, postToDiscord } = req.body;
+  // 3. POST / PUT / PATCH Request (Create or Edit)
+  if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
+    const { id, category, type, importance, date, mediaType, mediaUrl, gallery, slots, title, description, content, tags, commentsCount, postToDiscord, extra, changelog, hasChangelog, featuresFr, featuresEn, techStack, externalUrl } = req.body;
 
     const titleFr = title?.fr || 'Titre du Projet';
     const titleEn = title?.en || titleFr;
@@ -153,17 +150,23 @@ export default async function handler(req, res) {
       description: { fr: descFr, en: descEn },
       content: { fr: contentFr, en: contentEn },
       tags: Array.isArray(tags) ? tags : [],
-      commentsCount: commentsCount !== undefined ? parseInt(commentsCount, 10) : 0
+      commentsCount: commentsCount !== undefined ? parseInt(commentsCount, 10) : 0,
+      changelog: Array.isArray(changelog) ? changelog : [],
+      hasChangelog: hasChangelog !== undefined ? hasChangelog : (Array.isArray(changelog) && changelog.length > 0),
+      extra: extra || {
+        externalUrl: externalUrl || '',
+        features: { fr: featuresFr || '', en: featuresEn || '' },
+        techStack: techStack || ''
+      }
     };
 
-    const existingIndex = posts.findIndex(p => p.id === postData.id);
+    const existingIndex = posts.findIndex(p => String(p.id) === String(postData.id));
     if (existingIndex > -1) {
       posts[existingIndex] = postData; // Edit
     } else {
-      posts.unshift(postData); // Create (prepend to list)
+      posts.unshift(postData); // Create
     }
 
-    // Always keep posts sorted by date descending (newest date first)
     posts.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
     const success = writeDb(posts);
@@ -199,39 +202,33 @@ export default async function handler(req, res) {
             }]
           })
         }).catch(err => console.error("Error executing discord webhook promise:", err));
-
       } catch (err) {
         console.error("Discord notification error:", err);
       }
     }
 
-
-    return res.status(200).json(posts);
+    return res.status(200).json({ success: true, post: postData });
   }
-
 
   // 4. DELETE Request
   if (req.method === 'DELETE') {
-    const targetId = req.query?.id || req.body?.id || req.query?.postId || req.body?.postId;
+    const targetId = req.query?.id || req.query?.postId || req.body?.id;
     if (!targetId) {
-      return res.status(400).json({ error: 'Missing post ID to delete.' });
+      return res.status(400).json({ error: 'Missing post id parameter' });
     }
 
-    const index = posts.findIndex(p => String(p.id) === String(targetId));
-    if (index === -1) {
-      return res.status(404).json({ error: 'Post not found.' });
+    const updatedPosts = posts.filter(p => String(p.id) !== String(targetId));
+    if (updatedPosts.length === posts.length) {
+      return res.status(404).json({ error: 'Post not found' });
     }
 
-    posts.splice(index, 1);
-
-    const success = writeDb(posts);
+    const success = writeDb(updatedPosts);
     if (!success) {
-      return res.status(500).json({ error: 'Failed to write to database.' });
+      return res.status(500).json({ error: 'Failed to update database on delete' });
     }
 
-    return res.status(200).json({ success: true, posts });
+    return res.status(200).json({ success: true, message: `Post ${targetId} deleted successfully` });
   }
 
-
-  return res.status(405).json({ error: 'Method not allowed.' });
+  return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
 }
