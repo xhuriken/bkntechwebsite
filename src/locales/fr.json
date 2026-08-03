@@ -8,68 +8,72 @@
     "cta": "Lancez vous !"
   },
   "hero": {
-    "badge": "Ingénierie sur-mesure & Studio Indépendant",
-    "title_part1": "On conçoit vos produits web & IA.",
-    "title_part2": "Et on crée nos propres jeux.",
-    "description": "Pas de jargon commercial ni de templates génériques. Chez BKN Tech, nous sommes des ingénieurs et créateurs passionnés : nous bâtissons des plateformes web & mobiles d'élite, intégrons des agents IA véritablement utiles à vos opérations, et développons notre propre jeu vidéo coopératif.",
-    "cta_contact": "Discuter d'un projet",
-    "cta_services": "Voir nos expertises",
-    "cta_game": "Explorer Vacuum Protocol"
+    "title_part1": "Du vrai sur-mesure.",
+    "title_part2": "Du code passionné.",
+    "description": "Zéro template WordPress moche ni squelette pré-fait. BKN Tech est un studio de développement sur-mesure : nous concevons des plateformes web & mobiles uniques, intégrons des outils IA utiles à vos opérations, et développons notre propre jeu vidéo coopératif.",
+    "cta_contact": "Parler de votre projet",
+    "cta_services": "Explorer nos expertises",
+    "cta_game": "Voir Vacuum Protocol"
   },
   "about": {
-    "badge": "Qui Sommes-Nous",
-    "title": "Des ingénieurs du quotidien, pas des vendeurs de vent.",
-    "description": "BKN Tech réunit une double expertise rare : l'ingénierie logicielle sur-mesure pour les entreprises et la création de systèmes complexes (netcode Unity, agents IA autonomes, architectures cloud). Nous privilégions le code propre, la clarté et l'impact réel sur votre activité.",
+    "title": "Qui sommes-nous ?",
+    "subtitle": "Enrique Puerto & Célestin Honvault",
+    "tag": "2 Étudiants Passionnés",
+    "description": "BKN Tech a été fondé par Enrique Puerto, rapidement rejoint par Célestin Honvault après leur rencontre à la Coding Factory de Cergy. Ensemble, nous créons des solutions web et mobiles 100% sur-mesure pour vos projets — et quand nous ne codons pas pour vous, nous développons notre propre jeu vidéo : Vacuum Protocol !",
     "pillars": {
       "tech": {
-        "title": "Excellence Technique",
-        "desc": "Code typé strict, architectures maintenables (SOLID) et performances mesurées au millième de seconde."
+        "title": "Sur-Mesure Intégral",
+        "desc": "Aucune maquette générique. Chaque projet est pensé, architecturé et développé sur-mesure selon vos exigences exactes."
       },
       "roi": {
-        "title": "Focus Valeur & ROI",
-        "desc": "Pas d'usines à gaz ni de fonctionnalités superflues. Chaque ligne de code résout un problème concret."
+        "title": "Coding Factory Cergy",
+        "desc": "Une complémentarité née sur les bancs de l'école et fortifiée par des années de pratique intensive."
       },
       "craft": {
-        "title": "Culture du Build",
-        "desc": "Nous ne faisons pas que conseiller : nous concevons, testons et éprouvons nos propres technologies chaque jour."
+        "title": "Esprit Studio & Dev",
+        "desc": "Travailler sur notre propre jeu multijoueur nous pousse à maintenir le niveau d'exigence le plus élevé pour vos applications."
       }
     }
   },
   "services_home": {
-    "badge": "Nos Expertises B2B",
-    "title": "Ce que nous construisons pour vous",
-    "subtitle": "Du site vitrine haute conversion jusqu'aux agents IA souverains hébergés sur vos serveurs.",
+    "badge": "Nos Solutions B2B",
+    "title": "Ce qu'on développe pour vous",
+    "subtitle": "Du site web sur-mesure d'exception jusqu'aux assistants IA locaux intégrés à vos workflows.",
     "web": {
-      "tag": "Web & Cloud",
-      "title": "Applications Web & Plateformes Fullstack",
-      "desc": "Landing pages à fort impact, sites vitrines optimisés pour le SEO sémantique, et applications web réactives (Next.js, Node.js, Supabase, Stripe). Espaces clients, dashboards et automatisation de flux.",
-      "features": ["Sites vitrines SEO & Landing pages", "Applications SaaS Fullstack & E-Commerce", "Infrastructures Cloud & Docker"]
+      "path": "C:/ProjetsWeb",
+      "tag": "Web Sur-Mesure",
+      "title": "Sites & Applications web",
+      "desc": "Landing pages sur-mesure d'impact, sites vitrines optimisés SEO, et applications web réactives (Next.js, Node.js, Supabase, Stripe). Espaces clients, dashboards et automatisation.",
+      "features": ["Conception 100% sur-mesure de A à Z", "Web Apps réactives, SaaS & E-Commerce", "Performances extrêmes & SEO soigné"]
     },
     "mobile": {
-      "tag": "Mobile Native & Cross",
-      "title": "Ingénierie Mobile iOS & Android",
-      "desc": "Applications mobiles fluides développées en React Native ou Flutter. Respect strict des standards ergonomiques (Human Interface & Material Design) et accès aux composants matériels.",
-      "features": ["Biométrie (FaceID / TouchID)", "Notifications Push & Mode Hors-ligne", "Publication & Validation App Store / Play Store"]
+      "path": "C:/ProjetsMobile",
+      "tag": "Mobile iOS & Android",
+      "title": "Applications Mobiles Cross-Platform",
+      "desc": "Applications mobiles fluides codées avec React Native et Flutter. Design soigneusement adapté aux standards iOS et Android avec accès aux fonctions matérielles du téléphone.",
+      "features": ["Biométrie (FaceID / TouchID) & GPS", "Notifications Push & Mode Hors-ligne", "Publication et suivi complet sur les Stores"]
     },
     "ai": {
-      "tag": "IA & Souveraineté",
-      "title": "Agents IA Métier & IA Privée",
-      "desc": "Déploiement d'agents RAG 24/7 connectés à vos bases de connaissances internes, automatisation du traitement de documents (OCR) et modèles IA totalement privés sans fuite de données.",
-      "features": ["Agents Support & Prospection 24/7", "OCR & Automatisation comptable / admin", "LLM Privés (Llama 3, Mistral via Ollama)"]
+      "path": "C:/SolutionsIA",
+      "tag": "IA & Automatisations",
+      "title": "Assistants IA & Automatisations",
+      "desc": "Intégration d'assistants IA sur-mesure connectés à vos données, automatisation de tâches répétitives (OCR/documents) et installation de modèles IA privés locaux sans fuite de données.",
+      "features": ["Assistants de réponse & prospection 24/7", "OCR & Traitement automatique de documents", "IA Privée sur votre propre serveur (Ollama)"]
     }
   },
   "game_home": {
+    "path": "C:/VacuumProtocol",
     "badge": "Projet Studio Annexe",
     "title": "En parallèle : Vacuum Protocol",
-    "subtitle": "Un jeu vidéo coopératif développé en solo au sein du studio.",
-    "desc": "En marge de nos prestations de services B2B, nous concevons Vacuum Protocol : un jeu d'action coopératif à 4 joueurs sous Unity. Pilotez des robots nettoyeurs de fantômes dans un univers absurde aux graphismes rétro PSX cartoon.",
+    "subtitle": "Notre jeu vidéo coopératif développé sous Unity.",
+    "desc": "En parallèle de nos projets web et mobile, on développe notre propre jeu vidéo : Vacuum Protocol. Un jeu d'action coopératif à 4 joueurs sous Unity où vous incarnez des robots nettoyeurs de fantômes déjantés dans un style rétro PSX Cartoon.",
     "netcode_title": "Netcode Custom Unity",
-    "netcode_desc": "Mirror Networking autoritaire avec prédiction et synchronisation temps réel.",
+    "netcode_desc": "Multijoueur synchronisé en temps réel via Mirror Networking.",
     "graphics_title": "Direction Artistique PSX",
-    "graphics_desc": "Esthétique rétro cartoon avec vertex snapping et textures nostalgiques.",
-    "devlog_title": "Devlog Transparence",
-    "graphics_cta": "Suivre l'avancement et les devlogs du jeu",
-    "discord_cta": "Rejoindre les playtests Discord"
+    "graphics_desc": "Graphismes rétro décalés, textures vintage et univers loufoque.",
+    "devlog_title": "Devlog du Jeu",
+    "graphics_cta": "Consulter les Devlogs",
+    "discord_cta": "Rejoindre le Discord"
   },
   "services": {
     "title": "Nos Services",

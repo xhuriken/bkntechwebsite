@@ -294,12 +294,9 @@ export default function Portfolio() {
                   backgroundBlendMode: 'soft-light'
                 }}
               />
-              <div className="flex items-center gap-2 overflow-hidden relative z-10">
-                <span className="relative w-4 h-4 flex items-center justify-center text-primary mr-1.5 flex-shrink-0">
-                  <i className="fa-regular fa-folder absolute transition-all duration-200 group-hover:opacity-0 group-hover:scale-90"></i>
-                  <i className="fa-regular fa-folder-open absolute transition-all duration-200 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"></i>
-                </span>
-                <span className="text-[9px] uppercase tracking-wider text-on-surface-variant/40">bkn@tech:~/vacuum$ ./featured_project.log</span>
+              <div className="flex items-center gap-2 overflow-hidden relative z-10 font-mono font-bold text-green-400 text-[11px]">
+                <span className="w-1.5 h-4 rounded-full bg-green-400"></span>
+                <span>C:/VacuumProtocol</span>
               </div>
               <div className="flex items-center gap-1.5 text-[9px] font-sans font-bold uppercase tracking-wider text-primary group-hover:text-white transition-colors relative z-10">
                 <span>{t('portfolio.featured_title')}</span>
@@ -472,9 +469,9 @@ export default function Portfolio() {
                             <div
                               key={post.id}
                               onClick={() => setSelectedIndices(prev => ({ ...prev, [cat.key]: idx }))}
-                              className={`flex-shrink-0 w-[360px] sm:w-[440px] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-200 flex flex-col group cursor-pointer border ${isActive
-                                ? `opacity-100 scale-100 ${theme.activeBorder} bg-surface-container-low/60 shadow-[0_0_25px_${theme.shadow}]`
-                                : 'opacity-70 hover:opacity-90 scale-[0.98] border-white/5 bg-surface-container-low/20'
+                              className={`flex-shrink-0 w-[360px] sm:w-[440px] rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col group cursor-pointer border ${isActive
+                                ? `opacity-100 scale-100 border-white/10 bg-surface-container-low/80 shadow-[0_0_30px_${theme.shadow}]`
+                                : 'opacity-70 hover:opacity-95 scale-[0.98] border-white/5 bg-surface-container-low/20'
                                 }`}
                             >
                               <Link
@@ -497,12 +494,9 @@ export default function Portfolio() {
                                       backgroundBlendMode: 'soft-light'
                                     }}
                                   />
-                                  <div className="flex items-center gap-1.5 overflow-hidden relative z-10">
-                                    <span className="relative w-3.5 h-3.5 flex items-center justify-center text-primary mr-1.5 flex-shrink-0">
-                                      <i className="fa-regular fa-folder absolute transition-all duration-200 group-hover:opacity-0 group-hover:scale-90"></i>
-                                      <i className="fa-regular fa-folder-open absolute transition-all duration-200 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"></i>
-                                    </span>
-                                    <span className="text-[8px] uppercase tracking-wider text-on-surface-variant/40">~/{post.category}</span>
+                                  <div className="flex items-center gap-1.5 overflow-hidden relative z-10 font-mono font-bold text-[10px] text-on-surface">
+                                    <span className={`w-1.5 h-3.5 rounded-full ${theme.bg}`}></span>
+                                    <span>C:/{post.category === 'website' ? 'Web' : post.category === 'ai-agent' ? 'IA' : 'Mobile'}</span>
                                   </div>
                                   <div className="flex items-center gap-1 text-[8px] font-sans font-bold uppercase tracking-wider text-primary group-hover:text-white transition-colors relative z-10">
                                     <span>{t('portfolio.open')}</span>

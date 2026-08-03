@@ -2,6 +2,112 @@
 
 Ce journal retrace toutes les décisions techniques, les modifications de code et les résolutions de bugs apportées au projet.
 
+## [2026-08-03] Restauration des Thèmes de Couleur Dédiés par Catégorie sur les Cartes B2B
+
+### Tâche
+- Rétablir la distinction de thèmes de couleur uniques pour chaque catégorie de projet B2B comme sur le Portfolio :
+  - **Sites & Applications web** : Thème Vert (`secondary`) avec bouton d'exploration vert (`variant="secondary"`).
+  - **Applications Mobiles** : Thème Bleu/Violet (`primary`) avec bouton d'exploration bleu/violet (`variant="primary"`).
+  - **IA & Automatisations** : Thème Ambre/Orange (`tertiary`) avec bouton d'exploration ambre/orange (`variant="tertiary"`).
+
+### Modifications
+- Mis à jour [Home.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Home.jsx) avec la correspondance parfaite des variants de boutons et des accents visuels pour chaque catégorie.
+
+---
+
+## [2026-08-03] Remplacement Point Clignotant par </> Vert & Harmonisation Couleur Primary des Cartes B2B
+
+### Tâche
+- Remplacer le point animé clignotant dans le badge Hero par l'icône **`</>` verte** (`<span className="text-secondary font-mono font-bold text-xs">&lt;/&gt;</span>`).
+- Harmoniser les 3 cartes B2B de la section *"Ce qu'on développe pour vous"* : unifier les thèmes de couleur sur la teinte **bleu/violet principale (`primary`)** du site (puces d'en-tête, icônes, puces de listes et boutons d'action), éliminant l'effet de disparité.
+
+### Modifications
+- Mis à jour [Home.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Home.jsx) avec l'icône `</>` et le thème unifié `primary` sur les 3 cartes de services.
+- Validé [TODO_TEMPORAIRE.md](file:///c:/Users/celestin/Desktop/bkntechwebsite/TODO_TEMPORAIRE.md).
+
+---
+
+## [2026-08-03] Finitions Visuelles, Alignements Hauteur, Cartes Qui-Sommes-Nous & Animations Framer Motion
+
+### Tâche
+- Réaliser la série de retours graphiques et d'animations :
+  1. Renommer le titre de la 1ère carte de services B2B en **"Sites & Applications web"**.
+  2. Remplacer la pilule du Hero par un **badge cyber original avec crochets néon** `[ Studio Dev Web, Mobile & IA ]`.
+  3. Centrer parfaitement en hauteur les 3 blocs de métriques sous le Hero (`flex flex-col items-center justify-center min-h-[85px]`).
+  4. Réorganiser les 3 cartes piliers de la section "Qui sommes-nous ?" : placement de l'icône sur le **CÔTÉ GAUCHE du titre** (`flex items-center gap-4`).
+  5. Remplacer l'en-tête "CODING FACTORY CERGY" dans l'angle supérieur droit de la carte "Qui sommes-nous" par **"2 Étudiants Passionnés"**.
+  6. Dynamiser **toutes les sections avec Framer Motion** (apparitions au scroll `whileInView`, `fadeInUp`, stagger progressif et micro-interactions au survol).
+
+### Modifications
+- Mis à jour [Home.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Home.jsx) avec le badge futuriste, l'alignement vertical parfait du Hero, la disposition Icône-Gauche des cartes Qui-sommes-nous, et les variantes d'animation `fadeInUp` avec `whileInView`.
+- Mis à jour les dictionnaires de traduction [fr.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/fr.json) et [en.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/en.json).
+- Validé 100% des points dans [TODO_TEMPORAIRE.md](file:///c:/Users/celestin/Desktop/bkntechwebsite/TODO_TEMPORAIRE.md).
+
+---
+
+## [2026-08-03] Smart Navbar, Histoire Enrique & Célestin (Coding Factory Cergy) & Refonte Cartes B2B (C:/)
+
+### Tâche
+- Intégrer les ajustements demandés par l'utilisateur :
+  1. **Smart Navbar** : rendre la [Navbar.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Navbar.jsx) fixe avec masquage automatique au scroll vers le bas et réapparition fluide au premier mouvement de scroll vers le haut.
+  2. **Suppression des répétitions** : éliminer la répétition ("12 fois") des "7 ans d'expérience" et fluidifier le discours.
+  3. **Discours du Hero vs Qui sommes-nous** :
+     - Le Hero parle uniquement du studio **BKN Tech** (conception web, mobile & IA sur-mesure et jeux vidéo).
+     - Remplacement des 3 métriques sous le Hero par `100% Sur-Mesure`, `Fullstack & Mobile`, `Studio & Projets`.
+     - Bouton de CTA du Hero renommé *"Explorer nos expertises"*.
+  4. **Histoire d'Enrique Puerto & Célestin Honvault** :
+     - Présentation authentique des fondateurs et développeurs d'abord rencontrés à la **Coding Factory de Cergy**.
+     - Suppression des 3 boutons Mac (rouge/jaune/vert) dans l'en-tête pour une structure épurée avec le chemin `C:/QuiSommesNous`.
+  5. **Affinement de la texture de bruit passif** : augmentation de la fréquence du grain SVG (`baseFrequency='0.95'`, `opacity-8`) pour une texture extrêmement fine et élégante.
+  6. **Séparateurs de section plus visibles** : barres de séparation à dégradé renforcé (`via-white/30`, `h-[1.5px]`) et marges verticales ajustées (`my-8`).
+  7. **Design des 3 cartes B2B (Web, Mobile, IA)** :
+     - Placement du logo/icône sur le **CÔTÉ GAUCHE du titre** (l'icône couvre la hauteur des 2 lignes du titre).
+     - Titre étalé sur 2 lignes à côté du logo.
+     - Suppression des petits points supérieurs et intégration de la pilule/réglette verticale colorée.
+  8. **Simplification et humanisation des chemins** :
+     - Remplacement du style Linux (`bkn@tech:...`) par des chemins clairs et lisibles : `C:/QuiSommesNous`, `C:/ProjetsWeb`, `C:/ProjetsMobile`, `C:/SolutionsIA`, `C:/VacuumProtocol` (traduits également en anglais dans [en.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/en.json)).
+     - Alignement sur [Home.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Home.jsx) et [Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx).
+
+### Modifications
+- Mise à jour de [Navbar.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Navbar.jsx) avec un hook `useEffect` écoutant la molette et gérant l'état `isVisible`.
+- Réécriture et ajustement de [Home.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Home.jsx) pour s'adapter à toutes les demandes.
+- Harmonisation des en-têtes de cartes dans [Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx).
+- Mise à jour des dictionnaires de langue [fr.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/fr.json) et [en.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/en.json).
+- Validation complète de [TODO_TEMPORAIRE.md](file:///c:/Users/celestin/Desktop/bkntechwebsite/TODO_TEMPORAIRE.md).
+
+---
+
+## [2026-08-03] Alignement Authentique & Humain (Home.jsx, Navbar & Portfolio.jsx)
+
+### Tâche
+- Intégrer les retours et demandes utilisateur :
+  1. Remplacer les informations de statut ("ingénieurs corporate") par la posture réelle : **deux étudiants développeurs passionnés avec plus de 7 ans d'expérience (autodidactes et école de dev)**.
+  2. Mettre l'accent sur le **100% SUR-MESURE** (suppression de toute allusion aux maquettes/templates WordPress moches).
+  3. Supprimer tout jargon commercial/bullshit (ROI, Saul Goodman, dette technique).
+  4. Éliminer tous les badges clignotants IA-like ("point vert", pill-badges à contour plat).
+  5. Rendre la [Navbar.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Navbar.jsx) nettement moins transparente (`bg-[#12131b]/95 backdrop-blur-2xl border-b border-white/10`).
+  6. Sublimer la section "Qui sommes-nous" avec une mise en page cyber terminal animée (`./team_presentation.sh`), des textures de bruit SVG passif et du verre dépoli texturé.
+  7. Ré-architecturer la section "Nos Compétences / Nos Réalisations" (Screen 1) avec 3 cartes terminal réutilisant le design system (`./web_solutions.log`, `./mobile_apps.log`, `./ai_assistants.log`).
+  8. Remplacer le bloc Vacuum Protocol par la carte exacte de [Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx) réutilisant la Bannière 1 (`featuredBannerUrl` issue de `/api/settings`), la colonne de commandes terminal et les vrais boutons du site (notamment le bouton Discord `<Button variant="black">`).
+  9. Éliminer les hovers de bordures fines 1px colorées de `Home.jsx` et `Portfolio.jsx` au profit d'élévations fluides, d'ombres portées diffuses et de textures de bruit.
+
+### Modifications
+- Création du fichier de suivi [TODO_TEMPORAIRE.md](file:///c:/Users/celestin/Desktop/bkntechwebsite/TODO_TEMPORAIRE.md) pour valider 100% des points sans oubli.
+- Modification de [Navbar.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/components/Navbar.jsx) : renforcement du fond à 95% d'opacité avec `backdrop-blur-2xl` et bordure inférieure plus nette.
+- Réécriture de [Home.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Home.jsx) :
+  - Intégration du composant de texture de bruit passif `NoiseTextureOverlay` et de la liste typée terminal `HomeTerminalList`.
+  - Section Hero authentique sans loupiote clignotante.
+  - Section "Qui sommes-nous" dans un cadre terminal haut de gamme avec piliers 100% sur-mesure et 7+ ans d'expérience.
+  - Section B2B avec cartes style terminal et boutons magnétiques réutilisés.
+  - Section Vacuum Protocol reprise de `Portfolio.jsx` avec bannière 1 dynamique, lightbox, bouton Discord du site et terminal command list.
+- Modification de [Portfolio.jsx](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/pages/Portfolio.jsx) : suppression de `theme.activeBorder` 1px pour un style d'élévation et d'ombre diffuse beaucoup plus élégant.
+- Mise à jour des dictionnaires de localisation [fr.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/fr.json) et [en.json](file:///c:/Users/celestin/Desktop/bkntechwebsite/src/locales/en.json).
+
+### Justification Technique
+Toutes les cartes "corporate IA-like" ont été éliminées pour préserver la cohérence visuelle et l'esprit authentique du site BKN Tech. Le choix de cartes texturées avec fenêtres de terminal cyber/retro, boutons unifiés du design system et ombres portées diffuses résout définitivement l'effet "maquette plate générique", tout en reflétant fidèlement l'identité des créateurs.
+
+---
+
 ## [2026-08-03] Refonte Dynamique & Authentique de la Page d'Accueil (Home.jsx)
 
 ### Tâche
