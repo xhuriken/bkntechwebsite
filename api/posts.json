@@ -1,5 +1,45 @@
 [
   {
+    "id": "1787910106369",
+    "category": "tech",
+    "type": "UI",
+    "date": "2026-08-28",
+    "mediaType": "none",
+    "mediaUrl": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800",
+    "gallery": [],
+    "slots": [],
+    "title": {
+      "fr": "B-Board v1.5.0 : Attribution des Cartes (Style Trello) & Gestion des Clés API",
+      "en": "B-Board v1.5.0: Trello-style Card Assignment & API Keys Management"
+    },
+    "description": {
+      "fr": "Déploiement de l'auto-positionnement 1-clic sur les cartes (« Me positionner »), filtres d'équipe (« Mes cartes », « Non assignées »), pile d'avatars stylisée, outil MCP b_assign_card pour agents IA et gestion/révocation des clés API.",
+      "en": "Deployment of 1-click self-assignment on cards ('Assign to me'), team filters ('My cards', 'Unassigned'), styled avatar stack, b_assign_card MCP tool for AI agents, and API key management/revocation."
+    },
+    "content": {
+      "fr": "### Nouvelles fonctionnalités B-Board v1.5.0\n\n1. **Auto-positionnement 1-clic** : Bouton rapide « Me positionner » disponible dans chaque carte et au survol direct sur le Kanban pour s'auto-attribuer ou se retirer instantanément sans friction.\n2. **Pile d'avatars stylisée** : Affichage des photos de profil ou initiales aux couleurs déterministes sur chaque carte avec anneau vert distinctif pour vos propres tâches et compteur pour les équipes étendues.\n3. **Filtres d'équipe instantanés** : Visualisez en 1 clic « Mes cartes », les cartes orphelines « Non assignées » ou isolez les tâches d'un collaborateur.\n4. **Gestion & Révocation des Clés API** : Révocation immédiate en 1 clic dans la modale Clés API avec respect strict du hachage de sécurité SHA-256.\n5. **Protocole MCP pour Agents IA** : Nouvel outil `b_assign_card` permettant aux agents IA de s'attribuer ou de distribuer des tâches automatiquement.",
+      "en": "### B-Board v1.5.0 New Features\n\n1. **1-Click Self-Assignment**: Quick 'Assign to me' button in card modal and on hover directly on the Kanban board to take or release tasks instantly.\n2. **Styled Avatar Stack**: Profile pictures or deterministic colored initials on every card with distinctive green border for your tasks.\n3. **Instant Team Filters**: Filter with 1 click to view 'My cards', orphan 'Unassigned' cards, or specific teammates.\n4. **API Key Management & Revocation**: Instant 1-click key revocation in API Keys modal adhering to SHA-256 one-way hashing security standards.\n5. **MCP Protocol for AI Agents**: New `b_assign_card` tool allowing AI agents to self-assign or distribute tasks autonomously."
+    },
+    "tags": [
+      "B-Board",
+      "Kanban",
+      "MCP",
+      "Next.js",
+      "IA"
+    ],
+    "commentsCount": 0,
+    "changelog": [],
+    "hasChangelog": false,
+    "extra": {
+      "externalUrl": "",
+      "features": {
+        "fr": "",
+        "en": ""
+      },
+      "techStack": ""
+    }
+  },
+  {
     "id": "1785778771146",
     "category": "website",
     "type": "Sous titre, type de prestation",
