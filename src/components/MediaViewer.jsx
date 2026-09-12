@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useImageLightbox } from '../context/ImageLightboxContext';
 
 /**
@@ -24,15 +24,12 @@ export function isVideoUrl(url, explicitType) {
   if (explicitType === 'image') return false;
   if (!url) return false;
 
-  const lower = url.toLowerCase();
+  const cleanUrl = url.split('?')[0].split('#')[0].toLowerCase();
   return (
-    lower.includes('youtube.com') ||
-    lower.includes('youtu.be') ||
-    lower.endsWith('.mp4') ||
-    lower.endsWith('.webm') ||
-    lower.endsWith('.ogg') ||
-    lower.endsWith('.mov') ||
-    lower.includes('cdn.discordapp.com') && (lower.includes('.mp4') || lower.includes('.webm'))
+    url.includes('youtube.com') ||
+    url.includes('youtu.be') ||
+    /\.(mp4|webm|ogg|mov)$/i.test(cleanUrl) ||
+    (url.includes('cdn.discordapp.com') && /\.(mp4|webm)/i.test(cleanUrl))
   );
 }
 
@@ -76,6 +73,7 @@ export default function MediaViewer({
   }
 
   if (isVideo) {
+    const isWebm = src.toLowerCase().includes('.webm');
     return (
       <div className={`w-full ${aspectRatio} rounded-xl overflow-hidden bg-black/80 border border-white/10 ${className}`}>
         <video
@@ -84,8 +82,10 @@ export default function MediaViewer({
           autoPlay={autoPlay}
           muted={autoPlay}
           playsInline
-          className="w-full h-full object-contain block"
+          preload="metadata"
+          className="w-full h-full object-contain block bg-black"
         >
+          <source src={src} type={isWebm ? 'video/webm' : 'video/mp4'} />
           Votre navigateur ne prend pas en charge la lecture de vidéos.
         </video>
       </div>

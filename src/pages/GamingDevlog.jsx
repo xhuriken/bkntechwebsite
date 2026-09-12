@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -897,7 +897,7 @@ function DevlogPostCard({ post, currentLang }) {
                                 {slotYtId ? (
                                   <img src={thumbUrl} alt={`Thumb ${idx + 1}`} className="w-full h-full object-cover" />
                                 ) : (
-                                  <video src={slot.url} className="w-full h-full object-cover opacity-70" muted />
+                                  <video src={slot.url} className="w-full h-full object-cover opacity-70" muted playsInline preload="metadata" />
                                 )}
                                 <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                                   <div className="w-6 h-6 rounded-full bg-primary/90 text-black flex items-center justify-center shadow-lg group-hover/thumb:scale-110 transition-transform">
@@ -962,3 +962,4 @@ function DevlogPostCard({ post, currentLang }) {
     </motion.article>
   );
 }
+

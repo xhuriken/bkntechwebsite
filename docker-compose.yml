@@ -1,4 +1,4 @@
-services:
+﻿services:
 
   # ─── Traefik : Reverse Proxy + SSL Let's Encrypt ─────────────────────────────
   traefik:
@@ -40,6 +40,8 @@ services:
     restart: unless-stopped
     depends_on:
       - api
+    volumes:
+      - ./public/uploads:/usr/share/nginx/html/uploads
     labels:
       - "traefik.enable=true"
       # Domaine principal : bkntech.fr
@@ -64,6 +66,10 @@ services:
     restart: unless-stopped
     env_file:
       - .env.production
+    volumes:
+      - ./public/uploads:/app/public/uploads
+      - ./api/posts.json:/app/api/posts.json
+      - ./api/settings.json:/app/api/settings.json
     # L'API n'est PAS exposée à internet, uniquement via Nginx interne
     networks:
       - web

@@ -1,5 +1,5 @@
-/**
- * API Server — Express wrapper pour les handlers contact.js et posts.js
+﻿/**
+ * API Server — Express wrapper pour les handlers contact.js, posts.js, upload.js et settings.js
  * Expose les handlers Vercel-style sur le port 3001 pour le VPS Docker.
  */
 import express from 'express';
@@ -12,10 +12,11 @@ import settingsHandler from './settings.js';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Parse JSON body with 25mb limit for file uploads
-app.use(express.json({ limit: '25mb' }));
+// Parse JSON and urlencoded body with 100mb limit for large video & media uploads
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
-// Serve static uploaded files
+// Serve static uploaded files directly
 app.use('/uploads', express.static(path.resolve(process.cwd(), 'public', 'uploads')));
 
 // Route : /contact (POST, OPTIONS, etc.)

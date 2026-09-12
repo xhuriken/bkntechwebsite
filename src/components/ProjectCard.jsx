@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useAdmin } from '../context/AdminContext';
@@ -89,7 +89,7 @@ export default function ProjectCard({ post, onEdit, openLightbox }) {
   };
 
   const ytId = getYouTubeId(mediaUrl);
-  const isNativeVideo = mediaType === 'video' || (mediaUrl && (mediaUrl.endsWith('.mp4') || mediaUrl.endsWith('.webm')));
+  const isNativeVideo = mediaType === 'video' || (mediaUrl && /\.(mp4|webm|ogg|mov)($|\?|#)/i.test(mediaUrl));
 
   // Extract first line of description for collapsed preview
   const firstLineDesc = desc
@@ -579,3 +579,4 @@ export default function ProjectCard({ post, onEdit, openLightbox }) {
     </article>
   );
 }
+

@@ -392,11 +392,11 @@ export const detailedProjects = {
       { label: { fr: "Score de Performance", en: "Speed Score" }, value: "99/100 Lighthouse" }
     ],
     gallery: [
-      "/uploads/dkp95_hero.png",
-      "/uploads/dkp95_services.png",
-      "/uploads/dkp95_contact.png",
-      "/uploads/dkp95_chantier1.jpg",
-      "/uploads/dkp95_chantier2.jpg"
+      "/uploads/dkp95_hero.webp",
+      "/uploads/dkp95_services.webp",
+      "/uploads/dkp95_contact.webp",
+      "/uploads/dkp95_chantier1.webp",
+      "/uploads/dkp95_chantier2.webp"
     ]
   }
 };

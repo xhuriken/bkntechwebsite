@@ -1,9 +1,13 @@
-import fs from 'fs';
+﻿import fs from 'fs';
 import path from 'path';
+import { optimizeUploadedImage } from './imageOptimizer.js';
 
 /**
- * Serverless / Express API handler for saving uploaded images and MP4 videos
+ * Serverless / Express API handler for saving uploaded images and MP4/WebM videos
  * into the /public/uploads/ directory and returning a clean relative URL (/uploads/...).
+ *
+ * Toutes les images (PNG, JPEG, etc.) sont automatiquement converties en WebP optimisé (qualité 82%, max 1920px).
+ * Les vidéos (MP4, WebM) sont validées et enregistrées avec leur format natif.
  */
 export default async function handler(req, res) {
   // CORS Preflight
@@ -35,7 +39,6 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized. Invalid password.' });
   }
 
-
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
@@ -53,7 +56,7 @@ export default async function handler(req, res) {
       base64String = fileData.split(';base64,')[1];
     }
 
-    const buffer = Buffer.from(base64String, 'base64');
+    const rawBuffer = Buffer.from(base64String, 'base64');
 
     // Ensure /public/uploads/ folder exists
     const uploadsDir = path.resolve(process.cwd(), 'public', 'uploads');
@@ -67,23 +70,43 @@ export default async function handler(req, res) {
       fs.mkdirSync(distUploadsDir, { recursive: true });
     }
 
-    // Clean unique filename
-    const originalExt = path.extname(fileName || '');
-    const defaultExt = fileType?.startsWith('video/') ? '.mp4' : '.png';
-    const ext = originalExt || defaultExt;
+    const originalExt = path.extname(fileName || '').toLowerCase();
     const baseName = path.basename(fileName || 'media', originalExt).replace(/[^a-zA-Z0-9_-]/g, '_');
-    const cleanFileName = `${Date.now()}_${baseName}${ext}`;
-    
+
+    let finalBuffer = rawBuffer;
+    let finalExt = originalExt;
+    let finalMime = fileType || '';
+
+    const isVideo = (fileType && fileType.startsWith('video/')) || /\.(mp4|webm|mov|ogg)$/i.test(originalExt);
+
+    if (isVideo) {
+      // Pour les vidéos, on conserve le conteneur MP4 ou WebM
+      finalExt = originalExt || (fileType === 'video/webm' ? '.webm' : '.mp4');
+      finalMime = fileType || (finalExt === '.webm' ? 'video/webm' : 'video/mp4');
+    } else {
+      // Pour les images : conversion et compression automatique en WebP via sharp
+      const opt = await optimizeUploadedImage(rawBuffer, fileType, originalExt);
+      finalBuffer = opt.buffer;
+      finalExt = opt.extension.startsWith('.') ? opt.extension : `.${opt.extension}`;
+      finalMime = opt.mimeType;
+    }
+
+    const cleanFileName = `${Date.now()}_${baseName}${finalExt}`;
     const filePath = path.join(uploadsDir, cleanFileName);
-    fs.writeFileSync(filePath, buffer);
+    fs.writeFileSync(filePath, finalBuffer);
 
     // If dist folder exists, write copy there as well for immediate dev build serving
     if (fs.existsSync(distUploadsDir)) {
-      fs.writeFileSync(path.join(distUploadsDir, cleanFileName), buffer);
+      fs.writeFileSync(path.join(distUploadsDir, cleanFileName), finalBuffer);
     }
 
     const publicUrl = `/uploads/${cleanFileName}`;
-    return res.status(200).json({ url: publicUrl, success: true });
+    return res.status(200).json({
+      url: publicUrl,
+      success: true,
+      sizeBytes: finalBuffer.length,
+      mimeType: finalMime
+    });
   } catch (err) {
     console.error("Upload Error:", err);
     return res.status(500).json({ error: 'Échec de l\'enregistrement du fichier : ' + err.message });

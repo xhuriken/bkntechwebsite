@@ -45,20 +45,20 @@
     "type": "Sous titre, type de prestation",
     "date": "2026-08-03",
     "mediaType": "image",
-    "mediaUrl": "/uploads/1785778759826_maxresdefault.jpg",
+    "mediaUrl": "/uploads/1785778759826_maxresdefault.webp",
     "gallery": [],
     "slots": [
       {
         "id": "slot-1",
         "type": "image",
         "sourceType": "url",
-        "url": "/uploads/1785778759826_maxresdefault.jpg"
+        "url": "/uploads/1785778759826_maxresdefault.webp"
       },
       {
         "id": "slot-1785778762566",
         "type": "image",
         "sourceType": "url",
-        "url": "/uploads/1785778768638_Capture_d__cran_2026-06-08_121046.png"
+        "url": "/uploads/1785778768638_Capture_d__cran_2026-06-08_121046.webp"
       }
     ],
     "title": {
@@ -130,7 +130,7 @@
     "mediaUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     "gallery": [
       "https://cdn.discordapp.com/attachments/1484276937844326571/1524831810641723525/2026-07-09_19-34-39.mp4?ex=6a6ae309&is=6a699189&hm=ce9a7832ae888a5866e2ad6ae422a53693f1dd88607feb7f4ae4e3d5e5546efc&",
-      "/uploads/1785340820852_image.png"
+      "/uploads/1785340820852_image.webp"
     ],
     "slots": [
       {
@@ -149,7 +149,7 @@
         "id": "slot-3",
         "type": "image",
         "sourceType": "url",
-        "url": "/uploads/1785340820852_image.png"
+        "url": "/uploads/1785340820852_image.webp"
       }
     ],
     "title": {
@@ -179,43 +179,43 @@
     "importance": "major",
     "date": "2026-07-29",
     "mediaType": "image",
-    "mediaUrl": "/uploads/dkp95_hero.png",
+    "mediaUrl": "/uploads/dkp95_hero.webp",
     "gallery": [
-      "/uploads/dkp95_services.png",
-      "/uploads/dkp95_contact.png",
-      "/uploads/dkp95_chantier1.jpg",
-      "/uploads/dkp95_chantier2.jpg"
+      "/uploads/dkp95_services.webp",
+      "/uploads/dkp95_contact.webp",
+      "/uploads/dkp95_chantier1.webp",
+      "/uploads/dkp95_chantier2.webp"
     ],
     "slots": [
       {
         "id": "slot-1",
         "type": "image",
         "sourceType": "local",
-        "url": "/uploads/dkp95_hero.png"
+        "url": "/uploads/dkp95_hero.webp"
       },
       {
         "id": "slot-2",
         "type": "image",
         "sourceType": "local",
-        "url": "/uploads/dkp95_services.png"
+        "url": "/uploads/dkp95_services.webp"
       },
       {
         "id": "slot-3",
         "type": "image",
         "sourceType": "local",
-        "url": "/uploads/dkp95_contact.png"
+        "url": "/uploads/dkp95_contact.webp"
       },
       {
         "id": "slot-4",
         "type": "image",
         "sourceType": "local",
-        "url": "/uploads/dkp95_chantier1.jpg"
+        "url": "/uploads/dkp95_chantier1.webp"
       },
       {
         "id": "slot-5",
         "type": "image",
         "sourceType": "local",
-        "url": "/uploads/dkp95_chantier2.jpg"
+        "url": "/uploads/dkp95_chantier2.webp"
       }
     ],
     "title": {
@@ -246,22 +246,22 @@
     "importance": "major",
     "date": "2026-07-28",
     "mediaType": "image",
-    "mediaUrl": "/uploads/1785340820852_image.png",
+    "mediaUrl": "/uploads/1785340820852_image.webp",
     "gallery": [
-      "/uploads/1785341286187_image2.png"
+      "/uploads/1785341286187_image2.webp"
     ],
     "slots": [
       {
         "id": "slot-1",
         "type": "image",
         "sourceType": "url",
-        "url": "/uploads/1785340820852_image.png"
+        "url": "/uploads/1785340820852_image.webp"
       },
       {
         "id": "slot-1785341278349-1qsb",
         "type": "image",
         "sourceType": "local",
-        "url": "/uploads/1785341286187_image2.png"
+        "url": "/uploads/1785341286187_image2.webp"
       }
     ],
     "title": {

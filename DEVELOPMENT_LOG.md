@@ -2,6 +2,43 @@
 
 Ce journal retrace toutes les décisions techniques, les modifications de code et les résolutions de bugs apportées au projet.
 
+## [2026-09-12] Pipeline d'Optimisation WebP (Sharp), Réduction de 92% du Poids des Images & Résolution Complète de l'Upload et Lecture Vidéo
+
+### Tâche
+- **Compression & Optimisation WebP sans Perte de Qualité** :
+  - Intégrer la technologie d'optimisation d'images Sharp éprouvée sur Bkn-Board.
+  - Convertir automatiquement tous les fichiers entrants (PNG, JPEG, AVIF) en WebP (qualité 82%, effort 4, redimensionnement 1920px max).
+  - Convertir l'intégralité du stock historique des images de public/uploads/ en WebP et mettre à jour les chemins dans posts.json, settings.json et detailedProjects.js.
+- **Résolution Critique du Système Vidéo (Upload & Lecture)** :
+  - Diagnostiquer et corriger le dysfonctionnement des vidéos uploadées sur le site (taille max de payload Nginx de 1M bloquant les requêtes, conteneurs Nginx et API désynchronisés sans volume partagé, fallbacks SPA erronés sur les vidéos, détection d'URL avec query params).
+  - Déployer l'ensemble des correctifs et recompiler les conteneurs Docker de production sur le VPS OVH.
+
+### Modifications Réalisées
+1. **Pipeline WebP Automatique (pi/imageOptimizer.js & pi/upload.js)** :
+   - Ajout de la dépendance sharp et implémentation du module de compression avec auto-rotation EXIF, limitation à 1920px (sans upscaling) et encodage WebP qualité 82%.
+   - upload.js détecte et convertit les images en .webp à la volée tout en préservant le format natif des vidéos (.mp4, .webm).
+2. **Script de Migration Historique (scripts/optimize-existing-images.js)** :
+   - Conversion des 16 images du dossier public/uploads/ de PNG/JPG vers WebP.
+   - Poids disque réduit de **12.14 Mo à 0.94 Mo (-92% d'économie sans perte visuelle)**.
+   - Mise à jour automatique des références dans pi/posts.json, pi/settings.json et src/utils/detailedProjects.js.
+3. **Architecture Docker & Persistance (docker-compose.yml)** :
+   - Montage du volume persistant partagé ./public/uploads dans le frontend (/usr/share/nginx/html/uploads) ET dans l'API (/app/public/uploads).
+   - Montage de ./api/posts.json et ./api/settings.json pour garantir une persistance totale des données de production.
+4. **Configuration Nginx & Express (
+ginx.conf & pi/server.js)** :
+   - Augmentation de client_max_body_size à **100M** dans Nginx et Express (limit: '100mb') pour accepter les vidéos HD.
+   - Ajout du bloc Nginx dédié location /uploads/ avec support du streaming vidéo (byte-range Accept-Ranges: bytes) et headers de cache optimisés.
+   - Inclusion des extensions vidéo (mp4|webm|mov|ogg) pour empêcher le fallback SPA index.html.
+5. **Lecteur Vidéo & Détection Frontend (MediaViewer.jsx, ProjectCard.jsx, GamingDevlog.jsx)** :
+   - Regex robuste sur les URLs vidéo acceptant les chaînes de requête et fragments.
+   - Balise HTML5 <video> enrichie avec preload="metadata", balises <source> multiples et playsInline.
+6. **Déploiement & Validation Production** :
+   - Build Vite validé (
+pm run build).
+   - Images Docker kntech-frontend et kntech-api reconstruites et relancées sur le VPS OVH (151.80.147.208).
+   - Tests HTTP validés : API /api/health OK, upload WebP en direct testé et validé, distribution vidéo MP4 et image WebP avec code 200 OK.
+
+---
 ## [2026-08-03] Redesign Minimaliste & Vibrant des Onglets Caractéristiques & Fiche Technique
 
 ### Tâche
