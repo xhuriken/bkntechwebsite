@@ -53,19 +53,22 @@ jobs:
           VPS_USER="ubuntu"
           REMOTE_PATH="/var/www/bkntech"
 
-          # Transférer les variables d'environnement vers .env et .env.production sur le VPS
-          cat <<EOF | ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "cat > ${REMOTE_PATH}/.env.production && cp ${REMOTE_PATH}/.env.production ${REMOTE_PATH}/.env"
-SMTP_HOST=ssl0.ovh.net
-SMTP_PORT=465
-SMTP_SECURE=true
-SMTP_USER=contact@bkntech.fr
-SMTP_PASS=${SMTP_PASS}
-SMTP_TO=contact@bkntech.fr
-ADMIN_PASSWORD=${ADMIN_PASSWORD}
-DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
-EOF
+          # 1. Écrire le fichier .env sur le runner avec les variables secrètes
+          {
+            echo "SMTP_HOST=ssl0.ovh.net"
+            echo "SMTP_PORT=465"
+            echo "SMTP_SECURE=true"
+            echo "SMTP_USER=contact@bkntech.fr"
+            echo "SMTP_PASS=$SMTP_PASS"
+            echo "SMTP_TO=contact@bkntech.fr"
+            echo "ADMIN_PASSWORD=$ADMIN_PASSWORD"
+            echo "DISCORD_WEBHOOK_URL=$DISCORD_WEBHOOK_URL"
+          } > /tmp/bkntech.env
 
-          # Rebuild et restart des conteneurs
+          # 2. Transférer vers .env et .env.production sur le VPS
+          cat /tmp/bkntech.env | ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "cat > ${REMOTE_PATH}/.env.production && cp ${REMOTE_PATH}/.env.production ${REMOTE_PATH}/.env"
+
+          # 3. Rebuild et restart des conteneurs
           ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "
             set -e
             cd $REMOTE_PATH
