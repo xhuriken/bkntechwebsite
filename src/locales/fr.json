@@ -87,28 +87,24 @@
     "no_projects": "Aucun projet trouvé dans cette catégorie.",
     "empty_state": {
       "ai_agent": {
-        "badge": "R&D • Qualification en cours",
-        "title": "Solutions & Agents IA sur mesure en préparation",
-        "desc": "Nos pipelines d'orchestration, architectures RAG et agents autonomes sont actuellement en phase finale de tests avant publication. Nous développons des architectures IA fiables et sécurisées selon vos exigences professionnelles.",
-        "cta": "Discuter d'un projet IA"
+        "title": "Un projet d'Agents IA ou d'Automatisation ?",
+        "desc": "Vous souhaitez automatiser des processus métier, connecter des agents autonomes à vos outils ou déployer une architecture RAG sur mesure ? Parlons ensemble de vos besoins.",
+        "cta": "Discuter de votre projet IA"
       },
       "mobile": {
-        "badge": "Conception & Développement",
-        "title": "Applications Mobiles sur mesure en cours de finalisation",
-        "desc": "Nos prochaines applications mobiles natives et cross-platform (iOS & Android) sont en phase de finition technique. Vous avez une idée ou un besoin métier mobile ?",
-        "cta": "Concevoir votre application"
+        "title": "Pas encore de projet mobile à présenter",
+        "desc": "Nous n'avons pas encore de projet mobile public réalisé. En revanche, si vous avez une idée d'application et qu'il vous faut une équipe pour la concrétiser de A à Z, nous sommes là !",
+        "cta": "Lancer votre idée avec nous"
       },
       "website": {
-        "badge": "En préparation",
-        "title": "Nouveaux projets web bientôt en ligne",
-        "desc": "D'autres vitrines et applications web sur mesure sont en cours de développement et seront publiées prochainement.",
+        "title": "D'autres projets web à venir",
+        "desc": "De nouvelles réalisations web sur mesure seront ajoutées au fur et à mesure de nos déploiements.",
         "cta": "Démarrer un projet web"
       },
       "default": {
-        "badge": "Bientôt disponible",
-        "title": "Projets en cours de finalisation",
-        "desc": "De nouvelles réalisations sur mesure pour cette catégorie sont actuellement en développement et seront bientôt présentées.",
-        "cta": "Parler de votre projet"
+        "title": "Un projet en tête ?",
+        "desc": "Vous avez une idée ou un besoin spécifique dans ce domaine ? Discutons-en ensemble.",
+        "cta": "Nous contacter"
       },
       "admin_create": "+ Créer un projet dans cette catégorie"
     },

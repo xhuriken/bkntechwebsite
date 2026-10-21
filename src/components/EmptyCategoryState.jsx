@@ -16,11 +16,8 @@ export default function EmptyCategoryState({ category, isAdmin = false, onOpenCr
   const normalizedKey = category === 'ai-agent' ? 'ai_agent' : (category || 'default');
   
   // Translation lookups with fallbacks
-  const badge = t(`portfolio.empty_state.${normalizedKey}.badge`, {
-    defaultValue: t('portfolio.empty_state.default.badge', 'Prochainement')
-  });
   const title = t(`portfolio.empty_state.${normalizedKey}.title`, {
-    defaultValue: t('portfolio.empty_state.default.title', 'Projets en cours de finalisation')
+    defaultValue: t('portfolio.empty_state.default.title', 'Un projet en tête ?')
   });
   const desc = t(`portfolio.empty_state.${normalizedKey}.desc`, {
     defaultValue: t('portfolio.empty_state.default.desc', 'De nouvelles réalisations sur mesure pour cette catégorie sont actuellement en développement.')
@@ -114,15 +111,9 @@ export default function EmptyCategoryState({ category, isAdmin = false, onOpenCr
         }}
       />
 
-      {/* Icon Badge */}
-      <div className="relative mb-5 flex items-center justify-center w-16 h-16 rounded-2xl bg-black/40 border border-white/10 shadow-inner">
+      {/* Category Icon */}
+      <div className="relative mb-5 flex items-center justify-center w-14 h-14 rounded-2xl bg-black/40 border border-white/10 shadow-inner">
         {theme.icon}
-      </div>
-
-      {/* Pulsing Status Pill */}
-      <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider font-semibold border ${theme.badgeBg} mb-4 relative z-10`}>
-        <span className={`w-2 h-2 rounded-full ${theme.dotBg} animate-pulse`} />
-        <span>{badge}</span>
       </div>
 
       {/* Title */}
