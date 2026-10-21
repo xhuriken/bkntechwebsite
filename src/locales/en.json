@@ -85,6 +85,33 @@
     "explore": "Explore section",
     "back": "Back to portfolio",
     "no_projects": "No projects found in this category.",
+    "empty_state": {
+      "ai_agent": {
+        "badge": "R&D • QA in progress",
+        "title": "Custom AI Solutions & Autonomous Agents in preparation",
+        "desc": "Our orchestration pipelines, custom RAG systems, and autonomous agents are undergoing final benchmarks before public showcase. We engineer reliable and secure enterprise AI systems tailored to your requirements.",
+        "cta": "Discuss an AI project"
+      },
+      "mobile": {
+        "badge": "Design & Development",
+        "title": "Custom Mobile Applications currently being finalized",
+        "desc": "Our upcoming native and cross-platform mobile apps (iOS & Android) are in final technical refinement. Looking to build a mobile application?",
+        "cta": "Start a mobile project"
+      },
+      "website": {
+        "badge": "In preparation",
+        "title": "New web projects coming soon",
+        "desc": "More custom web platforms and showcase websites are in development and will be published here shortly.",
+        "cta": "Launch your web project"
+      },
+      "default": {
+        "badge": "Coming soon",
+        "title": "Projects currently in development",
+        "desc": "New custom projects in this category are actively being built and will be showcased soon.",
+        "cta": "Talk about your project"
+      },
+      "admin_create": "+ Create a project in this category"
+    },
     "loading": "Loading portfolio...",
     "featured_title": "FEATURED PROJECT",
     "production_active": "Regular updates • Version 0.0.6",

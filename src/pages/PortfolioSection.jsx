@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { formatLocaleDate } from '../utils/dateFormatter';
-import { detailedProjects } from '../utils/detailedProjects';
 import { useImageLightbox } from '../context/ImageLightboxContext';
 import Button from '../components/Button';
 import { useAdmin } from '../context/AdminContext';
 import ProjectCard from '../components/ProjectCard';
+import EmptyCategoryState from '../components/EmptyCategoryState';
 
 
 
@@ -297,9 +297,11 @@ export default function PortfolioSection() {
           {t('portfolio.section_loading')}
         </div>
       ) : posts.length === 0 ? (
-        <div className="bg-surface-container-low/30 backdrop-blur-sm border border-white/5 rounded-2xl py-16 px-6 text-center text-xs font-sans font-semibold text-on-surface-variant/70 uppercase tracking-wide">
-          {t('portfolio.no_projects')}
-        </div>
+        <EmptyCategoryState 
+          category={category} 
+          isAdmin={isAdmin} 
+          onOpenCreate={() => openCreatePost(category)} 
+        />
       ) : (
         <motion.div 
           variants={containerVariants}

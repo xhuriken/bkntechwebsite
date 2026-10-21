@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/Button';
-import { formatLocaleDate } from '../utils/dateFormatter';
 import VacuumParticles from '../components/VacuumParticles';
 import { useImageLightbox } from '../context/ImageLightboxContext';
 import { useAdmin } from '../context/AdminContext';
 import ProjectCard from '../components/ProjectCard';
+import EmptyCategoryState from '../components/EmptyCategoryState';
 
 
 
@@ -433,9 +433,11 @@ export default function Portfolio() {
 
                 {/* Carousels display */}
                 {catPosts.length === 0 ? (
-                  <div className="bg-surface-container-low/30 backdrop-blur-sm border border-white/5 rounded-2xl py-12 px-6 text-center text-xs font-sans font-medium text-on-surface-variant/70 uppercase tracking-wide">
-                    {t('portfolio.no_projects')}
-                  </div>
+                  <EmptyCategoryState 
+                    category={cat.key} 
+                    isAdmin={isAdmin} 
+                    onOpenCreate={() => openCreatePost(cat.key)} 
+                  />
                 ) : (() => {
                   const selectedIndex = selectedIndices[cat.key] || 0;
                   const N = catPosts.length;
