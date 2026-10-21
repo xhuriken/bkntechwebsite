@@ -5,12 +5,12 @@
     "game": "Jeu Unity",
     "vacuum": "Vacuum Protocol",
     "contact": "Contact",
-    "cta": "Lancez vous !"
+    "cta": "Lancez-vous !"
   },
   "hero": {
-    "title_part1": "Du vrai sur-mesure.",
+    "title_part1": "Du vrai sur mesure.",
     "title_part2": "Du code passionné.",
-    "description": "Zéro template WordPress moche ni squelette pré-fait. BKN Tech est un studio de développement sur-mesure : nous concevons des plateformes web & mobiles uniques, intégrons des outils IA utiles à vos opérations, et développons notre propre jeu vidéo coopératif.",
+    "description": "Zéro template WordPress moche ni squelette pré-fait. BKN Tech est un studio de développement sur mesure : nous concevons des plateformes web & mobiles uniques, intégrons des outils IA utiles à vos opérations, et développons notre propre jeu vidéo coopératif.",
     "cta_contact": "Parler de votre projet",
     "cta_services": "Explorer nos expertises",
     "cta_game": "Voir Vacuum Protocol"
@@ -19,11 +19,11 @@
     "title": "Qui sommes-nous ?",
     "subtitle": "Enrique Puerto & Célestin Honvault",
     "tag": "2 Étudiants Passionnés",
-    "description": "BKN Tech a été fondé par Enrique Puerto, rapidement rejoint par Célestin Honvault après leur rencontre à la Coding Factory de Cergy. Ensemble, nous créons des solutions web et mobiles 100% sur-mesure pour vos projets — et quand nous ne codons pas pour vous, nous développons notre propre jeu vidéo : Vacuum Protocol !",
+    "description": "BKN Tech a été fondée par Enrique Puerto, rapidement rejoint par Célestin Honvault après leur rencontre à la Coding Factory de Cergy. Ensemble, nous créons des solutions web et mobiles 100% sur mesure pour vos projets — et quand nous ne codons pas pour vous, nous développons notre propre jeu vidéo : Vacuum Protocol !",
     "pillars": {
       "tech": {
-        "title": "Sur-Mesure Intégral",
-        "desc": "Aucune maquette générique. Chaque projet est pensé, architecturé et développé sur-mesure selon vos exigences exactes."
+        "title": "Sur Mesure Intégral",
+        "desc": "Aucune maquette générique. Chaque projet est pensé, architecturé et développé exactement selon vos exigences."
       },
       "roi": {
         "title": "Coding Factory Cergy",
@@ -38,13 +38,13 @@
   "services_home": {
     "badge": "Nos Solutions B2B",
     "title": "Ce qu'on développe pour vous",
-    "subtitle": "Du site web sur-mesure d'exception jusqu'aux assistants IA locaux intégrés à vos workflows.",
+    "subtitle": "Du site web sur mesure d'exception jusqu'aux assistants IA locaux intégrés à vos workflows.",
     "web": {
       "path": "C:/ProjetsWeb",
-      "tag": "Web Sur-Mesure",
+      "tag": "Web Sur Mesure",
       "title": "Sites & Applications web",
-      "desc": "Landing pages sur-mesure d'impact, sites vitrines optimisés SEO, et applications web réactives (Next.js, Node.js, Supabase, Stripe). Espaces clients, dashboards et automatisation.",
-      "features": ["Conception 100% sur-mesure de A à Z", "Web Apps réactives, SaaS & E-Commerce", "Performances extrêmes & SEO soigné"]
+      "desc": "Landing pages sur mesure d'impact, sites vitrines optimisés SEO, et applications web réactives (Next.js, Node.js, Supabase, Stripe). Espaces clients, dashboards et automatisation.",
+      "features": ["Conception 100% sur mesure de A à Z", "Web Apps réactives, SaaS & E-Commerce", "Performances extrêmes & SEO soigné"]
     },
     "mobile": {
       "path": "C:/ProjetsMobile",
@@ -57,7 +57,7 @@
       "path": "C:/SolutionsIA",
       "tag": "IA & Automatisations",
       "title": "Assistants IA & Automatisations",
-      "desc": "Intégration d'assistants IA sur-mesure connectés à vos données, automatisation de tâches répétitives (OCR/documents) et installation de modèles IA privés locaux sans fuite de données.",
+      "desc": "Intégration d'assistants IA sur mesure connectés à vos données, automatisation de tâches répétitives (OCR/documents) et installation de modèles IA privés locaux sans fuite de données.",
       "features": ["Assistants de réponse & prospection 24/7", "OCR & Traitement automatique de documents", "IA Privée sur votre propre serveur (Ollama)"]
     }
   },
@@ -77,7 +77,7 @@
   },
   "services": {
     "title": "Nos Services",
-    "subtitle": "Prestations de services B2B sur-mesure."
+    "subtitle": "Prestations de services B2B sur mesure."
   },
   "portfolio": {
     "title": "Portfolio",
@@ -154,7 +154,7 @@
       "web": {
         "label": "Sites Web",
         "subject": "Demande de devis - Projet Web / Mobile",
-        "message": "Bonjour l'équipe BKN Tech,\n\nJe souhaite vous consulter pour le développement d'un projet web / mobile.\n\nDescription succincte du besoin :\n- Nature du projet : [Ex: Site web sur-mesure / App mobile]\n- Fonctionnalités clés : [Ex: Authentification, Dashboard...]\n- Délais souhaités : [Ex: Prochains mois]\n\nPourriez-vous revenir vers moi pour échanger sur la faisabilité ?\n\nMerci d'avance !"
+        "message": "Bonjour l'équipe BKN Tech,\n\nJe souhaite vous consulter pour le développement d'un projet web / mobile.\n\nDescription succincte du besoin :\n- Nature du projet : [Ex: Site web sur mesure / App mobile]\n- Fonctionnalités clés : [Ex: Authentification, Dashboard...]\n- Délais souhaités : [Ex: Prochains mois]\n\nPourriez-vous revenir vers moi pour échanger sur la faisabilité ?\n\nMerci d'avance !"
       },
       "gaming": {
         "label": "Jeu Unity",

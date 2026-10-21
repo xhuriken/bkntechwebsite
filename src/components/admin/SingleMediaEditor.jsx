@@ -55,7 +55,7 @@ export default function SingleMediaEditor({
     const reader = new FileReader();
     reader.onload = async (event) => {
       const dataUrl = event.target.result;
-      const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || 'bkntech';
+      const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || '';
 
       try {
         const res = await fetch('/api/upload', {

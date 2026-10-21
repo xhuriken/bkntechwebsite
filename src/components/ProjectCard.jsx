@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useAdmin } from '../context/AdminContext';
@@ -162,7 +162,7 @@ export default function ProjectCard({ post, onEdit, openLightbox }) {
                       message: `Êtes-vous sûr de vouloir supprimer définitivement "${title}" ?`,
                       onConfirm: async () => {
                         try {
-                          const passToUse = localStorage.getItem('bkn_admin_pass') || 'bkntech';
+                          const passToUse = localStorage.getItem('bkn_admin_pass') || '';
                           await fetch(`/api/posts?id=${post.id}`, {
                             method: 'DELETE',
                             headers: { 'x-admin-password': passToUse }

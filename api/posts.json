@@ -1,8 +1,8 @@
 [
   {
     "id": "1787910106369",
-    "category": "tech",
-    "type": "UI",
+    "category": "website",
+    "type": "Application Web & MCP",
     "date": "2026-08-28",
     "mediaType": "none",
     "mediaUrl": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800",
@@ -40,113 +40,19 @@
     }
   },
   {
-    "id": "1785778771146",
-    "category": "website",
-    "type": "Sous titre, type de prestation",
-    "date": "2026-08-03",
-    "mediaType": "image",
-    "mediaUrl": "/uploads/1785778759826_maxresdefault.webp",
-    "gallery": [],
-    "slots": [
-      {
-        "id": "slot-1",
-        "type": "image",
-        "sourceType": "url",
-        "url": "/uploads/1785778759826_maxresdefault.webp"
-      },
-      {
-        "id": "slot-1785778762566",
-        "type": "image",
-        "sourceType": "url",
-        "url": "/uploads/1785778768638_Capture_d__cran_2026-06-08_121046.webp"
-      }
-    ],
-    "title": {
-      "fr": "TItre du projet",
-      "en": "TItre du projet"
-    },
-    "description": {
-      "fr": "Résumé Rapide (FR) — Aperçu sur la carte repliée",
-      "en": "Résumé Rapide (FR) — Aperçu sur la carte repliée"
-    },
-    "content": {
-      "fr": "escription Approfondie & Contexte (FR) — Visible au dépliage\nescription Approfondie & Contexte (FR) — Visible au dépliage\nescription Approfondie & Contexte (FR) — Visible au dépliageescription Approfondie & Contexte (FR) — Visible au dépliageescription Approfondie & Contexte (FR) — Visible au dépliage",
-      "en": "escription Approfondie & Contexte (FR) — Visible au dépliage\nescription Approfondie & Contexte (FR) — Visible au dépliage\nescription Approfondie & Contexte (FR) — Visible au dépliageescription Approfondie & Contexte (FR) — Visible au dépliageescription Approfondie & Contexte (FR) — Visible au dépliage"
-    },
-    "tags": [
-      "Mot",
-      "Cléf",
-      "séparer",
-      "par",
-      "virgule"
-    ],
-    "commentsCount": 0,
-    "changelog": [],
-    "hasChangelog": false,
-    "extra": {
-      "externalUrl": "https://celestin.honvault.com",
-      "featuresList": [
-        {
-          "title": "Feature 1",
-          "desc": " ite"
-        },
-        {
-          "title": "feature 2",
-          "desc": " ite ite ite ite ite ite ite ite ite ite ite ite ite itev"
-        },
-        {
-          "title": "feature skibidi",
-          "desc": " ite ite ite ite"
-        }
-      ],
-      "specsList": [
-        {
-          "label": "FRONTEND",
-          "value": "Tailwind"
-        },
-        {
-          "label": "BACKEND",
-          "value": "Javascript"
-        },
-        {
-          "label": "FRAMEWORK",
-          "value": "React & Vite"
-        }
-      ],
-      "features": {
-        "fr": "Feature 1:  ite\nfeature 2:  ite ite ite ite ite ite ite ite ite ite ite ite ite itev\nfeature skibidi:  ite ite ite ite",
-        "en": "Feature 1:  ite\nfeature 2:  ite ite ite ite ite ite ite ite ite ite ite ite ite itev\nfeature skibidi:  ite ite ite ite"
-      },
-      "techStack": "FRONTEND: Tailwind | BACKEND: Javascript | FRAMEWORK: React & Vite"
-    }
-  },
-  {
     "id": "22",
     "category": "gaming",
     "type": "Bugfix & Netcode",
     "importance": "major",
     "date": "2026-07-30",
-    "mediaType": "video",
-    "mediaUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "mediaType": "image",
+    "mediaUrl": "/uploads/1785340820852_image.webp",
     "gallery": [
-      "https://cdn.discordapp.com/attachments/1484276937844326571/1524831810641723525/2026-07-09_19-34-39.mp4?ex=6a6ae309&is=6a699189&hm=ce9a7832ae888a5866e2ad6ae422a53693f1dd88607feb7f4ae4e3d5e5546efc&",
       "/uploads/1785340820852_image.webp"
     ],
     "slots": [
       {
         "id": "slot-1",
-        "type": "video",
-        "sourceType": "url",
-        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-      },
-      {
-        "id": "slot-2",
-        "type": "video",
-        "sourceType": "url",
-        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1524831810641723525/2026-07-09_19-34-39.mp4?ex=6a6ae309&is=6a699189&hm=ce9a7832ae888a5866e2ad6ae422a53693f1dd88607feb7f4ae4e3d5e5546efc&"
-      },
-      {
-        "id": "slot-3",
         "type": "image",
         "sourceType": "url",
         "url": "/uploads/1785340820852_image.webp"
@@ -290,25 +196,10 @@
     "type": "UI",
     "importance": "major",
     "date": "2026-07-27",
-    "mediaType": "video",
-    "mediaUrl": "https://cdn.discordapp.com/attachments/1484276937844326571/1524831810641723525/2026-07-09_19-34-39.mp4?ex=6a6ae309&is=6a699189&hm=ce9a7832ae888a5866e2ad6ae422a53693f1dd88607feb7f4ae4e3d5e5546efc&",
-    "gallery": [
-      "https://cdn.discordapp.com/attachments/1484276937844326571/1524460773777342557/2026-07-08_19-02-26.mp4?ex=6a6adafb&is=6a69897b&hm=24aa1c9a75de166fb5c8a66ee3e81ea8e99fa25b2e6ad6008d8bd700f7446dce&"
-    ],
-    "slots": [
-      {
-        "id": "slot-1",
-        "type": "video",
-        "sourceType": "url",
-        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1524831810641723525/2026-07-09_19-34-39.mp4?ex=6a6ae309&is=6a699189&hm=ce9a7832ae888a5866e2ad6ae422a53693f1dd88607feb7f4ae4e3d5e5546efc&"
-      },
-      {
-        "id": "slot-1785341405206-qhcv",
-        "type": "video",
-        "sourceType": "url",
-        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1524460773777342557/2026-07-08_19-02-26.mp4?ex=6a6adafb&is=6a69897b&hm=24aa1c9a75de166fb5c8a66ee3e81ea8e99fa25b2e6ad6008d8bd700f7446dce&"
-      }
-    ],
+    "mediaType": "none",
+    "mediaUrl": "",
+    "gallery": [],
+    "slots": [],
     "title": {
       "fr": "Menus d'Options Audio, Keybinds & Rendu Vectoriel Shapes",
       "en": "Audio & Keybind Settings + Freya Holmér's Shapes Vector UI"
@@ -335,17 +226,10 @@
     "type": "Netcode",
     "importance": "major",
     "date": "2026-07-25",
-    "mediaType": "video",
-    "mediaUrl": "https://cdn.discordapp.com/attachments/1484276937844326571/1509940407205888050/2026-05-29_17-22-57.mp4?ex=6a6ac3d6&is=6a697256&hm=a28bd9d10ea2cac17f42d5284ba71a4081565e0a8b154e708d9dae88e9be5bbe&",
+    "mediaType": "none",
+    "mediaUrl": "",
     "gallery": [],
-    "slots": [
-      {
-        "id": "slot-1",
-        "type": "video",
-        "sourceType": "url",
-        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1509940407205888050/2026-05-29_17-22-57.mp4?ex=6a6ac3d6&is=6a697256&hm=a28bd9d10ea2cac17f42d5284ba71a4081565e0a8b154e708d9dae88e9be5bbe&"
-      }
-    ],
+    "slots": [],
     "title": {
       "fr": "Scène Menu, Lobby & Intégration Steamworks",
       "en": "Menu & Lobby Scene + Steamworks Integration"
@@ -372,17 +256,10 @@
     "type": "UI",
     "importance": "minor",
     "date": "2026-07-22",
-    "mediaType": "video",
-    "mediaUrl": "https://cdn.discordapp.com/attachments/1484276937844326571/1509597560338251948/2026-05-28_18-40-02.mp4?ex=6a6ad609&is=6a698489&hm=fc1a786380fa013d0b9b2f45c853069a54bbd82e85f4e2e448e1677574cceccb&",
+    "mediaType": "none",
+    "mediaUrl": "",
     "gallery": [],
-    "slots": [
-      {
-        "id": "slot-1",
-        "type": "video",
-        "sourceType": "url",
-        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1509597560338251948/2026-05-28_18-40-02.mp4?ex=6a6ad609&is=6a698489&hm=fc1a786380fa013d0b9b2f45c853069a54bbd82e85f4e2e448e1677574cceccb&"
-      }
-    ],
+    "slots": [],
     "title": {
       "fr": "Design Boutons Ticket Numérique & Palette Vert Émeraude",
       "en": "Digital Ticket Buttons Design & Emerald Green Theme"
@@ -437,17 +314,10 @@
     "type": "Shader",
     "importance": "minor",
     "date": "2026-07-10",
-    "mediaType": "video",
-    "mediaUrl": "https://cdn.discordapp.com/attachments/1484276937844326571/1509555581222912081/2026-05-28_15-54-21.mp4?ex=6a6b57b0&is=6a6a0630&hm=35bd4261d8395023e5cab97a8cc18f3a7c569a168e763ef024776508fba67a87&",
+    "mediaType": "none",
+    "mediaUrl": "",
     "gallery": [],
-    "slots": [
-      {
-        "id": "slot-1",
-        "type": "video",
-        "sourceType": "url",
-        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1509555581222912081/2026-05-28_15-54-21.mp4?ex=6a6b57b0&is=6a6a0630&hm=35bd4261d8395023e5cab97a8cc18f3a7c569a168e763ef024776508fba67a87&"
-      }
-    ],
+    "slots": [],
     "title": {
       "fr": "Post-Processing Custom : Effet CRT & Lens Distortion",
       "en": "Custom Post-Processing: CRT Effect & Lens Distortion"
@@ -502,17 +372,10 @@
     "type": "UI",
     "importance": "minor",
     "date": "2026-07-05",
-    "mediaType": "video",
-    "mediaUrl": "https://cdn.discordapp.com/attachments/1484276937844326571/1509492909135630416/2026-05-28_11-45-28.mp4?ex=6a6b1d52&is=6a69cbd2&hm=d73d5c0a8d2bb065e0b9a1d7ef22df861c37f3d439fc1e8e9f3984ebebed41c9&",
+    "mediaType": "none",
+    "mediaUrl": "",
     "gallery": [],
-    "slots": [
-      {
-        "id": "slot-1",
-        "type": "video",
-        "sourceType": "url",
-        "url": "https://cdn.discordapp.com/attachments/1484276937844326571/1509492909135630416/2026-05-28_11-45-28.mp4?ex=6a6b1d52&is=6a69cbd2&hm=d73d5c0a8d2bb065e0b9a1d7ef22df861c37f3d439fc1e8e9f3984ebebed41c9&"
-      }
-    ],
+    "slots": [],
     "title": {
       "fr": "Sélecteur de Couleurs HUD & Navigation Dynamique",
       "en": "HUD Color Picker & Dynamic Navigation"

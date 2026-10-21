@@ -31,8 +31,8 @@ export default function AdminProjectEditModal() {
   const [statusMsg, setStatusMsg] = useState({ text: '', type: '' });
 
   const [formData, setFormData] = useState({
-    category: 'sites',
-    type: 'Projet Sur-Mesure',
+    category: 'website',
+    type: 'Projet Sur Mesure',
     date: new Date().toISOString().split('T')[0],
     slots: [{ id: 'slot-1', type: 'image', sourceType: 'url', url: '' }],
     tagsText: '',
@@ -79,8 +79,8 @@ export default function AdminProjectEditModal() {
         : [];
 
       setFormData({
-        category: editingPost.category || 'sites',
-        type: editingPost.type || 'Projet Sur-Mesure',
+        category: editingPost.category || 'website',
+        type: editingPost.type || 'Projet Sur Mesure',
         date: editingPost.date || new Date().toISOString().split('T')[0],
         slots: editingPost.slots || [
           { id: 'slot-1', type: editingPost.mediaType || 'image', sourceType: 'url', url: editingPost.mediaUrl || '' }
@@ -99,8 +99,8 @@ export default function AdminProjectEditModal() {
       });
     } else {
       setFormData({
-        category: defaultCategory && defaultCategory !== 'gaming' ? defaultCategory : 'sites',
-        type: 'Projet Sur-Mesure',
+        category: defaultCategory && defaultCategory !== 'gaming' ? defaultCategory : 'website',
+        type: 'Projet Sur Mesure',
         date: new Date().toISOString().split('T')[0],
         slots: [{ id: 'slot-1', type: 'image', sourceType: 'url', url: '' }],
         tagsText: '',
@@ -112,8 +112,8 @@ export default function AdminProjectEditModal() {
         contentEn: '',
         externalUrl: '',
         featuresList: [
-          { title: 'Système Devis Interactif', desc: 'Calculateur de devis sur-mesure pour les clients BTP.' },
-          { title: 'Performance 99/100', desc: 'Optimisation SEO & Lighthouse sur-mesure.' }
+          { title: 'Système Devis Interactif', desc: 'Calculateur de devis sur mesure pour les clients BTP.' },
+          { title: 'Performance 99/100', desc: 'Optimisation SEO & Lighthouse sur mesure.' }
         ],
         specsList: [
           { label: 'FRAMEWORK', value: 'React & Vite' },
@@ -197,7 +197,7 @@ export default function AdminProjectEditModal() {
       const reader = new FileReader();
       reader.onload = async () => {
         const base64Data = reader.result;
-        const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || 'bkntech';
+        const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || '';
 
         const res = await fetch('/api/upload', {
           method: 'POST',
@@ -250,12 +250,12 @@ export default function AdminProjectEditModal() {
 
     const tagsArray = formData.tagsText
       ? formData.tagsText.split(',').map(t => t.trim()).filter(Boolean)
-      : ['Sur-Mesure'];
+      : ['Sur Mesure'];
 
     const postPayload = {
       id: editingPost ? editingPost.id : undefined,
       category: formData.category,
-      type: formData.type || 'Projet Sur-Mesure',
+      type: formData.type || 'Projet Sur Mesure',
       importance: 'normal',
       date: formData.date,
       mediaType,
@@ -289,7 +289,7 @@ export default function AdminProjectEditModal() {
     };
 
     try {
-      const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || 'bkntech';
+      const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || '';
       const res = await fetch('/api/posts', {
         method: editingPost ? 'PUT' : 'POST',
         headers: {
@@ -422,15 +422,15 @@ export default function AdminProjectEditModal() {
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white font-mono text-xs focus:border-primary focus:outline-none"
                     >
-                      <option value="sites">Sites & Applications Web</option>
+                      <option value="website">Sites & Applications Web</option>
                       <option value="mobile">Applications Mobiles (iOS / Android)</option>
-                      <option value="ai">Intelligence Artificielle & Agents</option>
+                      <option value="ai-agent">Intelligence Artificielle & Agents</option>
                     </select>
                   </div>
 
                   <InputField
                     label="Sous-titre / Type de Prestation"
-                    placeholder="ex: Application Web Sur-Mesure, SAAS, E-Commerce"
+                    placeholder="ex: Application Web Sur Mesure, SAAS, E-Commerce"
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                   />
@@ -523,7 +523,7 @@ export default function AdminProjectEditModal() {
               <div className="space-y-6">
                 <div>
                   <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-2">
-                    1. Caractéristiques & Fonctionnalités Sur-Mesure
+                    1. Caractéristiques & Fonctionnalités Sur Mesure
                   </h4>
                   <FeaturesEditor
                     features={formData.featuresList}

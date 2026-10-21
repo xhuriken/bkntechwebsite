@@ -1,4 +1,4 @@
-﻿import fs from 'fs';
+import fs from 'fs';
 import path from 'path';
 import { optimizeUploadedImage } from './imageOptimizer.js';
 
@@ -21,19 +21,20 @@ export default async function handler(req, res) {
   }
 
   // Authentication check
-  const adminPassword = (process.env.ADMIN_PASSWORD || 'bkntech').trim().toLowerCase();
+  const adminPassword = (process.env.ADMIN_PASSWORD || '').trim();
+  if (!adminPassword) {
+    console.warn("[BKN Auth] Variable ADMIN_PASSWORD non définie sur le serveur.");
+    return res.status(500).json({ error: 'Server authentication misconfigured.' });
+  }
+
   const reqPassword = (
     req.headers['x-admin-password'] ||
     req.headers['authorization'] ||
     req.body?.adminPassword ||
     ''
-  ).trim().toLowerCase();
+  ).trim();
 
-  const isValidPassword = reqPassword && (
-    reqPassword === adminPassword ||
-    reqPassword === 'bkntech' ||
-    reqPassword === 'admin'
-  );
+  const isValidPassword = reqPassword && reqPassword === adminPassword;
 
   if (!isValidPassword) {
     return res.status(401).json({ error: 'Unauthorized. Invalid password.' });

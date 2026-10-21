@@ -10,6 +10,7 @@ import PolitiqueConfidentialite from './pages/PolitiqueConfidentialite';
 import PortfolioSection from './pages/PortfolioSection';
 import PortfolioAdmin from './pages/PortfolioAdmin';
 import GamingDevlog from './pages/GamingDevlog';
+import NotFound from './pages/NotFound';
 
 
 /**
@@ -85,6 +86,10 @@ function App() {
                 <Route path="/dkprenovation" element={<ExternalRedirect url="https://dkp95.fr" />} />
                 <Route path="/mentions-legales" element={<MentionsLegales />} />
                 <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
+                <Route path="/contact" element={<Navigate to="/#contact" replace />} />
+                <Route path="/services" element={<Navigate to="/#services" replace />} />
+                <Route path="/devlog" element={<Navigate to="/portfolio/section/gaming" replace />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
 

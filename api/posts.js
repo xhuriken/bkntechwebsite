@@ -75,7 +75,11 @@ export default async function handler(req, res) {
 
   // Authentication Helper
   const checkAuth = () => {
-    const adminPassword = (process.env.ADMIN_PASSWORD || 'bkntech').trim().toLowerCase();
+    const adminPassword = (process.env.ADMIN_PASSWORD || '').trim();
+    if (!adminPassword) {
+      console.warn("[BKN Auth] Variable ADMIN_PASSWORD non définie sur le serveur.");
+      return false;
+    }
     const clientPassword = (
       req.headers['x-admin-password'] ||
       req.headers['authorization'] ||
@@ -83,14 +87,10 @@ export default async function handler(req, res) {
       req.query?.password ||
       req.body?.adminPassword ||
       ''
-    ).trim().toLowerCase();
+    ).trim();
 
     if (!clientPassword) return false;
-    return (
-      clientPassword === adminPassword ||
-      clientPassword === 'bkntech' ||
-      clientPassword === 'admin'
-    );
+    return clientPassword === adminPassword;
   };
 
   const posts = readDb();

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -689,7 +689,7 @@ function DevlogPostCard({ post, currentLang }) {
                       message: `Êtes-vous sûr de vouloir supprimer définitivement le devlog "${post.title?.fr || 'ce post'}" ?`,
                       onConfirm: async () => {
                         try {
-                          const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || 'bkntech';
+                          const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || '';
                           await fetch(`/api/posts?id=${post.id}`, {
                             method: 'DELETE',
                             headers: { 'x-admin-password': passToUse }

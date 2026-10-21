@@ -249,7 +249,7 @@ export default function Home() {
           {/* Column 1 - Perfectly Centered */}
           <div className="flex flex-col items-center justify-center p-3 text-center z-10 min-h-[85px]">
             <span className="font-display font-black text-xl sm:text-2xl text-primary leading-tight mb-1">
-              100% Sur-Mesure
+              100% Sur Mesure
             </span>
             <span className="text-xs text-on-surface-variant font-mono leading-tight">
               Conception & code sans template
@@ -433,7 +433,7 @@ export default function Home() {
         {/* 3 B2B Cards Grid - Portfolio Category Themed Colors */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
-          {/* Card 1: Web Sur-Mesure (Secondary Green Theme) */}
+          {/* Card 1: Web Sur Mesure (Secondary Green Theme) */}
           <motion.div 
             initial="hidden"
             whileInView="visible"

@@ -159,7 +159,7 @@ export default function AdminDevlogEditModal() {
       const reader = new FileReader();
       reader.onload = async () => {
         const base64Data = reader.result;
-        const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || 'bkntech';
+        const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || '';
 
         const res = await fetch('/api/upload', {
           method: 'POST',
@@ -241,7 +241,7 @@ export default function AdminDevlogEditModal() {
     };
 
     try {
-      const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || 'bkntech';
+      const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || '';
       const res = await fetch('/api/posts', {
         method: editingPost ? 'PUT' : 'POST',
         headers: {

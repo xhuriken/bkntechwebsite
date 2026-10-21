@@ -47,7 +47,7 @@ export default function AdminBannerEditModal() {
 
   const handleSave = async (newUrl) => {
     try {
-      const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || 'bkntech';
+      const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || '';
       const res = await fetch('/api/settings', {
         method: 'POST',
         headers: {

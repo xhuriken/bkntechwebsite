@@ -51,40 +51,13 @@ export default function Footer() {
                 {/* Social Icons list */}
                 <div className="flex gap-4 mt-2">
                   <a 
-                    href="https://linkedin.com" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="w-8 h-8 rounded-lg bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-[0_0_12px_rgba(190,194,255,0.15)] hover:scale-110 transition-all duration-300 group"
-                    aria-label="LinkedIn"
-                  >
-                    <i className="fa-brands fa-linkedin-in text-xs group-hover:scale-110 transition-transform"></i>
-                  </a>
-                  <a 
-                    href="https://github.com" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="w-8 h-8 rounded-lg bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-[0_0_12px_rgba(190,194,255,0.15)] hover:scale-110 transition-all duration-300 group"
-                    aria-label="GitHub"
-                  >
-                    <i className="fa-brands fa-github text-xs group-hover:scale-110 transition-transform"></i>
-                  </a>
-                  <a 
-                    href="https://discord.com" 
+                    href="https://discord.gg/bkntech" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="w-8 h-8 rounded-lg bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-[0_0_12px_rgba(190,194,255,0.15)] hover:scale-110 transition-all duration-300 group"
                     aria-label="Discord"
                   >
                     <i className="fa-brands fa-discord text-xs group-hover:scale-110 transition-transform"></i>
-                  </a>
-                  <a 
-                    href="https://x.com" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="w-8 h-8 rounded-lg bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-[0_0_12px_rgba(190,194,255,0.15)] hover:scale-110 transition-all duration-300 group"
-                    aria-label="Twitter X"
-                  >
-                    <i className="fa-brands fa-x-twitter text-xs group-hover:scale-110 transition-transform"></i>
                   </a>
                 </div>
               </div>
