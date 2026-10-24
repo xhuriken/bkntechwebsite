@@ -17,6 +17,12 @@ Publier les améliorations SEO sur main à la demande explicite de l’utilisate
 ### Justification Technique
 Le push doit être un fast-forward de la branche distante et ne doit ni réintroduire les démonstrations retirées ni écraser les données créées depuis l’administration. Le build distant lit les contenus préservés du VPS pour générer le HTML du portfolio.
 
+### Vérification après publication
+- Push `34e3fab` sur main et déploiement GitHub Actions `40121193066` réussis, avec validation Nginx dans Docker.
+- Contrôles publics : les 14 pages renvoient leur propre HTML en HTTP 200 et une page inconnue renvoie HTTP 404 avec noindex. Un contrôle des redirections a détecté l’utilisation du schéma HTTP interne de Nginx derrière Traefik.
+- Correctif dans [nginx.conf](<C:/Users/kikep/Desktop/Bkn Society/01-BknTech/Website/nginx.conf>) : `absolute_redirect off` pour préserver le schéma HTTPS public via des URL de redirection relatives, y compris les URL avec slash final. Nouveau push et vérification du déploiement prévus dans cette session.
+- Linter après intégration : aucune erreur, 82 avertissements existants. Répertoire de travail propre après le premier push.
+
 ## [2026-10-24] Référencement des services et HTML accessible aux moteurs et aux IA
 
 ### Tâche
