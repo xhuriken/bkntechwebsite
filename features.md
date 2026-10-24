@@ -6,16 +6,25 @@ Ce document détaille l'architecture de navigation, l'organisation de l'informat
 
 ## 1. Architecture de Navigation Globale
 
-Pour garantir une performance optimale et une organisation claire des contenus denses, le site adopte une **architecture multi-pages optimisée par Vite (MPA)**.
+Le site utilise React Router avec Vite. Depuis le 24 octobre 2026, le build produit un **document HTML prégénéré par route publique**, puis React active l’interface et rafraîchit les données dynamiques via l’API.
 
 ### Pages et Navigation :
+- **Services (`/services`)** : Hub et quatre pages consacrées à la création web, aux applications mobiles, à l’IA et au développement Unity. Textes FR/EN, questions pratiques, liens vers les réalisations et appels à contact.
+- **Contact (`/contact`)** : Page dédiée avec formulaire existant, e-mail et téléphone accessibles sans JavaScript. Les liens internes préservent la langue courante.
 - **Page d'Accueil (`index.html`)** :
   - **Accueil (`#hero`)** : Accroche forte et vitrine de la double identité (B2B / Gaming).
   - **Services B2B (`#services`)** : Présentation des offres de services sur-mesure.
   - **Contact (`#contact`)** : Formulaire ultra-sécurisé avec protection anti-spam.
-- **Page Portfolio (`portfolio.html`)** : Galerie interactive complète des projets de développement et études de cas détaillées.
-- **Page Jeu Unity (`game.html`)** : Page dédiée au jeu vidéo multijoueur avec son lecteur adaptatif, sa fiche technique et les actualités du projet.
-- **Page Mentions Légales (`legal.html`)** : Page institutionnelle pour la conformité.
+- **Page Portfolio (`/portfolio`)** : Galerie interactive et catégories `/portfolio/section/{website,mobile,ai-agent,gaming}`.
+- **Page Jeu Unity (`/portfolio/section/gaming`)** : Devlog de Vacuum Protocol. `/game` est une redirection permanente.
+- **Pages juridiques (`/mentions-legales`, `/politique-de-confidentialite`)** : Informations institutionnelles.
+
+### Socle SEO (2026-10-24)
+- Titres et descriptions uniques, canonique, Open Graph et image PNG 1200 × 630, langue du document et données JSON-LD par page.
+- Sitemap généré à partir des seules routes publiques canoniques ; robots de recherche autorisés ; administration en noindex, pages inconnues en 404 côté Nginx.
+- Génération HTML depuis les mêmes composants que le navigateur, instantanés publics du portfolio puis rafraîchissement API. Rebuild requis pour actualiser les instantanés après édition.
+- Chargement différé des pages et modales d’administration ; menu responsive et coordonnées accessibles.
+- `npm run check:seo` contrôle les documents générés, l’unicité des métadonnées, le sitemap, le balisage JSON-LD et les liens internes. Voir README pour la validation HTTP en production et le suivi Search Console/Bing.
 
 ---
 

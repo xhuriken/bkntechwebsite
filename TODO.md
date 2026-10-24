@@ -1,5 +1,18 @@
 # Suivi du Projet - Plateforme BKN Tech
 
+## SEO et visibilité dans les moteurs / IA — 2026-10-24
+
+- [x] Vérifier le site public et les recommandations officielles Google, OpenAI et Apple.
+- [x] Créer les pages de services web, mobile, IA et Unity et la page contact, avec textes FR/EN.
+- [x] Générer 14 pages publiques en HTML complet, les métadonnées, JSON-LD, sitemap et image de partage.
+- [x] Maintenir les ressources de rendu accessibles aux robots ; administration en noindex et vraies 404 configurées côté Nginx.
+- [x] Corriger le menu responsive, renforcer les liens internes et conserver la langue lors des clics sur les boutons.
+- [x] Différer le chargement de l’interface d’administration et vérifier le build et les contrôles SEO.
+- [ ] Relire les prestations et remplacer les projets brouillons/démonstrations par des cas clairement identifiés ; renseigner les vrais profils sociaux.
+- [ ] Déployer, valider Nginx dans Docker et contrôler les statuts HTTP, le formulaire et les contenus réels en production.
+- [ ] Valider Search Console et Bing Webmaster Tools avec le propriétaire, soumettre le sitemap et inspecter les nouvelles pages.
+- [ ] Mesurer les performances mobiles réelles, les impressions, les clics et les prises de contact après indexation.
+
 ## Planification Générale
 
 - [x] Étape 1 : Proposition et Validation de la Stack Technique (Choix final : Vite + React + Framer Motion)

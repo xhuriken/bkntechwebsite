@@ -6,7 +6,7 @@ Ce document synthétise la vision, le contexte et les objectifs stratégiques du
 
 ## 1. Contexte et Vision du Projet
 **BKN Tech** est une entreprise technologique innovante fondée par deux associés, articulée autour de deux piliers majeurs :
-1. **Pôle Services B2B** : Conception et développement sur mesure de sites web et d'applications mobiles haut de gamme.
+1. **Pôle Services B2B** : Conception et développement sur mesure de sites web, d'applications mobiles et de solutions d’intelligence artificielle et d’automatisation.
 2. **Pôle Jeu Vidéo (Édition interne)** : Création et édition d'un jeu vidéo multijoueur sous le moteur Unity.
 
 Le site web de BKN Tech doit être la vitrine technologique de cette double expertise. Il doit illustrer à la fois le sérieux et la rigueur requis pour le développement B2B, ainsi que la créativité et la maîtrise technique indispensables à l'univers du jeu vidéo multijoueur.
@@ -14,6 +14,7 @@ Le site web de BKN Tech doit être la vitrine technologique de cette double expe
 ---
 
 ## 2. Objectifs du Site Web
+- **Référencement et découverte (2026-10-24)** : Pages dédiées aux expertises web, mobile, IA et Unity ; HTML prégénéré accessible sans JavaScript ; métadonnées et données structurées cohérentes ; contact direct. Le jeu vidéo reste présenté comme un projet interne, les prestations externes étant à étudier. Le suivi des résultats dépend de la mise en ligne et des outils webmaster du propriétaire.
 - **Impact Visuel Immédiat** : Créer un effet "wow" instantané grâce à une esthétique sombre premium, un maillage géométrique interactif réactif aux mouvements de la souris, des typographies futuristes, et des animations d'une fluidité parfaite.
 - **Acquisition Client (B2B)** : Présenter le portfolio de manière valorisante et structurée pour convertir les visiteurs en prospects qualifiés.
 - **Showcase du Jeu Vidéo** : Mettre en avant le jeu en cours de développement sous Unity via des médias fluides, adaptés à la bande passante de l'utilisateur.
