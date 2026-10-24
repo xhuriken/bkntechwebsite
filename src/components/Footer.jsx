@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import InteractiveNetwork from './InteractiveNetwork';
 import { useAdmin } from '../context/AdminContext';
+import ServiceLinks from './ServiceLinks';
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -30,6 +31,7 @@ export default function Footer() {
             backgroundBlendMode: 'soft-light'
           }}
         />
+        <div className="relative z-10 max-w-7xl mx-auto py-6 border-b border-white/10 mb-4"><ServiceLinks /></div>
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 pb-1 items-stretch">
           
           {/* Part 1: Info, Links & Copyright (Left) - col-span-8 */}
@@ -72,7 +74,7 @@ export default function Footer() {
                 </div>
                 <ul className="flex flex-col gap-2.5 font-sans font-medium text-xs text-on-surface-variant">
                   <li>
-                    <Link to="/#home" className="hover:text-primary hover:translate-x-1.5 transition-all duration-150 flex items-center gap-1">
+                    <Link to="/" className="hover:text-primary hover:translate-x-1.5 transition-all duration-150 flex items-center gap-1">
                       {t('nav.home')}
                     </Link>
                   </li>
@@ -82,7 +84,7 @@ export default function Footer() {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/#contact" className="hover:text-primary hover:translate-x-1.5 transition-all duration-150 flex items-center gap-1">
+                    <Link to="/contact" className="hover:text-primary hover:translate-x-1.5 transition-all duration-150 flex items-center gap-1">
                       {t('nav.contact')}
                     </Link>
                   </li>

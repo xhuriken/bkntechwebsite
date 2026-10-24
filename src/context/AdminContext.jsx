@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const AdminContext = createContext();
 
 export function AdminProvider({ children }) {
-  const [adminPassword, setAdminPassword] = useState(() => localStorage.getItem('bkn_admin_pass') || '');
+  const [adminPassword, setAdminPassword] = useState(() => typeof window === 'undefined' ? '' : localStorage.getItem('bkn_admin_pass') || '');
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   

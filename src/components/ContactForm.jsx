@@ -134,9 +134,9 @@ function TerminalList() {
 export default function ContactForm() {
   const { t } = useTranslation();
 
-  // Obfuscated client-side variables to prevent email & phone scrapers
-  const [emailText, setEmailText] = useState('');
-  const [phoneText, setPhoneText] = useState('');
+  // Public business details must also work before JavaScript loads.
+  const emailText = 'contact@bkntech.fr';
+  const phoneText = '+33 6 61 20 14 18';
 
   // Form states
   const [formData, setFormData] = useState({
@@ -151,14 +151,6 @@ export default function ContactForm() {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle, checking, sending, success, error
   const [statusMessage, setStatusMessage] = useState('');
-
-  useEffect(() => {
-    // Obfuscation assembly on mount
-    const emailParts = ['contact', '@', 'bkntech', '.', 'fr'];
-    const phoneParts = ['+', '33', ' ', '6', ' ', '61', ' ', '20', ' ', '14', ' ', '18'];
-    setEmailText(emailParts.join(''));
-    setPhoneText(phoneParts.join(''));
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -259,6 +251,10 @@ export default function ContactForm() {
 
   return (
     <section id="contact" className="w-full pt-6 pb-20 px-6 md:px-12 max-w-7xl mx-auto z-10 relative">
+      <noscript>
+        <p className="my-6 text-on-surface-variant">Pour nous contacter sans JavaScript, écrivez à <a href="mailto:contact@bkntech.fr" className="text-primary underline">contact@bkntech.fr</a> ou appelez le <a href="tel:+33661201418" className="text-primary underline">+33 6 61 20 14 18</a>.</p>
+        <style>{'form[data-contact-form] { display: none; }'}</style>
+      </noscript>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
         {/* Info Column (Left) */}
@@ -461,6 +457,8 @@ export default function ContactForm() {
               ) : (
                 <motion.form
                   key="form"
+                  data-contact-form="true"
+                  method="post"
                   onSubmit={handleSubmit}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

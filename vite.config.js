@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import fs from 'fs'
 import path from 'path'
+import { publicPaths, redirectPaths } from './src/seo.js'
 
 // Charger manuellement les variables .env dans process.env pour le serveur de dev local
 try {
@@ -29,6 +30,34 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    {
+      name: 'prerendered-preview',
+      configurePreviewServer(server) {
+        // Vite's SPA fallback otherwise serves the home HTML for every deep link.
+        server.middlewares.use((req, res, next) => {
+          if (!['GET', 'HEAD'].includes(req.method)) return next();
+          const url = new URL(req.url, 'http://localhost');
+          const pathname = url.pathname;
+          if (redirectPaths[pathname]) {
+            res.writeHead(301, { Location: redirectPaths[pathname] + (pathname === '/game' ? url.search : '') });
+            return res.end();
+          }
+          if (pathname !== '/' && pathname.endsWith('/')) {
+            res.writeHead(301, { Location: pathname.replace(/\/+$/, '') + url.search });
+            return res.end();
+          }
+          const known = publicPaths.includes(pathname) || pathname === '/portfolio/admin';
+          const isDocument = known || (!pathname.startsWith('/api/') && (!path.extname(pathname) || path.extname(pathname) === '.html'));
+          if (!isDocument) return next();
+          const filename = known ? path.join(server.config.build.outDir, pathname.slice(1), 'index.html') : path.join(server.config.build.outDir, '404.html');
+          if (!fs.existsSync(filename)) return next();
+          res.statusCode = known ? 200 : 404;
+          res.setHeader('Content-Type', 'text/html; charset=utf-8');
+          if (pathname === '/portfolio/admin') res.setHeader('X-Robots-Tag', 'noindex, follow');
+          return res.end(req.method === 'HEAD' ? undefined : fs.readFileSync(filename));
+        });
+      },
+    },
     {
       name: 'api-contact-middleware',
       configureServer(server) {

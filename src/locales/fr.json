@@ -1,6 +1,7 @@
 {
   "nav": {
     "home": "Accueil",
+    "services": "Services",
     "portfolio": "Portfolio",
     "game": "Jeu Unity",
     "vacuum": "Vacuum Protocol",
@@ -8,9 +9,9 @@
     "cta": "Lancez-vous !"
   },
   "hero": {
-    "title_part1": "Du vrai sur mesure.",
-    "title_part2": "Du code passionné.",
-    "description": "Zéro template WordPress moche ni squelette pré-fait. BKN Tech est un studio de développement sur mesure : nous concevons des plateformes web & mobiles uniques, intégrons des outils IA utiles à vos opérations, et développons notre propre jeu vidéo coopératif.",
+    "title_part1": "Sites web, apps & IA.",
+    "title_part2": "Du code sur mesure.",
+    "description": "BKN Tech conçoit des sites web, des applications mobiles et des solutions d’intelligence artificielle sur mesure. Basés à Paris, nous accompagnons votre projet du cadrage au développement et créons notre propre jeu vidéo coopératif : Vacuum Protocol.",
     "cta_contact": "Parler de votre projet",
     "cta_services": "Explorer nos expertises",
     "cta_game": "Voir Vacuum Protocol"

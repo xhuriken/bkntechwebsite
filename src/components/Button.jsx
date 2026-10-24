@@ -1,5 +1,8 @@
 import React, { useRef } from 'react';
 import { motion, useSpring, useMotionValue } from 'framer-motion';
+import { Link } from 'react-router-dom';
+
+const MotionLink = motion.create(Link);
 
 /**
  * Button Component with premium magnetic attraction hover effect.
@@ -105,10 +108,11 @@ export default function Button({ children, className = '', variant = 'primary', 
   );
 
   if (href) {
+    const LinkComponent = href.startsWith('/') ? MotionLink : motion.a;
     return (
-      <motion.a
+      <LinkComponent
         ref={ref}
-        href={href}
+        {...(href.startsWith('/') ? { to: href } : { href })}
         style={{ x: springX, y: springY }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -117,7 +121,7 @@ export default function Button({ children, className = '', variant = 'primary', 
         {...props}
       >
         {innerContent}
-      </motion.a>
+      </LinkComponent>
     );
   }
 

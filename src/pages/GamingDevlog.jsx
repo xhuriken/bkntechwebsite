@@ -10,6 +10,7 @@ import PatchNoteList from '../components/PatchNoteList';
 import MediaViewer from '../components/MediaViewer';
 import Button from '../components/Button';
 import { useAdmin } from '../context/AdminContext';
+import { useSiteContent } from '../context/SiteContentContext';
 
 
 /**
@@ -87,6 +88,7 @@ function getTypeStyles(type = '') {
 }
 
 export default function GamingDevlog() {
+  const initialContent = useSiteContent();
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'fr';
   const location = useLocation();
@@ -94,9 +96,9 @@ export default function GamingDevlog() {
 
 
   // API posts loading
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [devlogBannerUrl, setDevlogBannerUrl] = useState('');
+  const [posts, setPosts] = useState(() => initialContent.posts?.filter(post => post.category === 'gaming') || []);
+  const [loading, setLoading] = useState(!initialContent.posts);
+  const [devlogBannerUrl, setDevlogBannerUrl] = useState(initialContent.settings?.devlogBannerUrl || '');
   
   // Search and filters states
   const [search, setSearch] = useState('');

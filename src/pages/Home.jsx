@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/Button';
 import ContactForm from '../components/ContactForm';
 import { useImageLightbox } from '../context/ImageLightboxContext';
+import ServiceLinks from '../components/ServiceLinks';
+import { useSiteContent } from '../context/SiteContentContext';
 
 /**
  * Helper component for passive Fine Noise Texture background
@@ -139,9 +140,9 @@ const fadeInUp = {
  */
 export default function Home() {
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
+  const initialContent = useSiteContent();
   const { openLightbox } = useImageLightbox();
-  const [featuredBannerUrl, setFeaturedBannerUrl] = useState('/BknLogo.svg');
+  const [featuredBannerUrl, setFeaturedBannerUrl] = useState(initialContent.settings?.featuredBannerUrl || '/BknLogo.svg');
 
   const isEn = i18n.language?.startsWith('en');
 
@@ -483,7 +484,7 @@ export default function Home() {
 
               <Button 
                 variant="secondary"
-                onClick={() => navigate('/portfolio/section/website')}
+                href="/services/creation-site-web"
               >
                 <span>{t('portfolio.explore')}</span>
                 <i className="fa-solid fa-arrow-right text-[10px]"></i>
@@ -541,7 +542,7 @@ export default function Home() {
 
               <Button 
                 variant="primary"
-                onClick={() => navigate('/portfolio/section/mobile')}
+                href="/services/developpement-application-mobile"
               >
                 <span>{t('portfolio.explore')}</span>
                 <i className="fa-solid fa-arrow-right text-[10px]"></i>
@@ -599,7 +600,7 @@ export default function Home() {
 
               <Button 
                 variant="tertiary"
-                onClick={() => navigate('/portfolio/section/ai-agent')}
+                href="/services/intelligence-artificielle"
               >
                 <span>{t('portfolio.explore')}</span>
                 <i className="fa-solid fa-arrow-right text-[10px]"></i>
@@ -683,7 +684,7 @@ export default function Home() {
                   <div className="flex flex-wrap gap-4 mt-auto">
                     <Button
                       variant="primary"
-                      onClick={() => navigate('/portfolio/section/gaming')}
+                      href="/portfolio/section/gaming"
                     >
                       <span>{t('portfolio.featured_devlog_btn')}</span>
                       <svg className="w-3 h-3 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
@@ -721,6 +722,9 @@ export default function Home() {
       {/* ==================================================================== */}
       {/* CONTACT FORM SECTION */}
       {/* ==================================================================== */}
+      <section className="w-full max-w-6xl mx-auto px-6 py-10" aria-label={isEn ? 'Explore our services' : 'Découvrir nos services'}>
+        <ServiceLinks />
+      </section>
       <ContactForm />
     </div>
   );

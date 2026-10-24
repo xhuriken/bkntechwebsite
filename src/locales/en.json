@@ -1,6 +1,7 @@
 {
   "nav": {
     "home": "Home",
+    "services": "Services",
     "portfolio": "Portfolio",
     "game": "Unity Game",
     "vacuum": "Vacuum Protocol",
@@ -8,9 +9,9 @@
     "cta": "Get Started !"
   },
   "hero": {
-    "title_part1": "100% Bespoke Code.",
-    "title_part2": "Crafted with Passion.",
-    "description": "Zero generic templates or ugly frameworks. BKN Tech is a custom development studio: we craft unique web & mobile platforms, integrate useful AI tools into your workflows, and build our own cooperative game.",
+    "title_part1": "Websites, apps & AI.",
+    "title_part2": "Custom development.",
+    "description": "BKN Tech builds custom websites, mobile applications and AI solutions. Based in Paris, we help scope and develop your project and create our own cooperative video game: Vacuum Protocol.",
     "cta_contact": "Talk about your project",
     "cta_services": "Explore our solutions",
     "cta_game": "Check Vacuum Protocol"

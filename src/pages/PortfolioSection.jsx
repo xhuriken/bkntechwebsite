@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { formatLocaleDate } from '../utils/dateFormatter';
 import { useImageLightbox } from '../context/ImageLightboxContext';
@@ -8,6 +8,7 @@ import Button from '../components/Button';
 import { useAdmin } from '../context/AdminContext';
 import ProjectCard from '../components/ProjectCard';
 import EmptyCategoryState from '../components/EmptyCategoryState';
+import { useSiteContent } from '../context/SiteContentContext';
 
 
 
@@ -180,14 +181,14 @@ function ProjectTerminalList({ tags = [], category = 'gaming' }) {
  * Renders all projects of a specific category in an elegant,
  * chronological chronological vertical feed with rich multimedia embedding.
  */
-export default function PortfolioSection() {
-  const { category } = useParams();
+export default function PortfolioSection({ category }) {
+  const initialContent = useSiteContent();
   const { t, i18n } = useTranslation();
   const { openLightbox } = useImageLightbox();
   const { isAdmin, openCreatePost, openEditPost, openConfirmModal, adminPassword, dataRefreshCounter, triggerRefresh } = useAdmin();
 
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState(() => initialContent.posts?.filter(post => post.category === category).sort((a, b) => new Date(b.date) - new Date(a.date)) || []);
+  const [loading, setLoading] = useState(!initialContent.posts);
   const [activeTabs, setActiveTabs] = useState({});
   const [galleryActiveImages, setGalleryActiveImages] = useState({});
   const [expandedPosts, setExpandedPosts] = useState({});

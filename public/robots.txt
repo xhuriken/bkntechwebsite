@@ -1,6 +1,7 @@
+# Public pages and rendering resources are available to search engines and AI search.
+# This wildcard also covers Googlebot, Bingbot, Applebot and OAI-SearchBot.
 User-agent: *
 Allow: /
-Disallow: /portfolio/admin
-Disallow: /api/
+# Admin is crawlable so its noindex meta/header can be read. Authentication protects it.
 
 Sitemap: https://bkntech.fr/sitemap.xml

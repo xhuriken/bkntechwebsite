@@ -37,7 +37,7 @@ function isNativeVideoUrl(url = '') {
 export default function PortfolioAdmin() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'fr';
-  const [password, setPassword] = useState(localStorage.getItem('bkn_admin_pass') || '');
+  const [password, setPassword] = useState(() => typeof window === 'undefined' ? '' : localStorage.getItem('bkn_admin_pass') || '');
   const [isAuth, setIsAuth] = useState(false);
   const [authError, setAuthError] = useState('');
 

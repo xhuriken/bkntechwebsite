@@ -9,6 +9,7 @@ import { useImageLightbox } from '../context/ImageLightboxContext';
 import { useAdmin } from '../context/AdminContext';
 import ProjectCard from '../components/ProjectCard';
 import EmptyCategoryState from '../components/EmptyCategoryState';
+import { useSiteContent } from '../context/SiteContentContext';
 
 
 
@@ -160,21 +161,23 @@ function ProjectTerminalList({ tags = [], category = 'gaming' }) {
  * dynamically loaded from the serverless posts API.
  */
 export default function Portfolio() {
+  const initialContent = useSiteContent();
   const { t, i18n } = useTranslation();
   const { openLightbox } = useImageLightbox();
   const { isAdmin, openCreatePost, openEditPost, openBannerModal, openConfirmModal, adminPassword, dataRefreshCounter, triggerRefresh } = useAdmin();
 
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState(() => initialContent.posts?.filter(post => post.category !== 'gaming') || []);
+  const [loading, setLoading] = useState(!initialContent.posts);
   const [selectedIndices, setSelectedIndices] = useState({ website: 0, 'ai-agent': 0, mobile: 0 });
   const currentLang = i18n.language || 'fr';
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
-  const [featuredBannerUrl, setFeaturedBannerUrl] = useState('/BknLogo.svg');
+  const [isMobile, setIsMobile] = useState(false);
+  const [featuredBannerUrl, setFeaturedBannerUrl] = useState(initialContent.settings?.featuredBannerUrl || '/BknLogo.svg');
   const letterORef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);

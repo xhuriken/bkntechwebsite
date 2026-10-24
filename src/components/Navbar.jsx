@@ -40,7 +40,8 @@ export default function Navbar() {
 
   const siteLinks = [
     { name: t('nav.home'), path: '/' },
-    { name: t('nav.contact'), path: '/#contact', isAnchor: true, targetId: 'contact' },
+    { name: t('nav.services'), path: '/services' },
+    { name: t('nav.contact'), path: '/contact' },
     { name: t('nav.portfolio'), path: '/portfolio' },
   ];
 
@@ -67,7 +68,7 @@ export default function Navbar() {
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 bg-[#12131b]/95 backdrop-blur-2xl border-b border-white/10 py-4 px-6 md:px-12 flex items-center justify-between transition-transform duration-300 ease-in-out ${
       isVisible ? 'translate-y-0' : '-translate-y-full'
-    } shadow-2xl overflow-hidden`}>
+    } shadow-2xl`}>
       {/* Passive Fine Noise Texture background */}
       <div
         className="absolute inset-0 opacity-8 pointer-events-none"
@@ -77,13 +78,13 @@ export default function Navbar() {
         }}
       />
       {/* Brand Identity / Logo */}
-      <Link to="/" className="flex items-center gap-0.5 font-display font-black text-3xl tracking-[0.2em] text-on-surface hover:text-primary transition-colors uppercase">
+      <Link to="/" className="flex shrink-0 whitespace-nowrap items-center gap-0.5 font-display font-black text-3xl tracking-[0.2em] text-on-surface hover:text-primary transition-colors uppercase">
         <img src="/BknLogo.svg" alt="BKN Tech Logo" className="w-12 h-12" />
         <span>KN Tech</span>
       </Link>
 
       {/* Desktop Links (Hidden on mobile) */}
-      <div className="hidden md:flex items-center gap-6 lg:gap-8">
+      <div className="hidden xl:flex items-center gap-6 lg:gap-8">
         {/* Main Agency Links: Accueil, Contact, Portfolio */}
         <div className="flex items-center gap-6 lg:gap-8">
           {siteLinks.map((link) => {
@@ -134,9 +135,9 @@ export default function Navbar() {
       </div>
 
       {/* Desktop Utilities */}
-      <div className="hidden md:flex items-center gap-4">
+      <div className="hidden xl:flex items-center gap-4">
         <LanguageSwitcher />
-        <Button variant="primary" onClick={(e) => handleLinkClick(e, { isAnchor: true, targetId: 'contact' })}>
+        <Button variant="primary" href="/contact" className="whitespace-nowrap">
           <svg className="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L6 12zm0 0h7.5" />
           </svg>
@@ -147,8 +148,10 @@ export default function Navbar() {
       {/* Mobile Drawer Trigger (Hamburger Button) */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden flex flex-col justify-center items-center w-6 h-6 gap-1.5 z-50 relative cursor-pointer focus:outline-none"
+        className="xl:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 z-50 relative cursor-pointer focus:outline-none"
         aria-label="Menu principal"
+        aria-expanded={isOpen}
+        aria-controls="primary-mobile-menu"
       >
         <span className={`w-6 h-0.5 bg-on-surface transition-all duration-150 ${isOpen ? 'rotate-45 translate-y-[6px]' : ''}`} />
         <span className={`w-6 h-0.5 bg-on-surface transition-all duration-150 ${isOpen ? 'opacity-0' : ''}`} />
@@ -163,7 +166,8 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="absolute top-full left-0 w-full bg-surface-container-low/95 border-b border-white/5 backdrop-blur-xl p-8 flex flex-col items-center gap-6 md:hidden shadow-2xl z-40"
+            id="primary-mobile-menu"
+            className="absolute top-full left-0 w-full bg-surface-container-low/95 border-b border-white/5 backdrop-blur-xl p-8 flex flex-col items-center gap-6 xl:hidden shadow-2xl z-40"
           >
             <div className="flex flex-col items-center gap-3.5 w-full">
               {siteLinks.map((link) => {
@@ -200,7 +204,7 @@ export default function Navbar() {
 
             <div className="flex flex-col items-center gap-4 w-full">
               <LanguageSwitcher />
-              <Button variant="primary" onClick={(e) => handleLinkClick(e, { isAnchor: true, targetId: 'contact' })} className="w-full max-w-[200px]">
+              <Button variant="primary" href="/contact" onClick={() => setIsOpen(false)} className="w-full max-w-[200px]">
                 <svg className="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L6 12zm0 0h7.5" />
                 </svg>

@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
+    "check:seo": "node scripts/check-seo.mjs",
+    "check:seo:http": "node scripts/check-seo.mjs http://127.0.0.1:4173",
     "lint": "oxlint",
     "preview": "vite preview"
   },
