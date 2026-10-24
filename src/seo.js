@@ -7,7 +7,7 @@ export const publicPaths = [
   ...['website', 'mobile', 'ai-agent', 'gaming'].map(category => `/portfolio/section/${category}`),
   '/mentions-legales', '/politique-de-confidentialite',
 ];
-export const redirectPaths = { '/game': '/portfolio/section/gaming', '/dkp': 'https://dkp95.fr', '/dkp95': 'https://dkp95.fr', '/dkprenovation': 'https://dkp95.fr' };
+export const redirectPaths = { '/game': '/portfolio/section/gaming', '/devlog': '/portfolio/section/gaming', '/dkp': 'https://dkp95.fr', '/dkp95': 'https://dkp95.fr', '/dkprenovation': 'https://dkp95.fr' };
 
 const pageCopy = {
   '/': [

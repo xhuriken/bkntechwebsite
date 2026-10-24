@@ -30,9 +30,14 @@ jobs:
 
           ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "mkdir -p $REMOTE_PATH"
 
-          rsync -avz --delete \
+          # Preserve runtime content and files created on the VPS.
+          rsync -avz \
             --exclude='node_modules' \
             --exclude='dist' \
+            --exclude='dist-ssr' \
+            --exclude='/api/posts.json' \
+            --exclude='/api/settings.json' \
+            --exclude='/public/uploads/' \
             --exclude='.git' \
             --exclude='.env' \
             --exclude='.env.*' \
@@ -75,5 +80,6 @@ jobs:
             echo 'Rebuilding Docker containers...'
             docker compose build --no-cache
             docker compose up -d
+            docker compose exec -T frontend nginx -t
             docker compose ps
           "

@@ -39,7 +39,7 @@ export default defineConfig({
           const url = new URL(req.url, 'http://localhost');
           const pathname = url.pathname;
           if (redirectPaths[pathname]) {
-            res.writeHead(301, { Location: redirectPaths[pathname] + (pathname === '/game' ? url.search : '') });
+            res.writeHead(301, { Location: redirectPaths[pathname] + (['/game', '/devlog'].includes(pathname) ? url.search : '') });
             return res.end();
           }
           if (pathname !== '/' && pathname.endsWith('/')) {

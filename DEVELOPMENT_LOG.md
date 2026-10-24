@@ -2,6 +2,21 @@
 
 Ce journal retrace toutes les décisions techniques, les modifications de code et les résolutions de bugs apportées au projet.
 
+## [2026-10-24] Intégration sur main et préparation du déploiement SEO
+
+### Tâche
+Publier les améliorations SEO sur main à la demande explicite de l’utilisateur, en conservant les six commits déjà présents sur le dépôt distant.
+
+### Modifications
+- Rebase des commits SEO/documentation sur `24e0a6e` : conservation des correctifs d’authentification et de CI, du nettoyage des projets fictifs, des états vides mobile/IA, des profils sociaux réels et de la page 404 existante.
+- [src/content/services.js](<C:/Users/kikep/Desktop/Bkn Society/01-BknTech/Website/src/content/services.js>), [README.md](<C:/Users/kikep/Desktop/Bkn Society/01-BknTech/Website/README.md>) et [TODO.md](<C:/Users/kikep/Desktop/Bkn Society/01-BknTech/Website/TODO.md>) : alignement sur l’absence de références publiques mobile/IA après ce nettoyage.
+- [src/App.jsx](<C:/Users/kikep/Desktop/Bkn Society/01-BknTech/Website/src/App.jsx>), [src/pages/Services.jsx](<C:/Users/kikep/Desktop/Bkn Society/01-BknTech/Website/src/pages/Services.jsx>), [src/seo.js](<C:/Users/kikep/Desktop/Bkn Society/01-BknTech/Website/src/seo.js>), [nginx.conf](<C:/Users/kikep/Desktop/Bkn Society/01-BknTech/Website/nginx.conf>) et [vite.config.js](<C:/Users/kikep/Desktop/Bkn Society/01-BknTech/Website/vite.config.js>) : page 404 distante conservée et alias `/devlog` maintenu comme redirection 301 vers le jeu.
+- [.github/workflows/deploy.yml](<C:/Users/kikep/Desktop/Bkn Society/01-BknTech/Website/.github/workflows/deploy.yml>) : suppression du mode rsync destructif, exclusion des posts, réglages et uploads maintenus en production ; ajout de `nginx -t` dans le conteneur déployé.
+- `npm run build` et `npm run check:seo` réussis après résolution des conflits, sans avertissement de build. Aucun secret ajouté, aucun contenu de production supprimé.
+
+### Justification Technique
+Le push doit être un fast-forward de la branche distante et ne doit ni réintroduire les démonstrations retirées ni écraser les données créées depuis l’administration. Le build distant lit les contenus préservés du VPS pour générer le HTML du portfolio.
+
 ## [2026-10-24] Référencement des services et HTML accessible aux moteurs et aux IA
 
 ### Tâche

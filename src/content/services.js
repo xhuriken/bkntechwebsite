@@ -51,8 +51,8 @@ export const services = [
         ['Développement multiplateforme', 'Étudier une base commune pour iOS et Android avec React Native ou Flutter selon les contraintes du projet. Notifications, caméra, géolocalisation et fonctionnement hors ligne sont évalués selon le besoin réel.'],
         ['API, données et mise en ligne', 'Relier l’application à un backend, aux comptes utilisateurs et à vos outils métier. La préparation des versions et les exigences des stores sont intégrées au périmètre convenu.'],
       ],
-      proofTitle: 'Examiner nos projets mobiles',
-      proof: 'La section mobile du portfolio présente les projets et interfaces disponibles. Lors du premier échange, nous précisons les fonctionnalités déjà réalisées et celles qui nécessitent une étude pour votre application.',
+      proofTitle: 'Nos projets mobiles sont en préparation',
+      proof: 'Nous ne présentons pas encore de réalisation mobile publique. La section mobile du portfolio sera enrichie au fil des projets ; contactez-nous pour discuter de votre application et des fonctionnalités à étudier.',
       questions: [
         ['Faut-il une application ou un site web mobile ?', 'Un site responsive peut suffire pour présenter une activité et recevoir des demandes. Une application devient pertinente pour un usage fréquent ou des fonctions propres au téléphone. Nous pouvons discuter de ce choix avant de lancer le développement.'],
         ['Pouvez-vous développer pour iOS et Android ?', 'Nous étudions des applications pour les deux plateformes. Le choix d’une technologie commune ou de développements spécifiques dépend des fonctions, des performances attendues et du budget.'],
@@ -69,8 +69,8 @@ export const services = [
         ['Cross-platform development', 'Assess a shared iOS and Android codebase using React Native or Flutter, depending on project constraints. Notifications, camera access, location and offline use are considered according to real needs.'],
         ['APIs, data and release', 'Connect the application to a backend, user accounts and business tools. Release preparation and app store requirements are included in the agreed scope.'],
       ],
-      proofTitle: 'Explore our mobile projects',
-      proof: 'Our mobile portfolio presents available projects and interfaces. During an initial discussion, we distinguish existing work from features that require further investigation for your application.',
+      proofTitle: 'Our mobile projects are being prepared',
+      proof: 'We do not yet have a public mobile case study. Our mobile portfolio will grow as projects progress; contact us to discuss your application and the features that need to be assessed.',
       questions: [
         ['Do I need an app or a mobile website?', 'A responsive website may be sufficient to present a business and collect enquiries. An app can be appropriate for frequent use or phone-specific features. We can discuss that choice before development begins.'],
         ['Can you develop for both iOS and Android?', 'We assess applications for both platforms. A shared technology or platform-specific development depends on features, performance requirements and budget.'],
@@ -90,8 +90,8 @@ export const services = [
         ['Automatisation des tâches métier', 'Connecter les outils existants, traiter des documents ou préparer des informations pour vos équipes. Nous définissons les étapes automatisables et les points où une validation humaine reste nécessaire.'],
         ['Application IA et intégrations', 'Ajouter une interface, des droits d’accès et des connexions API autour des fonctions IA. Le choix du modèle, de l’hébergement et du traitement des données se fait selon les contraintes de confidentialité, de coût et d’usage.'],
       ],
-      proofTitle: 'Voir nos projets IA',
-      proof: 'Notre portfolio IA présente notamment un assistant de support connecté à une base de connaissances. Nous pouvons expliquer son fonctionnement et examiner ce qui serait transposable à vos documents et à vos processus.',
+      proofTitle: 'Discuter de votre besoin IA',
+      proof: 'Nous ne présentons pas encore de réalisation IA publique. Nous pouvons commencer par examiner vos documents, vos processus et un cas d’usage précis pour étudier la faisabilité d’un assistant ou d’une automatisation.',
       questions: [
         ['Peut-on connecter une IA aux documents de mon entreprise ?', 'Cela peut être étudié avec une recherche documentaire et une approche RAG. Il faut d’abord vérifier les formats, les droits d’accès, la qualité des sources et les règles de confidentialité.'],
         ['Faut-il entraîner un modèle d’IA ?', 'Pas nécessairement. Une application peut utiliser un modèle existant, une recherche dans vos documents et des règles métier. Le choix se fait après avoir défini le besoin et les critères d’évaluation.'],
@@ -108,8 +108,8 @@ export const services = [
         ['Business process automation', 'Connect existing tools, process documents or prepare information for your team. We define which steps can be automated and where human review remains necessary.'],
         ['AI applications and integrations', 'Build interfaces, access controls and API integrations around AI features. Model selection, hosting and data handling depend on privacy, cost and usage requirements.'],
       ],
-      proofTitle: 'Explore our AI projects',
-      proof: 'Our AI portfolio includes a support assistant connected to a knowledge base. We can explain how it works and assess what could apply to your documents and processes.',
+      proofTitle: 'Discuss your AI requirements',
+      proof: 'We do not yet have a public AI case study. We can start by examining your documents, processes and a specific use case to assess the feasibility of an assistant or an automated workflow.',
       questions: [
         ['Can AI use my company documents?', 'Document search with RAG may be appropriate. We first need to examine formats, access permissions, source quality and confidentiality requirements.'],
         ['Do I need to train an AI model?', 'Not necessarily. An application can combine an existing model, document retrieval and business rules. The approach follows a defined need and evaluation criteria.'],
