@@ -271,7 +271,7 @@ export default function PortfolioSection({ category }) {
         <div>
 
           <h1 className="font-sans font-extrabold text-3xl md:text-5xl uppercase tracking-tight mb-3">
-            {t(`portfolio.categories.${category}`)}
+            {t(`portfolio.headings.${category}`, { defaultValue: t(`portfolio.categories.${category}`) })}
           </h1>
           <p className="text-on-surface/80 text-sm font-normal tracking-wide max-w-xl">
             {t('portfolio.section_desc', { cat: t(`portfolio.categories.${category}`) })}

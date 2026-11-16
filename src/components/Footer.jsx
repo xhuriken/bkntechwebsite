@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import InteractiveNetwork from './InteractiveNetwork';
 import { useAdmin } from '../context/AdminContext';
 import ServiceLinks from './ServiceLinks';
+import { DISCORD_URL } from '../utils/socialLinks';
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -53,7 +54,7 @@ export default function Footer() {
                 {/* Social Icons list */}
                 <div className="flex gap-4 mt-2">
                   <a 
-                    href="https://discord.gg/bkntech" 
+                    href={DISCORD_URL} 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="w-8 h-8 rounded-lg bg-surface border border-white/5 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 hover:bg-primary/5 hover:shadow-[0_0_12px_rgba(190,194,255,0.15)] hover:scale-110 transition-all duration-300 group"

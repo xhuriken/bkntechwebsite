@@ -11,6 +11,7 @@ import MediaViewer from '../components/MediaViewer';
 import Button from '../components/Button';
 import { useAdmin } from '../context/AdminContext';
 import { useSiteContent } from '../context/SiteContentContext';
+import { DISCORD_URL } from '../utils/socialLinks';
 
 
 /**
@@ -266,7 +267,7 @@ export default function GamingDevlog() {
           </p>
           {/* Discord CTA callout */}
           <a
-            href="https://discord.gg/bkntech"
+            href={DISCORD_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-1 inline-flex items-center gap-2 text-xs font-sans font-semibold text-primary hover:text-primary/80 transition-colors group"
@@ -299,7 +300,7 @@ export default function GamingDevlog() {
             </svg>
           </a>
           <a 
-            href="https://discord.gg/bkntech" 
+            href={DISCORD_URL} 
             target="_blank" 
             rel="noopener noreferrer" 
             className="flex items-center justify-between text-xs font-sans font-medium text-on-surface hover:text-primary transition-colors py-1 group"

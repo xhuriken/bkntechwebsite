@@ -10,6 +10,7 @@ import { useAdmin } from '../context/AdminContext';
 import ProjectCard from '../components/ProjectCard';
 import EmptyCategoryState from '../components/EmptyCategoryState';
 import { useSiteContent } from '../context/SiteContentContext';
+import { DISCORD_URL } from '../utils/socialLinks';
 
 
 
@@ -226,7 +227,7 @@ export default function Portfolio() {
 
 
   const categories = [
-    { key: 'software', title: t('portfolio.categories.software'), color: 'from-software/20 to-transparent' },
+    { key: 'software', title: t('portfolio.headings.software'), color: 'from-software/20 to-transparent' },
     { key: 'website', title: t('portfolio.categories.website'), color: 'from-secondary/20 to-transparent' },
     { key: 'ai-agent', title: t('portfolio.categories.ai-agent'), color: 'from-tertiary/20 to-transparent' },
     { key: 'mobile', title: t('portfolio.categories.mobile'), color: 'from-primary/20 to-transparent' }
@@ -383,7 +384,7 @@ export default function Portfolio() {
 
                       <Button
                         variant="black"
-                        href="https://discord.gg/bkntech"
+                        href={DISCORD_URL}
                         target="_blank"
                         rel="noopener noreferrer"
                       >

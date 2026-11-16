@@ -6,6 +6,7 @@ import ContactForm from '../components/ContactForm';
 import { useImageLightbox } from '../context/ImageLightboxContext';
 import ServiceLinks from '../components/ServiceLinks';
 import { useSiteContent } from '../context/SiteContentContext';
+import { DISCORD_URL } from '../utils/socialLinks';
 
 /**
  * Helper component for passive Fine Noise Texture background
@@ -695,7 +696,7 @@ export default function Home() {
 
                     <Button
                       variant="black"
-                      href="https://discord.gg/bkntech"
+                      href={DISCORD_URL}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

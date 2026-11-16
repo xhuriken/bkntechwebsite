@@ -31,3 +31,7 @@ fix_pass*.py
 
 # Base SQLite des réclamations promo (données personnelles)
 api/data/
+
+# Connexion B-Board des agents IA (clé API personnelle en clair) : jamais dans Git
+/mcp.json
+/config.toml

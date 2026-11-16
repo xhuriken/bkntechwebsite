@@ -130,6 +130,9 @@
       "gallery": "Galerie & Captures",
       "changelog": "Patch Note"
     },
+    "headings": {
+      "software": "Nos logiciels"
+    },
     "categories": {
       "software": "Logiciels",
       "gaming": "Gaming",
