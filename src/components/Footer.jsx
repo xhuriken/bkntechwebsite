@@ -130,10 +130,20 @@ export default function Footer() {
                 {/* Admin Auth Toggle in Footer */}
                 {!isFlashbang && (
                   isAdmin ? (
-                    <div className="flex items-center gap-3 font-mono text-[10px] lowercase">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] lowercase">
                       <span className="text-green-400 font-bold">
                         Admin
                       </span>
+
+                      {/* Accès direct aux espaces admin une fois connecté */}
+                      <Link to="/portfolio/admin" className="inline-flex items-center gap-1 whitespace-nowrap text-primary/80 hover:text-primary hover:underline transition-colors" title="Gérer le portfolio et les devlogs">
+                        <i className="fa-solid fa-gauge text-[9px]" aria-hidden="true"></i>
+                        <span>[Panneau admin]</span>
+                      </Link>
+                      <Link to="/portfolio/admin/promo" className="inline-flex items-center gap-1 whitespace-nowrap text-secondary/80 hover:text-secondary hover:underline transition-colors" title="Gérer les codes promo B-Ledger">
+                        <i className="fa-solid fa-ticket text-[9px]" aria-hidden="true"></i>
+                        <span>[Codes promo]</span>
+                      </Link>
 
                       <button
                         type="button"
