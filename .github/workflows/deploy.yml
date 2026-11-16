@@ -18,6 +18,19 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
 
+      # Empreinte du VPS épinglée : SSH refuse tout serveur qui ne présente pas CETTE clé.
+      # Sans cela, une connexion interceptée recevrait les secrets envoyés plus bas (.env).
+      # HostKeyAlias : la vérification ne dépend pas de l'écriture de VPS_HOST (IP ou nom).
+      - name: Pin VPS host key
+        env:
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          test -n "$VPS_KNOWN_HOSTS" || { echo "::error::Secret VPS_KNOWN_HOSTS manquant"; exit 1; }
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$VPS_KNOWN_HOSTS" > ~/.ssh/known_hosts_vps
+          printf '%s\n' 'Host *' '  StrictHostKeyChecking yes' '  UserKnownHostsFile ~/.ssh/known_hosts_vps' '  HostKeyAlias bkntech-vps' >> ~/.ssh/config
+          chmod 600 ~/.ssh/known_hosts_vps ~/.ssh/config
+
       - name: Sync files to VPS
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
@@ -28,7 +41,7 @@ jobs:
           VPS_USER="ubuntu"
           REMOTE_PATH="/var/www/bkntech"
 
-          ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "mkdir -p $REMOTE_PATH"
+          ssh -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "mkdir -p $REMOTE_PATH"
 
           # Preserve runtime content and files created on the VPS.
           rsync -avz \
@@ -43,7 +56,7 @@ jobs:
             --exclude='.env' \
             --exclude='.env.*' \
             --exclude='*.log' \
-            -e "ssh -o StrictHostKeyChecking=no -p $VPS_PORT" \
+            -e "ssh -p $VPS_PORT" \
             ./ "${VPS_USER}@${VPS_HOST}:$REMOTE_PATH/"
 
       - name: Update .env.production and Restart Docker
@@ -76,10 +89,10 @@ jobs:
           } > /tmp/bkntech.env
 
           # 2. Transférer vers .env et .env.production sur le VPS
-          cat /tmp/bkntech.env | ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "cat > ${REMOTE_PATH}/.env.production && cp ${REMOTE_PATH}/.env.production ${REMOTE_PATH}/.env"
+          cat /tmp/bkntech.env | ssh -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "cat > ${REMOTE_PATH}/.env.production && cp ${REMOTE_PATH}/.env.production ${REMOTE_PATH}/.env"
 
           # 3. Rebuild et restart des conteneurs
-          ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "
+          ssh -p "$VPS_PORT" "${VPS_USER}@${VPS_HOST}" "
             set -e
             cd $REMOTE_PATH
             echo 'Rebuilding Docker containers...'
