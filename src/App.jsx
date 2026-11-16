@@ -90,7 +90,7 @@ function App({ RouterComponent = Router, routerProps = {}, initialContent = {} }
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/portfolio/section/gaming" element={<GamingDevlog />} />
-                {['website', 'mobile', 'ai-agent'].map(category => <Route key={category} path={`/portfolio/section/${category}`} element={<PortfolioSection key={category} category={category} />} />)}
+                {['software', 'website', 'mobile', 'ai-agent'].map(category => <Route key={category} path={`/portfolio/section/${category}`} element={<PortfolioSection key={category} category={category} />} />)}
                 <Route path="/b-ledger/offre" element={<Suspense fallback={<p className="text-center">Chargement…</p>}><OfferPage slug={LAUNCH_SLUG} /></Suspense>} />
                 <Route path="/offre/:slug" element={<Suspense fallback={<p className="text-center">Chargement…</p>}><OfferPage /></Suspense>} />
                 <Route path="/code/:code" element={<Suspense fallback={<p className="text-center">Chargement…</p>}><CodePage /></Suspense>} />

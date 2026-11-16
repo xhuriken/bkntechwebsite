@@ -417,6 +417,7 @@ export default function AdminProjectEditModal() {
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white font-mono text-xs focus:border-primary focus:outline-none"
                     >
+                      <option value="software">Logiciels (SaaS, outils)</option>
                       <option value="website">Sites & Applications Web</option>
                       <option value="mobile">Applications Mobiles (iOS / Android)</option>
                       <option value="ai-agent">Intelligence Artificielle & Agents</option>

@@ -530,6 +530,12 @@ export default function PortfolioAdmin() {
       lineBg: 'bg-secondary shadow-[0_0_10px_rgba(78,222,163,0.8)]'
     },
     {
+      id: 'software',
+      label: 'Logiciels',
+      activeText: 'text-software font-black',
+      lineBg: 'bg-software shadow-[0_0_10px_rgba(125,211,252,0.8)]'
+    },
+    {
       id: 'website',
       label: 'Sites Web',
       activeText: 'text-secondary font-black',
@@ -553,6 +559,7 @@ export default function PortfolioAdmin() {
   const getCategoryBadgeClass = (category) => {
     switch (category) {
       case 'gaming': return 'text-secondary border-secondary/40 bg-secondary/10';
+      case 'software': return 'text-software border-software/40 bg-software/10';
       case 'website': return 'text-secondary border-secondary/40 bg-secondary/10';
       case 'ai-agent': return 'text-tertiary border-tertiary/40 bg-tertiary/10';
       case 'mobile': return 'text-primary border-primary/40 bg-primary/10';
@@ -1196,6 +1203,7 @@ export default function PortfolioAdmin() {
                             onChange={handleChange}
                           >
                             <option value="gaming">Vacuum Protocol (Gaming)</option>
+                            <option value="software">Logiciels</option>
                             <option value="website">Sites Web</option>
                             <option value="ai-agent">Agents IA</option>
                             <option value="mobile">Applications Mobiles</option>

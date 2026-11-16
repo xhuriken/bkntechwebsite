@@ -333,6 +333,7 @@ export default function AdminPostEditModal() {
                       className="w-full p-3 rounded-xl bg-surface border border-white/10 text-xs font-mono text-on-surface focus:border-primary outline-none cursor-pointer"
                     >
                       <option value="gaming">Gaming (Vacuum Protocol)</option>
+                      <option value="software">Logiciels</option>
                       <option value="website">Sites Web</option>
                       <option value="ai-agent">Agents IA</option>
                       <option value="mobile">Applications Mobiles</option>

@@ -4,7 +4,7 @@ export const SITE_URL = 'https://bkntech.fr';
 export const INDEX_ROBOTS = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 export const publicPaths = [
   '/', '/services', ...services.map(servicePath), '/contact', '/portfolio',
-  ...['website', 'mobile', 'ai-agent', 'gaming'].map(category => `/portfolio/section/${category}`),
+  ...['software', 'website', 'mobile', 'ai-agent', 'gaming'].map(category => `/portfolio/section/${category}`),
   '/mentions-legales', '/politique-de-confidentialite',
 ];
 export const redirectPaths = { '/game': '/portfolio/section/gaming', '/devlog': '/portfolio/section/gaming', '/dkp': 'https://dkp95.fr', '/dkp95': 'https://dkp95.fr', '/dkprenovation': 'https://dkp95.fr' };
@@ -36,12 +36,14 @@ const pageCopy = {
   ],
 };
 const categoryCopy = {
+  software: ['Nos logiciels : B-Board et outils SaaS | BKN Tech', 'Our software: B-Board and SaaS tools | BKN Tech'],
   website: ['Sites web et applications web : projets | BKN Tech', 'Website and web application projects | BKN Tech'],
   mobile: ['Applications mobiles iOS et Android : projets | BKN Tech', 'iOS and Android application projects | BKN Tech'],
   'ai-agent': ['Agents IA et automatisation : projets | BKN Tech', 'AI agents and automation projects | BKN Tech'],
   gaming: ['Vacuum Protocol : jeu coopératif Unity et devlog | BKN Tech', 'Vacuum Protocol: cooperative Unity game and devlog | BKN Tech'],
 };
 const categoryDescriptions = {
+  software: ['Découvrez les logiciels conçus et exploités par BKN Tech, dont B-Board, le Kanban pour équipes et agents IA connecté par MCP.', 'Explore the software built and run by BKN Tech, including B-Board, the Kanban for teams and AI agents connected through MCP.'],
   website: ['Découvrez nos projets de sites et applications web, dont le site DKP Rénovation avec son parcours de demande de devis.', 'Explore our website and web application projects, including DKP Rénovation and its quote request journey.'],
   mobile: ['Découvrez les projets mobiles du studio BKN Tech et contactez-nous pour discuter de votre application iOS et Android.', 'Explore BKN Tech’s mobile projects and contact our studio to discuss your iOS and Android application.'],
   'ai-agent': ['Découvrez nos projets d’agents IA, d’assistants connectés à une base de connaissances et d’automatisation métier.', 'Explore our AI agents, knowledge-base assistants and business automation projects.'],

@@ -87,6 +87,11 @@
     "back": "Retour au portfolio",
     "no_projects": "Aucun projet trouvé dans cette catégorie.",
     "empty_state": {
+      "software": {
+        "title": "Un logiciel métier sur mesure ?",
+        "desc": "Nous concevons et exploitons nos propres logiciels, comme B-Board. Vous avez besoin d’un outil SaaS, d’un back-office ou d’une intégration IA pour votre activité ? Parlons-en.",
+        "cta": "Parler de votre logiciel"
+      },
       "ai_agent": {
         "title": "Un projet d'Agents IA ou d'Automatisation ?",
         "desc": "Vous souhaitez automatiser des processus métier, connecter des agents autonomes à vos outils ou déployer une architecture RAG sur mesure ? Parlons ensemble de vos besoins.",
@@ -126,6 +131,7 @@
       "changelog": "Patch Note"
     },
     "categories": {
+      "software": "Logiciels",
       "gaming": "Gaming",
       "website": "Sites Web",
       "ai-agent": "Agents IA",

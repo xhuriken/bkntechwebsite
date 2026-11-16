@@ -90,6 +90,7 @@ function HomeTerminalList({ tags = [], category = 'gaming' }) {
 
   const getTagColorClass = () => {
     const c = category ? category.toLowerCase() : '';
+    if (c === 'software') return 'text-software font-bold';
     if (c === 'website') return 'text-secondary font-bold';
     if (c === 'ai-agent') return 'text-tertiary font-bold';
     if (c === 'mobile') return 'text-primary font-bold';

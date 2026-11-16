@@ -97,6 +97,7 @@ function ProjectTerminalList({ tags = [], category = 'gaming' }) {
   // Determine tag validation text and cursor color theme by category
   const getTagColorClass = () => {
     const c = category ? category.toLowerCase() : '';
+    if (c === 'software') return 'text-software font-bold'; // Sky-accent `#7dd3fc`
     if (c === 'website') return 'text-secondary font-bold'; // Green-accent `#4edea3`
     if (c === 'ai-agent') return 'text-tertiary font-bold'; // Orange-accent `#ffb95f`
     if (c === 'mobile') return 'text-primary font-bold'; // Purple-accent `#bec2ff`
@@ -105,6 +106,7 @@ function ProjectTerminalList({ tags = [], category = 'gaming' }) {
 
   const getCursorColorClass = () => {
     const c = category ? category.toLowerCase() : '';
+    if (c === 'software') return 'bg-software';
     if (c === 'website') return 'bg-secondary';
     if (c === 'ai-agent') return 'bg-tertiary';
     if (c === 'mobile') return 'bg-primary';
@@ -169,7 +171,7 @@ export default function Portfolio() {
   const navigate = useNavigate();
   const [posts, setPosts] = useState(() => initialContent.posts?.filter(post => post.category !== 'gaming') || []);
   const [loading, setLoading] = useState(!initialContent.posts);
-  const [selectedIndices, setSelectedIndices] = useState({ website: 0, 'ai-agent': 0, mobile: 0 });
+  const [selectedIndices, setSelectedIndices] = useState({ software: 0, website: 0, 'ai-agent': 0, mobile: 0 });
   const currentLang = i18n.language || 'fr';
   const [isMobile, setIsMobile] = useState(false);
   const [featuredBannerUrl, setFeaturedBannerUrl] = useState(initialContent.settings?.featuredBannerUrl || '/BknLogo.svg');
@@ -193,7 +195,7 @@ export default function Portfolio() {
 
           // Calculate random starting index for each category
           const initialIndices = {};
-          const catKeys = ['website', 'ai-agent', 'mobile'];
+          const catKeys = ['software', 'website', 'ai-agent', 'mobile'];
           catKeys.forEach(catKey => {
             const catPosts = rest.filter(p => p.category === catKey);
             if (catPosts.length > 0) {
@@ -224,6 +226,7 @@ export default function Portfolio() {
 
 
   const categories = [
+    { key: 'software', title: t('portfolio.categories.software'), color: 'from-software/20 to-transparent' },
     { key: 'website', title: t('portfolio.categories.website'), color: 'from-secondary/20 to-transparent' },
     { key: 'ai-agent', title: t('portfolio.categories.ai-agent'), color: 'from-tertiary/20 to-transparent' },
     { key: 'mobile', title: t('portfolio.categories.mobile'), color: 'from-primary/20 to-transparent' }
@@ -404,6 +407,7 @@ export default function Portfolio() {
 
             // Map category key to its specific brand color gradient
             const getCategoryGradient = (catKey) => {
+              if (catKey === 'software') return 'from-software to-transparent';
               if (catKey === 'website') return 'from-secondary to-transparent';
               if (catKey === 'ai-agent') return 'from-tertiary to-transparent';
               return 'from-primary to-transparent';
@@ -453,6 +457,7 @@ export default function Portfolio() {
                     );
 
                   const getCategoryTheme = (catKey) => {
+                    if (catKey === 'software') return { bg: 'bg-software', text: 'text-software', shadow: 'rgba(125, 211, 252, 0.15)', shadowHover: 'rgba(125, 211, 252, 0.4)', activeBorder: 'border-software/40' };
                     if (catKey === 'website') return { bg: 'bg-secondary', text: 'text-secondary', shadow: 'rgba(78, 222, 163, 0.15)', shadowHover: 'rgba(78, 222, 163, 0.4)', activeBorder: 'border-secondary/40' };
                     if (catKey === 'ai-agent') return { bg: 'bg-tertiary', text: 'text-tertiary', shadow: 'rgba(255, 185, 95, 0.15)', shadowHover: 'rgba(255, 185, 95, 0.4)', activeBorder: 'border-tertiary/40' };
                     return { bg: 'bg-primary', text: 'text-primary', shadow: 'rgba(190, 194, 255, 0.15)', shadowHover: 'rgba(190, 194, 255, 0.4)', activeBorder: 'border-primary/40' };
@@ -526,7 +531,7 @@ export default function Portfolio() {
                                   />
                                   <div className="flex items-center gap-1.5 overflow-hidden relative z-10 font-mono font-bold text-[10px] text-on-surface">
                                     <span className={`w-1.5 h-3.5 rounded-full ${theme.bg}`}></span>
-                                    <span>C:/{post.category === 'website' ? 'Web' : post.category === 'ai-agent' ? 'IA' : 'Mobile'}</span>
+                                    <span>C:/{post.category === 'software' ? 'Logiciel' : post.category === 'website' ? 'Web' : post.category === 'ai-agent' ? 'IA' : 'Mobile'}</span>
                                   </div>
                                   <div className="flex items-center gap-1 text-[8px] font-sans font-bold uppercase tracking-wider text-primary group-hover:text-white transition-colors relative z-10">
                                     <span>{t('portfolio.open')}</span>

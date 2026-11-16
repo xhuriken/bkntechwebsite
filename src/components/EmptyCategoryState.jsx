@@ -29,6 +29,19 @@ export default function EmptyCategoryState({ category, isAdmin = false, onOpenCr
   // Themed visual configurations per category
   const getThemeConfig = () => {
     switch (category) {
+      case 'software':
+        return {
+          glow: 'from-software/15 via-software/5 to-transparent',
+          badgeBg: 'bg-software/10 text-software border-software/20',
+          dotBg: 'bg-software',
+          accentBorder: 'border-software/20',
+          icon: (
+            <svg className="w-8 h-8 text-software" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+              <rect x="3" y="4" width="18" height="16" rx="2.5" />
+              <path d="M3 9h18M8 13l-2 2 2 2M16 13l2 2-2 2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          ),
+        };
       case 'ai-agent':
         return {
           glow: 'from-tertiary/15 via-tertiary/5 to-transparent',

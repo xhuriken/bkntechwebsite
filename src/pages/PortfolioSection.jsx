@@ -44,6 +44,7 @@ const getDotColors = (type = '', category = '') => {
   if (t.includes('shader')) return { border: 'border-cyan-400', bg: 'bg-cyan-400', text: 'text-cyan-400' };
   
   // Fallback based on category
+  if (category === 'software') return { border: 'border-software', bg: 'bg-software', text: 'text-software' };
   if (category === 'website') return { border: 'border-secondary', bg: 'bg-secondary', text: 'text-secondary' };
   if (category === 'ai-agent') return { border: 'border-tertiary', bg: 'bg-tertiary', text: 'text-tertiary' };
   return { border: 'border-primary', bg: 'bg-primary', text: 'text-primary' };
@@ -120,6 +121,7 @@ function ProjectTerminalList({ tags = [], category = 'gaming' }) {
   // Determine tag validation text and cursor color theme by category
   const getTagColorClass = () => {
     const c = category ? category.toLowerCase() : '';
+    if (c === 'software') return 'text-software font-bold'; // Sky-accent `#7dd3fc`
     if (c === 'website') return 'text-secondary font-bold'; // Green-accent `#4edea3`
     if (c === 'ai-agent') return 'text-tertiary font-bold'; // Orange-accent `#ffb95f`
     if (c === 'mobile') return 'text-primary font-bold'; // Purple-accent `#bec2ff`
@@ -128,6 +130,7 @@ function ProjectTerminalList({ tags = [], category = 'gaming' }) {
 
   const getCursorColorClass = () => {
     const c = category ? category.toLowerCase() : '';
+    if (c === 'software') return 'bg-software';
     if (c === 'website') return 'bg-secondary';
     if (c === 'ai-agent') return 'bg-tertiary';
     if (c === 'mobile') return 'bg-primary';

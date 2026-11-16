@@ -87,6 +87,11 @@
     "back": "Back to portfolio",
     "no_projects": "No projects found in this category.",
     "empty_state": {
+      "software": {
+        "title": "Need custom business software?",
+        "desc": "We build and run our own software, such as B-Board. Need a SaaS tool, a back office or an AI integration for your business? Let’s talk.",
+        "cta": "Talk about your software"
+      },
       "ai_agent": {
         "title": "Looking for custom AI Agents or Automation?",
         "desc": "Need to automate complex business workflows, connect autonomous agents to your tools, or deploy a tailored RAG architecture? Let's discuss your requirements.",
@@ -126,6 +131,7 @@
       "changelog": "Patch Note"
     },
     "categories": {
+      "software": "Software",
       "gaming": "Gaming",
       "website": "Websites",
       "ai-agent": "AI Agents",
