@@ -41,8 +41,13 @@ export function claimCode(db, slug, { googleSub, email, firstName = '', lastName
     const done = (result) => { db.exec('COMMIT'); return result; };
     if (!campaign || campaign.status === 'draft') return done({ status: 'unknown' });
     if (campaign.mode !== 'claim') return done({ status: 'not_claim' });
-    const existing = db.prepare('SELECT code FROM promo_codes WHERE campaign_id = ? AND google_sub = ?').get(campaign.id, googleSub);
-    if (existing) return done({ status: 'already', code: existing.code });
+    const existing = db.prepare('SELECT id, code FROM promo_codes WHERE campaign_id = ? AND google_sub = ?').get(campaign.id, googleSub);
+    if (existing) {
+      // Code réclamé avant l'enregistrement du nom : on le complète, sans jamais écraser un nom déjà là.
+      db.prepare('UPDATE promo_codes SET first_name = COALESCE(first_name, ?), last_name = COALESCE(last_name, ?) WHERE id = ?')
+        .run(firstName || null, lastName || null, existing.id);
+      return done({ status: 'already', code: existing.code });
+    }
     const state = campaignState(campaign, countCodes(db, campaign.id), now);
     if (state !== 'open') return done({ status: state });
     for (let attempt = 0; ; attempt++) { // collision de code (quasi impossible) : on en tire un autre

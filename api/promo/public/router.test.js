@@ -52,6 +52,20 @@ test('qui a réclamé : prénom, nom et e-mail visibles dans l’admin, jamais s
   assert.ok(!/Ana|Martin|ana@/.test(page)); // la page d'un code ne dit pas à qui il appartient
 });
 
+test('code réclamé avant l’enregistrement du nom : complété à la reconnexion, jamais écrasé', async () => {
+  let identity = { sub: 'g-old', email: 'old@mail.test' }; // ancienne version : pas de nom
+  const { call, adminCall, db } = setup({ verifyGoogleIdToken: async () => identity });
+  const id = adminCall('POST', '/', OFFER).body.id;
+  await call('POST', '/offers/salon/claim', { idToken: 'x' });
+  identity = { ...identity, firstName: 'Enrique', lastName: 'Puerto' };
+  assert.equal((await call('POST', '/offers/salon/claim', { idToken: 'x' })).body.status, 'already');
+  const [row] = adminCall('GET', `/${id}/codes`).body;
+  assert.deepEqual([row.firstName, row.lastName], ['Enrique', 'Puerto']);
+  identity = { ...identity, firstName: 'Autre', lastName: 'Nom' };
+  await call('POST', '/offers/salon/claim', { idToken: 'x' });
+  assert.equal(db.prepare('SELECT first_name FROM promo_codes').get().first_name, 'Enrique'); // pas écrasé
+});
+
 test('offres qui ne se réclament pas, brouillon invisible, dates respectées', async () => {
   const { call, adminCall } = setup();
   adminCall('POST', '/', { ...OFFER, slug: 'flyer', mode: 'shared' });
