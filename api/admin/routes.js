@@ -12,7 +12,7 @@
 import { verifyPassword, readCookie, sessionCookie, isSameOrigin } from './auth.js';
 import { adminSessions, isAdminRequest } from './session.js';
 import { createRateLimiter, limiterKey } from '../promo/rateLimit.js';
-import { clientIp } from '../promo/handler.js';
+import { clientIp } from '../promo/clientIp.js';
 
 export function createAdminHandler({
   passwordHash = process.env.ADMIN_PASSWORD_HASH,

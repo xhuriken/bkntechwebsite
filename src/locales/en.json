@@ -312,9 +312,9 @@
       "sec6_card4_desc": "Receive your data in a structured and readable format.",
       "sec6_footer1": "To exercise any of these rights, contact us by email at:",
       "sec6_footer2": "If you feel after contacting us that your rights are not respected, you can submit a complaint to the CNIL (Commission Nationale de l'Informatique et des Libertés) on their website",
-      "sec7_title": "7. B-Ledger Launch Offer",
-      "sec7_body": "If you claim the B-Ledger launch offer on its dedicated page, we process, through Google sign-in: your Google account identifier, your email address and the reservation date. We do not receive your password or any other account information.",
-      "sec7_purpose": "Purpose & legal basis: assign a personal promo code to the first 10 sign-ups and prevent duplicates (pre-contractual measures - Art. 6.1.b GDPR). Retention: up to 12 months after the offer ends. On that page only, Google's sign-in script is loaded: Google then receives your IP address, under its own privacy policy."
+      "sec7_title": "7. Offers and Promo Codes",
+      "sec7_body": "Depending on the offer, we process: (a) if you claim a code through Google sign-in, your Google account identifier, your email address and the reservation date (we do not receive your password or any other account information); (b) if we send you a personal code, the email address we send it to; (c) when a code is used, the date of use and an internal reference (for example an invoice number). A code's public page never shows your email address.",
+      "sec7_purpose": "Purpose & legal basis: assign and track promo codes, prevent duplicates and abuse (pre-contractual measures - Art. 6.1.b GDPR). Retention: up to 12 months after the offer ends. Codes sent by email leave from our usual mailbox: no email delivery provider is used. On claim-based offer pages only, Google's sign-in script is loaded: Google then receives your IP address, under its own privacy policy."
     }
   }
 }

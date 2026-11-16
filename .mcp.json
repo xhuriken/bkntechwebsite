@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "bkn-promo": {
+      "command": "node",
+      "args": ["mcp/server.mjs"]
+    }
+  }
+}

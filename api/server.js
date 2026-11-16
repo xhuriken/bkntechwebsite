@@ -16,13 +16,17 @@ const PORT = process.env.PORT || 3001;
 
 // /promo : corps limité à 2 Ko, AVANT le parseur à 100 Mo ci-dessous (qui sert aux uploads).
 // Sans cela, n'importe qui pourrait envoyer des corps énormes à cette route publique.
-app.use('/promo', express.json({ limit: '2kb' }));
+// Les deux formats (JSON et formulaire) sont bornés : sinon un formulaire passerait par le parseur à 100 Mo.
+app.use('/promo', express.json({ limit: '2kb' }), express.urlencoded({ extended: false, limit: '2kb' }));
 app.use('/promo', (err, req, res, _next) => {
   res.status(err.status === 413 ? 413 : 400).json({ error: 'Requête invalide.' });
 });
 
+// /admin/campaigns : une offre a jusqu'à 2 × 2000 caractères (description, conditions) -> 16 Ko.
+// Déclaré AVANT /admin : un corps déjà lu n'est pas relu par le parseur suivant.
+app.use('/admin/campaigns', express.json({ limit: '16kb' }));
 // /admin : connexion admin, corps limité à 2 Ko lui aussi.
-app.use('/admin', express.json({ limit: '2kb' }));
+app.use('/admin', express.json({ limit: '2kb' }), express.urlencoded({ extended: false, limit: '2kb' }));
 app.use('/admin', (err, req, res, _next) => {
   res.status(400).json({ error: 'Requête invalide.' });
 });
@@ -54,18 +58,13 @@ app.all('/settings', (req, res) => {
   settingsHandler(req, res);
 });
 
-// Route : /promo (GET places restantes, POST réclamation). Se désactive seule (503) si mal configurée.
-const { publicRoute: promoHandler, adminRoute: promoAdminHandler } = createPromoRoutes();
-app.all('/promo', (req, res) => {
-  // .catch : un handler async qui échoue ne doit jamais tuer le process (contact, posts…).
-  Promise.resolve(promoHandler(req, res)).catch((error) => {
-    console.error('[promo] erreur inattendue :', error.code || error.message);
-    if (!res.headersSent) res.status(500).json({ error: 'Erreur serveur.' });
-  });
-});
+// Routes publiques : /promo/offers/:slug, /promo/offers/:slug/claim, /promo/codes/:code.
+// Le handler a son propre filet (.catch) : une erreur ne peut pas tuer le process.
+const { publicRoute: promoHandler, campaignAdminRoute } = createPromoRoutes();
+app.use('/promo', promoHandler);
 
-// Route : /admin/promo (gestion des codes, session admin obligatoire). AVANT /admin ci-dessous.
-app.use('/admin/promo', promoAdminHandler);
+// Route : /admin/campaigns (offres, codes, utilisations ; session admin ou clé API). AVANT /admin.
+app.use('/admin/campaigns', campaignAdminRoute);
 
 // Route : /admin/login, /admin/logout, /admin/session (session en cookie HttpOnly).
 app.use('/admin', createAdminHandler());

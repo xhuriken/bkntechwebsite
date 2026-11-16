@@ -62,6 +62,8 @@ export function getSeo(pathname, language = 'fr') {
   if (path === '/portfolio/admin') title = 'Administration | BKN Tech';
   if (path === '/portfolio/admin/promo') title = 'Codes promo | Administration BKN Tech';
   if (path === '/b-ledger/offre') title = 'Offre de lancement B-Ledger | BKN Tech';
+  if (path.startsWith('/offre/')) title = 'Offre promotionnelle | BKN Tech';
+  if (path.startsWith('/code/')) title = 'Votre code promo | BKN Tech'; // jamais le code dans le titre (historique, onglets partagés)
   const url = `${SITE_URL}${path}`;
   const organization = {
     '@type': 'Organization', '@id': `${SITE_URL}/#organization`, name: 'BKN Tech',

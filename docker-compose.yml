@@ -6,7 +6,7 @@
     container_name: traefik
     restart: unless-stopped
     command:
-      - "--log.level=DEBUG"
+      - "--log.level=INFO" # DEBUG peut écrire les en-têtes (cookie admin, clé API) dans les journaux
       - "--api.insecure=false"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"

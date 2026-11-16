@@ -21,7 +21,10 @@ import AdminModals from './components/admin/AdminModals';
 
 const PortfolioAdmin = lazy(() => import('./pages/PortfolioAdmin'));
 const AdminPromo = lazy(() => import('./pages/AdminPromo'));
-const BLedgerOffer = lazy(() => import('./pages/BLedgerOffer'));
+const OfferPage = lazy(() => import('./pages/OfferPage'));
+const CodePage = lazy(() => import('./pages/CodePage'));
+// Lien de l'offre de lancement : /b-ledger/offre (QR codes imprimés) en reste l'alias.
+const LAUNCH_SLUG = 'lancement-b-ledger';
 
 
 /**
@@ -88,7 +91,9 @@ function App({ RouterComponent = Router, routerProps = {}, initialContent = {} }
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/portfolio/section/gaming" element={<GamingDevlog />} />
                 {['website', 'mobile', 'ai-agent'].map(category => <Route key={category} path={`/portfolio/section/${category}`} element={<PortfolioSection key={category} category={category} />} />)}
-                <Route path="/b-ledger/offre" element={<Suspense fallback={<p className="text-center">Chargement…</p>}><BLedgerOffer /></Suspense>} />
+                <Route path="/b-ledger/offre" element={<Suspense fallback={<p className="text-center">Chargement…</p>}><OfferPage slug={LAUNCH_SLUG} /></Suspense>} />
+                <Route path="/offre/:slug" element={<Suspense fallback={<p className="text-center">Chargement…</p>}><OfferPage /></Suspense>} />
+                <Route path="/code/:code" element={<Suspense fallback={<p className="text-center">Chargement…</p>}><CodePage /></Suspense>} />
                 <Route path="/portfolio/admin" element={<Suspense fallback={<p className="text-center">Administration…</p>}><PortfolioAdmin /></Suspense>} />
                 <Route path="/portfolio/admin/promo" element={<Suspense fallback={<p className="text-center">Administration…</p>}><AdminPromo /></Suspense>} />
                 <Route path="/game" element={<Navigate to="/portfolio/section/gaming" replace />} />

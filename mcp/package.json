@@ -1,0 +1,15 @@
+{
+  "name": "bkn-promo-mcp",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Serveur MCP local : gérer les offres et codes promo de bkntech.fr depuis une IA.",
+  "type": "module",
+  "engines": { "node": ">=22.9" },
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "zod": "4.6.7"
+  }
+}

@@ -20,14 +20,17 @@ const settings = Object.fromEntries(['featuredBannerUrl', 'devlogBannerUrl']
   .map(key => [key, rawSettings[key]]));
 const pageFile = pathname => path.join(root, 'dist', pathname === '/' ? 'index.html' : `${pathname.slice(1)}/index.html`);
 
-for (const pathname of [...publicPaths, '/portfolio/admin', '/portfolio/admin/promo', '/b-ledger/offre', '/404']) {
+// /offre/_ et /code/_ : coquilles uniques servies par nginx pour TOUS les liens d'offre et de code.
+const SHELL_FILES = { '/offre/_': 'dist/offre/index.html', '/code/_': 'dist/code/index.html' };
+for (const pathname of [...publicPaths, '/portfolio/admin', '/portfolio/admin/promo', '/b-ledger/offre', '/offre/_', '/code/_', '/404']) {
   // Snapshot only the public data needed by this route. Live API refresh stays enabled.
   const content = pathname.startsWith('/portfolio') && !pathname.startsWith('/portfolio/admin') ? { posts, settings } : { settings };
-  const shells = { '/portfolio/admin': '<p>Administration BKN Tech</p>', '/portfolio/admin/promo': '<p>Codes promo</p>', '/b-ledger/offre': '<p>Offre de lancement B-Ledger</p>' };
+  const shells = { '/portfolio/admin': '<p>Administration BKN Tech</p>', '/portfolio/admin/promo': '<p>Codes promo</p>', '/b-ledger/offre': '<p>Offre de lancement B-Ledger</p>',
+    '/offre/_': '<p>Chargement de l’offre…</p>', '/code/_': '<p>Vérification du code…</p>' };
   const markup = shells[pathname] ?? render(pathname, content);
   const html = template.replace('<!--seo-head-->', renderSeoTags(getSeo(pathname)))
     .replace('<div id="root"></div>', `<div id="root">${markup}</div>\n<script id="site-content" type="application/json">${serializeJson(content)}</script>`);
-  const target = pathname === '/404' ? path.join(root, 'dist/404.html') : pageFile(pathname);
+  const target = pathname === '/404' ? path.join(root, 'dist/404.html') : SHELL_FILES[pathname] ? path.join(root, SHELL_FILES[pathname]) : pageFile(pathname);
   await mkdir(path.dirname(target), { recursive: true });
   await writeFile(target, html);
 }
