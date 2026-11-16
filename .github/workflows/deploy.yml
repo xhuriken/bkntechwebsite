@@ -68,6 +68,7 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           PROMO_API_KEY_HASH: ${{ secrets.PROMO_API_KEY_HASH }}
+          POSTS_API_KEY_HASH: ${{ secrets.POSTS_API_KEY_HASH }}
         run: |
           VPS_HOST="${VPS_HOST:-151.80.147.208}"
           VPS_PORT="${VPS_PORT:-22}"
@@ -86,6 +87,7 @@ jobs:
             echo "DISCORD_WEBHOOK_URL=$DISCORD_WEBHOOK_URL"
             echo "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID"
             echo "PROMO_API_KEY_HASH=$PROMO_API_KEY_HASH"
+            echo "POSTS_API_KEY_HASH=$POSTS_API_KEY_HASH"
           } > /tmp/bkntech.env
 
           # 2. Transférer vers .env et .env.production sur le VPS

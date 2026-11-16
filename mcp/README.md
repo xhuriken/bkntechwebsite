@@ -1,14 +1,17 @@
 # Serveur MCP « bkn-promo »
 
-Gérer les offres et codes promo de bkntech.fr depuis une IA (Claude Code, Claude Desktop ou tout
-client MCP). Le serveur tourne **sur votre PC** (transport stdio) et appelle l'API du site avec une
-clé dédiée qui n'ouvre **que** la gestion des offres et des codes.
+Gérer les offres et codes promo de bkntech.fr, et les articles de son portfolio, depuis une IA
+(Claude Code, Claude Desktop ou tout client MCP). Le serveur tourne **sur votre PC** (transport stdio)
+et appelle l'API du site avec deux clés distinctes : l'une n'ouvre **que** les offres et les codes,
+l'autre **que** les articles du portfolio.
 
 ## Installation (une fois)
 
 1. Créer la clé, à la racine du site : `node scripts/promo-api-key.mjs`
    - `PROMO_API_KEY_HASH=…` → dans `.env` du site **et** dans le secret GitHub du même nom (puis déployer) ;
    - `BKN_PROMO_API_KEY=…` → dans `mcp/.env` (copier `mcp/.env.example`). Jamais ailleurs.
+   - Même chose pour les articles : `node scripts/posts-api-key.mjs` → `POSTS_API_KEY_HASH` (serveur et
+     secret GitHub), `BKN_POSTS_API_KEY` (dans `mcp/.env`).
 2. Installer les dépendances : `cd mcp && npm install`
 
 ## Brancher une IA
@@ -34,9 +37,14 @@ clé dédiée qui n'ouvre **que** la gestion des offres et des codes.
 
 ⚠️ = action définitive, marquée « destructive » : l'IA doit vous demander confirmation.
 
+**Portfolio** : `list_posts`, `get_post`, `update_post` (modifie seulement les champs fournis : catégorie,
+textes fr/en, image principale, galerie, tags, date). Ni création ni suppression : elles restent dans
+l'admin du site.
+
 ## Sécurité
 
 - Clé perdue ou montrée par erreur : relancer `node scripts/promo-api-key.mjs`, remplacer les deux
   valeurs, redéployer. L'ancienne clé cesse aussitôt de fonctionner.
-- La clé donne accès aux e-mails des clients liés aux codes : ne la partagez pas.
+- La clé promo donne accès aux e-mails des clients liés aux codes : ne la partagez pas.
+- La clé des articles ne voit aucune donnée client, mais modifie le site public : même prudence.
 - Chaque modification faite avec la clé est tracée dans le journal du serveur (sans contenu).

@@ -10,6 +10,7 @@ import uploadHandler from './upload.js';
 import settingsHandler from './settings.js';
 import { createPromoRoutes } from './promo/index.js';
 import { createAdminHandler } from './admin/routes.js';
+import { createPostsAdminHandler } from './posts/adminRouter.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -25,6 +26,8 @@ app.use('/promo', (err, req, res, _next) => {
 // /admin/campaigns : une offre a jusqu'à 2 × 2000 caractères (description, conditions) -> 16 Ko.
 // Déclaré AVANT /admin : un corps déjà lu n'est pas relu par le parseur suivant.
 app.use('/admin/campaigns', express.json({ limit: '16kb' }));
+// /admin/posts : un article a jusqu'à 2 × 20 000 caractères de contenu (fr, en) -> 64 Ko.
+app.use('/admin/posts', express.json({ limit: '64kb' }));
 // /admin : connexion admin, corps limité à 2 Ko lui aussi.
 app.use('/admin', express.json({ limit: '2kb' }), express.urlencoded({ extended: false, limit: '2kb' }));
 app.use('/admin', (err, req, res, _next) => {
@@ -65,6 +68,9 @@ app.use('/promo', promoHandler);
 
 // Route : /admin/campaigns (offres, codes, utilisations ; session admin ou clé API). AVANT /admin.
 app.use('/admin/campaigns', campaignAdminRoute);
+
+// Route : /admin/posts (articles du portfolio : lire, modifier ; session admin ou clé API bkc_). AVANT /admin.
+app.use('/admin/posts', createPostsAdminHandler());
 
 // Route : /admin/login, /admin/logout, /admin/session (session en cookie HttpOnly).
 app.use('/admin', createAdminHandler());
