@@ -9,11 +9,13 @@
     "check:seo": "node scripts/check-seo.mjs",
     "check:seo:http": "node scripts/check-seo.mjs http://127.0.0.1:4173",
     "lint": "oxlint",
+    "test:api": "node --test \"api/**/*.test.js\"",
     "preview": "vite preview"
   },
   "dependencies": {
     "express": "^4.22.2",
     "framer-motion": "^12.42.2",
+    "google-auth-library": "^11.3.2",
     "i18next": "^26.3.6",
     "nodemailer": "^9.0.3",
     "react": "^19.2.7",

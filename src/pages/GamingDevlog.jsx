@@ -92,7 +92,7 @@ export default function GamingDevlog() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'fr';
   const location = useLocation();
-  const { isAdmin, openCreatePost, openEditPost, openBannerModal, openConfirmModal, adminPassword, dataRefreshCounter, triggerRefresh } = useAdmin();
+  const { isAdmin, openCreatePost, openEditPost, openBannerModal, openConfirmModal, dataRefreshCounter, triggerRefresh } = useAdmin();
 
 
   // API posts loading
@@ -506,7 +506,7 @@ export default function GamingDevlog() {
 function DevlogPostCard({ post, currentLang }) {
   const { t } = useTranslation();
   const { openLightbox } = useImageLightbox();
-  const { isAdmin, openEditPost, openConfirmModal, adminPassword, triggerRefresh } = useAdmin();
+  const { isAdmin, openEditPost, openConfirmModal, triggerRefresh } = useAdmin();
 
   const relativeDate = getRelativeDateString(post.date, currentLang);
   const typeStyle = getTypeStyles(post.type);
@@ -691,10 +691,8 @@ function DevlogPostCard({ post, currentLang }) {
                       message: `Êtes-vous sûr de vouloir supprimer définitivement le devlog "${post.title?.fr || 'ce post'}" ?`,
                       onConfirm: async () => {
                         try {
-                          const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || '';
                           await fetch(`/api/posts?id=${post.id}`, {
                             method: 'DELETE',
-                            headers: { 'x-admin-password': passToUse }
                           });
                           triggerRefresh();
                         } catch (err) {

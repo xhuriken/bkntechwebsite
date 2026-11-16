@@ -36,6 +36,9 @@
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        # Identifiant client Google : public (visible dans la page). Vide = offre indisponible.
+        VITE_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
     container_name: bkntech-frontend
     restart: unless-stopped
     depends_on:
@@ -70,6 +73,8 @@
       - ./public/uploads:/app/public/uploads
       - ./api/posts.json:/app/api/posts.json
       - ./api/settings.json:/app/api/settings.json
+      # Base SQLite des réclamations promo : conservée entre les redéploiements.
+      - ./api/data:/app/api/data
     # L'API n'est PAS exposée à internet, uniquement via Nginx interne
     networks:
       - web

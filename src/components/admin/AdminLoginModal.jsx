@@ -4,11 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAdmin } from '../../context/AdminContext';
 import InputField from '../InputField';
 import Button from '../Button';
+import HoneypotField from './HoneypotField';
 
 export default function AdminLoginModal() {
   const { t } = useTranslation();
   const { isLoginModalOpen, setIsLoginModalOpen, login } = useAdmin();
   const [password, setPassword] = useState('');
+  const [trap, setTrap] = useState(''); // champ piège : reste vide pour un humain
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -32,16 +34,11 @@ export default function AdminLoginModal() {
     setLoading(true);
     setErrorMsg('');
 
-    const success = await login(trimmedPass);
+    const result = await login(trimmedPass, trap);
     setLoading(false);
+    setPassword(''); // le mot de passe ne reste jamais en mémoire après l'essai
 
-
-    if (success) {
-      setPassword('');
-      setIsLoginModalOpen(false);
-    } else {
-      setErrorMsg(t('contact.status.error_send') || 'Mot de passe incorrect.');
-    }
+    if (!result.ok) setErrorMsg(result.error); // « Mot de passe incorrect. » ou « Trop d'essais... »
   };
 
   return (
@@ -74,7 +71,8 @@ export default function AdminLoginModal() {
 
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="p-6 space-y-6 relative">
+            <HoneypotField value={trap} onChange={setTrap} />
             <p className="text-xs text-on-surface-variant leading-relaxed">
               Entrez le mot de passe administrateur, si vous l'êtes ahah ? non ? sortez d'ici... s'il vous plaît...
             </p>

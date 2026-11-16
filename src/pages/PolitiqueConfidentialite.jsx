@@ -170,6 +170,15 @@ export default function PolitiqueConfidentialite() {
             </p>
           </div>
         </motion.section>
+
+        {/* Section 7 : offre de lancement B-Ledger */}
+        <motion.section variants={itemVariants} className="flex flex-col gap-3 md:col-span-2 border-t border-white/5 pt-6">
+          <h2 className="font-sans font-bold text-sm uppercase tracking-wider text-primary">{t('legal.privacy.sec7_title')}</h2>
+          <div className="text-sm font-normal text-on-surface leading-relaxed">
+            {t('legal.privacy.sec7_body')}
+            <p className="mt-2 text-xs text-on-surface/80">{t('legal.privacy.sec7_purpose')}</p>
+          </div>
+        </motion.section>
       </div>
     </motion.div>
   );

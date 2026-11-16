@@ -59,6 +59,7 @@ rsync_cmd() {
     sshpass -p "$VPS_PASSWORD" rsync -avz --delete \
         --exclude='node_modules' \
         --exclude='dist' \
+        --exclude='/api/data/' \
         --exclude='.git' \
         --exclude='.env' \
         --exclude='.env.*' \
@@ -88,7 +89,8 @@ SMTP_SECURE=true
 SMTP_USER=contact@bkntech.fr
 SMTP_PASS=${SMTP_PASS}
 SMTP_TO=contact@bkntech.fr
-ADMIN_PASSWORD=${ADMIN_PASSWORD}
+ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH}
+GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
 ENVEOF"
 echo -e "  ${GREEN}✓ .env.production créé${NC}"
 

@@ -72,10 +72,10 @@ RSYNC-CMD "$wslSrc/" "$VPS_PATH/"
 # ─── Étape 4 : Créer .env.production sur le VPS ──────────────────────────────
 Write-Host "`n[4/5] Creation du .env.production..." -ForegroundColor Yellow
 
-# Lire SMTP_PASS et ADMIN_PASSWORD depuis .env local
+# Lire SMTP_PASS et ADMIN_PASSWORD_HASH depuis .env local
 $smtpPass = [System.Environment]::GetEnvironmentVariable("SMTP_PASS")
 if (-not $smtpPass) { $smtpPass = "" }
-$adminPass = [System.Environment]::GetEnvironmentVariable("ADMIN_PASSWORD")
+$adminPass = [System.Environment]::GetEnvironmentVariable("ADMIN_PASSWORD_HASH")
 if (-not $adminPass) { $adminPass = "" }
 
 SSH-CMD @"
@@ -86,7 +86,7 @@ SMTP_SECURE=true
 SMTP_USER=contact@bkntech.fr
 SMTP_PASS=$smtpPass
 SMTP_TO=contact@bkntech.fr
-ADMIN_PASSWORD=$adminPass
+ADMIN_PASSWORD_HASH=$adminPass
 ENVEOF
 "@
 

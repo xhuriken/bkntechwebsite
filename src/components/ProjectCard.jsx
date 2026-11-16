@@ -162,10 +162,8 @@ export default function ProjectCard({ post, onEdit, openLightbox }) {
                       message: `Êtes-vous sûr de vouloir supprimer définitivement "${title}" ?`,
                       onConfirm: async () => {
                         try {
-                          const passToUse = localStorage.getItem('bkn_admin_pass') || '';
                           await fetch(`/api/posts?id=${post.id}`, {
                             method: 'DELETE',
-                            headers: { 'x-admin-password': passToUse }
                           });
                           triggerRefresh();
                         } catch (err) {

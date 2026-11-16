@@ -164,7 +164,7 @@ export default function Portfolio() {
   const initialContent = useSiteContent();
   const { t, i18n } = useTranslation();
   const { openLightbox } = useImageLightbox();
-  const { isAdmin, openCreatePost, openEditPost, openBannerModal, openConfirmModal, adminPassword, dataRefreshCounter, triggerRefresh } = useAdmin();
+  const { isAdmin, openCreatePost, openEditPost, openBannerModal, openConfirmModal, dataRefreshCounter, triggerRefresh } = useAdmin();
 
   const navigate = useNavigate();
   const [posts, setPosts] = useState(() => initialContent.posts?.filter(post => post.category !== 'gaming') || []);
@@ -583,10 +583,8 @@ export default function Portfolio() {
                                                 message: `Êtes-vous sûr de vouloir supprimer définitivement "${post.title?.fr || 'ce projet'}" ? Cette action est irréversible.`,
                                                 onConfirm: async () => {
                                                   try {
-                                                    const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || '';
                                                     await fetch(`/api/posts?id=${post.id}`, {
                                                       method: 'DELETE',
-                                                      headers: { 'x-admin-password': passToUse }
                                                     });
                                                     triggerRefresh();
                                                   } catch (err) {

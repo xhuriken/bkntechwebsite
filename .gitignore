@@ -28,3 +28,6 @@ dist-ssr
 
 # Temporary python scripts
 fix_pass*.py
+
+# Base SQLite des réclamations promo (données personnelles)
+api/data/

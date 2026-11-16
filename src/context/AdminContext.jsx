@@ -3,7 +3,6 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const AdminContext = createContext();
 
 export function AdminProvider({ children }) {
-  const [adminPassword, setAdminPassword] = useState(() => typeof window === 'undefined' ? '' : localStorage.getItem('bkn_admin_pass') || '');
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   
@@ -38,55 +37,41 @@ export function AdminProvider({ children }) {
     };
   }, [isLoginModalOpen, isPostModalOpen, bannerModalType, confirmModalState]);
 
-  // Verify auth on mount if password exists in localStorage
+  // Session admin : un cookie HttpOnly posé par l'API (illisible ici, c'est voulu).
+  // Au chargement, on demande seulement au serveur « suis-je connecté ? ».
   useEffect(() => {
-    if (adminPassword) {
-      verifyPassword(adminPassword);
-    }
+    localStorage.removeItem('bkn_admin_pass'); // nettoie l'ancien mot de passe stocké en clair
+    fetch('/api/admin/session', { credentials: 'same-origin' })
+      .then((res) => (res.ok ? res.json() : { admin: false }))
+      .then((data) => setIsAdmin(data.admin === true))
+      .catch(() => setIsAdmin(false));
   }, []);
 
-  const verifyPassword = async (pass) => {
-    if (!pass) return false;
+  /** Renvoie { ok: true } ou { ok: false, error } (message de l'API : mot de passe, trop d'essais...). */
+  const login = async (pass, trap = '') => {
     try {
-      const res = await fetch('/api/posts?verify=true', {
-        headers: {
-          'x-admin-password': pass
-        }
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pass, website: trap }), // website : champ piège anti-robots
       });
-      if (res.ok) {
-        setIsAdmin(true);
-        setAdminPassword(pass);
-        localStorage.setItem('bkn_admin_pass', pass);
-        return true;
-      } else {
-        setIsAdmin(false);
-        setAdminPassword('');
-        localStorage.removeItem('bkn_admin_pass');
-        return false;
-      }
-    } catch (err) {
-      console.error('Admin Auth Check Failed:', err);
-      setIsAdmin(false);
-      return false;
-    }
-  };
-
-
-  const login = async (pass) => {
-    const success = await verifyPassword(pass);
-    if (success) {
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) return { ok: false, error: data.error || 'Connexion impossible.' };
+      setIsAdmin(true);
       setIsLoginModalOpen(false);
+      return { ok: true };
+    } catch {
+      return { ok: false, error: 'Serveur injoignable.' };
     }
-    return success;
   };
 
-  const logout = () => {
+  const logout = async () => {
     setIsAdmin(false);
-    setAdminPassword('');
-    localStorage.removeItem('bkn_admin_pass');
     setIsPostModalOpen(false);
     setBannerModalType(null);
     setConfirmModalState(null);
+    await fetch('/api/admin/logout', { method: 'POST', credentials: 'same-origin' }).catch(() => {});
   };
 
   // Quick action helpers
@@ -125,7 +110,6 @@ export function AdminProvider({ children }) {
   return (
     <AdminContext.Provider value={{
       isAdmin,
-      adminPassword,
       isLoginModalOpen,
       setIsLoginModalOpen,
       isPostModalOpen,

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { isAdminRequest } from './admin/session.js';
 
 /**
  * Serverless API handler for BKN Tech Portfolio Posts
@@ -7,10 +8,8 @@ import path from 'path';
  * Uses local posts.json as a database, fallback to /tmp/posts.json in read-only environments.
  */
 export default async function handler(req, res) {
-  // CORS Headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-password');
+  // Pas d'en-tête CORS : l'API ne sert que le site lui-même (même origine via nginx).
+  // L'ancien « Access-Control-Allow-Origin: * » laissait n'importe quel site l'appeler.
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -74,24 +73,8 @@ export default async function handler(req, res) {
   };
 
   // Authentication Helper
-  const checkAuth = () => {
-    const adminPassword = (process.env.ADMIN_PASSWORD || '').trim();
-    if (!adminPassword) {
-      console.warn("[BKN Auth] Variable ADMIN_PASSWORD non définie sur le serveur.");
-      return false;
-    }
-    const clientPassword = (
-      req.headers['x-admin-password'] ||
-      req.headers['authorization'] ||
-      req.query?.pass ||
-      req.query?.password ||
-      req.body?.adminPassword ||
-      ''
-    ).trim();
-
-    if (!clientPassword) return false;
-    return clientPassword === adminPassword;
-  };
+  // Session admin en cookie HttpOnly (voir api/admin). Plus de mot de passe dans les en-têtes ni l'URL.
+  const checkAuth = () => isAdminRequest(req);
 
   const posts = readDb();
   posts.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));

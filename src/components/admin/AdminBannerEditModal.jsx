@@ -6,7 +6,7 @@ import SingleMediaEditor from './SingleMediaEditor';
 
 export default function AdminBannerEditModal() {
   const { t } = useTranslation();
-  const { bannerModalType, closeBannerModal, adminPassword, triggerRefresh } = useAdmin();
+  const { bannerModalType, closeBannerModal, triggerRefresh } = useAdmin();
   const [currentUrl, setCurrentUrl] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -47,12 +47,10 @@ export default function AdminBannerEditModal() {
 
   const handleSave = async (newUrl) => {
     try {
-      const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || '';
       const res = await fetch('/api/settings', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'x-admin-password': passToUse
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           key: settingKey,
@@ -116,7 +114,6 @@ export default function AdminBannerEditModal() {
                   : 'Cette bannière est affichée en haut de la timeline Devlog Vacuum Protocol.'
                 }
                 currentUrl={currentUrl}
-                adminPassword={adminPassword}
                 onSave={handleSave}
                 onClose={closeBannerModal}
               />

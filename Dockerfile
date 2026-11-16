@@ -10,6 +10,10 @@ RUN npm ci
 # Copier le reste du code source
 COPY . .
 
+# Identifiant client Google (public) injecté au build : Vite le fige dans le JavaScript.
+ARG VITE_GOOGLE_CLIENT_ID
+ENV VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID
+
 # Lancer le build de production
 RUN npm run build
 

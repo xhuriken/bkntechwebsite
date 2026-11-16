@@ -8,3 +8,4 @@ dist-ssr
 .gitignore
 *.log
 .DS_Store
+api/data

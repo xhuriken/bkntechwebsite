@@ -14,7 +14,6 @@ export default function AdminDevlogEditModal() {
     editingPost,
     defaultCategory,
     closePostModal,
-    adminPassword,
     triggerRefresh
   } = useAdmin();
 
@@ -159,13 +158,11 @@ export default function AdminDevlogEditModal() {
       const reader = new FileReader();
       reader.onload = async () => {
         const base64Data = reader.result;
-        const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || '';
 
         const res = await fetch('/api/upload', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'x-admin-password': passToUse
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             fileData: base64Data,
@@ -241,12 +238,10 @@ export default function AdminDevlogEditModal() {
     };
 
     try {
-      const passToUse = adminPassword || localStorage.getItem('bkn_admin_pass') || '';
       const res = await fetch('/api/posts', {
         method: editingPost ? 'PUT' : 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'x-admin-password': passToUse
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(postPayload)
       });

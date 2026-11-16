@@ -110,18 +110,26 @@ async function main() {
   fs.writeFileSync(postsJsonPath, JSON.stringify(posts, null, 2), 'utf8');
   console.log('✅ Successfully updated local api/posts.json!');
 
-  // 1.5 Remote VPS API Sync (HTTPS + Authenticated Header)
-  const env = loadEnv();
-  const adminPassword = process.env.ADMIN_PASSWORD || env.ADMIN_PASSWORD || 'BknAdmin2026!';
+  // 1.5 Synchronisation avec l'API du VPS : connexion (cookie de session) puis publication.
+  // Le mot de passe vient UNIQUEMENT de la variable ADMIN_PASSWORD donnée à la commande :
+  // ni dans le code, ni dans .env (qui ne garde que l'empreinte ADMIN_PASSWORD_HASH).
+  const env = loadEnv(); // sert au webhook Discord plus bas
+  const adminPassword = process.env.ADMIN_PASSWORD;
   const remoteApiUrl = process.env.REMOTE_API_URL || 'https://bkntech.fr/api/posts';
+  const apiBase = remoteApiUrl.replace(/\/posts$/, '');
   try {
-    console.log(`🌐 Sending secure HTTPS request to Remote VPS API (${remoteApiUrl})...`);
+    if (!adminPassword) throw new Error('ADMIN_PASSWORD absent : lancer avec ADMIN_PASSWORD=... node scripts/publish_vacuum_post.js');
+    console.log(`🌐 Connexion admin puis envoi à l'API distante (${remoteApiUrl})...`);
+    const login = await fetch(`${apiBase}/admin/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: adminPassword })
+    });
+    if (!login.ok) throw new Error(`connexion refusée (${login.status})`);
+    const cookie = login.headers.get('set-cookie')?.split(';')[0];
     const apiRes = await fetch(remoteApiUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-admin-password': adminPassword
-      },
+      headers: { 'Content-Type': 'application/json', Cookie: cookie },
       body: JSON.stringify(newPost)
     });
     if (apiRes.ok) {

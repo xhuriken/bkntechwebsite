@@ -54,7 +54,7 @@ VPS_PORT     = int(env_vars.get("VPS_PORT", "22"))
 VPS_SSH_KEY  = env_vars.get("VPS_SSH_KEY_PATH", "~/.ssh/id_ed25519").strip()
 VPS_SSH_KEY  = str(Path(VPS_SSH_KEY.replace("~", str(Path.home()))))
 SMTP_PASS    = env_vars.get("SMTP_PASS", "")
-ADMIN_PASSWORD = env_vars.get("ADMIN_PASSWORD", "")
+ADMIN_PASSWORD_HASH = env_vars.get("ADMIN_PASSWORD_HASH", "")
 REMOTE_PATH  = "/var/www/bkntech"
 
 print(f"\n{C}==============================================={NC}")
@@ -178,7 +178,7 @@ SMTP_SECURE=true
 SMTP_USER=contact@bkntech.fr
 SMTP_PASS={SMTP_PASS}
 SMTP_TO=contact@bkntech.fr
-ADMIN_PASSWORD={ADMIN_PASSWORD}
+ADMIN_PASSWORD_HASH={ADMIN_PASSWORD_HASH}
 """
 run_ssh(ssh, f"cat > {REMOTE_PATH}/.env.production << 'ENVEOF'\n{env_prod_content}\nENVEOF")
 ok(".env.production créé")

@@ -185,7 +185,7 @@ export default function PortfolioSection({ category }) {
   const initialContent = useSiteContent();
   const { t, i18n } = useTranslation();
   const { openLightbox } = useImageLightbox();
-  const { isAdmin, openCreatePost, openEditPost, openConfirmModal, adminPassword, dataRefreshCounter, triggerRefresh } = useAdmin();
+  const { isAdmin, openCreatePost, openEditPost, openConfirmModal, dataRefreshCounter, triggerRefresh } = useAdmin();
 
   const [posts, setPosts] = useState(() => initialContent.posts?.filter(post => post.category === category).sort((a, b) => new Date(b.date) - new Date(a.date)) || []);
   const [loading, setLoading] = useState(!initialContent.posts);

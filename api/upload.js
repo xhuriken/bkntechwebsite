@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { optimizeUploadedImage } from './imageOptimizer.js';
+import { isAdminRequest } from './admin/session.js';
 
 /**
  * Serverless / Express API handler for saving uploaded images and MP4/WebM videos
@@ -10,33 +11,12 @@ import { optimizeUploadedImage } from './imageOptimizer.js';
  * Les vidéos (MP4, WebM) sont validées et enregistrées avec leur format natif.
  */
 export default async function handler(req, res) {
-  // CORS Preflight
+  // Pas de CORS : même origine uniquement. Contrôle par la session admin (cookie HttpOnly).
   if (req.method === 'OPTIONS') {
-    if (res.setHeader) {
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-password');
-    }
-    return res.status(200).end();
+    return res.status(204).end();
   }
 
-  // Authentication check
-  const adminPassword = (process.env.ADMIN_PASSWORD || '').trim();
-  if (!adminPassword) {
-    console.warn("[BKN Auth] Variable ADMIN_PASSWORD non définie sur le serveur.");
-    return res.status(500).json({ error: 'Server authentication misconfigured.' });
-  }
-
-  const reqPassword = (
-    req.headers['x-admin-password'] ||
-    req.headers['authorization'] ||
-    req.body?.adminPassword ||
-    ''
-  ).trim();
-
-  const isValidPassword = reqPassword && reqPassword === adminPassword;
-
-  if (!isValidPassword) {
+  if (!isAdminRequest(req)) {
     return res.status(401).json({ error: 'Unauthorized. Invalid password.' });
   }
 

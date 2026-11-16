@@ -60,6 +60,8 @@ export function getSeo(pathname, language = 'fr') {
     : categoryCopy[category] ? [categoryCopy[category][index], categoryDescriptions[category][index]]
       : [lang === 'fr' ? 'Page introuvable | BKN Tech' : 'Page not found | BKN Tech', pageCopy['/'][index][1]]);
   if (path === '/portfolio/admin') title = 'Administration | BKN Tech';
+  if (path === '/portfolio/admin/promo') title = 'Codes promo | Administration BKN Tech';
+  if (path === '/b-ledger/offre') title = 'Offre de lancement B-Ledger | BKN Tech';
   const url = `${SITE_URL}${path}`;
   const organization = {
     '@type': 'Organization', '@id': `${SITE_URL}/#organization`, name: 'BKN Tech',

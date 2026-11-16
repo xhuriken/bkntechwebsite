@@ -311,7 +311,10 @@
       "sec6_card4_title": "Portabilité des données",
       "sec6_card4_desc": "Recevoir vos données dans un format structuré et lisible.",
       "sec6_footer1": "Pour exercer l'un de ces droits, contactez-nous par email à :",
-      "sec6_footer2": "Si vous estimez après nous avoir contactés que vos droits ne sont pas respectés, vous pouvez adresser une réclamation auprès de la CNIL (Commission Nationale de l'Informatique et des Libertés) sur leur site"
+      "sec6_footer2": "Si vous estimez après nous avoir contactés que vos droits ne sont pas respectés, vous pouvez adresser une réclamation auprès de la CNIL (Commission Nationale de l'Informatique et des Libertés) sur leur site",
+      "sec7_title": "7. Offre de lancement B-Ledger",
+      "sec7_body": "Si vous réclamez l'offre de lancement B-Ledger sur la page dédiée, nous traitons, via la connexion Google : votre identifiant de compte Google, votre adresse e-mail et la date de réservation. Nous ne recevons ni votre mot de passe ni d'autres informations de votre compte.",
+      "sec7_purpose": "Finalité & base légale : attribuer un code promotionnel personnel aux 10 premiers inscrits et éviter les doublons (mesures précontractuelles - Art. 6.1.b RGPD). Conservation : jusqu'à 12 mois après la fin de l'offre. Sur cette page uniquement, le script de connexion de Google est chargé : Google reçoit alors votre adresse IP, selon sa propre politique de confidentialité."
     }
   }
 }

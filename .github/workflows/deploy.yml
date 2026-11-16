@@ -37,6 +37,7 @@ jobs:
             --exclude='dist-ssr' \
             --exclude='/api/posts.json' \
             --exclude='/api/settings.json' \
+            --exclude='/api/data/' \
             --exclude='/public/uploads/' \
             --exclude='.git' \
             --exclude='.env' \
@@ -50,8 +51,9 @@ jobs:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_PORT: ${{ secrets.VPS_PORT }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
-          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          ADMIN_PASSWORD_HASH: ${{ secrets.ADMIN_PASSWORD_HASH }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
         run: |
           VPS_HOST="${VPS_HOST:-151.80.147.208}"
           VPS_PORT="${VPS_PORT:-22}"
@@ -66,8 +68,9 @@ jobs:
             echo "SMTP_USER=contact@bkntech.fr"
             echo "SMTP_PASS=$SMTP_PASS"
             echo "SMTP_TO=contact@bkntech.fr"
-            echo "ADMIN_PASSWORD=$ADMIN_PASSWORD"
+            echo "ADMIN_PASSWORD_HASH=$ADMIN_PASSWORD_HASH"
             echo "DISCORD_WEBHOOK_URL=$DISCORD_WEBHOOK_URL"
+            echo "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID"
           } > /tmp/bkntech.env
 
           # 2. Transférer vers .env et .env.production sur le VPS

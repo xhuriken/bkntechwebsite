@@ -14,7 +14,6 @@ export default function AdminPostEditModal() {
     editingPost,
     defaultCategory,
     closePostModal,
-    adminPassword,
     triggerRefresh
   } = useAdmin();
 
@@ -167,8 +166,7 @@ export default function AdminPostEditModal() {
         const res = await fetch('/api/upload', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'x-admin-password': adminPassword
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             fileData: dataUrl,
@@ -236,8 +234,7 @@ export default function AdminPostEditModal() {
       const res = await fetch('/api/posts', {
         method,
         headers: {
-          'Content-Type': 'application/json',
-          'x-admin-password': adminPassword
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
       });

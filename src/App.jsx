@@ -20,6 +20,8 @@ import { AdminProvider } from './context/AdminContext';
 import AdminModals from './components/admin/AdminModals';
 
 const PortfolioAdmin = lazy(() => import('./pages/PortfolioAdmin'));
+const AdminPromo = lazy(() => import('./pages/AdminPromo'));
+const BLedgerOffer = lazy(() => import('./pages/BLedgerOffer'));
 
 
 /**
@@ -86,7 +88,9 @@ function App({ RouterComponent = Router, routerProps = {}, initialContent = {} }
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/portfolio/section/gaming" element={<GamingDevlog />} />
                 {['website', 'mobile', 'ai-agent'].map(category => <Route key={category} path={`/portfolio/section/${category}`} element={<PortfolioSection key={category} category={category} />} />)}
+                <Route path="/b-ledger/offre" element={<Suspense fallback={<p className="text-center">Chargement…</p>}><BLedgerOffer /></Suspense>} />
                 <Route path="/portfolio/admin" element={<Suspense fallback={<p className="text-center">Administration…</p>}><PortfolioAdmin /></Suspense>} />
+                <Route path="/portfolio/admin/promo" element={<Suspense fallback={<p className="text-center">Administration…</p>}><AdminPromo /></Suspense>} />
                 <Route path="/game" element={<Navigate to="/portfolio/section/gaming" replace />} />
                 <Route path="/dkp" element={<ExternalRedirect url="https://dkp95.fr" />} />
                 <Route path="/dkp95" element={<ExternalRedirect url="https://dkp95.fr" />} />

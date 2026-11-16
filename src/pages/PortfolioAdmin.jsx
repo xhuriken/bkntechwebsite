@@ -8,6 +8,8 @@ import { formatLocaleDate } from '../utils/dateFormatter';
 import BannerSettingsCard from '../components/admin/BannerSettingsCard';
 import MediaSlotEditor from '../components/admin/MediaSlotEditor';
 import PatchNoteEditor from '../components/admin/PatchNoteEditor';
+import { useAdmin } from '../context/AdminContext';
+import HoneypotField from '../components/admin/HoneypotField';
 
 /**
  * Helper to extract YouTube video ID
@@ -37,8 +39,10 @@ function isNativeVideoUrl(url = '') {
 export default function PortfolioAdmin() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'fr';
-  const [password, setPassword] = useState(() => typeof window === 'undefined' ? '' : localStorage.getItem('bkn_admin_pass') || '');
-  const [isAuth, setIsAuth] = useState(false);
+  // Connexion partagée avec tout le site (cookie de session HttpOnly géré par AdminContext).
+  const { isAdmin: isAuth, login, logout } = useAdmin();
+  const [password, setPassword] = useState(''); // champ du formulaire uniquement, jamais stocké
+  const [trap, setTrap] = useState(''); // champ piège anti-robots
   const [authError, setAuthError] = useState('');
 
   // API loading & data states
@@ -90,65 +94,45 @@ export default function PortfolioAdmin() {
     commentsCount: '0'
   });
 
-  // Verify auth on mount if password exists
+  // Une fois connecté (au chargement ou après le formulaire), on charge articles et réglages.
   useEffect(() => {
-    if (password) {
-      verifyPassword(password);
-    }
-  }, []);
+    if (isAuth) loadAdminData();
+    else setPosts([]);
+  }, [isAuth]);
 
-  const verifyPassword = (pass) => {
+  const loadAdminData = async () => {
     setLoading(true);
-    setAuthError('');
-    fetch('/api/posts?verify=true', {
-      headers: { 'x-admin-password': pass }
-    })
-      .then(async res => {
-        if (res.ok) {
-          const postsRes = await fetch('/api/posts');
-          const data = await postsRes.json();
-          setPosts(data);
-          setIsAuth(true);
-          localStorage.setItem('bkn_admin_pass', pass);
-
-          // Load site settings (featured banner URLs)
-          try {
-            const settingsRes = await fetch('/api/settings');
-            const settings = await settingsRes.json();
-            if (settings.featuredBannerUrl) {
-              setFeaturedBannerUrl(settings.featuredBannerUrl);
-              setBannerInputUrl(settings.featuredBannerUrl);
-            }
-            if (settings.devlogBannerUrl) {
-              setDevlogBannerUrl(settings.devlogBannerUrl);
-              setDevlogBannerInputUrl(settings.devlogBannerUrl);
-            }
-          } catch (err) {
-            console.error('Failed to load settings:', err);
-          }
-        } else {
-          setAuthError(t('portfolio.admin.invalid_pass'));
-          setIsAuth(false);
-          localStorage.removeItem('bkn_admin_pass');
-        }
-      })
-      .catch(() => {
-        setAuthError(t('portfolio.admin.invalid_pass'));
-        setIsAuth(false);
-      })
-      .finally(() => setLoading(false));
+    try {
+      const postsRes = await fetch('/api/posts');
+      setPosts(await postsRes.json());
+      const settings = await (await fetch('/api/settings')).json();
+      if (settings.featuredBannerUrl) {
+        setFeaturedBannerUrl(settings.featuredBannerUrl);
+        setBannerInputUrl(settings.featuredBannerUrl);
+      }
+      if (settings.devlogBannerUrl) {
+        setDevlogBannerUrl(settings.devlogBannerUrl);
+        setDevlogBannerInputUrl(settings.devlogBannerUrl);
+      }
+    } catch (err) {
+      console.error('Failed to load admin data:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    verifyPassword(password);
+    setLoading(true);
+    setAuthError('');
+    const result = await login(password, trap);
+    setPassword('');
+    setLoading(false);
+    if (!result.ok) setAuthError(result.error || t('portfolio.admin.invalid_pass'));
   };
 
   const handleLogout = () => {
-    setPassword('');
-    setIsAuth(false);
-    localStorage.removeItem('bkn_admin_pass');
-    setPosts([]);
+    logout();
   };
 
   const handleChange = (e) => {
@@ -269,8 +253,7 @@ export default function PortfolioAdmin() {
         const res = await fetch('/api/upload', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'x-admin-password': password
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             fileData: dataUrl,
@@ -435,8 +418,7 @@ export default function PortfolioAdmin() {
     fetch('/api/posts', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-admin-password': password
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
     })
@@ -478,8 +460,7 @@ export default function PortfolioAdmin() {
     fetch('/api/posts', {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json',
-        'x-admin-password': password
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ id: postId })
     })
@@ -505,9 +486,7 @@ export default function PortfolioAdmin() {
 
   const handleExport = async () => {
     try {
-      const res = await fetch('/api/posts?download=true', {
-        headers: { 'x-admin-password': password }
-      });
+      const res = await fetch('/api/posts?download=true');
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -664,6 +643,9 @@ export default function PortfolioAdmin() {
         </div>
         {isAuth && (
           <div className="flex items-center gap-3 flex-shrink-0">
+            <Link to="/portfolio/admin/promo" className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-primary/30 text-primary text-[10px] uppercase tracking-[0.15em] hover:bg-primary/10 transition-colors">
+              <i className="fa-solid fa-ticket" aria-hidden="true"></i> Codes promo
+            </Link>
             <Button variant="green-outline" onClick={handleExport}>
               <i className="fa-solid fa-download mr-1.5"></i>
               {t('portfolio.admin.export_btn')}
@@ -720,6 +702,7 @@ export default function PortfolioAdmin() {
 
             {/* Login Form */}
             <form onSubmit={handleLogin} className="flex flex-col gap-5 relative z-10">
+              <HoneypotField value={trap} onChange={setTrap} />
               <InputField
                 label={t('portfolio.admin.password')}
                 name="password"
@@ -777,8 +760,7 @@ export default function PortfolioAdmin() {
                 const res = await fetch('/api/settings', {
                   method: 'PATCH',
                   headers: {
-                    'Content-Type': 'application/json',
-                    'x-admin-password': password
+                    'Content-Type': 'application/json'
                   },
                   body: JSON.stringify({ [key]: val })
                 });
