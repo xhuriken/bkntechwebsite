@@ -157,8 +157,9 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Failed to write to database.' });
     }
 
-    // Trigger Discord Webhook Notification if configured and category is gaming
-    const webhookUrl = process.env.DISCORD_WEBHOOK_URL || 'https://discord.com/api/webhooks/1532066598444339330/c1sv3Pk93YQQdrNi417x3qYicTjoYHF0hrsEPmAUfrf0d-3EBybswVzjPv76dAjwdFup';
+    // Notification Discord des devlogs (catégorie gaming). L'adresse du webhook est un secret :
+    // uniquement dans DISCORD_WEBHOOK_URL (.env, secret GitHub), jamais en valeur de repli dans le code.
+    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
     if ((postToDiscord || postToDiscord === undefined) && webhookUrl && category === 'gaming') {
       try {
         const threadTitle = `[${postData.type}] ${titleFr}`;
