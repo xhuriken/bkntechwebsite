@@ -23,6 +23,12 @@ export default function CodeRow({ c, campaign, busy, actions }) {
         <span className={`text-[10px] uppercase tracking-wider border rounded-full px-2.5 py-0.5 ${style}`}>{label}</span>
         <span className="text-xs text-on-surface-variant">{c.uses}/{c.maxUses} utilisation{c.maxUses > 1 ? 's' : ''}</span>
       </div>
+      {c.source === 'claim' && (
+        <p className="text-sm text-on-surface break-words">
+          <span className="font-semibold">{[c.firstName, c.lastName].filter(Boolean).join(' ') || 'Nom non communiqué'}</span>
+          <span className="text-xs text-on-surface-variant"> · réclamé via Google le {dateText(c.createdAt)}</span>
+        </p>
+      )}
       <p className="text-xs text-on-surface-variant break-words">
         {c.email || 'Sans e-mail'}{c.note && ` · ${c.note}`}{c.expiresAt && ` · expire le ${dateText(c.expiresAt)}`}
       </p>

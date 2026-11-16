@@ -12,7 +12,7 @@ export function listCodes(db, campaign, now = Date.now()) {
   const raw = db.prepare('SELECT * FROM promo_campaigns WHERE id = ?').get(campaign);
   if (!raw) return null;
   return db.prepare(CODES).all(campaign).map(({ uses, ...k }) => ({
-    id: k.id, code: k.code, email: k.email, source: k.source, note: k.note,
+    id: k.id, code: k.code, email: k.email, firstName: k.first_name, lastName: k.last_name, source: k.source, note: k.note,
     maxUses: k.max_uses, uses, expiresAt: k.expires_at, revokedAt: k.revoked_at, createdAt: k.created_at,
     status: codeStatus({ code: k, campaign: raw, uses }, now),
   }));
@@ -74,6 +74,6 @@ export function codesToCsv(codes) {
     const s = String(v ?? '');
     return `"${(/^[=+\-@\t\r]/.test(s) ? `'${s}` : s).replaceAll('"', '""')}"`;
   };
-  const rows = codes.map((c) => [c.code, c.email, c.status, `${c.uses}/${c.maxUses}`, c.source, c.createdAt, c.expiresAt, c.note].map(cell).join(','));
-  return ['code,email,statut,utilisations,origine,cree_le,expire_le,note', ...rows].join('\r\n');
+  const rows = codes.map((c) => [c.code, c.firstName, c.lastName, c.email, c.status, `${c.uses}/${c.maxUses}`, c.source, c.createdAt, c.expiresAt, c.note].map(cell).join(','));
+  return ['code,prenom,nom,email,statut,utilisations,origine,cree_le,expire_le,note', ...rows].join('\r\n');
 }

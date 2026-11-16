@@ -34,7 +34,7 @@ export const countCodes = (db, campaignId) =>
  *   { status: <état> }            offre fermée : ended | upcoming | paused | full.
  * BEGIN IMMEDIATE : verrou d'écriture AVANT de compter (pas de dépassement en parallèle).
  */
-export function claimCode(db, slug, { googleSub, email }, now = Date.now()) {
+export function claimCode(db, slug, { googleSub, email, firstName = '', lastName = '' }, now = Date.now()) {
   db.exec('BEGIN IMMEDIATE');
   try {
     const campaign = db.prepare('SELECT * FROM promo_campaigns WHERE slug = ?').get(slug);
@@ -49,9 +49,10 @@ export function claimCode(db, slug, { googleSub, email }, now = Date.now()) {
       const code = randomCode(campaign.code_prefix);
       try {
         db.prepare(
-          `INSERT INTO promo_codes (campaign_id, code, email, google_sub, source, max_uses, created_at)
-           VALUES (?, ?, ?, ?, 'claim', ?, ?)`,
-        ).run(campaign.id, code, email, googleSub, campaign.max_uses_per_code, new Date(now).toISOString());
+          `INSERT INTO promo_codes (campaign_id, code, email, google_sub, first_name, last_name, source, max_uses, created_at)
+           VALUES (?, ?, ?, ?, ?, ?, 'claim', ?, ?)`,
+        ).run(campaign.id, code, email, googleSub, firstName || null, lastName || null,
+          campaign.max_uses_per_code, new Date(now).toISOString());
         return done({ status: 'claimed', code });
       } catch (error) {
         if (attempt >= 5 || !/UNIQUE.*promo_codes\.code/.test(error.message)) throw error;

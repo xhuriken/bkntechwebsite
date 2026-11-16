@@ -41,6 +41,8 @@ export function createTables(db) {
       code        TEXT NOT NULL UNIQUE,
       email       TEXT CHECK (email IS NULL OR length(email) <= 254),
       google_sub  TEXT,                           -- compte Google qui l'a réclamé (mode claim)
+      first_name  TEXT CHECK (first_name IS NULL OR length(first_name) <= 100), -- du compte Google
+      last_name   TEXT CHECK (last_name IS NULL OR length(last_name) <= 100),
       source      TEXT NOT NULL CHECK (source IN ('claim', 'manual', 'batch', 'shared')),
       max_uses    INTEGER NOT NULL DEFAULT 1 CHECK (max_uses >= 1),
       expires_at  TEXT,                           -- NULL = suit la fin de l'offre
@@ -68,7 +70,12 @@ export function createTables(db) {
     CREATE INDEX IF NOT EXISTS idx_codes_campaign ON promo_codes(campaign_id);
     CREATE INDEX IF NOT EXISTS idx_redemptions_code ON promo_redemptions(code_id);
   `);
-  // Base créée avant l'ajout de cancelled_at : on ajoute la colonne (sans toucher aux lignes).
-  const columns = db.prepare('PRAGMA table_info(promo_redemptions)').all();
-  if (!columns.some((c) => c.name === 'cancelled_at')) db.exec('ALTER TABLE promo_redemptions ADD COLUMN cancelled_at TEXT');
+  // Base créée avant ces colonnes (ex. la production) : on les ajoute, sans toucher aux lignes.
+  const addColumn = (table, column, type) => {
+    const exists = db.prepare(`PRAGMA table_info(${table})`).all().some((c) => c.name === column);
+    if (!exists) db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${type}`);
+  };
+  addColumn('promo_redemptions', 'cancelled_at', 'TEXT');
+  addColumn('promo_codes', 'first_name', 'TEXT CHECK (first_name IS NULL OR length(first_name) <= 100)');
+  addColumn('promo_codes', 'last_name', 'TEXT CHECK (last_name IS NULL OR length(last_name) <= 100)');
 }

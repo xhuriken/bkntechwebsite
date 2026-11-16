@@ -44,7 +44,7 @@ export default function ClaimZone({ offer, claim, onCredential }) {
       {MESSAGES[claim.status] && claim.status !== offer.state && <p role="alert" className="text-sm text-red-400">{MESSAGES[claim.status]}</p>}
       {!hasCode && !closed && (
         <p className="text-[11px] text-on-surface-variant max-w-md">
-          Nous gardons uniquement votre identifiant Google, votre e-mail et la date de réservation, pour attribuer le code et éviter les doublons.{' '}
+          Nous gardons uniquement votre identifiant Google, vos prénom et nom, votre e-mail et la date de réservation, pour attribuer le code, savoir à qui il appartient et éviter les doublons.{' '}
           <Link to="/politique-de-confidentialite" className="underline underline-offset-2">En savoir plus</Link>
         </p>
       )}

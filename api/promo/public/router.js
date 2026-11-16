@@ -25,7 +25,7 @@ export function createPublicPromoHandler({ db, verifyGoogleIdToken,
     if (!verifyGoogleIdToken) return [503, { error: 'Réclamation momentanément indisponible.' }];
     const identity = await verifyGoogleIdToken(req.body?.idToken); // l'identité vient UNIQUEMENT du jeton
     if (!identity) return [401, { error: 'Connexion Google invalide.' }];
-    const r = claimCode(db, slug, { googleSub: identity.sub, email: identity.email });
+    const r = claimCode(db, slug, { googleSub: identity.sub, email: identity.email, firstName: identity.firstName, lastName: identity.lastName });
     console.log(`[promo] ${slug} -> ${r.status}`); // ni e-mail ni code dans les journaux
     if (r.status === 'claimed' || r.status === 'already') return [200, r];
     if (r.status === 'unknown' || r.status === 'not_claim') return [404, { status: r.status, error: 'Offre introuvable.' }];

@@ -72,3 +72,16 @@ test('base créée avant la colonne cancelled_at : ajoutée au démarrage, sans 
   const row = db.prepare('SELECT used_at, cancelled_at FROM promo_redemptions').get();
   assert.deepEqual({ ...row }, { used_at: '2026-11-15T10:00:00.000Z', cancelled_at: null });
 });
+
+test('base de production sans prénom/nom : colonnes ajoutées, codes existants intacts', () => {
+  const file = path.join(mkdtempSync(path.join(tmpdir(), 'promo-names-')), 'p.sqlite');
+  createLegacyDb(file);
+  const old = openPromoDb(file).db; // base v2 telle qu'elle était déployée
+  old.exec('ALTER TABLE promo_codes DROP COLUMN first_name; ALTER TABLE promo_codes DROP COLUMN last_name;');
+  old.close();
+  const { db } = openPromoDb(file); // redémarrage avec la nouvelle version
+  const rows = db.prepare('SELECT code, first_name, last_name FROM promo_codes ORDER BY id').all();
+  assert.deepEqual(rows.map((r) => [r.first_name, r.last_name]), [[null, null], [null, null], [null, null]]);
+  assert.equal(rows.length, 3);
+  db.close();
+});

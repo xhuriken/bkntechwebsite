@@ -23,11 +23,19 @@ test('sans GOOGLE_CLIENT_ID, la vérification refuse de démarrer', () => {
   assert.throws(() => createGoogleVerifier(''), /GOOGLE_CLIENT_ID manquant/);
 });
 
-test('un jeton valide donne le sub et l’e-mail en minuscules', async () => {
-  const client = fakeClient({ sub: '123', email: 'Ana@Example.com', email_verified: true });
+test('un jeton valide donne le sub, l’e-mail en minuscules, le prénom et le nom', async () => {
+  const client = fakeClient({ sub: '123', email: 'Ana@Example.com', email_verified: true, given_name: 'Ana', family_name: 'Martin' });
   const verify = createGoogleVerifier(CLIENT_ID, client);
-  assert.deepEqual(await verify('jeton'), { sub: '123', email: 'ana@example.com' });
+  assert.deepEqual(await verify('jeton'), { sub: '123', email: 'ana@example.com', firstName: 'Ana', lastName: 'Martin' });
   assert.equal(client.calls[0].audience, CLIENT_ID); // notre site, pas un autre
+});
+
+test('nom : nettoyé, borné, et repli sur le nom complet', async () => {
+  const one = (payload) => createGoogleVerifier(CLIENT_ID, fakeClient({ sub: '1', email: 'a@b.fr', email_verified: true, ...payload }))('jeton');
+  assert.deepEqual(await one({ name: 'Studio Ana' }), { sub: '1', email: 'a@b.fr', firstName: 'Studio Ana', lastName: '' });
+  const r = await one({ given_name: ' Ana\u0000\n ', family_name: 'X'.repeat(300) });
+  assert.deepEqual([r.firstName, r.lastName.length], ['Ana', 100]); // contrôle retiré, 100 caractères max
+  assert.deepEqual(await one({}), { sub: '1', email: 'a@b.fr', firstName: '', lastName: '' });
 });
 
 test('un e-mail non vérifié par Google est refusé', async () => {

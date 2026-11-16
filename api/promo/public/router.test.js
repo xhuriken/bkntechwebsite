@@ -40,6 +40,18 @@ test('réclamation : un code par compte, le même rendu ensuite, puis complet', 
   assert.equal((await call('POST', '/offers/salon/claim', { idToken: 'ok-a' })).body.status, 'already'); // même complet
 });
 
+test('qui a réclamé : prénom, nom et e-mail visibles dans l’admin, jamais sur la page publique', async () => {
+  const verify = async () => ({ sub: 'g-ana', email: 'ana@mail.test', firstName: 'Ana', lastName: 'Martin' });
+  const { call, adminCall } = setup({ verifyGoogleIdToken: verify });
+  const id = adminCall('POST', '/', OFFER).body.id;
+  const { code } = (await call('POST', '/offers/salon/claim', { idToken: 'x' })).body;
+  const [row] = adminCall('GET', `/${id}/codes`).body;
+  assert.deepEqual([row.firstName, row.lastName, row.email, row.source], ['Ana', 'Martin', 'ana@mail.test', 'claim']);
+  assert.match(adminCall('GET', `/${id}/export.csv`).body, /prenom,nom,email[\s\S]*"Ana","Martin","ana@mail.test"/);
+  const page = JSON.stringify((await call('GET', `/codes/${code}`)).body);
+  assert.ok(!/Ana|Martin|ana@/.test(page)); // la page d'un code ne dit pas à qui il appartient
+});
+
 test('offres qui ne se réclament pas, brouillon invisible, dates respectées', async () => {
   const { call, adminCall } = setup();
   adminCall('POST', '/', { ...OFFER, slug: 'flyer', mode: 'shared' });
