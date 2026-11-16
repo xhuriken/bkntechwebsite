@@ -100,11 +100,18 @@ export default function PortfolioAdmin() {
     else setPosts([]);
   }, [isAuth]);
 
+  // Recharge la liste depuis l'API. Après un enregistrement ou une suppression, l'API ne renvoie
+  // PAS la liste ({ success, post } / { success, message }) : on la relit, sans jamais remplacer
+  // la liste par autre chose qu'un tableau (sinon posts.filter plante et la page devient noire).
+  const reloadPosts = async () => {
+    const data = await (await fetch('/api/posts')).json();
+    setPosts(Array.isArray(data) ? data : []);
+  };
+
   const loadAdminData = async () => {
     setLoading(true);
     try {
-      const postsRes = await fetch('/api/posts');
-      setPosts(await postsRes.json());
+      await reloadPosts();
       const settings = await (await fetch('/api/settings')).json();
       if (settings.featuredBannerUrl) {
         setFeaturedBannerUrl(settings.featuredBannerUrl);
@@ -365,7 +372,6 @@ export default function PortfolioAdmin() {
     setPostToDiscord(true);
     setFormTab('general');
     setTextLang('fr');
-    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleSubmit = (e) => {
@@ -424,8 +430,7 @@ export default function PortfolioAdmin() {
     })
       .then(async res => {
         if (res.ok) {
-          const updatedPosts = await res.json();
-          setPosts(updatedPosts);
+          await reloadPosts();
           // Trigger smooth success screen transition (like ContactForm.jsx)
           setSaveSuccess(true);
           setTimeout(() => {
@@ -466,8 +471,7 @@ export default function PortfolioAdmin() {
     })
       .then(async res => {
         if (res.ok) {
-          const updatedPosts = await res.json();
-          setPosts(updatedPosts);
+          await reloadPosts();
           setStatusMsg({ text: t('portfolio.admin.success_delete'), type: 'success' });
           if (editingId === postId) {
             handleCancelEdit();
